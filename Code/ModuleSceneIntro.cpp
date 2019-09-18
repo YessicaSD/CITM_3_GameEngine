@@ -317,80 +317,6 @@ void ModuleSceneIntro::AddRamps()
 //	return ret;
 //
 //}
-void ModuleSceneIntro::AddPendulums()
-{
-	uint i = 0;
-	vec2 pos(345, 590);
-	pen[i].staticPoint.SetPos(pos.x, 10, pos.y);
-	pen[i].staticPoint.SetRotation(90, { 0,0,1 });
-	pen[i].staticPoint.SetRotation(90, { 0,1,0 });
-	pen[i].parts[Pendulum::STATIC_PART] = App->physics->AddBody(pen[i].staticPoint, 0);
-	pen[i].Arm.SetPos(pos.x, 1, pos.y);
-	pen[i].Arm.size = { 5,8.5,4 };
-	pen[i].parts[Pendulum::DINAMIC_ARM] = App->physics->AddBody(pen[i].Arm, 100);
-	App->physics->AddConstraintHinge(*pen[i].parts[Pendulum::STATIC_PART], *pen[i].parts[Pendulum::DINAMIC_ARM], { 0,0,0 }, { 0,-pen[i].Arm.size.y*0.5f - pen[i].staticPoint.radius,0 }, { 1,0,0 }, { 1,0,0});
-
-	i = 1;
-	pos = { 345, 630 };
-	pen[i].staticPoint.SetPos(pos.x, 10, pos.y);
-	pen[i].staticPoint.SetRotation(90, { 0,0,1 });
-	pen[i].staticPoint.SetRotation(90, { 0,1,0 });
-	pen[i].parts[Pendulum::STATIC_PART] = App->physics->AddBody(pen[i].staticPoint, 0);
-	pen[i].Arm.SetPos(pos.x, 1, pos.y);
-	pen[i].Arm.size = { 5,8.5,4 };
-	pen[i].parts[Pendulum::DINAMIC_ARM] = App->physics->AddBody(pen[i].Arm, 100);
-	App->physics->AddConstraintHinge(*pen[i].parts[Pendulum::STATIC_PART], *pen[i].parts[Pendulum::DINAMIC_ARM], { 0,0,0 }, { 0,-pen[i].Arm.size.y*0.5f - pen[i].staticPoint.radius,0 }, { 1,0,0 }, { 1,0,0 });
-
-	i = 2;
-	pos = { 345, 500 };
-	pen[i].staticPoint.SetPos(pos.x, 10, pos.y);
-	pen[i].staticPoint.SetRotation(90, { 0,0,1 });
-	pen[i].staticPoint.SetRotation(90, { 0,1,0 });
-	pen[i].parts[Pendulum::STATIC_PART] = App->physics->AddBody(pen[i].staticPoint, 0);
-	pen[i].Arm.SetPos(pos.x, 1, pos.y);
-	pen[i].Arm.size = { 5,8.5,4 };
-	pen[i].parts[Pendulum::DINAMIC_ARM] = App->physics->AddBody(pen[i].Arm, 100);
-	App->physics->AddConstraintHinge(*pen[i].parts[Pendulum::STATIC_PART], *pen[i].parts[Pendulum::DINAMIC_ARM], { 0,0,0 }, { 0,-pen[i].Arm.size.y*0.5f - pen[i].staticPoint.radius,0 }, { 1,0,0 }, { 1,0,0 });
-
-	i = 3;
-	pos = { 345, 450 };
-	pen[i].staticPoint.SetPos(pos.x, 10, pos.y);
-	pen[i].staticPoint.SetRotation(90, { 0,0,1 });
-	pen[i].staticPoint.SetRotation(90, { 0,1,0 });
-	pen[i].parts[Pendulum::STATIC_PART] = App->physics->AddBody(pen[i].staticPoint, 0);
-	pen[i].Arm.SetPos(pos.x, 1, pos.y);
-	pen[i].Arm.size = { 5,8.5,4 };
-	pen[i].parts[Pendulum::DINAMIC_ARM] = App->physics->AddBody(pen[i].Arm, 100);
-	App->physics->AddConstraintHinge(*pen[i].parts[Pendulum::STATIC_PART], *pen[i].parts[Pendulum::DINAMIC_ARM], { 0,0,0 }, { 0,-pen[i].Arm.size.y*0.5f - pen[i].staticPoint.radius,0 }, { 1,0,0 }, { 1,0,0 });
-
-	i = 4;
-	pos = { 170, 780 };
-	pen[i].staticPoint.SetPos(pos.x, 15, pos.y);
-	pen[i].parts[Pendulum::STATIC_PART] = App->physics->AddBody(pen[i].staticPoint, 0);
-	pen[i].Arm.SetPos(pos.x, 1, pos.y);
-	pen[i].Arm.size = { 10,13,5 };
-	pen[i].parts[Pendulum::DINAMIC_ARM] = App->physics->AddBody(pen[i].Arm, 100);
-	App->physics->AddConstraintHinge(*pen[i].parts[Pendulum::STATIC_PART], *pen[i].parts[Pendulum::DINAMIC_ARM], { 0,0,0 }, { 0,-pen[i].Arm.size.y*0.5f - pen[i].staticPoint.radius,0 }, { 1,0,0 }, { 1,0,0 });
-
-	i = 5;
-	pos = { 100, 780 };
-	pen[i].staticPoint.SetPos(pos.x, 15, pos.y);
-	pen[i].parts[Pendulum::STATIC_PART] = App->physics->AddBody(pen[i].staticPoint, 0);
-	pen[i].Arm.SetPos(pos.x, 1, pos.y);
-	pen[i].Arm.size = { 10,13,5 };
-	pen[i].parts[Pendulum::DINAMIC_ARM] = App->physics->AddBody(pen[i].Arm, 100);
-	App->physics->AddConstraintHinge(*pen[i].parts[Pendulum::STATIC_PART], *pen[i].parts[Pendulum::DINAMIC_ARM], { 0,0,0 }, { 0,-pen[i].Arm.size.y*0.5f - pen[i].staticPoint.radius,0 }, { 1,0,0 }, { 1,0,0 });
-
-	i = 6;
-	pos = { 250, 780 };
-	pen[i].staticPoint.SetPos(pos.x, 15, pos.y);
-	pen[i].parts[Pendulum::STATIC_PART] = App->physics->AddBody(pen[i].staticPoint, 0);
-	pen[i].Arm.SetPos(pos.x, 1, pos.y);
-	pen[i].Arm.size = { 10,13,5 };
-	pen[i].parts[Pendulum::DINAMIC_ARM] = App->physics->AddBody(pen[i].Arm, 100);
-	App->physics->AddConstraintHinge(*pen[i].parts[Pendulum::STATIC_PART], *pen[i].parts[Pendulum::DINAMIC_ARM], { 0,0,0 }, { 0,-pen[i].Arm.size.y*0.5f - pen[i].staticPoint.radius,0 }, { 1,0,0 }, { 1,0,0 });
-
-}
 
 // Load assets
 bool ModuleSceneIntro::CleanUp()
@@ -401,70 +327,16 @@ bool ModuleSceneIntro::CleanUp()
 }
 
 update_status ModuleSceneIntro::Update(float dt) {
-	ColorEffect(dt);
-	CircuitPillarsEffect(dt);
+	
 	return UPDATE_CONTINUE;
 }
 
-void ModuleSceneIntro::CircuitPillarsEffect(float dt) {
-	pillarOffset += dt;
-	for (int i = 0; i < circuitPillars.Count(); ++i) {
-		circuitPillars[i].size.Set(1.5f, baseHeight + cos((pillarOffset * transitionSpeed + i * differenceBetweenPillars) * DEGTORAD) * additionalHeight, 1.5f);
-	}
-}
 
-void ModuleSceneIntro::ColorEffect(float dt)
-{
-	//Turn the color back to normal
-	cubeElems.At((int)currRampSegment)->color.Set(currSegmentColor);
-	//Change the color of the next segment
-	currRampSegment += 15.f * dt;
-	if (currRampSegment >= cubeElems.Count()) {
-		currRampSegment = 0.f;
-	}
-	currSegmentColor = cubeElems.At((int)currRampSegment)->color;
-	cubeElems.At((int)currRampSegment)->color.Set(highlightColor);
-}
+
 
 bool ModuleSceneIntro::Draw()
 {
-	//Plane p(0, 1, 0, 0);
-	//p.axis = true;
-	//p.wire = false;
-	//p.Render();
-
-	for (uint iter = 0; iter <cubeElems.Count(); ++iter)
-	{
-		cubeElems[iter].Render();
-	}
-
-	for (uint i = 0; i < circuitPillars.Count(); ++i) {
-		circuitPillars[i].Render();
-	}
-	for (uint j = 0; j < 8; ++j)
-	{
-		for (uint i = 0; i < RampsCubes[j].Count(); ++i)
-		{
-			RampsCubes[j][i].Render();
-		}
-	}
-	for (uint i = 0; i < 7; ++i)
-	{
-		pen[i].parts[Pendulum::STATIC_PART]->GetTransform(&pen[i].staticPoint.transform);
-		pen[i].staticPoint.Render();
-		pen[i].parts[Pendulum::DINAMIC_ARM]->GetTransform(&pen[i].Arm.transform);
-		pen[i].Arm.Render();
-		
-	}
-
-	sphere1.Render();
-	sphere2.Render();
-
-	/*for (uint i = 0; i < bridges.Count(); ++i)
-	{
-		bridges[i]->GetTransform(&bridgeCube.transform);
-		bridgeCube.Render();
-	}*/
+	
 	return true;
 }
 

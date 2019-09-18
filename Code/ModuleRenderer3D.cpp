@@ -125,8 +125,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 bool ModuleRenderer3D::Draw() {
 	// light 0 on cam pos
 	
-	lights[0].SetPos(App->camera0->Position.x, App->camera0->Position.y, App->camera0->Position.z);
-	lights[1].SetPos(App->camera1->Position.x, App->camera1->Position.x, App->camera1->Position.x);
 	for (uint i = 0; i < MAX_LIGHTS; ++i) {
 		lights[i].Render();
 	}

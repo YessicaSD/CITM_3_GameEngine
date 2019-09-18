@@ -12,7 +12,7 @@ class ModulePlayer;
 class ModuleCamera3D : public Module
 {
 public:
-	ModuleCamera3D(Application* app, ModulePlayer * playerToFollow, bool start_enabled = true);
+	ModuleCamera3D(Application* app, bool start_enabled = true);
 	~ModuleCamera3D();
 
 	bool Start();
@@ -38,6 +38,5 @@ public:
 private:
 	mat4x4 ViewMatrix, ViewMatrixInverse;
 	bool debugCamera = false;
-	ModulePlayer * playerToFollow = nullptr;
 	SDL_Rect viewport;//The section of the screen this camera is going to be rendering to
 };

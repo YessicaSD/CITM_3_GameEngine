@@ -30,10 +30,10 @@ enum SCROLL_STATE
 
 typedef struct Mouse
 {
-	int connected;
-	int x, y;
-	int x_motion, y_motion;//The motion of the mouse in each axis from the last frame
-	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
+	int connected = 0;
+	int x = 0, y = 0;
+	int x_motion = 0, y_motion = 0;//The motion of the mouse in each axis from the last frame
+	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS] = { KEY_IDLE ,KEY_IDLE ,KEY_IDLE ,KEY_IDLE };
 	SCROLL_STATE scrollState = SCROLL_IDLE;
 };
 

@@ -77,8 +77,7 @@ bool ModuleWindow::Init()
 
 update_status ModuleWindow::PostUpdate(float dt) {
 	char title[160];
-	sprintf_s(title, "Player 1: %.1f Km/h | Player 2: %.1f Km/h | Player 3: %.1f Km/h | Player 4: %.1f Km/h",
-		App->player0->vehicle->GetKmh(), App->player1->vehicle->GetKmh(), App->player2->vehicle->GetKmh(), App->player3->vehicle->GetKmh());
+	sprintf_s(title, "Engine^^");
 	App->window->SetTitle(title);
 
 	return UPDATE_CONTINUE;

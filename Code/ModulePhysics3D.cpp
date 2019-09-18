@@ -233,10 +233,6 @@ PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, float mass, Module * call
 
 	if (callback != nullptr) {
 		body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
-		pbody->collision_listeners.add(App->player0);
-		pbody->collision_listeners.add(App->player1);
-		pbody->collision_listeners.add(App->player2);
-		pbody->collision_listeners.add(App->player3);
 	}
 	else {
 		body->setCollisionFlags(body->getCollisionFlags() &~ btCollisionObject::CF_NO_CONTACT_RESPONSE);
