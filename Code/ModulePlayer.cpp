@@ -155,10 +155,10 @@ bool ModulePlayer::Start()
 
 	vehicle->SetPos(324.f + 10.f * playerIdx, 0.f, 392.f);
 	vehicle->SetRotation(M_PI, 0.f, 0.f);
-	vehicle->collision_listeners.add(App->scene_intro);
+	
 
 	victorySFX = App->audio->LoadFx("Assets/SFX/victory.ogg");
-	lastCheckpoint = App->scene_intro->checkpoints[0];//At the begging, assign the starting checkpoint
+	
 
 	return true;
 }
@@ -334,15 +334,5 @@ void ModulePlayer::Movement()
 }
 
 void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
-	//Body 1 is the sensor and body 2 is the vehicle that collided with it
-	if (body2 == vehicle) {
-		if (lastCheckpoint != App->scene_intro->checkpoints[0] && body1 == App->scene_intro->checkpoints[0]) {//Checkpoint 0 is the beggining of the race
-			laps++;
-			if (laps >= 3) {
-				LOG("Victory!");
-				App->audio->PlayFx(victorySFX);
-			}
-		}
-		lastCheckpoint = body1;
-	}
+
 }
