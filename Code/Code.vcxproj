@@ -94,6 +94,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="manymouse-2e0dbebdbd28\manymouse.h" />
     <ClInclude Include="ModuleCamera3D.h" />
+    <ClInclude Include="ModuleGui.h" />
     <ClInclude Include="ModulePhysics3D.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="ModuleScene01.h" />
@@ -127,6 +128,7 @@
     <ClCompile Include="manymouse-2e0dbebdbd28\x11_xinput2.c" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
+    <ClCompile Include="ModuleGui.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModulePhysics3D.cpp" />
     <ClCompile Include="ModuleRenderer3D.cpp" />

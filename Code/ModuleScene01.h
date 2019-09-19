@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MODULESCENE01_H_
+#define MODULESCENE01_H_
+
 #include "Module.h"
 #include "p2DynArray.h"
 #include "Globals.h"
@@ -15,3 +17,6 @@ public:
 
 public:
 };
+
+#endif // !MODULESCENE01_H_
+

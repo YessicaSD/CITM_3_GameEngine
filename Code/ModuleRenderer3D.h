@@ -13,8 +13,8 @@ public:
 	~ModuleRenderer3D();
 
 	bool Init();
-	update_status PreUpdate(float dt);
-	update_status PostUpdate(float dt);
+	update_status PreUpdate(float dt) override;
+	update_status PostUpdate(float dt) override;
 	bool CleanUp();
 	bool Draw() override;
 
