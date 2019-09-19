@@ -23,9 +23,6 @@ Application::Application()
 	AddModule(audio);
 	AddModule(physics);
 	AddModule(scene01);
-	
-	
-	//Cameras
 	AddModule(camera);
 	AddModule(gui);
 

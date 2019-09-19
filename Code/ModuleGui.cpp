@@ -43,6 +43,13 @@ update_status ModuleGUI::Update(float dt)
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
+	ImGui::Begin("Close Window");
+	if (ImGui::Button("Close Application"))
+	{
+		return update_status::UPDATE_STOP;
+	}
+	ImGui::End();
+
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 	if (show_demo_window)
 		ImGui::ShowDemoWindow(&show_demo_window);
@@ -83,10 +90,7 @@ update_status ModuleGUI::Update(float dt)
 
 	// Rendering
 	ImGui::Render();
-	//glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-	
-
 
 	return UPDATE_CONTINUE;
 	
