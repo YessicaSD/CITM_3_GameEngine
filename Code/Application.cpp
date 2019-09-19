@@ -23,13 +23,15 @@ Application::Application()
 	AddModule(audio);
 	AddModule(physics);
 	AddModule(scene01);
-	AddModule(gui);
+	
 	
 	//Cameras
 	AddModule(camera);
-	
+	AddModule(gui);
+
 	// Renderer last!
 	AddModule(renderer3D);
+	
 }
 
 Application::~Application()

@@ -71,6 +71,23 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::End();
 	}
 
+	// 3. Show another simple window.
+	if (show_another_window)
+	{
+		ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+		ImGui::Text("Hello from another window!");
+		if (ImGui::Button("Close Me"))
+			show_another_window = false;
+		ImGui::End();
+	}
+
+	// Rendering
+	ImGui::Render();
+	//glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound
+	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+	
+
+
 	return UPDATE_CONTINUE;
 	
 }
