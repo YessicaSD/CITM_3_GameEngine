@@ -82,6 +82,21 @@ update_status ModuleWindow::PostUpdate(float dt) {
 	return UPDATE_CONTINUE;
 }
 
+//Change when we get iPoint / Vector2
+int ModuleWindow::GetWindowWidth()
+{
+	int w, h;
+	SDL_GetWindowSize(window, &w, &h);
+	return w;
+}
+
+int ModuleWindow::GetWindowHeight()
+{
+	int w, h;
+	SDL_GetWindowSize(window, &w, &h);
+	return h;
+}
+
 // Called before quitting
 bool ModuleWindow::CleanUp()
 {

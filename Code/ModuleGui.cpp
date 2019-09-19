@@ -1,4 +1,4 @@
-#include "ModuleGui.h"
+﻿#include "ModuleGui.h"
 #include "Application.h"
 
 
@@ -43,14 +43,17 @@ update_status ModuleGUI::Update(float dt)
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
-	//ImGui::Begin("Close Window");
+	int lineSpace = 4;
 	ImGui::BeginMainMenuBar();
-	if (ImGui::Button("Close Application"))
+	ImVec2 buttonSize;
+	buttonSize.x = 20;
+	buttonSize.y = 20;
+	ImGui::Indent(App->window->GetWindowWidth() - buttonSize.x - lineSpace);
+	if (ImGui::Button("X"))
 	{
 		return update_status::UPDATE_STOP;
 	}
 	ImGui::EndMainMenuBar();
-	//ImGui::End();
 
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 	if (show_demo_window)
