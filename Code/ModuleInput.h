@@ -47,26 +47,26 @@ public:
 	update_status PreUpdate(float dt);
 	bool CleanUp();
 
-	KEY_STATE GetKey(int id) const
+	KEY_STATE GetKey(int id=0) const
 	{
 		return keyboard[id];
 	}
 
-	KEY_STATE GetMouseButton(int device, int id) const
+	KEY_STATE GetMouseButton( int id, int device=0) const
 	{
 		return mice[device].mouse_buttons[id];
 	}
 
-	SCROLL_STATE GetScrollWheelState(int device) const
+	SCROLL_STATE GetScrollWheelState(int device=0) const
 	{
 		return mice[device].scrollState;
 	}
 
-	int GetMouseXMotion(uint device) {
+	int GetMouseXMotion(uint device=0) {
 		return mice[device].x_motion;
 	}
 	
-	int GetMouseYMotion(uint device) {
+	int GetMouseYMotion(uint device=0) {
 		return mice[device].y_motion;
 	}
 

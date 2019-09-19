@@ -10,7 +10,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
-
+#include "ModuleScene01.h"
 
 class Application
 {
@@ -20,10 +20,8 @@ public:
 	ModuleAudio* audio = nullptr;
 	ModuleRenderer3D* renderer3D = nullptr;
 	ModuleCamera3D* camera = nullptr;
-	ModuleCamera3D* camera1 = nullptr;
-	ModuleCamera3D* camera2 = nullptr;
-	ModuleCamera3D* camera3 = nullptr;
 	ModulePhysics3D* physics = nullptr;
+	ModuleScene01* scene01 = nullptr;
 
 private:
 

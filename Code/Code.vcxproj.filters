@@ -22,6 +22,9 @@
     <Filter Include="Sources\Tools\imgui">
       <UniqueIdentifier>{afb44012-5b2a-4969-94e4-409a81704660}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\Game">
+      <UniqueIdentifier>{8812e403-d6fa-4792-8783-c157c2a679bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -80,6 +83,27 @@
     </ClInclude>
     <ClInclude Include="manymouse-2e0dbebdbd28\manymouse.h">
       <Filter>Sources\Tools\ManyMouse</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleScene01.h">
+      <Filter>Sources\Modules\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>Sources\Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleScene01.cpp">
+      <Filter>Sources\Modules\Game</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,0 +1,17 @@
+#pragma once
+#include "Module.h"
+#include "p2DynArray.h"
+#include "Globals.h"
+
+class ModuleScene01 : public Module
+{
+public:
+	ModuleScene01(Application* app, bool start_enabled = true);
+	~ModuleScene01();
+
+	bool Start();
+	update_status Update(float dt);
+	bool CleanUp();
+
+public:
+};

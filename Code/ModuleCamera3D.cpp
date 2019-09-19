@@ -1,11 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
-#include "ModulePlayer.h"
-#include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
-#include "SDL\include\SDL_opengl.h"
-#include <gl/GL.h>
-#include <gl/GLU.h>
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -15,16 +10,8 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 	Y = vec3(0.0f, 1.0f, 0.0f);
 	Z = vec3(0.0f, 0.0f, 1.0f);
 
-
-	Position = vec3(0.0f, 0.0f, 0.0f);
+	Position = vec3(0.0f, 0.0f, 5.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
-
-	viewport.x = 0.f;
-	viewport.y = 0.f;
-	viewport.w = SCREEN_WIDTH;
-	viewport.h = SCREEN_HEIGHT;
-
-
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -36,9 +23,6 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 
-	vec3 fVec = vec3(1,0,0);
-	Position = vec3(0, 0, 0);
-	LookAt(Position);
 	return ret;
 }
 
@@ -50,101 +34,74 @@ bool ModuleCamera3D::CleanUp()
 	return true;
 }
 
-update_status ModuleCamera3D::PreUpdate(float dt) {
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
-		debugCamera = !debugCamera;
-	}
-	return UPDATE_CONTINUE;
-}
-
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
-	if (debugCamera) {
-		DebugCamera(dt);
-	}
-	else {
-		Move(dt);
-	}
 
-	return UPDATE_CONTINUE;
-}
+	// Implement a debug camera with keys and mouse
+	// Now we can make this movememnt frame rate independant!
+	LOG("%i %i %i", X.x, X.y, X.z);
+	vec3 newPos(0,0,0);
+	float speed = 3.0f * dt;
+	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		speed = 8.0f * dt;
 
-void ModuleCamera3D::Move(float dt)
-{
-	//TODO: MAKE THE CAMERA MOVE
+	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) 
+		newPos.y += speed;
+	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
 
-	//MAKE THE CAMERA MOVE, ROTATE, WITH THE ALT AS DEFAULT
+	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) 
+		newPos -=Z * speed;
+	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
 
-	//ALSO MAKE THAT YOU CAN CHANGE THE WAY TO DO IT IF THE USER WANTS TO.
-}
 
-update_status ModuleCamera3D::PostUpdate(float dt) {
-	//Get the camera perspective
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(GetViewMatrix());
+	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
+	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
 
-	//Set the camera viewport
-	glViewport(viewport.x, viewport.y, viewport.w, viewport.h);
-	//glScissor(viewport.x, viewport.y, viewport.w, viewport.h);
-
-	//Draw all objects from that camera's perspective and viewport
-	App->DrawAll();
-
-	return UPDATE_CONTINUE;
-}
-
-void ModuleCamera3D::DebugCamera(float dt)
-{
-	vec3 newPos(0, 0, 0);
-
-	int x_motion = -App->input->GetMouseXMotion(0);
-	int y_motion = -App->input->GetMouseYMotion(0);
-
-	//Zoom
-	if (App->input->GetScrollWheelState(0) == SCROLL_FORWARD) {
-		newPos -= Z * 300.0f * dt;
-	}
-	else if (App->input->GetScrollWheelState(0) == SCROLL_BACKWARD) {
-		newPos += Z * 300.0f * dt;
-	}
-
-	//Pan
-	if (App->input->GetMouseButton(0, MOUSE_RIGHT)) {
-		newPos += X * 30.0f * x_motion * dt;
-		newPos += Y * 30.0f * -y_motion * dt;
-	}
 	Position += newPos;
 	Reference += newPos;
 
-	// Rotate
-	if(App->input->GetMouseButton(0, MOUSE_LEFT) == KEY_REPEAT)
+	// Mouse motion ----------------
+
+	if(App->input->GetMouseButton(MOUSE_RIGHT) == KEY_REPEAT)
 	{
+		int dx = -App->input->GetMouseXMotion();
+		int dy = -App->input->GetMouseYMotion();
+
 		float Sensitivity = 0.25f;
+
 		Position -= Reference;
-		if(x_motion != 0)
+
+		if(dx != 0)
 		{
-			float DeltaX = (float)x_motion * Sensitivity;
+			float DeltaX = (float)dx * Sensitivity;
+
 			X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
 			Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
 			Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
 		}
-		if(y_motion != 0)
+
+		if(dy != 0)
 		{
-			float DeltaY = (float)y_motion * Sensitivity;
+			float DeltaY = (float)dy * Sensitivity;
+
 			Y = rotate(Y, DeltaY, X);
 			Z = rotate(Z, DeltaY, X);
+
 			if(Y.y < 0.0f)
 			{
 				Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
 				Y = cross(Z, X);
 			}
 		}
+
 		Position = Reference + Z * Length(Position);
 	}
 
 	// Recalculate matrix -------------
-	 CalculateViewMatrix();
+	CalculateViewMatrix();
+
+	return UPDATE_CONTINUE;
 }
 
 // -----------------------------------------------------------------
