@@ -22,9 +22,10 @@ bool ModuleGUI::Start()
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
-	 // Setup Dear ImGui style
+	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
 	//ImGui::StyleColorsClassic();
+	//ImGui::StyleColorsLight();
 
 	// Setup Platform/Renderer bindings
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
@@ -38,20 +39,24 @@ bool ModuleGUI::Start()
 
 update_status ModuleGUI::Update(float dt)
 {
+	update_status ret = update_status::UPDATE_CONTINUE;
+
 	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
-	int lineSpace = 4;
-	ImGui::BeginMainMenuBar();
+	int lineSpace = 8;//Extra space because it's too close to the left
 	ImVec2 buttonSize;
 	buttonSize.x = 20;
 	buttonSize.y = 20;
+
+	ImGui::BeginMainMenuBar();
+	//ImGui::Spacing(100);
 	ImGui::Indent(App->window->GetWindowWidth() - buttonSize.x - lineSpace);
-	if (ImGui::Button("X"))
+	if (ImGui::Button("X", buttonSize))
 	{
-		return update_status::UPDATE_STOP;
+		ret = update_status::UPDATE_STOP;
 	}
 	ImGui::EndMainMenuBar();
 
@@ -97,6 +102,6 @@ update_status ModuleGUI::Update(float dt)
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
-	return UPDATE_CONTINUE;
+	return ret;
 	
 }
