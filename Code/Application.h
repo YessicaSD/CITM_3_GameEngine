@@ -19,7 +19,7 @@ public:
 	ModuleInput* input = nullptr;
 	ModuleAudio* audio = nullptr;
 	ModuleRenderer3D* renderer3D = nullptr;
-	ModuleCamera3D* camera0 = nullptr;
+	ModuleCamera3D* camera = nullptr;
 	ModuleCamera3D* camera1 = nullptr;
 	ModuleCamera3D* camera2 = nullptr;
 	ModuleCamera3D* camera3 = nullptr;

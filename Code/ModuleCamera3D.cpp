@@ -1,7 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModulePlayer.h"
-#include "PhysVehicle3D.h"
 #include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
 #include "SDL\include\SDL_opengl.h"
