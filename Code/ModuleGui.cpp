@@ -43,12 +43,14 @@ update_status ModuleGUI::Update(float dt)
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
-	ImGui::Begin("Close Window");
+	//ImGui::Begin("Close Window");
+	ImGui::BeginMainMenuBar();
 	if (ImGui::Button("Close Application"))
 	{
 		return update_status::UPDATE_STOP;
 	}
-	ImGui::End();
+	ImGui::EndMainMenuBar();
+	//ImGui::End();
 
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 	if (show_demo_window)
