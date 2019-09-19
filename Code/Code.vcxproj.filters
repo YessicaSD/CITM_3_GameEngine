@@ -81,9 +81,6 @@
     <ClInclude Include="manymouse-2e0dbebdbd28\manymouse.h">
       <Filter>Sources\Tools\ManyMouse</Filter>
     </ClInclude>
-    <ClInclude Include="TrackOutline.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">

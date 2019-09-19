@@ -101,7 +101,6 @@
     <ClInclude Include="PhysVehicle3D.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="TrackOutline.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />

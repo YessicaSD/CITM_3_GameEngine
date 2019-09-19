@@ -1,6 +1,5 @@
 #include "Application.h"
 
-
 Application::Application()
 {
 	window = new ModuleWindow(this);
@@ -10,7 +9,7 @@ Application::Application()
 	renderer3D = new ModuleRenderer3D(this);
 	physics = new ModulePhysics3D(this);
 
-	camera0 = new ModuleCamera3D(this);
+	camera = new ModuleCamera3D(this);
 	
 
 	
@@ -26,7 +25,7 @@ Application::Application()
 	
 	
 	//Cameras
-	AddModule(camera0);
+	AddModule(camera);
 	
 	// Renderer last!
 	AddModule(renderer3D);
