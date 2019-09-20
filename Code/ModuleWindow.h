@@ -4,6 +4,9 @@
 #include "Module.h"
 #include "SDL/include/SDL.h"
 
+
+#define MY_BUFSIZE 1024 // Buffer size for console window titles.
+
 class Application;
 
 class ModuleWindow : public Module
@@ -16,6 +19,8 @@ public:
 	virtual ~ModuleWindow();
 
 	bool Init();
+	
+	update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
 	bool CleanUp();
 
@@ -30,6 +35,7 @@ public:
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
+
 };
 
 #endif // __ModuleWindow_H__

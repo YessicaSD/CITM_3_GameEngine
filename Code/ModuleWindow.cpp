@@ -4,10 +4,13 @@
 #include "ModulePlayer.h"
 #include "Application.h"
 
+
+
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	window = NULL;
 	screen_surface = NULL;
+
 }
 
 // Destructor
@@ -71,7 +74,19 @@ bool ModuleWindow::Init()
 		}
 	}
 
+
+
 	return ret;
+}
+
+update_status ModuleWindow::Update(float dt)
+{
+	if (App->input->GetKey(SDL_SCANCODE_UP))
+	{
+		SDL_SetWindowPosition(window, 0, 0);
+	}
+
+	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModuleWindow::PostUpdate(float dt) {
