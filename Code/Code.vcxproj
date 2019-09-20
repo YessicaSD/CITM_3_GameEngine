@@ -94,7 +94,6 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Light.h" />
-    <ClInclude Include="manymouse-2e0dbebdbd28\manymouse.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModuleGui.h" />
     <ClInclude Include="ModulePhysics3D.h" />
@@ -124,12 +123,6 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="manymouse-2e0dbebdbd28\linux_evdev.c" />
-    <ClCompile Include="manymouse-2e0dbebdbd28\macosx_hidmanager.c" />
-    <ClCompile Include="manymouse-2e0dbebdbd28\macosx_hidutilities.c" />
-    <ClCompile Include="manymouse-2e0dbebdbd28\manymouse.c" />
-    <ClCompile Include="manymouse-2e0dbebdbd28\windows_wminput.c" />
-    <ClCompile Include="manymouse-2e0dbebdbd28\x11_xinput2.c" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
     <ClCompile Include="ModuleGui.cpp" />

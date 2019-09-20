@@ -81,9 +81,11 @@ bool ModuleWindow::Init()
 
 update_status ModuleWindow::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_UP))
+	if (App->input->GetKey(SDL_SCANCODE_UP)==KEY_REPEAT)
 	{
-		SDL_SetWindowPosition(window, 0, 0);
+		int  x, y;
+		SDL_GetWindowPosition(window, &x, &y);
+		SDL_SetWindowPosition(window, x, y-1);
 	}
 
 	return update_status::UPDATE_CONTINUE;

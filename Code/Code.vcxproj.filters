@@ -16,9 +16,6 @@
     <Filter Include="Sources\Helpers">
       <UniqueIdentifier>{121f8e6b-df36-4ab0-be0d-601ddfc9e503}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Tools\ManyMouse">
-      <UniqueIdentifier>{f150aa15-64d1-45bd-8c59-e7c7499fac8d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\Tools\imgui">
       <UniqueIdentifier>{afb44012-5b2a-4969-94e4-409a81704660}</UniqueIdentifier>
     </Filter>
@@ -80,9 +77,6 @@
     </ClInclude>
     <ClInclude Include="PhysBody3D.h">
       <Filter>Sources\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="manymouse-2e0dbebdbd28\manymouse.h">
-      <Filter>Sources\Tools\ManyMouse</Filter>
     </ClInclude>
     <ClInclude Include="ModuleScene01.h">
       <Filter>Sources\Modules\Game</Filter>
@@ -160,24 +154,6 @@
     </ClCompile>
     <ClCompile Include="PhysBody3D.cpp">
       <Filter>Sources\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="manymouse-2e0dbebdbd28\linux_evdev.c">
-      <Filter>Sources\Tools\ManyMouse</Filter>
-    </ClCompile>
-    <ClCompile Include="manymouse-2e0dbebdbd28\macosx_hidmanager.c">
-      <Filter>Sources\Tools\ManyMouse</Filter>
-    </ClCompile>
-    <ClCompile Include="manymouse-2e0dbebdbd28\macosx_hidutilities.c">
-      <Filter>Sources\Tools\ManyMouse</Filter>
-    </ClCompile>
-    <ClCompile Include="manymouse-2e0dbebdbd28\manymouse.c">
-      <Filter>Sources\Tools\ManyMouse</Filter>
-    </ClCompile>
-    <ClCompile Include="manymouse-2e0dbebdbd28\windows_wminput.c">
-      <Filter>Sources\Tools\ManyMouse</Filter>
-    </ClCompile>
-    <ClCompile Include="manymouse-2e0dbebdbd28\x11_xinput2.c">
-      <Filter>Sources\Tools\ManyMouse</Filter>
     </ClCompile>
     <ClCompile Include="ModuleScene01.cpp">
       <Filter>Sources\Modules\Game</Filter>
