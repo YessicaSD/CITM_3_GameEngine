@@ -110,19 +110,8 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 // ---------------------------------------------------------
 update_status ModulePhysics3D::Update(float dt)
 {
-	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
 		debug = !debug;
-
-	if(debug == true)
-	{
-		//Throw balls when you press 1
-		if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-		{
-			Sphere s(1);
-			s.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-			float force = 30.0f;
-			AddBody(s)->Push(-(App->camera->Z.x * force), -(App->camera->Z.y * force), -(App->camera->Z.z * force));
-		}
 	}
 
 	return UPDATE_CONTINUE;
