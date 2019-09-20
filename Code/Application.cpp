@@ -23,8 +23,9 @@ Application::Application()
 	AddModule(audio);
 	AddModule(physics);
 	AddModule(scene01);
-	AddModule(camera);
 	AddModule(gui);
+	AddModule(camera);
+
 
 	// Renderer last!
 	AddModule(renderer3D);
