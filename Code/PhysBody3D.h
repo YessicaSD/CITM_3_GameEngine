@@ -1,7 +1,7 @@
 #ifndef __PhysBody3D_H__
 #define __PhysBody3D_H__
 
-#include "p2List.h"
+#include <list>
 #include "Bullet/include/LinearMath/btQuaternion.h"
 
 class btRigidBody;
@@ -24,7 +24,7 @@ protected:
 	btRigidBody * body = nullptr;
 
 public:
-	p2List<Module*> collision_listeners;
+	std::list<Module*> collision_listeners;
 	vec3 GetPos();
 	btQuaternion GetRotation();
 };
