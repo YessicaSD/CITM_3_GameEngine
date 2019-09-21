@@ -255,13 +255,13 @@ PhysBody3D* ModulePhysics3D::AddBody(const Cylinder& cylinder, float mass)
 	return pbody;
 }
 
-p2DynArray<Cube> ModulePhysics3D::AddRamp( Cube& cub, int radio, float angle)
+std::vector<Cube> ModulePhysics3D::AddRamp( Cube& cub, int radio, float angle)
 {
 	
 	vec3 startPos = cub.transform.translation();
 	vec3 circle_center = { startPos.x, startPos.y + radio, startPos.z };
 
-	p2DynArray<Cube> arrayCube;
+	std::vector<Cube> arrayCube;
 	
 	for (int ang=0; ang < angle; ang += 4)
 	{
@@ -277,7 +277,7 @@ p2DynArray<Cube> ModulePhysics3D::AddRamp( Cube& cub, int radio, float angle)
 		aux.SetRotation(ang, { rotVec.x,rotVec.y, rotVec.z });
 		AddBody(aux, 0);
 		
-		arrayCube.PushBack(aux);
+		arrayCube.push_back(aux);
 	}
 	return arrayCube;
 }

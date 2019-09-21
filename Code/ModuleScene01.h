@@ -2,7 +2,6 @@
 #define MODULESCENE01_H_
 
 #include "Module.h"
-#include "p2DynArray.h"
 #include "Globals.h"
 
 class ModuleScene01 : public Module

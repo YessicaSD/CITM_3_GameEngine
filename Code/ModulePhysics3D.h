@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Primitive.h"
-#include "p2DynArray.h"
+#include <vector>
 
 #include "Bullet/include/btBulletDynamicsCommon.h"
 
@@ -30,7 +30,7 @@ public:
 	PhysBody3D* AddBody(const Sphere& sphere, float mass = 1.0f);
 	PhysBody3D* AddBody(const Cube& cube, float mass = 1.0f, Module * callback = nullptr);
 	PhysBody3D* AddBody(const Cylinder& cylinder, float mass = 1.0f);
-	p2DynArray<Cube> AddRamp(Cube& cub, int radio, float angle);
+	std::vector<Cube> AddRamp(Cube& cub, int radio, float angle);
 
 	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
 	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisS, const vec3& axisB, bool disable_collision = false);
