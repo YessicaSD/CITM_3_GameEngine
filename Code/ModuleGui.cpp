@@ -2,9 +2,9 @@
 #include "Application.h"
 
 
-#include "imgui\imgui_impl_opengl2.h"
+#include "imgui\imgui_impl_opengl3.h"
 #include "SDL\include\SDL_opengl.h"
-#include "imgui\imgui_impl_sdl.h"
+#include "imgui\imgui_impl_glfw.h"
 
 
 ModuleGUI::ModuleGUI(Application* app, bool start_enabled):Module(app, start_enabled)
@@ -18,7 +18,8 @@ bool ModuleGUI::Start()
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGuiIO& io = ImGui::GetIO();
+	(void)io;
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
