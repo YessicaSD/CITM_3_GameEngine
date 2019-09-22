@@ -3,10 +3,6 @@
 #include "ModuleRenderer3D.h"
 
 #include "glew/include/GL/glew.h"
-#include <gl/GL.h>
-
-#include "imgui/imgui_impl_sdl.h"
-#include "imgui/imgui_impl_opengl3.h"
 
 #pragma comment (lib, "glew/lib/Release/Win32/glew32.lib")
 #pragma comment (lib, "glew/lib/Release/Win32/glew32s.lib")
