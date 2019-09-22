@@ -8,6 +8,8 @@
 //TODO: We may need the equivalent lib from glew
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
+#pragma comment (lib, "glew/lib/Relase/Win32/glew32.lib")
+#pragma comment (lib, "glew/lib/Relase/Win32/glew32s.lib")
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -23,17 +25,8 @@ bool ModuleRenderer3D::Init()
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
 
-	// Setup window
-	glfwSetErrorCallback(glfw_error_callback);
-	if (!glfwInit())
-		return false;
-
-	// Create window with graphics context
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", NULL, NULL);
-	if (window == NULL)
-		return false;
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1); // Enable vsync
+	//TODO: Create context
+	//TODO: Create window
 	
 	if(ret == true)
 	{

@@ -94,7 +94,7 @@
 #include <GLES3/gl3.h>  // Use GL ES 3
 #endif
 #else
-#include <GL/glew.h>
+#include "../glew/include/GL/glew.h"
 #endif
 
 // Desktop GL has glDrawElementsBaseVertex() which GL ES and WebGL don't have.
