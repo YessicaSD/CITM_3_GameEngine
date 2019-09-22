@@ -22,6 +22,12 @@
     <Filter Include="Sources\Modules\Game">
       <UniqueIdentifier>{8812e403-d6fa-4792-8783-c157c2a679bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\glfw">
+      <UniqueIdentifier>{521dd774-7d88-4968-82a0-17c53915bce8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\glew">
+      <UniqueIdentifier>{8a48ef36-3f45-4cc4-9f28-38f19f3f4657}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -89,6 +95,24 @@
     </ClInclude>
     <ClInclude Include="ModuleScene.h">
       <Filter>Sources\Modules\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="glfw\include\GLFW\glfw3.h">
+      <Filter>Sources\Tools\glfw</Filter>
+    </ClInclude>
+    <ClInclude Include="glfw\include\GLFW\glfw3native.h">
+      <Filter>Sources\Tools\glfw</Filter>
+    </ClInclude>
+    <ClInclude Include="glew\include\GL\eglew.h">
+      <Filter>Sources\Tools\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="glew\include\GL\glew.h">
+      <Filter>Sources\Tools\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="glew\include\GL\glxew.h">
+      <Filter>Sources\Tools\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="glew\include\GL\wglew.h">
+      <Filter>Sources\Tools\glew</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
