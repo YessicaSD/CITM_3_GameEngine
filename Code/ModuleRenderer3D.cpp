@@ -4,10 +4,6 @@
 
 #include "glew/include/GL/glew.h"
 
-#pragma comment (lib, "glew/lib/Release/Win32/glew32.lib")
-#pragma comment (lib, "glew/lib/Release/Win32/glew32s.lib")
-#pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
-
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 
