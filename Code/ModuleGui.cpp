@@ -1,25 +1,15 @@
 ﻿//#pragma comment (lib, "opengl32.lib")
 #pragma comment (lib, "glew/lib/Release/Win32/glew32.lib")
 #pragma comment (lib, "glew/lib/Release/Win32/glew32s.lib")
-#pragma comment (lib, "glfw/lib-vc2017/glfw3.lib")
 
 #include "ModuleGui.h"
 #include "Application.h"
 
 #include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
-#include <stdio.h>//TODO: Remove if it's not really needed
 
 #include "glew/include/GL/glew.h"
-
-#include "glfw/include/GLFW/glfw3.h"
-#include "glfw/include/GLFW/glfw3native.h"
-
-static void glfw_error_callback(int error, const char* description)
-{
-	fprintf(stderr, "Glfw Error %d: %s\n", error, description);
-}
 
 ModuleGUI::ModuleGUI(Application* app, bool start_enabled):Module(app, start_enabled)
 {
@@ -77,7 +67,7 @@ update_status ModuleGUI::Update(float dt)
 
 	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplGlfw_NewFrame();
+	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
 	DisplayGui(ret);
@@ -93,7 +83,7 @@ bool ModuleGUI::CleanUp()
 {
 	bool ret = true;
 	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 
 	//TODO: Put them on the renderer

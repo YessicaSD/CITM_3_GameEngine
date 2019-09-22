@@ -89,8 +89,6 @@
     <ClInclude Include="glew\include\GL\glew.h" />
     <ClInclude Include="glew\include\GL\glxew.h" />
     <ClInclude Include="glew\include\GL\wglew.h" />
-    <ClInclude Include="glfw\include\GLFW\glfw3.h" />
-    <ClInclude Include="glfw\include\GLFW\glfw3native.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="imgui\imconfig.h" />
