@@ -1,4 +1,9 @@
-﻿#include "ModuleGui.h"
+﻿//#pragma comment (lib, "opengl32.lib")
+#pragma comment (lib, "glew/lib/Release/Win32/glew32.lib")
+#pragma comment (lib, "glew/lib/Release/Win32/glew32s.lib")
+#pragma comment (lib, "glfw/lib-vc2017/glfw3.lib")
+
+#include "ModuleGui.h"
 #include "Application.h"
 
 #include "imgui/imgui.h"
@@ -10,11 +15,6 @@
 
 #include "glfw/include/GLFW/glfw3.h"
 #include "glfw/include/GLFW/glfw3native.h"
-
-#pragma comment (lib, "glew/lib/Release/Win32/glew32.lib")
-#pragma comment (lib, "glew/lib/Release/Win32/glew32s.lib")
-#pragma comment (lib, "glfw/lib-vc2017/glfw3.lib")
-//#pragma comment (lib, "glfw/lib-vc2010-64/glfw3.lib")
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -32,41 +32,41 @@ bool ModuleGUI::Start()
 
 	//TODO: Maybe this should be on the renderer
 
-	// Setup window
-	glfwSetErrorCallback(glfw_error_callback);
-	if (!glfwInit())
-		return 1;
+	//// Setup window
+	//glfwSetErrorCallback(glfw_error_callback);
+	//if (!glfwInit())
+	//	return 1;
 
-	// Decide GL+GLSL versions
-	const char* glsl_version = "#version 130";
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	//// Decide GL+GLSL versions
+	//const char* glsl_version = "#version 130";
+	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	// Create window with graphics context
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", NULL, NULL);
-	if (window == NULL)
-		return 1;
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1); // Enable vsync
+	//// Create window with graphics context
+	//GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", NULL, NULL);
+	//if (window == NULL)
+	//	return 1;
+	//glfwMakeContextCurrent(window);
+	//glfwSwapInterval(1); // Enable vsync
 
-	// Initialize OpenGL loader
-	bool err = glewInit() != GLEW_OK;
-	if (err)
-	{
-		fprintf(stderr, "Failed to initialize OpenGL loader!\n");
-		ret = false;
-	}
+	//// Initialize OpenGL loader
+	//bool err = glewInit() != GLEW_OK;
+	//if (err)
+	//{
+	//	fprintf(stderr, "Failed to initialize OpenGL loader!\n");
+	//	ret = false;
+	//}
 
-	// Setup Dear ImGui context
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//// Setup Dear ImGui context
+	//IMGUI_CHECKVERSION();
+	//ImGui::CreateContext();
+	//ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsDark();
 
-	// Setup Platform/Renderer bindings
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
-	ImGui_ImplOpenGL3_Init(glsl_version);
+	//// Setup Platform/Renderer bindings
+	//ImGui_ImplGlfw_InitForOpenGL(window, true);
+	//ImGui_ImplOpenGL3_Init(glsl_version);
 
 	return true;
 }
