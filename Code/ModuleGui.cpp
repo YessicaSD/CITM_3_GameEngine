@@ -1,9 +1,8 @@
 ﻿#include "ModuleGui.h"
 #include "Application.h"
 
-#include "imgui\imgui_impl_opengl3.h"
-#include "SDL\include\SDL_opengl.h"
 #include "imgui\imgui_impl_glfw.h"
+#include "imgui\imgui_impl_opengl3.h"
 
 #include "glew/include/GL/glew.h"
 
@@ -58,8 +57,9 @@ bool ModuleGUI::CleanUp()
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 
-	glfwDestroyWindow(window);
-	glfwTerminate();
+	//TODO: Put them on the renderer
+	//glfwDestroyWindow(window);
+	//glfwTerminate();
 	return ret;
 }
 
