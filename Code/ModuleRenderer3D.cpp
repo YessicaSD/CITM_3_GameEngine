@@ -8,8 +8,6 @@
 //TODO: We may need the equivalent lib from glew
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
-#pragma comment (lib, "glew/lib/Relase/Win32/glew32.lib")
-#pragma comment (lib, "glew/lib/Relase/Win32/glew32s.lib")
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {

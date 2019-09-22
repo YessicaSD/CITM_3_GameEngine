@@ -8,7 +8,7 @@
 #include "ModuleInput.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
-#include "ModuleScene01.h"
+#include "ModuleScene.h"
 #include "ModuleGui.h"
 
 #include <list>
@@ -19,7 +19,7 @@ public:
 	ModuleInput* input = nullptr;
 	ModuleRenderer3D* renderer3D = nullptr;
 	ModuleCamera3D* camera = nullptr;
-	ModuleScene01* scene01 = nullptr;
+	ModuleScene* scene = nullptr;
 	ModuleGUI* gui = nullptr;
 
 private:

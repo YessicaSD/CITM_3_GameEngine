@@ -1,17 +1,16 @@
 #include "Globals.h"
 #include "Application.h"
-#include "ModuleScene01.h"
-#include "Primitive.h"
+#include "ModuleScene.h"
 
-ModuleScene01::ModuleScene01(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
 
-ModuleScene01::~ModuleScene01()
+ModuleScene::~ModuleScene()
 {}
 
 // Load assets
-bool ModuleScene01::Start()
+bool ModuleScene::Start()
 {
 	LOG("Loading Intro assets");
 	bool ret = true;
@@ -22,7 +21,7 @@ bool ModuleScene01::Start()
 }
 
 // Load assets
-bool ModuleScene01::CleanUp()
+bool ModuleScene::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
@@ -30,12 +29,8 @@ bool ModuleScene01::CleanUp()
 }
 
 // Update: draw background
-update_status ModuleScene01::Update(float dt)
+update_status ModuleScene::Update(float dt)
 {
-	Plane p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render();
-
 	return UPDATE_CONTINUE;
 }
 

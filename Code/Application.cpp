@@ -10,7 +10,7 @@ Application::Application()
 
 	camera = new ModuleCamera3D(this);
 	
-	scene01 = new ModuleScene01(this);
+	scene = new ModuleScene(this);
 	gui = new ModuleGUI(this);
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -19,7 +19,7 @@ Application::Application()
 	// Main Modules
 	AddModule(window);
 	AddModule(input);
-	AddModule(scene01);
+	AddModule(scene);
 	AddModule(gui);
 	AddModule(camera);
 

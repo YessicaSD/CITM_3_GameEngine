@@ -1,14 +1,18 @@
-﻿#include "ModuleGui.h"
+﻿#pragma comment (lib, "glew/lib/Release/Win32/glew32.lib")
+#pragma comment (lib, "glew/lib/Release/Win32/glew32s.lib")
+
+#include "ModuleGui.h"
 #include "Application.h"
 
-#include "imgui\imgui.h"
-#include "imgui\imgui_impl_glfw.h"
-#include "imgui\imgui_impl_opengl3.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
 #include <stdio.h>//TODO: Remove if it's not really needed
 
 #include "glew/include/GL/glew.h"
 
 #include "glfw/include/GLFW/glfw3.h"
+#include "glfw/include/GLFW/glfw3native.h"
 
 static void glfw_error_callback(int error, const char* description)
 {
