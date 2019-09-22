@@ -19,9 +19,6 @@
     <Filter Include="Sources\Tools\imgui">
       <UniqueIdentifier>{afb44012-5b2a-4969-94e4-409a81704660}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Modules\Game">
-      <UniqueIdentifier>{8812e403-d6fa-4792-8783-c157c2a679bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\MathGeoLib">
       <UniqueIdentifier>{61107db6-61b1-4863-be21-6765975de6f1}</UniqueIdentifier>
     </Filter>
@@ -36,6 +33,9 @@
     </Filter>
     <Filter Include="Sources\MathGeoLib\Time">
       <UniqueIdentifier>{6c8f5628-375f-477c-95b0-590a97c5e528}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\glew">
+      <UniqueIdentifier>{de8d69a4-34a3-4eb0-b0fc-b308ea6c4026}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +81,9 @@
     <ClInclude Include="imgui\imgui.h">
       <Filter>Sources\Tools\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_sdl.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
     <ClInclude Include="imgui\imgui_internal.h">
       <Filter>Sources\Tools\imgui</Filter>
     </ClInclude>
@@ -93,26 +96,6 @@
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>Sources\Tools\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="imgui\imgui_impl_opengl3.h">
-      <Filter>Sources\Tools\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleScene.h">
-      <Filter>Sources\Modules\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="glew\include\GL\eglew.h">
-      <Filter>Sources\Tools\glew</Filter>
-    </ClInclude>
-    <ClInclude Include="glew\include\GL\glew.h">
-      <Filter>Sources\Tools\glew</Filter>
-    </ClInclude>
-    <ClInclude Include="glew\include\GL\glxew.h">
-      <Filter>Sources\Tools\glew</Filter>
-    </ClInclude>
-    <ClInclude Include="glew\include\GL\wglew.h">
-      <Filter>Sources\Tools\glew</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui_impl_sdl.h">
-      <Filter>Sources\Tools\imgui</Filter>
     <ClInclude Include="MathGeoLib\include\MathBuildConfig.h">
       <Filter>Sources\MathGeoLib</Filter>
     </ClInclude>
@@ -293,6 +276,24 @@
     <ClInclude Include="MathGeoLib\include\Time\Clock.h">
       <Filter>Sources\MathGeoLib\Time</Filter>
     </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_opengl3.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="glew\include\GL\eglew.h">
+      <Filter>Sources\Tools\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="glew\include\GL\glew.h">
+      <Filter>Sources\Tools\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="glew\include\GL\glxew.h">
+      <Filter>Sources\Tools\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="glew\include\GL\wglew.h">
+      <Filter>Sources\Tools\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleScene.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -340,16 +341,10 @@
     <ClCompile Include="imgui\imgui_draw.cpp">
       <Filter>Sources\Tools\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="imgui\imgui_widgets.cpp">
-      <Filter>Sources\Tools\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_impl_opengl3.cpp">
-      <Filter>Sources\Tools\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleScene.cpp">
-      <Filter>Sources\Modules\Game</Filter>
-    </ClCompile>
     <ClCompile Include="imgui\imgui_impl_sdl.cpp">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>Sources\Tools\imgui</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\include\Math\BitOps.cpp">
@@ -447,6 +442,12 @@
     </ClCompile>
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp">
       <Filter>Sources\MathGeoLib\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_opengl3.cpp">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleScene.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
