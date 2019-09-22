@@ -3,7 +3,6 @@
 #include <list>
 #include "Module.h"
 #include "Globals.h"
-#include "Primitive.h"
 #include <vector>
 
 #include "Bullet/include/btBulletDynamicsCommon.h"
