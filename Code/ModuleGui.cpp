@@ -1,9 +1,4 @@
-﻿#pragma comment (lib, "glfw/lib-vc2010-32/glfw3.lib")
-//#pragma comment (lib, "glfw/lib-vc2010-64/glfw3.lib")
-#pragma comment (lib, "glew/lib/Release/Win32/glew32.lib")
-#pragma comment (lib, "glew/lib/Release/Win32/glew32s.lib")
-
-#include "ModuleGui.h"
+﻿#include "ModuleGui.h"
 #include "Application.h"
 
 #include "imgui/imgui.h"
@@ -15,6 +10,11 @@
 
 #include "glfw/include/GLFW/glfw3.h"
 #include "glfw/include/GLFW/glfw3native.h"
+
+#pragma comment (lib, "glew/lib/Release/Win32/glew32.lib")
+#pragma comment (lib, "glew/lib/Release/Win32/glew32s.lib")
+#pragma comment (lib, "glfw/lib-vc2017/glfw3.lib")
+//#pragma comment (lib, "glfw/lib-vc2010-64/glfw3.lib")
 
 static void glfw_error_callback(int error, const char* description)
 {
