@@ -3,6 +3,13 @@
 #include "ModuleWindow.h"
 #include "Application.h"
 
+#include "glew/include/GL/glew.h"
+#include "SDL/include/SDL_opengl.h"
+#include <gl/GL.h>
+
+#include "imgui/imgui_impl_sdl.h"
+#include "imgui/imgui_impl_opengl3.h"
+
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	window = NULL;
@@ -31,11 +38,7 @@ bool ModuleWindow::Init()
 		//Create window
 		int width = SCREEN_WIDTH * SCREEN_SIZE;
 		int height = SCREEN_HEIGHT * SCREEN_SIZE;
-		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-
-		//Use OpenGL 2.1
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI;
 
 		if(WIN_FULLSCREEN == true)
 		{
@@ -57,7 +60,31 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
+		// Decide GL+GLSL versions
+#if __APPLE__
+	// GL 3.2 Core + GLSL 150
+		const char* glsl_version = "#version 150";
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG); // Always required on Mac
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+#else
+	// GL 3.0 + GLSL 130
+		const char* glsl_version = "#version 130";
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+#endif
+
+		// Create window with graphics context
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		gl_context = SDL_GL_CreateContext(window);
+		SDL_GL_MakeCurrent(window, gl_context);
+		SDL_GL_SetSwapInterval(1); // Enable vsync
 
 		if(window == NULL)
 		{
@@ -69,9 +96,29 @@ bool ModuleWindow::Init()
 			//Get window surface
 			screen_surface = SDL_GetWindowSurface(window);
 		}
+
+		// Initialize OpenGL loader
+		if (glewInit() != GLEW_OK)
+		{
+			fprintf(stderr, "Failed to initialize OpenGL loader!\n");
+			ret = false;
+		}
+
+		// Setup Dear ImGui context
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO();
+		(void)io;
+		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+		// Setup Dear ImGui style
+		ImGui::StyleColorsDark();
+
+		// Setup Platform/Renderer bindings
+		ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
+		ImGui_ImplOpenGL3_Init(glsl_version);
 	}
-
-
 
 	return ret;
 }

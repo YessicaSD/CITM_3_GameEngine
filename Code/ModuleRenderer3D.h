@@ -23,9 +23,6 @@ public:
 	void OnResize(int width, int height);
 
 public:
-	SDL_Window * window = nullptr;
-	SDL_GLContext gl_context;
-
 	Light lights[MAX_LIGHTS];
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;

@@ -31,7 +31,8 @@ public:
 	int GetWindowHeight();
 
 	//The window we'll be rendering to
-	SDL_Window* window;
+	SDL_Window* window = nullptr;
+	SDL_GLContext gl_context;
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
