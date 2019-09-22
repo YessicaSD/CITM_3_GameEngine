@@ -2,14 +2,14 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 
-
 #include "glew/include/GL/glew.h"
-#include "SDL/include/SDL_opengl.h"
 #include <gl/GL.h>
 
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 
+#pragma comment (lib, "glew/lib/Release/Win32/glew32.lib")
+#pragma comment (lib, "glew/lib/Release/Win32/glew32s.lib")
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -24,10 +24,16 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init()
 {
-	LOG("Creating 3D Renderer context");
 	bool ret = true;
 
-	if(ret == true)
+	// Initialize OpenGL loader
+	if (glewInit() != GLEW_OK)
+	{
+		fprintf(stderr, "Failed to initialize OpenGL loader!\n");
+		ret = false;
+	}
+
+	if(ret)
 	{
 		//Use Vsync
 		if (VSYNC && SDL_GL_SetSwapInterval(1) < 0)

@@ -1,15 +1,9 @@
-﻿//#pragma comment (lib, "opengl32.lib")
-#pragma comment (lib, "glew/lib/Release/Win32/glew32.lib")
-#pragma comment (lib, "glew/lib/Release/Win32/glew32s.lib")
-
-#include "ModuleGui.h"
+﻿#include "ModuleGui.h"
 #include "Application.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
-
-#include "glew/include/GL/glew.h"
 
 ModuleGUI::ModuleGUI(Application* app, bool start_enabled):Module(app, start_enabled)
 {
@@ -19,13 +13,6 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled):Module(app, start_ena
 bool ModuleGUI::Init()
 {
 	bool ret = true;
-
-	// Initialize OpenGL loader
-	if (glewInit() != GLEW_OK)
-	{
-		fprintf(stderr, "Failed to initialize OpenGL loader!\n");
-		ret = false;
-	}
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
