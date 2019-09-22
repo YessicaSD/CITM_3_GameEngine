@@ -6,6 +6,7 @@
 #include "SDL\include\SDL_opengl.h"
 #include "imgui\imgui_impl_glfw.h"
 
+#include <GL/glew.h> 
 
 ModuleGUI::ModuleGUI(Application* app, bool start_enabled):Module(app, start_enabled)
 {
