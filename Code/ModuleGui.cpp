@@ -1,4 +1,6 @@
-﻿#pragma comment (lib, "glew/lib/Release/Win32/glew32.lib")
+﻿#pragma comment (lib, "glfw/lib-vc2010-32/glfw3.lib")
+//#pragma comment (lib, "glfw/lib-vc2010-64/glfw3.lib")
+#pragma comment (lib, "glew/lib/Release/Win32/glew32.lib")
 #pragma comment (lib, "glew/lib/Release/Win32/glew32s.lib")
 
 #include "ModuleGui.h"
