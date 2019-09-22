@@ -2,12 +2,9 @@
 #include "Application.h"
 #include "ModuleScene01.h"
 
-#include "MathGeoLib\include\MathGeoLib.h"
-#include "MathGeoLib\include\MathGeoLibFwd.h"
-#include "MathGeoLib\include\MathBuildConfig.h"
-#include "MathGeoLib\include\Math\float3.h"
 
-#include "MathGeoLib\include\Geometry\Sphere.h"
+
+
 
 ModuleScene01::ModuleScene01(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -24,6 +21,14 @@ bool ModuleScene01::Start()
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
+	sphere1.pos = { 0,0,0 };
+	sphere1.r = 5;
+
+	sphere2.pos = { 0,0,0 };
+	sphere2.r = 3;
+
+	pos = { 5,2,3 };
+
 	return ret;
 }
 
@@ -41,10 +46,12 @@ update_status ModuleScene01::Update(float dt)
 	//Plane p(0, 1, 0, 0);
 	//p.axis = true;
 	//p.Render();
-	Sphere sphere1;
-	sphere1.pos = { 0,0,0 };
-	sphere1.r = 5;
-	
+	if (sphere1.Intersects(sphere2))
+	{
+		LOG("They intersect");
+		LOG("%f, %f, %f", pos.x, pos.y, pos.z);
+	}
+
 	return UPDATE_CONTINUE;
 }
 
