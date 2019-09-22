@@ -1,40 +1,35 @@
 ﻿#include "ModuleGui.h"
 #include "Application.h"
 
-
-#include "imgui\imgui_impl_opengl2.h"
-#include "SDL\include\SDL_opengl.h"
-#include "imgui\imgui_impl_sdl.h"
-
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_sdl.h"
+#include "imgui/imgui_impl_opengl3.h"
 
 ModuleGUI::ModuleGUI(Application* app, bool start_enabled):Module(app, start_enabled)
 {
 
-
 }
 
-bool ModuleGUI::Start()
+bool ModuleGUI::Init()
 {
+	bool ret = true;
+
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGuiIO& io = ImGui::GetIO();
+	(void)io;
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-   //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
-	//ImGui::StyleColorsClassic();
-	//ImGui::StyleColorsLight();
 
 	// Setup Platform/Renderer bindings
-	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
-	ImGui_ImplOpenGL2_Init();
+	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
+	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
 
-	
-
-
-	return true;
+	return ret;
 }
 
 update_status ModuleGUI::Update(float dt)
@@ -42,13 +37,33 @@ update_status ModuleGUI::Update(float dt)
 	update_status ret = update_status::UPDATE_CONTINUE;
 
 	// Start the Dear ImGui frame
-	ImGui_ImplOpenGL2_NewFrame();
+	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
+	DisplayGui(ret);
+
+	// Rendering
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	return ret;
+}
+
+bool ModuleGUI::CleanUp()
+{
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
+	return true;
+}
+
+void ModuleGUI::DisplayGui(update_status &ret)
+{
 	int lineSpace = 8;//Extra space because it's too close to the left
 	ImVec2 buttonSize;
-	buttonSize.x = 20;
+	buttonSize.x = 50;
 	buttonSize.y = 20;
 
 	ImGui::BeginMainMenuBar();
@@ -64,62 +79,16 @@ update_status ModuleGUI::Update(float dt)
 	}
 	ImGui::EndMainMenuBar();
 
-	//// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-	//if (show_demo_window)
-	//	ImGui::ShowDemoWindow(&show_demo_window);
-
-
-	//// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-	//{
-	//	static float f = 0.0f;
-	//	static int counter = 0;
-
-	//	ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-	//	ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-	//	ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-	//	ImGui::Checkbox("Another Window", &show_another_window);
-
-	//	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-	//	ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-	//	if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-	//		counter++;
-	//	ImGui::SameLine();
-	//	ImGui::Text("counter = %d", counter);
-
-	//	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-	//	ImGui::End();
-	//}
-
-	//// 3. Show another simple window.
-	//if (show_another_window)
-	//{
-	//	ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-	//	ImGui::Text("Hello from another window!");
-	//	if (ImGui::Button("Close Me"))
-	//		show_another_window = false;
-	//	ImGui::End();
-	//}
-
-	ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
-	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
-
-	ImVec2 windowPos;
-	windowPos.x = 0;
-	windowPos.y = 500;
+	//ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
+	//ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
+	//ImVec2 windowPos;
+	//windowPos.x = 0;
+	//windowPos.y = 500;
 	//ImGui::OpenPopup("my pop up");
 	//bool active = true;
 	//ImGui::BeginPopupModal("my pop up modal", &active, );
 	//ImGui::SetCursorScreenPos(windowPos);
-	ImGui::Begin("My window");
-	ImGui::Text("This is my window");
-	ImGui::End();
-
-	// Rendering
-	ImGui::Render();
-	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-
-	return ret;
-	
+	//ImGui::Begin("My window");
+	//ImGui::Text("This is my window");
+	//ImGui::End();
 }

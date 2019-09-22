@@ -27,52 +27,86 @@ bool ModuleWindow::Init()
 	}
 	else
 	{
-		//Create window
-		int width = SCREEN_WIDTH * SCREEN_SIZE;
-		int height = SCREEN_HEIGHT * SCREEN_SIZE;
-		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-
-		//Use OpenGL 2.1
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-
-		if(WIN_FULLSCREEN == true)
-		{
-			flags |= SDL_WINDOW_FULLSCREEN;
-		}
-
-		if(WIN_RESIZABLE == true)
-		{
-			flags |= SDL_WINDOW_RESIZABLE;
-		}
-
-		if(WIN_BORDERLESS == true)
-		{
-			flags |= SDL_WINDOW_BORDERLESS;
-		}
-
-		if(WIN_FULLSCREEN_DESKTOP == true)
-		{
-			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-		}
-
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
-
-		if(window == NULL)
-		{
-			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-			ret = false;
-		}
-		else
-		{
-			//Get window surface
-			screen_surface = SDL_GetWindowSurface(window);
-		}
+		DecideGLAndGLSLVersions();
+		ret = SetWindow();
 	}
 
+	return ret;
+}
 
+// Create window with graphics context
+bool ModuleWindow::SetWindow()
+{
+	bool ret = true;
+
+	int width = SCREEN_WIDTH * SCREEN_SIZE;
+	int height = SCREEN_HEIGHT * SCREEN_SIZE;
+	Uint32 flags = GetFlags();
+
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+	window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+	gl_context = SDL_GL_CreateContext(window);
+	SDL_GL_MakeCurrent(window, gl_context);
+	SDL_GL_SetSwapInterval(1); // Enable vsync
+
+	if (window == NULL)
+	{
+		LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+		ret = false;
+	}
+	else
+	{
+		screen_surface = SDL_GetWindowSurface(window);
+	}
 
 	return ret;
+}
+
+void ModuleWindow::DecideGLAndGLSLVersions()
+{
+#if __APPLE__
+	// GL 3.2 Core + GLSL 150
+	glsl_version = "#version 150";
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG); // Always required on Mac
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+#else
+	// GL 3.0 + GLSL 130
+	glsl_version = "#version 130";
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+#endif
+}
+
+Uint32 ModuleWindow::GetFlags()
+{
+	Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI;
+
+	if (WIN_FULLSCREEN == true)
+	{
+		flags |= SDL_WINDOW_FULLSCREEN;
+	}
+
+	if (WIN_RESIZABLE == true)
+	{
+		flags |= SDL_WINDOW_RESIZABLE;
+	}
+
+	if (WIN_BORDERLESS == true)
+	{
+		flags |= SDL_WINDOW_BORDERLESS;
+	}
+
+	if (WIN_FULLSCREEN_DESKTOP == true)
+	{
+		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+	}
+	return flags;
 }
 
 update_status ModuleWindow::Update(float dt)

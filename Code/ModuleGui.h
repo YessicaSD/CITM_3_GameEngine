@@ -7,15 +7,12 @@ class ModuleGUI : public Module
 {
 public:
 	ModuleGUI(Application* app, bool start_enabled = true);
-	bool Start() override;
-
-	// Our state
-	bool show_demo_window = true;
-	bool show_another_window = false;
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-	
+	bool Init() override;
 	update_status Update(float dt) override;
-	
+	bool CleanUp() override;
+
+private:
+	void DisplayGui(update_status &ret);
 };
 #endif // !MODULEGUI_H_
 
