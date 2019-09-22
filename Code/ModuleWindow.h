@@ -19,12 +19,19 @@ public:
 	virtual ~ModuleWindow();
 
 	bool Init();
+
+
 	
 	update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
 	bool CleanUp();
 
 	void SetTitle(const char* title);
+
+private:
+	Uint32 GetFlags();
+	void DecideGLAndGLSLVersions();
+	bool SetWindow();
 
 public:
 	int GetWindowWidth();
@@ -36,7 +43,7 @@ public:
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
-
+	char* glsl_version = nullptr;
 };
 
 #endif // __ModuleWindow_H__

@@ -7,7 +7,7 @@ class ModuleGUI : public Module
 {
 public:
 	ModuleGUI(Application* app, bool start_enabled = true);
-	bool Start() override;
+	bool Init() override;
 	update_status Update(float dt) override;
 	bool CleanUp() override;
 

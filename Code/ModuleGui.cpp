@@ -16,9 +16,33 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled):Module(app, start_ena
 
 }
 
-bool ModuleGUI::Start()
+bool ModuleGUI::Init()
 {
-	return true;
+	bool ret = true;
+
+	// Initialize OpenGL loader
+	if (glewInit() != GLEW_OK)
+	{
+		fprintf(stderr, "Failed to initialize OpenGL loader!\n");
+		ret = false;
+	}
+
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	(void)io;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+	// Setup Dear ImGui style
+	ImGui::StyleColorsDark();
+
+	// Setup Platform/Renderer bindings
+	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
+	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
+
+	return ret;
 }
 
 update_status ModuleGUI::Update(float dt)
