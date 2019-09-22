@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "Globals.h"
 
+#include "MathGeoLib\include\Geometry\Sphere.h"
+#include "MathGeoLib\include\Math\float3.h"
 class ModuleScene01 : public Module
 {
 public:
@@ -13,6 +15,8 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
+	Sphere sphere1, sphere2;
+	float3 pos;
 
 public:
 };
