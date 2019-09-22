@@ -3,7 +3,6 @@
 #include "glmath.h"
 #include "Color.h"
 
-class btVector3;
 
 enum PrimitiveTypes
 {
@@ -26,9 +25,9 @@ public:
 	void			SetPos(float x, float y, float z);
 	void			SetRotation(float angle, const vec3 &u);
 	void			SetScale(float x, float y, float z);
-	btVector3		GetPos();
-	btVector3		GetRotation();
-	btVector3		GetScale();
+	//btVector3		GetPos();
+	//btVector3		GetRotation();
+	//btVector3		GetScale();
 	PrimitiveTypes	GetType() const;
 	
 public:

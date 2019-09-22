@@ -3,7 +3,6 @@
 #include <gl/GLU.h>
 #include "Primitive.h"
 #include "glut/glut.h"
-#include "ModulePhysics3D.h"
 
 #pragma comment (lib, "glut/glut32.lib")
 
@@ -89,9 +88,7 @@ void Primitive::SetPos(float x, float y, float z)
 	transform.translate(x, y, z);
 }
 
-btVector3 Primitive::GetPos() {
-	return btVector3(transform.M[12], transform.M[13], transform.M[14]);
-}
+
 
 // ------------------------------------------------------------
 void Primitive::SetRotation(float angle, const vec3 &u)
@@ -110,9 +107,7 @@ void Primitive::SetScale(float x, float y, float z)
 	transform.scale(x, y, z);
 }
 
-btVector3 Primitive::GetScale() {
-	return btVector3(transform.M[0], transform.M[5], transform.M[10]);
-}
+
 
 // CUBE ============================================
 Cube::Cube() : Primitive(), size(1.0f, 1.0f, 1.0f)
