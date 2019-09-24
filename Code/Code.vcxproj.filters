@@ -37,6 +37,9 @@
     <Filter Include="Sources\Tools\glew">
       <UniqueIdentifier>{de8d69a4-34a3-4eb0-b0fc-b308ea6c4026}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\cpc">
+      <UniqueIdentifier>{5916944d-283c-4fd3-9b4e-46359982fe9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -293,6 +296,15 @@
     </ClInclude>
     <ClInclude Include="ModuleScene.h">
       <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="pcg-cpp-0.98\include\pcg_extras.hpp">
+      <Filter>Sources\Tools\cpc</Filter>
+    </ClInclude>
+    <ClInclude Include="pcg-cpp-0.98\include\pcg_random.hpp">
+      <Filter>Sources\Tools\cpc</Filter>
+    </ClInclude>
+    <ClInclude Include="pcg-cpp-0.98\include\pcg_uint128.hpp">
+      <Filter>Sources\Tools\cpc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
