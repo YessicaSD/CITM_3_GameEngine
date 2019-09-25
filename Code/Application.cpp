@@ -1,5 +1,5 @@
 #include "Application.h"
-
+#include <Windows.h>
 Application::Application()
 {
 	window = new ModuleWindow(this);
@@ -135,6 +135,18 @@ bool Application::DrawAll()
 	}
 
 	return ret;
+}
+
+void Application::RequestBrowser(const char* path)
+{
+	ShellExecuteA(
+		0,
+		"Open",
+		path,
+		0,
+		0,
+		0
+	);
 }
 
 void Application::AddModule(Module* mod)

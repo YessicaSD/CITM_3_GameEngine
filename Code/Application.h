@@ -40,6 +40,8 @@ public:
 	//Additional methods
 	bool DrawAll();
 
+	void RequestBrowser(const char* path);
+
 private:
 
 	void AddModule(Module* mod);

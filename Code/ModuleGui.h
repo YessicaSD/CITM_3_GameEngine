@@ -5,6 +5,8 @@
 
 class ModuleGUI : public Module
 {
+private:
+	
 public:
 	ModuleGUI(Application* app, bool start_enabled = true);
 	bool Init() override;
@@ -12,7 +14,8 @@ public:
 	bool CleanUp() override;
 
 private:
-	void DisplayGui(update_status &ret);
+	void DisplayMainMenuBar(update_status &ret, bool &display_confi);
+	void DisplayConfiguration(update_status &ret, bool &display_confi);
 };
 #endif // !MODULEGUI_H_
 
