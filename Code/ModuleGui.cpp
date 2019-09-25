@@ -117,6 +117,16 @@ void ModuleGUI::DisplayConfiguration(update_status & ret, bool& window_bool)
 		ImGui::Begin("Configuration", &window_bool);
 		static char projectName[128] = "Project name";
 		ImGui::InputText("Project Name:", projectName, IM_ARRAYSIZE(projectName));
+
+		if (ImGui::CollapsingHeader("Style"))
+		{
+			ImGuiStyle& style = ImGui::GetStyle();
+			static ImGuiStyle ref_saved_style;
+			if (ImGui::ShowStyleSelector("Colors##Selector"))
+				ref_saved_style = style;
+		}
+			
+	
 		ImGui::End();
 
 	}
