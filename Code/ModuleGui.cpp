@@ -72,11 +72,31 @@ void ModuleGUI::DisplayGui(update_status &ret)
 	//(void)io;
 	//LOG("io x: %i", io.DisplaySize.x);
 	//LOG("window x: %i", App->window->GetWindowWidth());
+
+	if (ImGui::BeginMenu("Help"))
+	{
+		ImGui::Button("Documentation");
+
+		ImGui::EndMenu();
+	}
+	
+
+
+		//ImGui::BeginMenu("File");
+
+		//	if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
+		//	if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff */ }
+		//	if (ImGui::MenuItem("Close", "Ctrl+W")) {   }
+		//	ImGui::EndMenu();
+		
+
+	
 	ImGui::Indent(App->window->GetWindowWidth() - buttonSize.x - lineSpace);
 	if (ImGui::Button("X", buttonSize))
 	{
 		ret = update_status::UPDATE_STOP;
 	}
+
 	ImGui::EndMainMenuBar();
 
 	//ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
