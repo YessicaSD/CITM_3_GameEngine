@@ -13,6 +13,30 @@ html {
   /* overflow-y: scroll;*/
   overflow-x: hidden;
 }
+.nav
+{
+  overflow: hidden;
+  background-color: #333;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+}
+
+/* Links inside the navbar */
+.navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 50px 20px;
+  text-decoration: none;
+}
+
+/* Change background on mouse-over */
+.navbar a:hover {
+  background: #ddd;
+  color: black;
+}
 
 .header {
   padding: 5rem 6rem;
@@ -26,6 +50,7 @@ html {
   background-color: #159957;
   background-image: linear-gradient(120deg, #155799, #159957);
 }
+
 .Credits {
   text-align: center;
 }
