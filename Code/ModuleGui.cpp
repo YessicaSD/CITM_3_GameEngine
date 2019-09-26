@@ -155,8 +155,7 @@ void ModuleGUI::DisplayConfiguration(update_status & ret, bool& window_bool)
 			titleFps = "Framerate " + std::to_string(currFPS);
 			updateGraph.Start();
 		}
-		
-		ImGui::PlotHistogram("##values", fpsHistory, IM_ARRAYSIZE(fpsHistory), 0, titleFps.c_str(), 0.0f, 60.0f, size);
+		ImGui::PlotHistogram("##ASDFASF", fpsHistory, IM_ARRAYSIZE(fpsHistory), currFpsArrayIndex, titleFps.c_str(), 0.0f, 60.0f, size);
 
 		//Style
 		if (ImGui::CollapsingHeader("Style"))
