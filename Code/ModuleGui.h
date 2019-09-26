@@ -2,11 +2,16 @@
 #define MODULEGUI_H_
 #include "Module.h"
 #include "imgui\imgui.h"
+#include "Timer.h"
+#define CURRENT_FPS_MAX_VALUE 101
 
 class ModuleGUI : public Module
 {
 private:
-	
+	float fpsHistory[CURRENT_FPS_MAX_VALUE];
+	int currFpsArrayIndex = 0;
+	Timer updateGraph;
+
 public:
 	ModuleGUI(Application* app, bool start_enabled = true);
 	bool Init() override;

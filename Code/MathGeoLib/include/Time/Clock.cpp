@@ -188,6 +188,19 @@ int Clock::Sec()
 #endif
 }
 
+
+float Clock::MiliSec()
+{
+#ifdef WIN32
+	SYSTEMTIME ms;
+	GetSystemTime(&ms);
+	return ms.wMilliseconds;
+#else
+	///\todo.
+	return 0;
+#endif
+}
+
 unsigned long Clock::SystemTime()
 {
 #ifdef WIN32

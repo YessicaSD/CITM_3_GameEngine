@@ -77,6 +77,11 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	frame_count++;
+	
+	seconds_since_startup = startup_time.ReadSec();
+	avg_fps = float(frame_count) / seconds_since_startup;
+
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules

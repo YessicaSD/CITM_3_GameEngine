@@ -6,6 +6,9 @@
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 
+#include <string>
+#include <iostream>
+
 
 
 ModuleGUI::ModuleGUI(Application* app, bool start_enabled):Module(app, start_enabled)
@@ -32,6 +35,9 @@ bool ModuleGUI::Init()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
 
+	memset(fpsHistory, 0, sizeof(float) * 50);
+
+	
 	return ret;
 }
 
@@ -132,10 +138,25 @@ void ModuleGUI::DisplayConfiguration(update_status & ret, bool& window_bool)
 		ImGui::SameLine();
 		ImGui::TextColored(textColor_fpsmas, std::to_string(fpsMax).c_str());
 		
-		// Capture the group size and create widgets using the same size
-		ImVec2 size = {100,50};
-		const float values[5] = { 0.5f, 0.20f, 0.80f, 0.60f, 0.25f };
-		ImGui::PlotHistogram("##values", values, IM_ARRAYSIZE(values), 0, NULL, 0.0f, 1.0f, size);
+		
+
+		ImVec2 size = {500,200};
+		static float currFPS = 0.0f;
+		static std::string titleFps = "Framerate " + std::to_string(currFPS);
+		
+		if (updateGraph.ReadSec() > 0.5f)
+		{
+			fpsHistory[currFpsArrayIndex] = currFPS = App->GetAvgFPS();
+			++currFpsArrayIndex;
+			if (currFpsArrayIndex >= CURRENT_FPS_MAX_VALUE)
+				currFpsArrayIndex = 0;
+
+			scanf("%.2f", &currFPS);
+			titleFps = "Framerate " + std::to_string(currFPS);
+			updateGraph.Start();
+		}
+		
+		ImGui::PlotHistogram("##values", fpsHistory, IM_ARRAYSIZE(fpsHistory), 0, titleFps.c_str(), 0.0f, 60.0f, size);
 
 		//Style
 		if (ImGui::CollapsingHeader("Style"))
