@@ -12,3 +12,14 @@ https://github.com/YessicaSD
 - Jaume Montagut Guix
 www.linkedin.com/in/jaumemontagut
 https://github.com/JaumeMontagut
+
+Used:
+- SDL
+https://www.libsdl.org/
+- Dear ImGui: To create the GUI
+https://github.com/ocornut/imgui
+- Glew
+http://glew.sourceforge.net/
+- Parson: To pase .json files
+https://github.com/kgabis/parson
+- OpenGL 3
