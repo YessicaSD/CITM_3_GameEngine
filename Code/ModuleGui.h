@@ -12,7 +12,7 @@ private:
 	float msHistory[CURRENT_FPS_MAX_VALUE];
 
 	Timer updateGraph;
-	Timer updateGraphMs;
+	
 
 public:
 	ModuleGUI(Application* app, bool start_enabled = true);

@@ -40,6 +40,9 @@
     <Filter Include="Sources\Tools\cpc">
       <UniqueIdentifier>{5916944d-283c-4fd3-9b4e-46359982fe9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\mmgr">
+      <UniqueIdentifier>{184d3cb3-04da-4078-8492-25dcc1a945e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -306,6 +309,12 @@
     <ClInclude Include="pcg-cpp-0.98\include\pcg_uint128.hpp">
       <Filter>Sources\Tools\cpc</Filter>
     </ClInclude>
+    <ClInclude Include="mmgr\mmgr.h">
+      <Filter>Sources\Tools\mmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="mmgr\nommgr.h">
+      <Filter>Sources\Tools\mmgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -460,6 +469,9 @@
     </ClCompile>
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>Sources\Tools\mmgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
