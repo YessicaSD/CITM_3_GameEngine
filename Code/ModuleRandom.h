@@ -7,11 +7,12 @@
 
 class ModuleRandom : public Module
 {
-private:
+public:
+	ModuleRandom(Application * app, bool start_enabled = true);
 	bool Init() override;
 
-public:
 	int RandomInt(int from, int to);
+	float RandomFloat0to1();
 	float RandomFloat(float from, float to);
 private:
 	pcg32 rng;

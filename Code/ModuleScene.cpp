@@ -1,7 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleScene.h"
-
+#include "ModuleRandom.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -31,6 +31,7 @@ bool ModuleScene::CleanUp()
 // Update: draw background
 update_status ModuleScene::Update(float dt)
 {
+	LOG("random number: %f", App->random->RandomFloat(0.f, 100.f));
 	return UPDATE_CONTINUE;
 }
 

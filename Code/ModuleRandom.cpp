@@ -1,4 +1,10 @@
 #include "ModuleRandom.h"
+#include "Module.h"
+#include "Application.h"
+
+ModuleRandom::ModuleRandom(Application* app, bool start_enabled) : Module(app, start_enabled)
+{
+}
 
 bool ModuleRandom::Init()
 {
@@ -17,8 +23,15 @@ int ModuleRandom::RandomInt(int from, int to)
 	return uniform_dist(rng);
 };
 
+float ModuleRandom::RandomFloat0to1()
+{
+	std::uniform_int_distribution<uint> uniform_dist(0, INT_MAX);
+	return (float)uniform_dist(rng) / (float)INT_MAX;
+}
+
 float ModuleRandom::RandomFloat(float from, float to)
 {
-	std::uniform_int_distribution<float> uniform_dist(from, to);
-	return uniform_dist(rng);
+	//We may be able to get more precision by using something different than INT_MAX
+	std::uniform_int_distribution<uint> uniform_dist(0, INT_MAX);
+	return ((float)uniform_dist(rng) / (float)INT_MAX) * (to - from) + from;
 };
