@@ -31,14 +31,6 @@ bool ModuleScene::CleanUp()
 // Update: draw background
 update_status ModuleScene::Update(float dt)
 {
-	// Make a random number engine
-	static pcg32 rng(seed_source);
-
-	// Choose a random mean between 1 and 6
-	std::uniform_int_distribution<int> uniform_dist(1, 6);
-	int mean = uniform_dist(rng);
-	LOG("Randomly-chosen mean: %i \n", mean);
-
 	return UPDATE_CONTINUE;
 }
 
