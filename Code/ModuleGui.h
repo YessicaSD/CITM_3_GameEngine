@@ -9,8 +9,10 @@ class ModuleGUI : public Module
 {
 private:
 	float fpsHistory[CURRENT_FPS_MAX_VALUE];
-	int currFpsArrayIndex = 0;
+	float msHistory[CURRENT_FPS_MAX_VALUE];
+
 	Timer updateGraph;
+	Timer updateGraphMs;
 
 public:
 	ModuleGUI(Application* app, bool start_enabled = true);

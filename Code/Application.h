@@ -63,6 +63,10 @@ public:
 	{
 		return avg_fps;
 	}
+	uint GetLastFrameMs()
+	{
+		return ms_timer.Read();
+	}
 
 private:
 

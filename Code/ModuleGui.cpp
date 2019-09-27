@@ -8,6 +8,7 @@
 
 #include <string>
 #include <iostream>
+#include <stdio.h>
 
 
 
@@ -35,7 +36,8 @@ bool ModuleGUI::Init()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
 
-	memset(fpsHistory, 0, sizeof(float) * 50);
+	memset(fpsHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
+	memset(msHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
 
 	
 	return ret;
@@ -139,23 +141,46 @@ void ModuleGUI::DisplayConfiguration(update_status & ret, bool& window_bool)
 		ImGui::TextColored(textColor_fpsmas, std::to_string(fpsMax).c_str());
 		
 		
-
+		//FPS GRAPH ==================================
 		ImVec2 size = {500,200};
+		static int currFpsArrayIndex = 0;
 		static float currFPS = 0.0f;
-		static std::string titleFps = "Framerate " + std::to_string(currFPS);
-		
+		char titleFps[100];
+
 		if (updateGraph.ReadSec() > 0.5f)
 		{
 			fpsHistory[currFpsArrayIndex] = currFPS = App->GetAvgFPS();
+
 			++currFpsArrayIndex;
+
 			if (currFpsArrayIndex >= CURRENT_FPS_MAX_VALUE)
 				currFpsArrayIndex = 0;
 
-			scanf("%.2f", &currFPS);
-			titleFps = "Framerate " + std::to_string(currFPS);
 			updateGraph.Start();
 		}
-		ImGui::PlotHistogram("##ASDFASF", fpsHistory, IM_ARRAYSIZE(fpsHistory), currFpsArrayIndex, titleFps.c_str(), 0.0f, 60.0f, size);
+
+		sprintf_s(titleFps, 100, "Framerate: %.2f", currFPS);
+		ImGui::PlotHistogram("##ASDFASF", fpsHistory, IM_ARRAYSIZE(fpsHistory), currFpsArrayIndex, titleFps, 0.0f, 100.0f, size);
+
+		//MS GRAPH ================================================
+		static int lastMsArrayIndex = 0;
+		static Uint32 lastFrameMs = 0.0f;
+		char titleMs[100];
+
+		if (updateGraphMs.ReadSec() > 0.5f)
+		{
+			msHistory[lastMsArrayIndex] = lastFrameMs = App->GetLastFrameMs();
+			++lastMsArrayIndex;
+
+			if (lastMsArrayIndex >= CURRENT_FPS_MAX_VALUE)
+				lastMsArrayIndex = 0;
+
+			updateGraphMs.Start();
+		}
+
+		LOG("%u", lastFrameMs);
+		sprintf_s(titleMs, 100, "Milliseconds: %i", lastFrameMs);
+		ImGui::PlotHistogram("##ASDFASF", msHistory, IM_ARRAYSIZE(msHistory), lastMsArrayIndex, titleMs, 0.0f, 15.0f, size);
 
 		//Style
 		if (ImGui::CollapsingHeader("Style"))
