@@ -312,6 +312,7 @@
     <ClInclude Include="parson\parson.h">
       <Filter>parson</Filter>
     </ClInclude>
+    <ClInclude Include="Primitive.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -470,6 +471,7 @@
     <ClCompile Include="parson\parson.c">
       <Filter>parson</Filter>
     </ClCompile>
+    <ClCompile Include="Primitive.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">

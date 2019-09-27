@@ -19,7 +19,8 @@ public:
 	~ModuleScene();
 
 	bool Start();
-	update_status Update(float dt);
+	update_status Update(float dt) override;
+	update_status PostUpdate(float dt) override;
 	bool CleanUp();
 
 public:

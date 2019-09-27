@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "Primitive.h"
 
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -39,6 +40,15 @@ update_status ModuleScene::Update(float dt)
 	int mean = uniform_dist(rng);
 	LOG("Randomly-chosen mean: %i \n", mean);
 
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleScene::PostUpdate(float dt)
+{
+	PPlane p(0, 1, 0, 0);
+	p.axis = true;
+	p.wire = false;
+	p.Render();
 	return UPDATE_CONTINUE;
 }
 
