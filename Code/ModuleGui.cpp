@@ -214,7 +214,7 @@ void ModuleGUI::DisplayConfiguration(update_status & ret, bool& window_bool)
 		sprintf_s(titleGraph, 100, "Milliseconds: %i", lastFrameMs);
 		ImGui::PlotHistogram("##ASDFASF", msHistory, IM_ARRAYSIZE(msHistory), lastMsArrayIndex, titleGraph, 0.0f, 15.0f, size);
 
-		////MEMORY CONSUMENTION =====================================
+		////MEMORY CONSUMPTION =====================================
 		sMStats stats = m_getMemoryStatistics();
 		static int MemoryArrayIndex = 0;
 		static float lastMemoryConsume = 0.0f;
