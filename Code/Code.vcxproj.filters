@@ -40,7 +40,7 @@
     <Filter Include="Sources\Tools\cpc">
       <UniqueIdentifier>{5916944d-283c-4fd3-9b4e-46359982fe9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="parson">
+    <Filter Include="Sources\parson">
       <UniqueIdentifier>{756e14af-e726-4736-bdc1-04d97a514c97}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -310,7 +310,10 @@
       <Filter>Sources\Tools\cpc</Filter>
     </ClInclude>
     <ClInclude Include="parson\parson.h">
-      <Filter>parson</Filter>
+      <Filter>Sources\parson</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleRandom.h">
+      <Filter>Sources\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Primitive.h" />
   </ItemGroup>
@@ -469,7 +472,10 @@
       <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="parson\parson.c">
-      <Filter>parson</Filter>
+      <Filter>Sources\parson</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleRandom.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Primitive.cpp" />
   </ItemGroup>
@@ -491,6 +497,9 @@
     </None>
     <None Include="MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_SSE.inl">
       <Filter>Sources\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="Engine\config.json">
+      <Filter>Sources</Filter>
     </None>
   </ItemGroup>
 </Project>

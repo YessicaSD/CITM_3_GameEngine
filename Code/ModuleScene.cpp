@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "Primitive.h"
-
+#include "ModuleRandom.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -32,14 +32,7 @@ bool ModuleScene::CleanUp()
 // Update: draw background
 update_status ModuleScene::Update(float dt)
 {
-	// Make a random number engine
-	static pcg32 rng(seed_source);
-
-	// Choose a random mean between 1 and 6
-	std::uniform_int_distribution<int> uniform_dist(1, 6);
-	int mean = uniform_dist(rng);
-	LOG("Randomly-chosen mean: %i \n", mean);
-
+	LOG("random number: %f", App->random->RandomFloat(0.f, 100.f));
 	return UPDATE_CONTINUE;
 }
 
