@@ -1,15 +1,23 @@
-﻿#include <string>
-#include "ModuleGui.h"
+﻿
+
 #include "Application.h"
+#include "ModuleGui.h"
+
+#include <stdio.h>
+#include <string>
+
+
+#include "mmgr\mmgr.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
-#include "mmgr\mmgr.h"
 
-#include <string>
-#include <iostream>
-#include <stdio.h>
+
+
+
+
+
 
 
 
@@ -39,6 +47,9 @@ bool ModuleGUI::Init()
 
 	memset(fpsHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
 	memset(msHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
+	memset(RamHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
+
+
 	char str[100];
 	
 	
@@ -174,6 +185,33 @@ void ModuleGUI::DisplayConfiguration(update_status & ret, bool& window_bool)
 		sprintf_s(titleGraph, 100, "Milliseconds: %i", lastFrameMs);
 		ImGui::PlotHistogram("##ASDFASF", msHistory, IM_ARRAYSIZE(msHistory), lastMsArrayIndex, titleGraph, 0.0f, 15.0f, size);
 
+		////MEMORY CONSUMENTION =====================================
+		sMStats stats = m_getMemoryStatistics();
+		static int MemoryArrayIndex = 0;
+		static float lastMemoryConsume = 0.0f;
+		static int loops_counter = 0;
+
+		if (++loops_counter > 10)
+		{
+
+			loops_counter = 0;
+			RamHistory[MemoryArrayIndex] = lastMemoryConsume = (float)stats.totalReportedMemory;
+			MemoryArrayIndex = (MemoryArrayIndex >= CURRENT_FPS_MAX_VALUE) ? 0 : ++MemoryArrayIndex;
+		}
+
+		sprintf_s(titleGraph, 100, "Ram Consume: %.2f", lastMemoryConsume);
+		ImGui::PlotHistogram("MemoryConsume", RamHistory, IM_ARRAYSIZE(RamHistory), MemoryArrayIndex, titleGraph, 0.0f, (float)stats.peakReportedMemory * 2.f, size);
+		ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
+		ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
+		ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);
+		ImGui::Text("Peak Actual Mem: %u", stats.peakActualMemory);
+		ImGui::Text("Accumulated Reported Mem: %u", stats.accumulatedReportedMemory);
+		ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
+		ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
+		ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
+		ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
+		
+
 		//Style
 		if (ImGui::CollapsingHeader("Style"))
 		{
@@ -183,38 +221,10 @@ void ModuleGUI::DisplayConfiguration(update_status & ret, bool& window_bool)
 				ref_saved_style = style;
 		}
 			
-		////MEMORY CONSUMENTION =====================================
-		//static int lastMsArrayIndex = 0;
-		//static Uint32 lastFrameMs = 0.0f;
-		//char titleMs[100];
-
-		//if (updateGraphMs.ReadSec() > 0.5f)
-		//{
-		//	msHistory[lastMsArrayIndex] = lastFrameMs = App->GetLastFrameMs();
-		//	++lastMsArrayIndex;
-
-		//	if (lastMsArrayIndex >= CURRENT_FPS_MAX_VALUE)
-		//		lastMsArrayIndex = 0;
-
-		//	updateGraphMs.Start();
-		//}
-
-		//sprintf_s(titleMs, 100, "Milliseconds: %i", lastFrameMs);
-		//ImGui::PlotHistogram("##ASDFASF", msHistory, IM_ARRAYSIZE(msHistory), lastMsArrayIndex, titleMs, 0.0f, 15.0f, size);
-
-		////Style
-		//if (ImGui::CollapsingHeader("Style"))
-		//{
-		//	ImGuiStyle& style = ImGui::GetStyle();
-		//	static ImGuiStyle ref_saved_style;
-		//	if (ImGui::ShowStyleSelector("Colors##Selector"))
-		//		ref_saved_style = style;
-		//}
-	
 		ImGui::End();
 
 	}
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 
 	
 	

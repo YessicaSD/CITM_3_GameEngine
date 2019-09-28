@@ -1,15 +1,20 @@
+
+#define CURRENT_FPS_MAX_VALUE 101
+
 #ifndef MODULEGUI_H_
 #define MODULEGUI_H_
 #include "Module.h"
 #include "imgui\imgui.h"
 #include "Timer.h"
-#define CURRENT_FPS_MAX_VALUE 101
+
+
 
 class ModuleGUI : public Module
 {
 private:
 	float fpsHistory[CURRENT_FPS_MAX_VALUE];
 	float msHistory[CURRENT_FPS_MAX_VALUE];
+	float RamHistory[CURRENT_FPS_MAX_VALUE];
 
 	Timer updateGraph;
 	
