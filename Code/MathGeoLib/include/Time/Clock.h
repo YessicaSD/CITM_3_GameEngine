@@ -62,6 +62,8 @@ public:
 	/// @return The current clock second, [0,59]
 	static int Sec();
 
+	float MiliSec();
+
 	/// @return The current system time counter in milliseconds.
 	static unsigned long SystemTime();
 

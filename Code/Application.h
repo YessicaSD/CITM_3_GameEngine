@@ -3,6 +3,7 @@
 
 #include "Globals.h"
 #include "Timer.h"
+
 #include "Module.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
@@ -13,6 +14,12 @@
 #include "ModuleRandom.h"
 
 #include <list>
+
+#include "MathGeoLib\include\Time\Clock.h"
+
+typedef unsigned __int32 uint32;
+typedef unsigned __int64 uint64;
+
 class Application
 {
 public:
@@ -25,6 +32,16 @@ public:
 	ModuleRandom * random = nullptr;
 
 private:
+	
+	//fps and timers variables 
+	
+	
+
+	Timer				startup_time;
+	uint64				frame_count = 0;
+	float avg_fps		= 0.0f;
+	float seconds_since_startup = 0.0f;
+
 
 	Timer	ms_timer;
 	float	dt;
@@ -41,6 +58,17 @@ public:
 
 	//Additional methods
 	bool DrawAll();
+
+	void RequestBrowser(const char* path);
+
+	float GetAvgFPS() const
+	{
+		return avg_fps;
+	}
+	uint GetLastFrameMs()
+	{
+		return ms_timer.Read();
+	}
 
 private:
 
