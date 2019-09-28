@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "SDL/include/SDL.h"
+#include "parson/parson.h"
 
 #define MY_BUFSIZE 1024 // Buffer size for console window titles.
 
@@ -18,9 +19,12 @@ public:
 	virtual ~ModuleWindow();
 
 	bool Init();
+	void LoadConfig();
 	update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
 	bool CleanUp();
+
+	void SaveConfig();
 
 	void SetTitle(const char* title);
 
@@ -32,6 +36,7 @@ private:
 public:
 	int GetWindowWidth();
 	int GetWindowHeight();
+	bool IsVsync();
 
 	//The window we'll be rendering to
 	SDL_Window* window = nullptr;
@@ -39,7 +44,19 @@ public:
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface = nullptr;
-	const char* glsl_version;
+	const char* glsl_version = nullptr;
+
+
+	//TODO: Make them private
+	//This values will be overriden by config.json
+	bool fullscreen = false;
+	bool resizable = false;
+	bool borderless = false;
+	bool fullscreen_desktop = false;
+	bool vsync = false;
+
+private:
+	JSON_Object * config_obj = nullptr;
 };
 
 #endif // __ModuleWindow_H__

@@ -61,54 +61,50 @@ bool ModuleGUI::CleanUp()
 
 void ModuleGUI::DisplayGui(update_status &ret)
 {
-	int lineSpace = 8;//Extra space because it's too close to the left
-	ImVec2 buttonSize;
-	buttonSize.x = 50;
-	buttonSize.y = 20;
-
 	ImGui::BeginMainMenuBar();
-	//ImGui::Spacing(100);
-	//ImGuiIO& io = ImGui::GetIO();
-	//(void)io;
-	//LOG("io x: %i", io.DisplaySize.x);
-	//LOG("window x: %i", App->window->GetWindowWidth());
-
 	if (ImGui::BeginMenu("Help"))
 	{
 		ImGui::Button("Documentation");
-
 		ImGui::EndMenu();
 	}
-	
 
 
-		//ImGui::BeginMenu("File");
-
-		//	if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
-		//	if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff */ }
-		//	if (ImGui::MenuItem("Close", "Ctrl+W")) {   }
-		//	ImGui::EndMenu();
-		
-
-	
-	ImGui::Indent(App->window->GetWindowWidth() - buttonSize.x - lineSpace);
-	if (ImGui::Button("X", buttonSize))
-	{
-		ret = update_status::UPDATE_STOP;
-	}
-
+	//ImGui::BeginMenu("File");
+	//	if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
+	//	if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff */ }
+	//	if (ImGui::MenuItem("Close", "Ctrl+W")) {   }
+	//	ImGui::EndMenu();
 	ImGui::EndMainMenuBar();
+	ImGui::Begin("Config");
+	if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen))
+	{
+		SDL_SetWindowFullscreen(App->window->window, App->window->fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
+	}
+	if (ImGui::Checkbox("Resizable", &App->window->resizable))
+	{
+		SDL_SetWindowResizable(App->window->window, App->window->resizable ? SDL_TRUE : SDL_FALSE);
+	}
+	if (ImGui::Checkbox("Borderless", &App->window->borderless))
+	{
+		SDL_SetWindowBordered(App->window->window, App->window->borderless ? SDL_FALSE : SDL_TRUE);
+	}
+	if (ImGui::Checkbox("Fullscreen Desktop", &App->window->fullscreen_desktop))
+	{
+		SDL_SetWindowFullscreen(App->window->window, App->window->fullscreen_desktop ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
+	}
+	if (ImGui::Checkbox("Vsync", &App->window->vsync))
+	{
+		if (SDL_GL_SetSwapInterval(App->window->vsync ? 1 : 0) == -1)
+			//1 for updates synchronized with the vertical retrace
+			//0 for immediate updates
+		{
+			LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+		}
+	}
+	ImGui::End();
+	//if (ImGui::BeginMenu("Config")) {
 
-	//ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
-	//ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
-	//ImVec2 windowPos;
-	//windowPos.x = 0;
-	//windowPos.y = 500;
-	//ImGui::OpenPopup("my pop up");
-	//bool active = true;
-	//ImGui::BeginPopupModal("my pop up modal", &active, );
-	//ImGui::SetCursorScreenPos(windowPos);
-	//ImGui::Begin("My window");
-	//ImGui::Text("This is my window");
-	//ImGui::End();
+	//	ImGui::EndMenu();
+	//}
+
 }

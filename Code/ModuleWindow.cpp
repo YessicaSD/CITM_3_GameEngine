@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "Application.h"
-#include "parson/parson.h"
 
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -28,17 +27,26 @@ bool ModuleWindow::Init()
 	}
 	else
 	{
-		JSON_Value * config = json_parse_file("config.json");
-		JSON_Object * config_obj = json_object(config);
-		int fullscreen = json_object_get_boolean(config_obj, "fullscreen");
-		LOG("fullscreen %i", fullscreen);
-		//json_object_set_boolean(config_obj, "Fullscreen", 0);
-
+		LoadConfig();
 		DecideGLAndGLSLVersions();
 		ret = SetWindow();
 	}
 
 	return ret;
+}
+
+void ModuleWindow::LoadConfig()
+{
+	JSON_Value * config = json_parse_file("config.json");
+	config_obj = json_object(config);
+	if (config_obj != nullptr)
+	{
+		fullscreen = json_object_get_boolean(config_obj, "fullscreen");
+		resizable = json_object_get_boolean(config_obj, "resizable");
+		borderless = json_object_get_boolean(config_obj, "borderless");
+		fullscreen_desktop = json_object_get_boolean(config_obj, "fullscreen_desktop");
+		vsync = json_object_get_boolean(config_obj, "vsync");
+	}
 }
 
 // Create window with graphics context
@@ -49,7 +57,6 @@ bool ModuleWindow::SetWindow()
 	int width = SCREEN_WIDTH * SCREEN_SIZE;
 	int height = SCREEN_HEIGHT * SCREEN_SIZE;
 	Uint32 flags = GetFlags();
-
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
@@ -94,22 +101,22 @@ Uint32 ModuleWindow::GetFlags()
 {
 	Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI;
 
-	if (WIN_FULLSCREEN == true)
+	if (fullscreen)
 	{
 		flags |= SDL_WINDOW_FULLSCREEN;
 	}
 
-	if (WIN_RESIZABLE == true)
+	if (resizable)
 	{
 		flags |= SDL_WINDOW_RESIZABLE;
 	}
 
-	if (WIN_BORDERLESS == true)
+	if (borderless)
 	{
 		flags |= SDL_WINDOW_BORDERLESS;
 	}
 
-	if (WIN_FULLSCREEN_DESKTOP == true)
+	if (fullscreen_desktop)
 	{
 		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	}
@@ -118,21 +125,10 @@ Uint32 ModuleWindow::GetFlags()
 
 update_status ModuleWindow::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_UP)==KEY_REPEAT)
-	{
-		int  x, y;
-		SDL_GetWindowPosition(window, &x, &y);
-		SDL_SetWindowPosition(window, x, y-1);
-	}
-
 	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModuleWindow::PostUpdate(float dt) {
-	char title[160];
-	sprintf_s(title, "Engine^^");
-	App->window->SetTitle(title);
-
 	return UPDATE_CONTINUE;
 }
 
@@ -151,10 +147,16 @@ int ModuleWindow::GetWindowHeight()
 	return h;
 }
 
+bool ModuleWindow::IsVsync()
+{
+	return vsync;
+}
+
 // Called before quitting
 bool ModuleWindow::CleanUp()
 {
 	LOG("Destroying SDL window and quitting all SDL systems");
+	SaveConfig();
 
 	//Destroy window
 	if(window != NULL)
@@ -165,6 +167,18 @@ bool ModuleWindow::CleanUp()
 	//Quit SDL subsystems
 	SDL_Quit();
 	return true;
+}
+
+void ModuleWindow::SaveConfig()
+{
+	if (config_obj != nullptr)
+	{
+		json_object_set_boolean(config_obj, "fullscreen", fullscreen);
+		json_object_set_boolean(config_obj, "resizable", resizable);
+		json_object_set_boolean(config_obj, "borderless", borderless);
+		json_object_set_boolean(config_obj, "fullscreen_desktop", fullscreen_desktop);
+		json_object_set_boolean(config_obj, "vsync", vsync);
+	}
 }
 
 void ModuleWindow::SetTitle(const char* title)
