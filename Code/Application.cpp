@@ -1,5 +1,5 @@
 #include "Application.h"
-
+#include <Windows.h>
 Application::Application()
 {
 	window = new ModuleWindow(this);
@@ -25,7 +25,6 @@ Application::Application()
 	AddModule(scene);
 	AddModule(gui);
 	AddModule(camera);
-
 
 	// Renderer last!
 	AddModule(renderer3D);
@@ -80,6 +79,11 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	frame_count++;
+	
+	seconds_since_startup = startup_time.ReadSec();
+	avg_fps = float(frame_count) / seconds_since_startup;
+
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -138,6 +142,18 @@ bool Application::DrawAll()
 	}
 
 	return ret;
+}
+
+void Application::RequestBrowser(const char* path)
+{
+	ShellExecuteA(
+		0,
+		"Open",
+		path,
+		0,
+		0,
+		0
+	);
 }
 
 void Application::AddModule(Module* mod)
