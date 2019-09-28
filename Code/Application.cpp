@@ -4,7 +4,7 @@ Application::Application()
 {
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
-	
+
 	
 	renderer3D = new ModuleRenderer3D(this);
 
@@ -12,17 +12,19 @@ Application::Application()
 	
 	scene = new ModuleScene(this);
 	gui = new ModuleGUI(this);
+	random = new ModuleRandom(this);
+
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
 
 	// Main Modules
 	AddModule(window);
+	AddModule(random);
 	AddModule(input);
 	AddModule(scene);
 	AddModule(gui);
 	AddModule(camera);
-
 
 	// Renderer last!
 	AddModule(renderer3D);

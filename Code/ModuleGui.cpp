@@ -72,11 +72,18 @@ update_status ModuleGUI::Update(float dt)
 	if(displayConfi)
 		DisplayConfiguration(ret, displayConfi);
 
+	
+
+	return ret;
+}
+
+update_status ModuleGUI::PostUpdate(float dt)
+{
 	// Rendering
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	return ret;
+	return update_status::UPDATE_CONTINUE;
 }
 
 bool ModuleGUI::CleanUp()
@@ -200,7 +207,7 @@ void ModuleGUI::DisplayConfiguration(update_status & ret, bool& window_bool)
 		}
 
 		sprintf_s(titleGraph, 100, "Ram Consume: %.2f", lastMemoryConsume);
-		ImGui::PlotHistogram("MemoryConsume", RamHistory, IM_ARRAYSIZE(RamHistory), MemoryArrayIndex, titleGraph, 0.0f, (float)stats.peakReportedMemory * 2.f, size);
+		ImGui::PlotHistogram("##ASDFASF", RamHistory, IM_ARRAYSIZE(RamHistory), MemoryArrayIndex, titleGraph, 0.0f, (float)stats.peakReportedMemory * 2.f, size);
 		ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
 		ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
 		ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);

@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "Application.h"
+#include "parson/parson.h"
 
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -27,6 +28,12 @@ bool ModuleWindow::Init()
 	}
 	else
 	{
+		JSON_Value * config = json_parse_file("config.json");
+		JSON_Object * config_obj = json_object(config);
+		int fullscreen = json_object_get_boolean(config_obj, "fullscreen");
+		LOG("fullscreen %i", fullscreen);
+		//json_object_set_boolean(config_obj, "Fullscreen", 0);
+
 		DecideGLAndGLSLVersions();
 		ret = SetWindow();
 	}

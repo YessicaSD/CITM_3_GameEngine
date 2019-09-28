@@ -40,8 +40,13 @@
     <Filter Include="Sources\Tools\cpc">
       <UniqueIdentifier>{5916944d-283c-4fd3-9b4e-46359982fe9e}</UniqueIdentifier>
     </Filter>
+
     <Filter Include="Sources\Tools\mmgr">
       <UniqueIdentifier>{184d3cb3-04da-4078-8492-25dcc1a945e3}</UniqueIdentifier>
+</Filter>
+    <Filter Include="Sources\parson">
+      <UniqueIdentifier>{756e14af-e726-4736-bdc1-04d97a514c97}</UniqueIdentifier>
+
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -309,12 +314,22 @@
     <ClInclude Include="pcg-cpp-0.98\include\pcg_uint128.hpp">
       <Filter>Sources\Tools\cpc</Filter>
     </ClInclude>
+
     <ClInclude Include="mmgr\mmgr.h">
       <Filter>Sources\Tools\mmgr</Filter>
     </ClInclude>
     <ClInclude Include="mmgr\nommgr.h">
       <Filter>Sources\Tools\mmgr</Filter>
     </ClInclude>
+
+    <ClInclude Include="parson\parson.h">
+      <Filter>Sources\parson</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleRandom.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitive.h" />
+
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -470,9 +485,19 @@
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
+
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>Sources\Tools\mmgr</Filter>
     </ClCompile>
+
+    <ClCompile Include="parson\parson.c">
+      <Filter>Sources\parson</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleRandom.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Primitive.cpp" />
+
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
@@ -492,6 +517,9 @@
     </None>
     <None Include="MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_SSE.inl">
       <Filter>Sources\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="Engine\config.json">
+      <Filter>Sources</Filter>
     </None>
   </ItemGroup>
 </Project>

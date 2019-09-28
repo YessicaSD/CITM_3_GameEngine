@@ -11,6 +11,7 @@
 #include "ModuleCamera3D.h"
 #include "ModuleScene.h"
 #include "ModuleGui.h"
+#include "ModuleRandom.h"
 
 #include <list>
 
@@ -28,6 +29,7 @@ public:
 	ModuleCamera3D* camera = nullptr;
 	ModuleScene* scene = nullptr;
 	ModuleGUI* gui = nullptr;
+	ModuleRandom * random = nullptr;
 
 private:
 	
