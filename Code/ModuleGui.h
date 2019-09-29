@@ -23,7 +23,7 @@ public:
 	ModuleGUI(Application* app, bool start_enabled = true);
 	bool Init() override;
 	update_status Update(float dt) override;
-	update_status PostUpdate(float dt) override;
+	update_status PostUpdate() override;
 	bool CleanUp() override;
 
 private:

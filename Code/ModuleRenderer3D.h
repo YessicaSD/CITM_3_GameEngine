@@ -15,10 +15,9 @@ public:
 	~ModuleRenderer3D();
 
 	bool Init();
-	update_status PreUpdate(float dt) override;
-	update_status PostUpdate(float dt) override;
+	update_status PreUpdate() override;
+	update_status PostUpdate() override;
 	bool CleanUp();
-	bool Draw() override;
 
 	void OnResize(int width, int height);
 

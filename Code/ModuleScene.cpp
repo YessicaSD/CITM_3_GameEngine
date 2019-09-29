@@ -35,7 +35,7 @@ update_status ModuleScene::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleScene::PostUpdate(float dt)
+update_status ModuleScene::PostUpdate()
 {
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;

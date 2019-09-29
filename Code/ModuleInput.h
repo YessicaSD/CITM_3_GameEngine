@@ -30,7 +30,7 @@ public:
 	~ModuleInput();
 
 	bool Init() override;
-	update_status PreUpdate(float dt) override;
+	update_status PreUpdate() override;
 	bool CleanUp();
 
 	KEY_STATE GetKey(int id) const

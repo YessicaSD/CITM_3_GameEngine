@@ -69,7 +69,7 @@ update_status ModuleGUI::Update(float dt)
 	return ret;
 }
 
-update_status ModuleGUI::PostUpdate(float dt)
+update_status ModuleGUI::PostUpdate()
 {
 	// Rendering
 	ImGui::Render();

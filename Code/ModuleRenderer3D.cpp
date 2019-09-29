@@ -107,7 +107,7 @@ bool ModuleRenderer3D::Init()
 }
 
 // PreUpdate: clear buffer
-update_status ModuleRenderer3D::PreUpdate(float dt)
+update_status ModuleRenderer3D::PreUpdate()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -124,18 +124,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleRenderer3D::Draw() {
-	// light 0 on cam pos
-	
-	//for (uint i = 0; i < MAX_LIGHTS; ++i) {
-	//	lights[i].Render();
-	//}
-
-	return true;
-}
-
 // PostUpdate present buffer to screen
-update_status ModuleRenderer3D::PostUpdate(float dt)
+update_status ModuleRenderer3D::PostUpdate()
 {
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;

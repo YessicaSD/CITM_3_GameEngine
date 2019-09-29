@@ -29,7 +29,7 @@ public:
 		return true;
 	}
 
-	virtual update_status PreUpdate(float dt)
+	virtual update_status PreUpdate()
 	{
 		return UPDATE_CONTINUE;
 	}
@@ -39,12 +39,7 @@ public:
 		return UPDATE_CONTINUE;
 	}
 
-	//Called from each camera
-	virtual bool Draw() {
-		return true;
-	}
-
-	virtual update_status PostUpdate(float dt)
+	virtual update_status PostUpdate()
 	{
 		return UPDATE_CONTINUE;
 	}
