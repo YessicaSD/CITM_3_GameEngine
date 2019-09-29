@@ -1,15 +1,13 @@
 #include "Application.h"
 #include <Windows.h>
+#include "parson/parson.h"
+
 Application::Application()
 {
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
-
-	
 	renderer3D = new ModuleRenderer3D(this);
-
 	camera = new ModuleCamera3D(this);
-	
 	scene = new ModuleScene(this);
 	gui = new ModuleGUI(this);
 	random = new ModuleRandom(this);
@@ -46,6 +44,10 @@ bool Application::Init()
 {
 	bool ret = true;
 
+	config_path = "config.json";
+
+	LoadConfig();
+
 	// Call Init() in all modules
 	std::list<Module*>::iterator item = list_modules.begin();
 
@@ -65,6 +67,8 @@ bool Application::Init()
 		++item;
 	}
 	
+	CloseConfig();
+
 	ms_timer.Start();
 	return ret;
 }
@@ -79,6 +83,12 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	if (saveRequest)
+	{
+		SaveModules();
+		saveRequest = false;
+	}
+
 	frame_count++;
 	
 	seconds_since_startup = startup_time.ReadSec();
@@ -133,17 +143,6 @@ bool Application::CleanUp()
 	return ret;
 }
 
-bool Application::DrawAll()
-{
-	bool ret = true;
-
-	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end() && ret; item = ++item) {
-		ret = (*item)->Draw();
-	}
-
-	return ret;
-}
-
 void Application::RequestBrowser(const char* path)
 {
 	ShellExecuteA(
@@ -159,4 +158,49 @@ void Application::RequestBrowser(const char* path)
 void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);
+}
+
+void Application::SaveModules()
+{
+	bool ret = true;
+
+	//Create new config file if there isn't one
+	//if (config == nullptr)
+	//{
+	//	CreateNewConfig(config_path.c_str());
+	//}
+
+	//for (std::list<Module*>::iterator item = list_modules.begin();
+	//	item != list_modules.end() && ret == true;
+	//	item = ++item)
+	//{
+	//	ret = (*item)->Save(config);
+	//}
+}
+
+//Config
+
+void Application::LoadConfig()
+{
+	configValue = json_parse_file(config_path.c_str());
+	config = json_object(configValue);
+}
+
+void Application::CloseConfig()
+{
+	json_serialize_to_file_pretty(configValue, config_path.c_str());
+	json_value_free(configValue);
+	config = nullptr;
+	configValue = nullptr;
+}
+
+void Application::CreateNewConfig(const std::string& path)
+{
+	configValue = json_value_init_object();
+	config = json_value_get_object(configValue);
+	json_serialize_to_file_pretty(configValue, path.data());
+	if (configValue == nullptr || config == nullptr)
+	{
+		LOG("Error creating JSON with path %s", path.data());
+	}
 }

@@ -20,6 +20,8 @@ bool ModuleWindow::Init()
 	LOG("Init SDL window & surface");
 	bool ret = true;
 
+	//LoadConfigValues(config);
+
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		LOG("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -27,7 +29,6 @@ bool ModuleWindow::Init()
 	}
 	else
 	{
-		LoadConfig();
 		DecideGLAndGLSLVersions();
 		ret = SetWindow();
 	}
@@ -35,17 +36,15 @@ bool ModuleWindow::Init()
 	return ret;
 }
 
-void ModuleWindow::LoadConfig()
+void ModuleWindow::LoadConfigValues(JSON_Object * config)
 {
-	config = json_parse_file("config.json");
-	config_obj = json_object(config);
-	if (config_obj != nullptr)
+	if (config != nullptr)
 	{
-		fullscreen = json_object_get_boolean(config_obj, "fullscreen");
-		resizable = json_object_get_boolean(config_obj, "resizable");
-		borderless = json_object_get_boolean(config_obj, "borderless");
-		fullscreen_desktop = json_object_get_boolean(config_obj, "fullscreen_desktop");
-		vsync = json_object_get_boolean(config_obj, "vsync");
+		fullscreen = json_object_get_boolean(config, "fullscreen");
+		resizable = json_object_get_boolean(config, "resizable");
+		borderless = json_object_get_boolean(config, "borderless");
+		fullscreen_desktop = json_object_get_boolean(config, "fullscreen_desktop");
+		vsync = json_object_get_boolean(config, "vsync");
 	}
 }
 
@@ -123,15 +122,6 @@ Uint32 ModuleWindow::GetFlags()
 	return flags;
 }
 
-update_status ModuleWindow::Update(float dt)
-{
-	return update_status::UPDATE_CONTINUE;
-}
-
-update_status ModuleWindow::PostUpdate(float dt) {
-	return UPDATE_CONTINUE;
-}
-
 //Change when we get iPoint / Vector2
 int ModuleWindow::GetWindowWidth()
 {
@@ -156,8 +146,6 @@ bool ModuleWindow::IsVsync()
 bool ModuleWindow::CleanUp()
 {
 	LOG("Destroying SDL window and quitting all SDL systems");
-	SaveConfig();
-	CleanUpConfig();
 
 	//Destroy window
 	if(window != NULL)
@@ -170,25 +158,18 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
-void ModuleWindow::CleanUpConfig()
-{
-	json_serialize_to_file_pretty(config, "config.json");
-	json_value_free(config);
-}
-
-void ModuleWindow::SaveConfig()
-{
-	if (config_obj != nullptr)
-	{
-		json_object_set_boolean(config_obj, "fullscreen", fullscreen);
-		json_object_set_boolean(config_obj, "resizable", resizable);
-		json_object_set_boolean(config_obj, "borderless", borderless);
-		json_object_set_boolean(config_obj, "fullscreen_desktop", fullscreen_desktop);
-		json_object_set_boolean(config_obj, "vsync", vsync);
-	}
-}
-
 void ModuleWindow::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);
 }
+
+//bool ModuleWindow::Save(JSON_Object * config)
+//{
+//	json_object_set_boolean(config, "fullscreen", fullscreen);
+//	json_object_set_boolean(config, "resizable", resizable);
+//	json_object_set_boolean(config, "borderless", borderless);
+//	json_object_set_boolean(config, "fullscreen_desktop", fullscreen_desktop);
+//	json_object_set_boolean(config, "vsync", vsync);
+//
+//	return true;
+//}

@@ -31,12 +31,10 @@ public:
 	ModuleGUI* gui = nullptr;
 	ModuleRandom * random = nullptr;
 
-private:
-	
-	//fps and timers variables 
-	
-	
+	bool saveRequest = false;
 
+private:
+	//fps and timers variables 
 	Timer				startup_time;
 	uint64				frame_count = 0;
 	float avg_fps		= 0.0f;
@@ -47,6 +45,9 @@ private:
 	float	dt;
 	std::list<Module*> list_modules;
 
+	JSON_Value * configValue = nullptr;
+	JSON_Object * config = nullptr;
+
 public:
 
 	Application();
@@ -55,9 +56,6 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
-
-	//Additional methods
-	bool DrawAll();
 
 	void RequestBrowser(const char* path);
 
@@ -75,4 +73,11 @@ private:
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
+	void SaveModules();
+
+	//Config
+	void LoadConfig();
+	void CloseConfig();
+	void CreateNewConfig(const std::string& path);
+	std::string config_path;
 };

@@ -18,28 +18,23 @@ public:
 	// Destructor
 	virtual ~ModuleWindow();
 
-	bool Init();
-	void LoadConfig();
-	update_status Update(float dt) override;
-	update_status PostUpdate(float dt) override;
+	bool Init() override;
+
 	bool CleanUp();
-
-	void CleanUpConfig();
-
-	void SaveConfig();
 
 	void SetTitle(const char* title);
 
+	int GetWindowWidth();
+	int GetWindowHeight();
+	bool IsVsync();
+
 private:
+	void LoadConfigValues(JSON_Object * config);
 	Uint32 GetFlags();
 	void DecideGLAndGLSLVersions();
 	bool SetWindow();
 
 public:
-	int GetWindowWidth();
-	int GetWindowHeight();
-	bool IsVsync();
-
 	//The window we'll be rendering to
 	SDL_Window* window = nullptr;
 	SDL_GLContext gl_context;
@@ -56,10 +51,6 @@ public:
 	bool borderless = false;
 	bool fullscreen_desktop = false;
 	bool vsync = false;
-
-private:
-	JSON_Value * config = nullptr;
-	JSON_Object * config_obj = nullptr;
 };
 
 #endif // __ModuleWindow_H__
