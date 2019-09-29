@@ -1,7 +1,7 @@
 {
-  "fullscreen": false,
-  "resizable": true,
-  "borderless": false,
-  "fullscreen_desktop": false,
-  "vsync" :  true
+    "fullscreen": false,
+    "resizable": true,
+    "borderless": false,
+    "fullscreen_desktop": false,
+    "vsync": false
 }

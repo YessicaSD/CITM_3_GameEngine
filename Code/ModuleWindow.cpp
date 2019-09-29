@@ -37,7 +37,7 @@ bool ModuleWindow::Init()
 
 void ModuleWindow::LoadConfig()
 {
-	JSON_Value * config = json_parse_file("config.json");
+	config = json_parse_file("config.json");
 	config_obj = json_object(config);
 	if (config_obj != nullptr)
 	{
@@ -157,6 +157,7 @@ bool ModuleWindow::CleanUp()
 {
 	LOG("Destroying SDL window and quitting all SDL systems");
 	SaveConfig();
+	CleanUpConfig();
 
 	//Destroy window
 	if(window != NULL)
@@ -167,6 +168,12 @@ bool ModuleWindow::CleanUp()
 	//Quit SDL subsystems
 	SDL_Quit();
 	return true;
+}
+
+void ModuleWindow::CleanUpConfig()
+{
+	json_serialize_to_file_pretty(config, "config.json");
+	json_value_free(config);
 }
 
 void ModuleWindow::SaveConfig()

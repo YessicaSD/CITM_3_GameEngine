@@ -24,6 +24,8 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp();
 
+	void CleanUpConfig();
+
 	void SaveConfig();
 
 	void SetTitle(const char* title);
@@ -56,6 +58,7 @@ public:
 	bool vsync = false;
 
 private:
+	JSON_Value * config = nullptr;
 	JSON_Object * config_obj = nullptr;
 };
 
