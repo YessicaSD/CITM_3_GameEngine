@@ -20,7 +20,7 @@ bool ModuleWindow::Init()
 	LOG("Init SDL window & surface");
 	bool ret = true;
 
-	//LoadConfigValues(config);
+	LoadConfigValues(App->config);
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -163,13 +163,13 @@ void ModuleWindow::SetTitle(const char* title)
 	SDL_SetWindowTitle(window, title);
 }
 
-//bool ModuleWindow::Save(JSON_Object * config)
-//{
-//	json_object_set_boolean(config, "fullscreen", fullscreen);
-//	json_object_set_boolean(config, "resizable", resizable);
-//	json_object_set_boolean(config, "borderless", borderless);
-//	json_object_set_boolean(config, "fullscreen_desktop", fullscreen_desktop);
-//	json_object_set_boolean(config, "vsync", vsync);
-//
-//	return true;
-//}
+bool ModuleWindow::Save(JSON_Object * config)
+{
+	json_object_set_boolean(config, "fullscreen", fullscreen);
+	json_object_set_boolean(config, "resizable", resizable);
+	json_object_set_boolean(config, "borderless", borderless);
+	json_object_set_boolean(config, "fullscreen_desktop", fullscreen_desktop);
+	json_object_set_boolean(config, "vsync", vsync);
+
+	return true;
+}

@@ -32,6 +32,7 @@ public:
 	ModuleRandom * random = nullptr;
 
 	bool saveRequest = false;
+	JSON_Object * config = nullptr;
 
 private:
 	//fps and timers variables 
@@ -46,7 +47,6 @@ private:
 	std::list<Module*> list_modules;
 
 	JSON_Value * configValue = nullptr;
-	JSON_Object * config = nullptr;
 
 public:
 

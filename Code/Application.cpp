@@ -165,17 +165,17 @@ void Application::SaveModules()
 	bool ret = true;
 
 	//Create new config file if there isn't one
-	//if (config == nullptr)
-	//{
-	//	CreateNewConfig(config_path.c_str());
-	//}
+	if (config == nullptr)
+	{
+		CreateNewConfig(config_path.c_str());
+	}
 
-	//for (std::list<Module*>::iterator item = list_modules.begin();
-	//	item != list_modules.end() && ret == true;
-	//	item = ++item)
-	//{
-	//	ret = (*item)->Save(config);
-	//}
+	for (std::list<Module*>::iterator item = list_modules.begin();
+		item != list_modules.end() && ret == true;
+		item = ++item)
+	{
+		ret = (*item)->Save(config);
+	}
 }
 
 //Config

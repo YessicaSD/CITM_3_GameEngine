@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Globals.h"
-class Application;
-struct PhysBody3D;
+#include "parson/parson.h"
 
+class Application;
 
 class Module
 {
@@ -49,6 +49,8 @@ public:
 		return true; 
 	}
 
-	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
-	{}
+	virtual bool Save(JSON_Object * config)
+	{
+		return true;
+	}
 };

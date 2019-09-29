@@ -24,6 +24,8 @@ public:
 
 	void SetTitle(const char* title);
 
+	bool Save(JSON_Object * config);
+
 	int GetWindowWidth();
 	int GetWindowHeight();
 	bool IsVsync();
