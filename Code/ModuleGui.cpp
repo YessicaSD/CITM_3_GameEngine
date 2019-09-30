@@ -61,6 +61,9 @@ update_status ModuleGUI::Update(float dt)
 
 
 	DisplayMainMenuBar(ret, displayConfi);
+	if (showMenuImGui)
+		ImGui::ShowDemoWindow();
+
 	if(displayConfi)
 		DisplayConfiguration(ret, displayConfi);
 
@@ -92,11 +95,11 @@ bool ModuleGUI::CleanUp()
 void ModuleGUI::DisplayMainMenuBar(update_status &ret, bool &display_confi)
 {
 	ImGui::BeginMainMenuBar();
-	if (ImGui::BeginMenu("Help"))
-	{
-		ImGui::Button("Documentation");
-		ImGui::EndMenu();
-	}
+	//if (ImGui::BeginMenu("Help"))
+	//{
+	//	ImGui::Button("Documentation");
+	//	ImGui::EndMenu();
+	//}
 
 
 	//ImGui::BeginMenu("File");
@@ -143,8 +146,13 @@ void ModuleGUI::DisplayMainMenuBar(update_status &ret, bool &display_confi)
 
 		ImGui::EndMenu();
 	}
+
+	
+
 	if (ImGui::BeginMenu("Help"))
 	{
+		if (ImGui::MenuItem("Menu ImGui example		"))
+			showMenuImGui = !showMenuImGui;
 		if (ImGui::MenuItem("Documentation		"))
 			App->RequestBrowser("https://github.com/YessicaSD/CITM_3_GameEngine/wiki");
 		if(ImGui::MenuItem("Download latest		"))
