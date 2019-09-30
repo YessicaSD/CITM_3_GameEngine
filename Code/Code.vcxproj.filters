@@ -506,7 +506,9 @@
     <ClCompile Include="Tool.cpp">
       <Filter>Sources\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleEditor.cpp" />
+    <ClCompile Include="ModuleEditor.cpp">
+      <Filter>Sources\Editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
