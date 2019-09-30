@@ -20,7 +20,7 @@ private:
 	
 
 public:
-	ModuleGUI(Application* app, bool start_enabled = true);
+	ModuleGUI(bool start_enabled = true);
 	bool Init() override;
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;

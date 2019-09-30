@@ -2,7 +2,7 @@
 #include "Module.h"
 #include "Application.h"
 
-ModuleRandom::ModuleRandom(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleRandom::ModuleRandom(bool start_enabled) : Module(start_enabled)
 {
 }
 

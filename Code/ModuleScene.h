@@ -7,7 +7,7 @@
 class ModuleScene : public Module
 {
 public:
-	ModuleScene(Application* app, bool start_enabled = true);
+	ModuleScene(bool start_enabled = true);
 	~ModuleScene();
 
 	bool Start();
