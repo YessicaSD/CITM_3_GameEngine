@@ -1,24 +1,28 @@
 
-#define CURRENT_FPS_MAX_VALUE 101
-
 #ifndef MODULEGUI_H_
 #define MODULEGUI_H_
+
+
+
+
 #include "Module.h"
 #include "imgui\imgui.h"
-#include "Timer.h"
 
-
+#include <vector>
+class Timer;
+class Panel;
+class PanelConfiguration;
 
 class ModuleGUI : public Module
 {
 private:
-	float fpsHistory[CURRENT_FPS_MAX_VALUE];
-	float msHistory[CURRENT_FPS_MAX_VALUE];
-	float RamHistory[CURRENT_FPS_MAX_VALUE];
+	
 
-	Timer updateGraph;
+	
 	
 	bool showMenuImGui = false;
+	std::vector<Panel*> panels;
+	PanelConfiguration* conf=nullptr;
 
 public:
 	ModuleGUI(bool start_enabled = true);
@@ -28,8 +32,7 @@ public:
 	bool CleanUp() override;
 
 private:
-	void DisplayMainMenuBar(update_status &ret, bool &display_confi);
-	void DisplayConfiguration(update_status &ret, bool &display_confi);
+	void DisplayMainMenuBar(update_status &ret);
 };
 #endif // !MODULEGUI_H_
 
