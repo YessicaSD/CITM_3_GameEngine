@@ -18,6 +18,7 @@ private:
 
 	Timer updateGraph;
 	
+	bool showMenuImGui = false;
 
 public:
 	ModuleGUI(bool start_enabled = true);
