@@ -9,7 +9,10 @@
 class Tool
 {
 public:
-	Tool::Tool(std::string name, std::vector<SDL_Scancode> shortcut);
+	Tool (std::string name, std::vector<SDL_Scancode> shortcut,
+		bool (ModuleEditor::*ActivateTool)() = &ModuleEditor::ActivateUndefinedTool,
+		bool (ModuleEditor::*DeactivateTool)() = &ModuleEditor::DeactivateUndefinedTool,
+		bool (ModuleEditor::*UpdateTool)() = &ModuleEditor::UpdateUndefinedTool);
 	std::string GetName();
 	std::vector<SDL_Scancode> GetShortcut();
 

@@ -16,6 +16,8 @@ public:
 	bool Start() override;
 	update_status PreUpdate() override;
 	update_status Update(float dt) override;
+	bool CleanUp() override;
+
 	void AddTool(Tool * tool);
 
 private:

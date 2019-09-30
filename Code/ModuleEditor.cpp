@@ -3,6 +3,9 @@
 
 bool ModuleEditor::Start()
 {
+	new Tool("zoom", {SDL_SCANCODE_0, SDL_SCANCODE_1 });
+	new Tool("pan", {SDL_SCANCODE_1});
+	new Tool("rotate", {SDL_SCANCODE_2});
 
 	return true;
 }
@@ -47,6 +50,13 @@ update_status ModuleEditor::Update(float dt)
 	}
 
 	return ret;
+}
+
+bool ModuleEditor::CleanUp()
+{
+	//Delete all the tools
+
+	return true;
 }
 
 bool ModuleEditor::ActivateUndefinedTool()

@@ -2,11 +2,16 @@
 #include "Application.h"
 #include "ModuleInput.h"
 
-Tool::Tool(std::string name, std::vector<SDL_Scancode> shortcut) : tool_name(name), shortcut(shortcut)
+Tool::Tool(std::string name, std::vector<SDL_Scancode> shortcut,
+	bool (ModuleEditor::*ActivateTool)(),
+	bool (ModuleEditor::*DeactivateTool)(),
+	bool (ModuleEditor::*UpdateTool)())
+	: tool_name (name),
+	shortcut (shortcut),
+	ActivateTool(ActivateTool),
+	DeactivateTool(DeactivateTool),
+	UpdateTool(UpdateTool)
 {
-	ActivateTool = &ModuleEditor::ActivateUndefinedTool;
-	UpdateTool   = &ModuleEditor::UpdateUndefinedTool;
-	ActivateTool = &ModuleEditor::ActivateUndefinedTool;
 	App->editor->AddTool(this);
 }
 
