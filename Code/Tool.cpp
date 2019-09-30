@@ -5,7 +5,7 @@
 Tool::Tool(std::string name, std::vector<SDL_Scancode> shortcut,
 	bool (ModuleEditor::*ActivateTool)(),
 	bool (ModuleEditor::*DeactivateTool)(),
-	bool (ModuleEditor::*UpdateTool)())
+	bool (ModuleEditor::*UpdateTool)(float))
 	: tool_name (name),
 	shortcut (shortcut),
 	ActivateTool(ActivateTool),
@@ -27,10 +27,11 @@ std::vector<SDL_Scancode> Tool::GetShortcut()
 
 bool Tool::CheckShortcut()
 {
-	bool ret = true;
+	bool ret = false;
 
 	if (shortcut.size() > 0)
 	{
+		ret = true;
 		std::vector<SDL_Scancode>::iterator iter;
 		for (iter = shortcut.begin();
 			iter != shortcut.end() - 1 && ret;
@@ -38,7 +39,7 @@ bool Tool::CheckShortcut()
 		{
 			KEY_STATE state = App->input->GetKey(*iter);
 
-			if (state == KEY_DOWN || state == KEY_REPEAT)
+			if (state == KEY_UP || state == KEY_IDLE)
 			{
 				ret = false;
 			}
@@ -49,10 +50,10 @@ bool Tool::CheckShortcut()
 		{
 			ret = true;
 		}
-	}
-	else
-	{
-		ret = false;
+		else
+		{
+			ret = false;
+		}
 	}
 
 	return ret;

@@ -12,7 +12,7 @@ public:
 	Tool (std::string name, std::vector<SDL_Scancode> shortcut,
 		bool (ModuleEditor::*ActivateTool)() = &ModuleEditor::ActivateUndefinedTool,
 		bool (ModuleEditor::*DeactivateTool)() = &ModuleEditor::DeactivateUndefinedTool,
-		bool (ModuleEditor::*UpdateTool)() = &ModuleEditor::UpdateUndefinedTool);
+		bool (ModuleEditor::*UpdateTool)(float) = &ModuleEditor::UpdateUndefinedTool);
 	std::string GetName();
 	std::vector<SDL_Scancode> GetShortcut();
 
@@ -23,14 +23,13 @@ public:
 	std::vector<SDL_Scancode> shortcut;
 
 	bool (ModuleEditor::*ActivateTool)();//Executed when the tool is activated
-	bool (ModuleEditor::*UpdateTool)();//Executed every frame the tool is active
+	bool (ModuleEditor::*UpdateTool)(float);//Executed every frame the tool is active
 	//TODO: Maybe this should recieve dt
 	bool (ModuleEditor::*DeactivateTool)();//Executed when the tool is deactivated
 
 	//Used for searching the tool via de find menu
 	std::string tool_name;
 
-private:
 	bool isActive = false;
 };
 

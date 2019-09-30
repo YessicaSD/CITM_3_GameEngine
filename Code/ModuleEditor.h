@@ -4,6 +4,8 @@
 #include <vector>
 #include "Module.h"
 
+#define CAMERA_SPEED 3.f;
+
 class Tool;
 
 //Class which handles
@@ -25,8 +27,10 @@ private:
 
 	//Tool functions
 	bool ActivateUndefinedTool();
-	bool UpdateUndefinedTool();
+	bool UpdateUndefinedTool(float dt);
 	bool DeactivateUndefinedTool();
+
+	bool UpdateMoveForwardTool(float dt);
 
 private:
 	std::vector<Tool *> tools;
