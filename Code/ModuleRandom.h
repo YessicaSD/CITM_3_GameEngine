@@ -8,7 +8,7 @@
 class ModuleRandom : public Module
 {
 public:
-	ModuleRandom(Application * app, bool start_enabled = true);
+	ModuleRandom(bool start_enabled = true);
 	bool Init() override;
 
 	int RandomInt(int from, int to);

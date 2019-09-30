@@ -13,7 +13,7 @@
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-ModuleGUI::ModuleGUI(Application* app, bool start_enabled):Module(app, start_enabled)
+ModuleGUI::ModuleGUI(bool start_enabled):Module(start_enabled)
 {
 
 }

@@ -13,9 +13,6 @@
     <Filter Include="Sources\Tools">
       <UniqueIdentifier>{7e4dfaf7-022c-4f7d-92aa-f3b3fa9d6248}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Helpers">
-      <UniqueIdentifier>{121f8e6b-df36-4ab0-be0d-601ddfc9e503}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\Tools\imgui">
       <UniqueIdentifier>{afb44012-5b2a-4969-94e4-409a81704660}</UniqueIdentifier>
     </Filter>
@@ -40,13 +37,17 @@
     <Filter Include="Sources\Tools\cpc">
       <UniqueIdentifier>{5916944d-283c-4fd3-9b4e-46359982fe9e}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="Sources\Tools\mmgr">
       <UniqueIdentifier>{184d3cb3-04da-4078-8492-25dcc1a945e3}</UniqueIdentifier>
-</Filter>
-    <Filter Include="Sources\parson">
+    </Filter>
+    <Filter Include="Sources\Tools\parson">
       <UniqueIdentifier>{756e14af-e726-4736-bdc1-04d97a514c97}</UniqueIdentifier>
-
+    </Filter>
+    <Filter Include="Sources\Core">
+      <UniqueIdentifier>{8ff7c297-1f6b-43fa-8007-72679281ccbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Editor">
+      <UniqueIdentifier>{846560a4-6dc0-4910-ac31-f1f5b965bfca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -68,17 +69,8 @@
     <ClInclude Include="glmath.h">
       <Filter>Sources\Containers</Filter>
     </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Sources\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Sources\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Sources\Tools</Filter>
@@ -314,22 +306,36 @@
     <ClInclude Include="pcg-cpp-0.98\include\pcg_uint128.hpp">
       <Filter>Sources\Tools\cpc</Filter>
     </ClInclude>
-
     <ClInclude Include="mmgr\mmgr.h">
       <Filter>Sources\Tools\mmgr</Filter>
     </ClInclude>
     <ClInclude Include="mmgr\nommgr.h">
       <Filter>Sources\Tools\mmgr</Filter>
     </ClInclude>
-
     <ClInclude Include="parson\parson.h">
-      <Filter>Sources\parson</Filter>
+      <Filter>Sources\Tools\parson</Filter>
     </ClInclude>
     <ClInclude Include="ModuleRandom.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Primitive.h" />
-
+    <ClInclude Include="Light.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitive.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Sources\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Sources\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEditor.h">
+      <Filter>Sources\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool.h">
+      <Filter>Sources\Editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -350,20 +356,11 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Sources\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="glmath.cpp">
       <Filter>Sources\Containers</Filter>
     </ClCompile>
     <ClCompile Include="Color.cpp">
       <Filter>Sources\Containers</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Sources\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="ModuleGui.cpp">
       <Filter>Sources\Modules</Filter>
@@ -485,19 +482,31 @@
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
-
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>Sources\Tools\mmgr</Filter>
     </ClCompile>
-
     <ClCompile Include="parson\parson.c">
-      <Filter>Sources\parson</Filter>
+      <Filter>Sources\Tools\parson</Filter>
     </ClCompile>
     <ClCompile Include="ModuleRandom.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Primitive.cpp" />
-
+    <ClCompile Include="Light.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Primitive.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool.cpp">
+      <Filter>Sources\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
@@ -519,7 +528,7 @@
       <Filter>Sources\MathGeoLib\Geometry</Filter>
     </None>
     <None Include="Engine\config.json">
-      <Filter>Sources</Filter>
+      <Filter>Sources\Tools</Filter>
     </None>
   </ItemGroup>
 </Project>

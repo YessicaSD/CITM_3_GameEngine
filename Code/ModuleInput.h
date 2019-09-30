@@ -26,7 +26,7 @@ private:
 
 public:
 	
-	ModuleInput(Application* app, bool start_enabled = true);
+	ModuleInput(bool start_enabled = true);
 	~ModuleInput();
 
 	bool Init() override;

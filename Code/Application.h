@@ -81,3 +81,5 @@ private:
 	void CreateNewConfig(const std::string& path);
 	std::string config_path;
 };
+
+extern Application * App;
