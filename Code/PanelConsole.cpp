@@ -18,6 +18,7 @@ void PanelConsole::Log(const char * sentence)
 
 void PanelConsole::Draw()
 {
+	ImGui::Begin(name.c_str());
 	ImGui::TextUnformatted(output.begin());
-
+	ImGui::End();
 }
