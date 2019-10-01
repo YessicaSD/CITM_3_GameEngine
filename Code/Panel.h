@@ -22,6 +22,7 @@ public:
 
 	void SwitchActive();
 	bool IsActive() const;
+	bool HasShortcut();
 	void SetName(std::string name);
 	virtual void Draw() {}
 };
