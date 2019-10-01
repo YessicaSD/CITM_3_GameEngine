@@ -67,6 +67,7 @@ public:
 	{
 		return ms_timer.Read();
 	}
+	void Log(const char* sentece);
 
 private:
 

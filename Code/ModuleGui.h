@@ -14,6 +14,7 @@ class Timer;
 class Panel;
 class Shortcut;
 class PanelConfiguration;
+class PanelConsole;
 
 class ModuleGui : public Module
 {
@@ -21,6 +22,7 @@ private:
 	bool showMenuImGui = false;
 	std::vector<Panel*> panels;
 	PanelConfiguration* conf = nullptr;
+	PanelConsole* console = nullptr;
 
 	std::vector<Shortcut *> shortcuts;
 
@@ -31,12 +33,14 @@ public:
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
+	void Log(const char*);
 
 private:
 	void DisplayMainMenuBar(update_status &ret);
 
 	friend class Shortcut;
 	friend class Panel;
+	
 };
 #endif // !MODULEGUI_H_
 

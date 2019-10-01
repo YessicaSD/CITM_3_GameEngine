@@ -172,6 +172,7 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelConfiguration.h" />
+    <ClInclude Include="PanelConsole.h" />
     <ClInclude Include="PanelShortcuts.h" />
     <ClInclude Include="parson\parson.h" />
     <ClInclude Include="pcg-cpp-0.98\include\pcg_extras.hpp" />
@@ -236,6 +237,7 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PanelConfiguration.cpp" />
+    <ClCompile Include="PanelConsole.cpp" />
     <ClCompile Include="PanelShortcuts.cpp" />
     <ClCompile Include="parson\parson.c" />
     <ClCompile Include="Primitive.cpp" />

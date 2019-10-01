@@ -139,6 +139,7 @@ bool Application::CleanUp()
 		ret = (*item)->CleanUp();
 		item = ++item;
 	}
+	gui = nullptr;
 	return ret;
 }
 
@@ -152,6 +153,12 @@ void Application::RequestBrowser(const char* path)
 		0,
 		0
 	);
+}
+
+void Application::Log(const char * sentece)
+{
+	if(gui)
+		gui->Log(sentece);
 }
 
 void Application::AddModule(Module* mod)
