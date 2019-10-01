@@ -348,6 +348,9 @@
     <ClInclude Include="imgui\imgui_stdlib.h">
       <Filter>Sources\Tools\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="PanelConsole.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -529,6 +532,9 @@
     </ClCompile>
     <ClCompile Include="imgui\imgui_stdlib.cpp">
       <Filter>Sources\Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelConsole.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
