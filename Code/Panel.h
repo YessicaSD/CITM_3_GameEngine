@@ -5,32 +5,25 @@
 #include <string>
 #include <vector>
 #include "SDL\include\SDL_scancode.h"
+#include "Shortcut.h"
+
 class Panel
 {
-	protected:
-		bool active = false;
-		std::string name="";
-		std::vector<SDL_Scancode> ShortCut;
+public:
+	Shortcut shortcut;
 
-	public:
-		Panel(std::string name, bool active=false):name(name), active(active){}
-		Panel(std::string name, std::vector<SDL_Scancode> ShortCUt, bool active=false):name(name), active(active){}
+protected:
+	bool active = false;
+	std::string name = "";
 
+public:
+	Panel(std::string name, bool active);
+	Panel(std::string name, bool active, std::vector<SDL_Scancode> shortcuts);
 
-		void SwitchActive()
-		{
-			active = !active;
-		}
-		bool IsActive() const
-		{
-			return active;
-		}
-		void SetName(std::string name)
-		{
-			this->name = name;
-		}
-
-		virtual void Draw() {}
-		
+	void SwitchActive();
+	bool IsActive() const;
+	bool HasShortcut();
+	void SetName(std::string name);
+	virtual void Draw() {}
 };
 #endif // !_PANEL_H_

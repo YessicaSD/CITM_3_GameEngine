@@ -333,16 +333,16 @@
     <ClInclude Include="Globals.h">
       <Filter>Sources\Core</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleEditor.h">
-      <Filter>Sources\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="Tool.h">
+    <ClInclude Include="Shortcut.h">
       <Filter>Sources\Editor</Filter>
     </ClInclude>
     <ClInclude Include="Panel.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
     <ClInclude Include="PanelConfiguration.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelShortcuts.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
   </ItemGroup>
@@ -512,11 +512,16 @@
     <ClCompile Include="Main.cpp">
       <Filter>Sources\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Tool.cpp">
+    <ClCompile Include="PanelConfiguration.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Shortcut.cpp">
       <Filter>Sources\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleEditor.cpp" />
-    <ClCompile Include="PanelConfiguration.cpp">
+    <ClCompile Include="PanelShortcuts.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
   </ItemGroup>

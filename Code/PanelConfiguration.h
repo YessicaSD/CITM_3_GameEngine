@@ -14,8 +14,7 @@ private:
 	float msHistory[CURRENT_FPS_MAX_VALUE];
 	float RamHistory[CURRENT_FPS_MAX_VALUE];
 public:
-	PanelConfiguration(std::string name, std::vector<SDL_Scancode> ShortCUt, bool active = false);
-	PanelConfiguration(std::string name, bool active = false);
+	PanelConfiguration(std::string name, bool active = false, std::vector<SDL_Scancode> shortcut = { SDL_SCANCODE_UNKNOWN });
 	void Draw() override;
 };
 #endif // !PANEL_CONFIGURATION_H_
