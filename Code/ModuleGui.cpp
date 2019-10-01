@@ -13,6 +13,7 @@
 #include "Panel.h"
 #include "PanelConfiguration.h"
 #include "PanelShortcuts.h"
+#include "PanelConsole.h"
 
 ModuleGui::ModuleGui(bool start_enabled):Module(start_enabled)
 {
@@ -38,8 +39,9 @@ bool ModuleGui::Init()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
 
-	conf = new PanelConfiguration("Configuration",true);
-	new PanelShortcuts("Shortcuts", true, {SDL_SCANCODE_Q});
+	conf    =	new PanelConfiguration("Configuration",true);
+	console =	new PanelConsole("Console", true);
+				new PanelShortcuts("Shortcuts", true, { SDL_SCANCODE_Q });
 
 	char str[100];
 	
@@ -106,6 +108,7 @@ bool ModuleGui::CleanUp()
 		}
 	}
 	panels.clear();
+	console = nullptr;
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 
@@ -113,6 +116,12 @@ bool ModuleGui::CleanUp()
 	ImGui::DestroyContext();
 
 	return true;
+}
+
+void ModuleGui::Log(const char *sentence)
+{
+	if(console)
+		console->Log(sentence);
 }
 
 void ModuleGui::DisplayMainMenuBar(update_status &ret)
