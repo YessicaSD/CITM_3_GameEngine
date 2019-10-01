@@ -40,7 +40,8 @@ private:
 
 	friend class Shortcut;
 	friend class Panel;
-	
+	friend class PanelShortcuts;
+
 };
 #endif // !MODULEGUI_H_
 

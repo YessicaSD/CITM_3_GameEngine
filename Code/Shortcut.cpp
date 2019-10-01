@@ -4,6 +4,7 @@
 
 Shortcut::Shortcut()
 {
+	App->gui->shortcuts.push_back(this);
 }
 
 Shortcut::Shortcut(std::string name, std::vector<SDL_Scancode> keys) :
