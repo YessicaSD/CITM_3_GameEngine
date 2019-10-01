@@ -11,6 +11,7 @@ public:
 	Shortcut();
 	Shortcut(std::string name, std::vector<SDL_Scancode> keys);
 	bool Pressed();
+	bool Held();
 
 public:
 	std::string name;

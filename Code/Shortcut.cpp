@@ -47,3 +47,27 @@ bool Shortcut::Pressed()
 
 	return ret;
 }
+
+bool Shortcut::Held()
+{
+	bool ret = false;
+
+	if (keys.size() > 0)
+	{
+		ret = true;
+		std::vector<SDL_Scancode>::iterator iter;
+		for (iter = keys.begin();
+			iter != keys.end() && ret;
+			++iter)
+		{
+			KEY_STATE state = App->input->GetKey(*iter);
+
+			if (state == KEY_UP || state == KEY_IDLE)
+			{
+				ret = false;
+			}
+		}
+	}
+
+	return ret;
+}

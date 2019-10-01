@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
+#include "Shortcut.h"
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
@@ -23,6 +24,14 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 
+	navigate_forward	= new Shortcut("Move camera forward",	{ SDL_SCANCODE_W });
+	navigate_backward	= new Shortcut("Move camera backward",	{ SDL_SCANCODE_S });
+	navigate_left		= new Shortcut("Move camera left",		{ SDL_SCANCODE_A });
+	navigate_right		= new Shortcut("Move camera right",		{ SDL_SCANCODE_D });
+	navigate_up			= new Shortcut("Move camera up",		{ SDL_SCANCODE_R });
+	navigate_down		= new Shortcut("Move camera right",		{ SDL_SCANCODE_F });
+	navigate_fast		= new Shortcut("Move camera faster",	{ SDL_SCANCODE_LSHIFT });
+
 	return ret;
 }
 
@@ -40,25 +49,27 @@ update_status ModuleCamera3D::Update(float dt)
 	vec3 newPos(0,0,0);
 	float speed = 3.0f * dt;
 
-	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+	if(navigate_fast->Held())
 		speed = 8.0f * dt;
 
-	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) 
+	if(navigate_up->Held()) 
 		newPos.y += speed;
 
-	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
+	if(navigate_down->Held())
 		newPos.y -= speed;
 
-	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) 
+	//This is not continous
+	//This is just for when the shortcut is pressed
+	if(navigate_forward->Held()) 
 		newPos -=Z * speed;
 
-	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	if(navigate_backward->Held())
 		newPos += Z * speed;
 
-	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	if(navigate_left->Held())
 		newPos -= X * speed;
 
-	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	if(navigate_right->Held())
 		newPos += X * speed;
 
 	Position += newPos;
