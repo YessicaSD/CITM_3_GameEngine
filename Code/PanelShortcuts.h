@@ -9,13 +9,13 @@ public:
 	PanelShortcuts(std::string name, bool active = false, std::vector<SDL_Scancode> shortcuts = { SDL_SCANCODE_UNKNOWN });
 
 	void Draw() override;
-	std::string ScancodeToString(std::vector<SDL_Scancode> keys);
+	void ModifyShortcut(SDL_Scancode key);
 
 private:
 	void ShowModifyShortcutPanel();
+	std::string ScancodeToString(std::vector<SDL_Scancode> keys);
 
 private:
-
 	//Modify shortcut
 	bool modifying_shortcut = false;
 	Shortcut * shortcut_to_modify = nullptr;

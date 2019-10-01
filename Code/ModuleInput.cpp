@@ -47,6 +47,7 @@ update_status ModuleInput::PreUpdate()
 			{
 				keyboard[i] = KEY_DOWN;
 				App->gui->AddInputLog((SDL_Scancode)i, KEY_DOWN);
+				App->gui->ModifyShortcut((SDL_Scancode)i);
 			}
 			else
 			{

@@ -15,14 +15,16 @@ class Panel;
 class Shortcut;
 class PanelConfiguration;
 class PanelConsole;
+class PanelShortcuts;
 
 class ModuleGui : public Module
 {
 private:
 	bool showMenuImGui = false;
 	std::vector<Panel*> panels;
-	PanelConfiguration* conf = nullptr;
-	PanelConsole* console = nullptr;
+	PanelConfiguration* panel_config = nullptr;
+	PanelConsole* panel_console = nullptr;
+	PanelShortcuts * panel_shortcuts = nullptr;
 
 	std::vector<Shortcut *> shortcuts;
 
@@ -35,8 +37,8 @@ public:
 	bool CleanUp() override;
 	void Log(const char*);
 
-public:
 	void AddInputLog(SDL_Scancode key, KEY_STATE state);
+	void ModifyShortcut(SDL_Scancode key);
 
 private:
 	void DisplayMainMenuBar(update_status &ret);

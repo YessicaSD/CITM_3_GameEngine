@@ -24,7 +24,7 @@ void PanelShortcuts::Draw()
 	ImGui::SameLine(button_column_distance);
 	ImGui::Text("Reset shortcut");
 
-	//TODO: Add a line to separate the titles for each column from the contents of it
+	ImGui::Separator();
 
 	for (std::vector<Shortcut*>::iterator iter = App->gui->shortcuts.begin();
 		iter != App->gui->shortcuts.end();
@@ -34,13 +34,20 @@ void PanelShortcuts::Draw()
 		ImGui::SameLine(keys_column_distance);
 		ImGui::Text(ScancodeToString((*iter)->keys).c_str());
 		ImGui::SameLine(button_column_distance);
+		ImGui::PushID((*iter));//We'll use the number of the pointer to differentiate from other buttons
 		if (ImGui::Button("Reset"))
 		{
-			modifying_shortcut = true;
-			shortcut_to_modify = (*iter);
+			if (!modifying_shortcut)
+			{
+				modifying_shortcut = true;
+				shortcut_to_modify = (*iter);
+			}
 		}
+		ImGui::PopID();
 		//When the button is pressed, another panel appears which shows you the keys you've pressed
 		//You can exit that panel by pressing esc
+
+		//TODO: You shouldn't be able to focus the "Shortcuts panel" if you have the "Modfiy shortcuts panel" enabled
 	}
 	ImGui::End();
 
@@ -74,13 +81,22 @@ void PanelShortcuts::ShowModifyShortcutPanel()
 	if (ImGui::Button("Cancel"))
 	{
 		modifying_shortcut = false;
+		new_key_combination.clear();
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Save"))
 	{
 		modifying_shortcut = false;
-		//TODO: Assign new key combination
-		//shortcut_to_modify->keys = new_key_combination;
+		shortcut_to_modify->keys = new_key_combination;
+		new_key_combination.clear();
 	}
 	ImGui::End();
+}
+
+void PanelShortcuts::ModifyShortcut(SDL_Scancode key)
+{
+	if (modifying_shortcut)
+	{
+		new_key_combination.push_back(key);
+	}
 }

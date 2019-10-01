@@ -48,9 +48,9 @@ bool ModuleGui::Init()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
 
-	conf    =	new PanelConfiguration("Configuration",true);
-	console =	new PanelConsole("Console", true);
-				new PanelShortcuts("Shortcuts", true, { SDL_SCANCODE_Q });
+	panel_config    = new PanelConfiguration("Configuration",true);
+	panel_console	= new PanelConsole("Console", true);
+	panel_shortcuts = new PanelShortcuts("Shortcuts", true, { SDL_SCANCODE_Q });
 
 	char str[100];
 	
@@ -117,7 +117,7 @@ bool ModuleGui::CleanUp()
 		}
 	}
 	panels.clear();
-	console = nullptr;
+	panel_console = nullptr;
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 
@@ -129,8 +129,8 @@ bool ModuleGui::CleanUp()
 
 void ModuleGui::Log(const char *sentence)
 {
-	if(console)
-		console->Log(sentence);
+	if(panel_console)
+		panel_console->Log(sentence);
 }
 
 void ModuleGui::DisplayMainMenuBar(update_status &ret)
@@ -183,7 +183,7 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 	if (ImGui::BeginMenu("Project"))
 	{
 		if (ImGui::MenuItem("Configuration		"))
-			conf->SwitchActive();
+			panel_config->SwitchActive();
 
 		ImGui::EndMenu();
 	}
@@ -209,7 +209,12 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 
 void ModuleGui::AddInputLog(SDL_Scancode key, KEY_STATE state)
 {
-	conf->AddInputLog(key, state);
+	panel_config->AddInputLog(key, state);
+}
+
+void ModuleGui::ModifyShortcut(SDL_Scancode key)
+{
+	panel_shortcuts->ModifyShortcut(key);
 }
 
 
