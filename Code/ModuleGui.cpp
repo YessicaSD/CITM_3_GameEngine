@@ -4,8 +4,6 @@
 #include <stdio.h>
 #include <string>
 
-
-
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 
@@ -13,6 +11,17 @@
 #include "Panel.h"
 #include "PanelConfiguration.h"
 #include "PanelShortcuts.h"
+
+#define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
+#define IMGUI_GREY ImVec4(0.6f,0.6f,0.6f,1.f)
+#define IMGUI_BLUE ImVec4(0.2f,0.2f,1.f,1.f)
+#define IMGUI_GREEN ImVec4(0.f,1.f,0.f,1.f)
+#define IMGUI_YELLOW ImVec4(1.f,1.f,0.f,1.f)
+#define IMGUI_RED ImVec4(1.f,0.f,0.f,1.f)
+#define IMGUI_WHITE ImVec4(1.f,1.f,1.f,1.f)
+
+#define NORMAL_TEXT_COLOR IMGUI_LIGHT_GREY
+#define TITLE_1_TEXT_COLOR IMGUI_GREY
 
 ModuleGui::ModuleGui(bool start_enabled):Module(start_enabled)
 {
@@ -187,7 +196,12 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 	}
 
 	ImGui::EndMainMenuBar();
-
 }
+
+void ModuleGui::AddInputLog(SDL_Scancode key, KEY_STATE state)
+{
+	conf->AddInputLog(key, state);
+}
+
 
 

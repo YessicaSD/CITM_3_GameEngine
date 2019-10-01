@@ -32,6 +32,9 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 
+public:
+	void AddInputLog(SDL_Scancode key, KEY_STATE state);
+
 private:
 	void DisplayMainMenuBar(update_status &ret);
 

@@ -19,7 +19,7 @@ private:
 	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
 	int mouse_x;
 	int mouse_y;
-	int mouse_z;
+	int mouse_wheel;
 	int mouse_x_motion;
 	int mouse_y_motion;
 	//int mouse_z_motion;
@@ -53,17 +53,17 @@ public:
 		return mouse_y;
 	}
 
-	int GetMouseZ() const
+	int GetMouseWheel() const
 	{
-		return mouse_z;
+		return mouse_wheel;
 	}
 
-	int GetMouseXMotion() const
+	int GetMouseMotionX() const
 	{
 		return mouse_x_motion;
 	}
 
-	int GetMouseYMotion() const
+	int GetMouseMotionY() const
 	{
 		return mouse_y_motion;
 	}
