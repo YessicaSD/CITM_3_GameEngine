@@ -7,7 +7,8 @@
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-PanelConfiguration::PanelConfiguration(std::string name, bool active, std::vector<SDL_Scancode> shortcut) :Panel(name, active, shortcut)
+PanelConfiguration::PanelConfiguration(std::string name, bool active, std::vector<SDL_Scancode> shortcut) :
+	Panel("Panel " + name, active, shortcut)
 {
 	memset(fpsHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
 	memset(msHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
