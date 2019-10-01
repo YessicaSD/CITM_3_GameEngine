@@ -333,9 +333,6 @@
     <ClInclude Include="Globals.h">
       <Filter>Sources\Core</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleEditor.h">
-      <Filter>Sources\Editor</Filter>
-    </ClInclude>
     <ClInclude Include="Shortcut.h">
       <Filter>Sources\Editor</Filter>
     </ClInclude>
@@ -512,10 +509,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Sources\Core</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleEditor.cpp">
-      <Filter>Sources\Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="PanelConfiguration.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>

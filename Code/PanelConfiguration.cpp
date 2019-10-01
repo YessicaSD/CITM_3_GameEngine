@@ -8,19 +8,12 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 
-PanelConfiguration::PanelConfiguration(std::string name, std::vector<SDL_Scancode> ShortCUt, bool active):Panel(name,ShortCUt,active)
-{
-	memset(fpsHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
-	memset(msHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
-	memset(RamHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
-
-}
-
 PanelConfiguration::PanelConfiguration(std::string name, bool active):Panel(name, active)
 {
 	memset(fpsHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
 	memset(msHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
 	memset(RamHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
+
 }
 
 void PanelConfiguration::Draw()

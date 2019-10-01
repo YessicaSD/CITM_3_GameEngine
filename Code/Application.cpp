@@ -9,7 +9,7 @@ Application::Application()
 	renderer3D = new ModuleRenderer3D();
 	camera = new ModuleCamera3D();
 	scene = new ModuleScene();
-	gui = new ModuleGUI();
+	gui = new ModuleGui();
 	random = new ModuleRandom();
 
 	// The order of calls is very important!

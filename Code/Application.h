@@ -12,7 +12,6 @@
 #include "ModuleScene.h"
 #include "ModuleGui.h"
 #include "ModuleRandom.h"
-#include "ModuleEditor.h"
 
 #include <list>
 
@@ -29,9 +28,8 @@ public:
 	ModuleRenderer3D* renderer3D = nullptr;
 	ModuleCamera3D* camera = nullptr;
 	ModuleScene* scene = nullptr;
-	ModuleGUI* gui = nullptr;
+	ModuleGui* gui = nullptr;
 	ModuleRandom * random = nullptr;
-	ModuleEditor * editor = nullptr;
 
 	bool saveRequest = false;
 	JSON_Object * config = nullptr;

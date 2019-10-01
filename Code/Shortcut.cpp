@@ -2,11 +2,15 @@
 #include "ModuleInput.h"
 #include "Application.h"
 
+Shortcut::Shortcut()
+{
+}
+
 Shortcut::Shortcut(std::string name, std::vector<SDL_Scancode> keys) :
 	name(name),
 	keys(keys)
 {
-	App->gui->AddShortcut(this);
+	App->gui->shortcuts.push_back(this);
 }
 
 bool Shortcut::Pressed()

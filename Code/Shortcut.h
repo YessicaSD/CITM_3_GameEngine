@@ -8,6 +8,7 @@
 class Shortcut
 {
 public:
+	Shortcut();
 	Shortcut(std::string name, std::vector<SDL_Scancode> keys);
 	bool Pressed();
 

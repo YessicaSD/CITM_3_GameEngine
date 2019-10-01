@@ -16,12 +16,12 @@
 #include "Panel.h"
 #include "PanelConfiguration.h"
 
-ModuleGUI::ModuleGUI(bool start_enabled):Module(start_enabled)
+ModuleGui::ModuleGui(bool start_enabled):Module(start_enabled)
 {
 
 }
 
-bool ModuleGUI::Init()
+bool ModuleGui::Init()
 {
 	bool ret = true;
 
@@ -51,11 +51,11 @@ bool ModuleGUI::Init()
 
 update_status ModuleGui::PreUpdate()
 {
-	for (std::vector<Panels*>::iterator iter = panels.begin();
+	for (std::vector<Panel*>::iterator iter = panels.begin();
 		iter != panels.end();
 		++iter)
 	{
-		if ((*iter)->Shortcut->Pressed())
+		if ((*iter)->shortcut.Pressed())
 		{
 			//Open the panel
 		}
@@ -63,7 +63,7 @@ update_status ModuleGui::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleGUI::Update(float dt)
+update_status ModuleGui::Update(float dt)
 {
 	update_status ret = update_status::UPDATE_CONTINUE;
 
@@ -82,7 +82,7 @@ update_status ModuleGUI::Update(float dt)
 	return ret;
 }
 
-update_status ModuleGUI::PostUpdate()
+update_status ModuleGui::PostUpdate()
 {
 	// Rendering
 	for (std::vector<Panel*>::iterator iter = panels.begin(); iter != panels.end(); ++iter)
@@ -99,7 +99,7 @@ update_status ModuleGUI::PostUpdate()
 	return update_status::UPDATE_CONTINUE;
 }
 
-bool ModuleGUI::CleanUp()
+bool ModuleGui::CleanUp()
 {
 	for (std::vector<Panel*>::reverse_iterator iter = panels.rbegin(); iter != panels.rend(); ++iter)
 	{
@@ -120,7 +120,7 @@ bool ModuleGUI::CleanUp()
 	return true;
 }
 
-void ModuleGUI::DisplayMainMenuBar(update_status &ret)
+void ModuleGui::DisplayMainMenuBar(update_status &ret)
 {
 	ImGui::BeginMainMenuBar();
 	//if (ImGui::BeginMenu("Help"))
