@@ -46,7 +46,7 @@ update_status ModuleInput::PreUpdate()
 			if (keyboard[i] == KEY_IDLE)
 			{
 				keyboard[i] = KEY_DOWN;
-				App->gui->AddInputLog((SDL_Scancode)keyboard[i], KEY_DOWN);
+				App->gui->AddInputLog((SDL_Scancode)i, KEY_DOWN);
 			}
 			else
 			{
