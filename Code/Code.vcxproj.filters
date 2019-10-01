@@ -333,7 +333,7 @@
     <ClInclude Include="ModuleEditor.h">
       <Filter>Sources\Editor</Filter>
     </ClInclude>
-    <ClInclude Include="Tool.h">
+    <ClInclude Include="Shortcut.h">
       <Filter>Sources\Editor</Filter>
     </ClInclude>
   </ItemGroup>
@@ -503,10 +503,10 @@
     <ClCompile Include="Main.cpp">
       <Filter>Sources\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Tool.cpp">
+    <ClCompile Include="ModuleEditor.cpp">
       <Filter>Sources\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleEditor.cpp">
+    <ClCompile Include="Shortcut.cpp">
       <Filter>Sources\Editor</Filter>
     </ClCompile>
   </ItemGroup>

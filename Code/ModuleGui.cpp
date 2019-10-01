@@ -48,6 +48,20 @@ bool ModuleGUI::Init()
 	return ret;
 }
 
+update_status ModuleGui::PreUpdate()
+{
+	for (std::vector<Panels*>::iterator iter = panels.begin();
+		iter != panels.end();
+		++iter)
+	{
+		if ((*iter)->Shortcut->Pressed())
+		{
+			//Open the panel
+		}
+	}
+	return UPDATE_CONTINUE;
+}
+
 update_status ModuleGUI::Update(float dt)
 {
 	update_status ret = update_status::UPDATE_CONTINUE;
@@ -64,9 +78,9 @@ update_status ModuleGUI::Update(float dt)
 	if (showMenuImGui)
 		ImGui::ShowDemoWindow();
 
-	if(displayConfi)
+	if (displayConfi) {
 		DisplayConfiguration(ret, displayConfi);
-
+	}
 	
 
 	return ret;

@@ -177,8 +177,8 @@
     <ClInclude Include="pcg-cpp-0.98\include\pcg_uint128.hpp" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="ModuleRandom.h" />
+    <ClInclude Include="Shortcut.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="Tool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -236,8 +236,8 @@
     <ClCompile Include="parson\parson.c" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="ModuleRandom.cpp" />
+    <ClCompile Include="Shortcut.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Tool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\config.json" />

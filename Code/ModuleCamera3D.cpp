@@ -46,8 +46,9 @@ update_status ModuleCamera3D::Update(float dt)
 		newPos.y += speed;
 	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
 
-	//if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) 
-	//	newPos -=Z * speed;
+	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) 
+		newPos -=Z * speed;
+
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
 
 

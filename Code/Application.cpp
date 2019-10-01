@@ -11,7 +11,6 @@ Application::Application()
 	scene = new ModuleScene();
 	gui = new ModuleGUI();
 	random = new ModuleRandom();
-	editor = new ModuleEditor();
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -22,7 +21,6 @@ Application::Application()
 	AddModule(random);
 	AddModule(input);
 	AddModule(scene);
-	AddModule(editor);
 	AddModule(gui);
 	AddModule(camera);
 	// Renderer last!
