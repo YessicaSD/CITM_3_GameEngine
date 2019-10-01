@@ -1,11 +1,8 @@
-﻿
-
-#include "Application.h"
+﻿#include "Application.h"
 #include "ModuleGui.h"
 
 #include <stdio.h>
 #include <string>
-
 
 
 
@@ -15,6 +12,7 @@
 #include "Timer.h"
 #include "Panel.h"
 #include "PanelConfiguration.h"
+#include "PanelShortcuts.h"
 
 ModuleGui::ModuleGui(bool start_enabled):Module(start_enabled)
 {
@@ -43,6 +41,9 @@ bool ModuleGui::Init()
 	conf = new PanelConfiguration("Configuration",true);
 	panels.push_back(conf);
 
+	Panel * shortcut_panel = new PanelShortcuts("Shortcuts", true, {SDL_SCANCODE_Q});
+	panels.push_back(shortcut_panel);
+
 	char str[100];
 	
 	
@@ -57,7 +58,7 @@ update_status ModuleGui::PreUpdate()
 	{
 		if ((*iter)->shortcut.Pressed())
 		{
-			//Open the panel
+			(*iter)->SwitchActive();
 		}
 	}
 	return UPDATE_CONTINUE;
@@ -71,9 +72,6 @@ update_status ModuleGui::Update(float dt)
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
-
-	
-
 
 	DisplayMainMenuBar(ret);
 	if (showMenuImGui)

@@ -342,6 +342,9 @@
     <ClInclude Include="PanelConfiguration.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="PanelShortcuts.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -510,6 +513,12 @@
       <Filter>Sources\Core</Filter>
     </ClCompile>
     <ClCompile Include="PanelConfiguration.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Shortcut.cpp">
+      <Filter>Sources\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelShortcuts.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
   </ItemGroup>

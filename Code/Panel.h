@@ -22,6 +22,14 @@ public:
 		active(active)
 	{}
 
+	Panel(std::string name, bool active, std::vector<SDL_Scancode> shortcuts) :
+		name(name),
+		active(active)
+	{
+		shortcut.name = name;
+		shortcut.keys = shortcuts;
+	}
+
 	void SwitchActive()
 	{
 		active = !active;
