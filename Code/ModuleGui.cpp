@@ -39,8 +39,7 @@ bool ModuleGui::Init()
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
 
 	conf = new PanelConfiguration("Configuration",true);
-
-	Panel * shortcut_panel = new PanelShortcuts("Shortcuts", true, {SDL_SCANCODE_Q});
+	new PanelShortcuts("Shortcuts", true, {SDL_SCANCODE_Q});
 
 	char str[100];
 	
