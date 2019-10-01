@@ -36,6 +36,7 @@ private:
 	void DisplayMainMenuBar(update_status &ret);
 
 	friend class Shortcut;
+	friend class Panel;
 };
 #endif // !MODULEGUI_H_
 

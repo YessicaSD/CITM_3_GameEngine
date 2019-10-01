@@ -521,6 +521,9 @@
     <ClCompile Include="PanelShortcuts.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">

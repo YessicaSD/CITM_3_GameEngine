@@ -17,33 +17,12 @@ protected:
 	std::string name = "";
 
 public:
-	Panel(std::string name, bool active = false) :
-		name(name),
-		active(active)
-	{}
+	Panel(std::string name, bool active);
+	Panel(std::string name, bool active, std::vector<SDL_Scancode> shortcuts);
 
-	Panel(std::string name, bool active, std::vector<SDL_Scancode> shortcuts) :
-		name(name),
-		active(active)
-	{
-		shortcut.name = name;
-		shortcut.keys = shortcuts;
-	}
-
-	void SwitchActive()
-	{
-		active = !active;
-	}
-	bool IsActive() const
-	{
-		return active;
-	}
-	void SetName(std::string name)
-	{
-		this->name = name;
-	}
-
+	void SwitchActive();
+	bool IsActive() const;
+	void SetName(std::string name);
 	virtual void Draw() {}
-		
 };
 #endif // !_PANEL_H_
