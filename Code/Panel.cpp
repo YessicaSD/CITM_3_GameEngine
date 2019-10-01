@@ -29,7 +29,7 @@ bool Panel::IsActive() const
 }
 bool Panel::HasShortcut()
 {
-	return (shortcut.keys.size > 0 && shortcut.keys[0] != SDL_SCANCODE_UNKNOWN);
+	return (shortcut.keys.size() > 0u && shortcut.keys[0] != SDL_SCANCODE_UNKNOWN);
 }
 void Panel::SetName(std::string name)
 {
