@@ -9,6 +9,8 @@ class ModuleScene : public Module
 private:
 	uint my_id;
 	uint num_vertices = 3;
+	uint my_indices = 0;
+
 	//float vertices[4*3];
 public:
 	ModuleScene(bool start_enabled = true);
