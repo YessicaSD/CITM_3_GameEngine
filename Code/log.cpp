@@ -15,6 +15,8 @@ void log(const char file[], int line, const char* format, ...)
 	OutputDebugString(tmp_string2);
 	if (App)
 	{
+		//sprintf_s(tmp_string, 4096, "\n%s(%d) : %s", file, line, tmp_string2);
+
 		sprintf_s(tmp_string2, 4096, "\n%s", tmp_string);
 		App->Log(tmp_string2);
 	}

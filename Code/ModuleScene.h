@@ -6,6 +6,10 @@
 
 class ModuleScene : public Module
 {
+private:
+	uint my_id;
+	uint num_vertices = 3;
+	//float vertices[4*3];
 public:
 	ModuleScene(bool start_enabled = true);
 	~ModuleScene();
