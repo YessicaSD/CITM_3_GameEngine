@@ -41,16 +41,16 @@ Cube::Cube(float w, float h, float l, float3	position)
 
 }
 
-//void Cube::Draw_DirectMode()
-//{
-//	glEnableClientState(GL_VERTEX_ARRAY);
-//	glBindBuffer(GL_ARRAY_BUFFER, vetex_buf_id);
-//	glVertexPointer(3, GL_FLOAT, 0, NULL);
-//	// … draw other buffers
-//	glDrawArrays(GL_TRIANGLES, 0, NUM_VERTECES);
-//	glDisableClientState(GL_VERTEX_ARRAY);
-//
-//}
+void Cube::Draw_DirectMode()
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, vetex_buf_id);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	// … draw other buffers
+	glDrawArrays(GL_TRIANGLES, 0, NUM_VERTECES);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+}
 
 void Cube::Draw()
 {

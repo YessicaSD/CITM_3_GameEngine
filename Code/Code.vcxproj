@@ -176,6 +176,16 @@
     <ClInclude Include="PanelConsole.h" />
     <ClInclude Include="PanelShortcuts.h" />
     <ClInclude Include="parson\parson.h" />
+    <ClInclude Include="par\par_bluenoise.h" />
+    <ClInclude Include="par\par_bubbles.h" />
+    <ClInclude Include="par\par_easings.h" />
+    <ClInclude Include="par\par_easycurl.h" />
+    <ClInclude Include="par\par_filecache.h" />
+    <ClInclude Include="par\par_msquares.h" />
+    <ClInclude Include="par\par_shaders.h" />
+    <ClInclude Include="par\par_shapes.h" />
+    <ClInclude Include="par\par_sprune.h" />
+    <ClInclude Include="par\par_streamlines.h" />
     <ClInclude Include="pcg-cpp-0.98\include\pcg_extras.hpp" />
     <ClInclude Include="pcg-cpp-0.98\include\pcg_random.hpp" />
     <ClInclude Include="pcg-cpp-0.98\include\pcg_uint128.hpp" />

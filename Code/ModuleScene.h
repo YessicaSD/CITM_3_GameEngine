@@ -4,6 +4,9 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Cube.h"
+
+typedef struct par_shapes_mesh_s par_shapes_mesh;
+
 class ModuleScene : public Module
 {
 private:
@@ -11,6 +14,9 @@ private:
 	uint num_vertices = 3;
 	uint my_indices = 0;
 	Cube* cube[2];
+	par_shapes_mesh* sphereInfo = nullptr;
+	uint sphere_v_id;
+	uint sphere_indice_id;
 	//float vertices[4*3];
 public:
 	ModuleScene(bool start_enabled = true);

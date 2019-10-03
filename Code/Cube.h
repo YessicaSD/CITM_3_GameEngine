@@ -19,7 +19,7 @@ class Cube
 public:
 
 	Cube(float w, float h, float l, float3	position);
-	//void Draw_DirectMode();
+	void Draw_DirectMode();
 	void Draw();
 };
 #endif // !_CUBE_H_
