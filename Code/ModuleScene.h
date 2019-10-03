@@ -3,14 +3,14 @@
 
 #include "Module.h"
 #include "Globals.h"
-
+#include "Cube.h"
 class ModuleScene : public Module
 {
 private:
 	uint my_id;
 	uint num_vertices = 3;
 	uint my_indices = 0;
-
+	Cube* cube[2];
 	//float vertices[4*3];
 public:
 	ModuleScene(bool start_enabled = true);
