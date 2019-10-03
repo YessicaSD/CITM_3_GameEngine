@@ -32,7 +32,7 @@ void PanelShortcuts::Draw()
 	{
 		ImGui::Text((*iter)->name.c_str());
 		ImGui::SameLine(keys_column_distance);
-		ImGui::Text(ScancodeToString((*iter)->keys).c_str());
+		ImGui::Text(GetKeysCharPtr((*iter)->keys));
 		ImGui::SameLine(button_column_distance);
 		ImGui::PushID((*iter));//We'll use the number of the pointer to differentiate from other buttons
 		if (ImGui::Button("Reset"))
@@ -57,19 +57,9 @@ void PanelShortcuts::Draw()
 	}
 }
 
-//TODO: Make this new panel appear in front of the modifify shortcuts panel and with focus
-std::string PanelShortcuts::ScancodeToString(std::vector<SDL_Scancode> keys)
-{
-	std::string ret_string;
-	for (std::vector<SDL_Scancode>::iterator iter = keys.begin();
-		iter != keys.end();
-		++iter)
-	{
-		ret_string = ret_string + std::to_string((*iter)) + " ";
-	}
-	return ret_string;
-}
 
+
+//TODO: Make this new panel appear in front of the modifify shortcuts panel and with focus
 //This is not a panel "per se"
 //It's just a helper
 void PanelShortcuts::ShowModifyShortcutPanel()
@@ -77,7 +67,7 @@ void PanelShortcuts::ShowModifyShortcutPanel()
 	//TODO: Show if there is already a shortcut with the same key combination
 	ImGui::Begin("Reset shortcut");
 	ImGui::Text("Press the desired key combination");
-	ImGui::Text(ScancodeToString(new_key_combination).c_str());
+	ImGui::Text(GetKeysCharPtr(new_key_combination));
 	if (ImGui::Button("Cancel"))
 	{
 		modifying_shortcut = false;
@@ -91,6 +81,30 @@ void PanelShortcuts::ShowModifyShortcutPanel()
 		new_key_combination.clear();
 	}
 	ImGui::End();
+}
+
+const char * PanelShortcuts::GetKeysCharPtr(std::vector<SDL_Scancode> keys)
+{
+	const uint buffer_size = 128u;
+	uint curr_buffer_size = 1u;//1 space for the /0 character at the end
+	char buffer[buffer_size];
+	for (int i = 0; i < keys.size(); ++i)
+	{
+		const char * new_key = SDL_GetScancodeName(keys[i]);
+		uint new_key_size = strlen(new_key);
+		if (curr_buffer_size + new_key_size <= buffer_size)
+		{
+			strcat(buffer, new_key);
+		}
+		else
+		{
+			LOG("Buffer overflow, please increase the buffer size.");
+			break;
+		}
+	}
+	//strcat(buffer, '\0');
+	//TODO: We should add the null character at the end
+	return buffer;
 }
 
 void PanelShortcuts::ModifyShortcut(SDL_Scancode key)

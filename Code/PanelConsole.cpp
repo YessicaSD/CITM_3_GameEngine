@@ -1,6 +1,6 @@
 #include "PanelConsole.h"
 
-PanelConsole::PanelConsole(std::string name, bool active): Panel(name, active)
+PanelConsole::PanelConsole(std::string name, bool active, std::vector<SDL_Scancode> shortcuts): Panel(name, active, shortcuts)
 {
 
 }

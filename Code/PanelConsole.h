@@ -7,7 +7,7 @@ class PanelConsole : public Panel
 private:
 	ImGuiTextBuffer output;
 public:
-	PanelConsole(std::string name, bool active = false);
+	PanelConsole(std::string name, bool active = false, std::vector<SDL_Scancode> shortcuts = {});
 	~PanelConsole();
 
 	void Log(const char* sentence);

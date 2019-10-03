@@ -6,14 +6,14 @@
 class PanelShortcuts : public Panel
 {
 public:
-	PanelShortcuts(std::string name, bool active = false, std::vector<SDL_Scancode> shortcuts = { SDL_SCANCODE_UNKNOWN });
+	PanelShortcuts(std::string name, bool active = false, std::vector<SDL_Scancode> shortcuts = {});
 
 	void Draw() override;
 	void ModifyShortcut(SDL_Scancode key);
 
 private:
 	void ShowModifyShortcutPanel();
-	std::string ScancodeToString(std::vector<SDL_Scancode> keys);
+	const char * GetKeysCharPtr(std::vector<SDL_Scancode> keys);
 
 private:
 	//Modify shortcut
