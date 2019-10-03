@@ -32,9 +32,8 @@ void PanelShortcuts::Draw()
 	{
 		ImGui::Text((*iter)->name.c_str());
 		ImGui::SameLine(keys_column_distance);
-		const uint buffer_size = 128u;
-		char buffer[buffer_size];
-		ImGui::Text(GetKeysCharPtr((*iter)->keys, buffer, buffer_size));
+		char buffer[KEYS_BUFFER_SIZE];
+		ImGui::Text(GetKeysCharPtr((*iter)->keys, buffer, KEYS_BUFFER_SIZE));
 		ImGui::SameLine(button_column_distance);
 		ImGui::PushID((*iter));//We'll use the number of the pointer to differentiate from other buttons
 		if (ImGui::Button("Reset"))
@@ -69,9 +68,8 @@ void PanelShortcuts::ShowModifyShortcutPanel()
 	//TODO: Show if there is already a shortcut with the same key combination
 	ImGui::Begin("Reset shortcut");
 	ImGui::Text("Press the desired key combination");
-	const uint buffer_size = 128u;
-	char buffer[buffer_size] = "";
-	ImGui::Text(GetKeysCharPtr(new_key_combination, buffer, buffer_size));
+	char buffer[KEYS_BUFFER_SIZE] = "";
+	ImGui::Text(GetKeysCharPtr(new_key_combination, buffer, KEYS_BUFFER_SIZE));
 	if (ImGui::Button("Cancel"))
 	{
 		modifying_shortcut = false;

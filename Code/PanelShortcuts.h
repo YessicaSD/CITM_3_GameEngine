@@ -4,6 +4,8 @@
 #include "Panel.h"
 #include "Globals.h"
 
+#define KEYS_BUFFER_SIZE 128u
+
 class PanelShortcuts : public Panel
 {
 public:
