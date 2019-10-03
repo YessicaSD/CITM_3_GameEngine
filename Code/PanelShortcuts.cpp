@@ -12,8 +12,9 @@ PanelShortcuts::PanelShortcuts(std::string name, bool active, std::vector<SDL_Sc
 
 void PanelShortcuts::Draw()
 {
-	float keys_column_distance = 175;
-	float button_column_distance = 275;
+	float keys_column_distance = 200;
+
+	ImVec2 button_size(150, 20);
 
 	//TODO: Make the window have a minimum size that allows you to see everything (name + key combination + reset button)
 	ImGui::Begin(name.c_str());
@@ -21,8 +22,6 @@ void PanelShortcuts::Draw()
 	ImGui::Text("Tool");
 	ImGui::SameLine(keys_column_distance);
 	ImGui::Text("Shortcut");
-	ImGui::SameLine(button_column_distance);
-	ImGui::Text("Reset shortcut");
 
 	ImGui::Separator();
 
@@ -32,11 +31,9 @@ void PanelShortcuts::Draw()
 	{
 		ImGui::Text((*iter)->name.c_str());
 		ImGui::SameLine(keys_column_distance);
+		ImGui::PushID((*iter));//We'll use the pointer's adress to differentiate from other buttons
 		char buffer[KEYS_BUFFER_SIZE];
-		ImGui::Text(GetKeysCharPtr((*iter)->keys, buffer, KEYS_BUFFER_SIZE));
-		ImGui::SameLine(button_column_distance);
-		ImGui::PushID((*iter));//We'll use the number of the pointer to differentiate from other buttons
-		if (ImGui::Button("Reset"))
+		if (ImGui::Button(GetKeysCharPtr((*iter)->keys, buffer, KEYS_BUFFER_SIZE), button_size))
 		{
 			if (!modifying_shortcut)
 			{
@@ -45,9 +42,6 @@ void PanelShortcuts::Draw()
 			}
 		}
 		ImGui::PopID();
-		//When the button is pressed, another panel appears which shows you the keys you've pressed
-		//You can exit that panel by pressing esc
-
 		//TODO: You shouldn't be able to focus the "Shortcuts panel" if you have the "Modfiy shortcuts panel" enabled
 	}
 	ImGui::End();
@@ -68,7 +62,7 @@ void PanelShortcuts::ShowModifyShortcutPanel()
 	//TODO: Show if there is already a shortcut with the same key combination
 	ImGui::Begin("Reset shortcut");
 	ImGui::Text("Press the desired key combination");
-	char buffer[KEYS_BUFFER_SIZE] = "";
+	char buffer[KEYS_BUFFER_SIZE];
 	ImGui::Text(GetKeysCharPtr(new_key_combination, buffer, KEYS_BUFFER_SIZE));
 	if (ImGui::Button("Cancel"))
 	{
