@@ -92,7 +92,7 @@ const char * PanelShortcuts::GetKeysCharPtr(std::vector<SDL_Scancode> keys, char
 {
 	if (keys.size() > 0)
 	{
-		uint curr_buffer_size = 1u;//1 space for the /0 character at the end
+		uint curr_buffer_size = 1u;//1 space for the null '/0' character at the end
 		bool added_something = false;
 		for (int i = 0; i < keys.size(); ++i)
 		{
@@ -116,17 +116,7 @@ const char * PanelShortcuts::GetKeysCharPtr(std::vector<SDL_Scancode> keys, char
 				break;
 			}
 		}
-
-		//TO OPTIMIZE: strcpy_s and strcat_s replace the last null character and add a new one at the end, we can just add one when we're finished.
-
-		//if (!added_something)
-		//{
-		//	strcpy(buffer, '\0');
-		//}
-		//else
-		//{
-		//	strcat(buffer, '\0');
-		//}
+		//TO OPTIMIZE: strcpy_s and strcat_s replace the last null '/0' character and add a new one at the end, we can just add one when we're finished.
 	}
 	else
 	{
