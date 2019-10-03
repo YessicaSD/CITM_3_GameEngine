@@ -31,7 +31,7 @@ bool ModuleScene::Start()
 	position = { 2,0,0 };
 	cube[1]=new Cube(1.f,1.f,1.f, position);
 
-	sphereInfo = par_shapes_create_subdivided_sphere(1);
+	sphereInfo = par_shapes_create_trefoil_knot(20,20,2);
 	sphere_v_id = 0;
 	glGenBuffers(1, &sphere_v_id);
 	glBindBuffer(GL_ARRAY_BUFFER, sphere_v_id);
@@ -57,8 +57,9 @@ update_status ModuleScene::Update(float dt)
 
 	const uint num_index = 6 * 2 * 3;
 
+	//change mode
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	cube[0]->Draw_DirectMode();
+	//cube[0]->Draw_DirectMode();
 	cube[1]->Draw();
 
 	glEnableClientState(GL_VERTEX_ARRAY);
