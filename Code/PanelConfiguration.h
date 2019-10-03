@@ -12,7 +12,7 @@ enum KEY_STATE;
 class PanelConfiguration : public Panel
 {
 public:
-	PanelConfiguration(std::string name, bool active = false, std::vector<SDL_Scancode> shortcut = { SDL_SCANCODE_UNKNOWN });
+	PanelConfiguration(std::string name, bool active = false, std::vector<SDL_Scancode> shortcut = {});
 	void Draw() override;
 
 	void AddInputLog(SDL_Scancode key, KEY_STATE state);

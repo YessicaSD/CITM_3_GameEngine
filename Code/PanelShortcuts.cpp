@@ -32,7 +32,9 @@ void PanelShortcuts::Draw()
 	{
 		ImGui::Text((*iter)->name.c_str());
 		ImGui::SameLine(keys_column_distance);
-		ImGui::Text(GetKeysCharPtr((*iter)->keys));
+		const uint buffer_size = 128u;
+		char buffer[buffer_size];
+		ImGui::Text(GetKeysCharPtr((*iter)->keys, buffer, buffer_size));
 		ImGui::SameLine(button_column_distance);
 		ImGui::PushID((*iter));//We'll use the number of the pointer to differentiate from other buttons
 		if (ImGui::Button("Reset"))
@@ -67,7 +69,9 @@ void PanelShortcuts::ShowModifyShortcutPanel()
 	//TODO: Show if there is already a shortcut with the same key combination
 	ImGui::Begin("Reset shortcut");
 	ImGui::Text("Press the desired key combination");
-	ImGui::Text(GetKeysCharPtr(new_key_combination));
+	const uint buffer_size = 128u;
+	char buffer[buffer_size] = "";
+	ImGui::Text(GetKeysCharPtr(new_key_combination, buffer, buffer_size));
 	if (ImGui::Button("Cancel"))
 	{
 		modifying_shortcut = false;
@@ -83,27 +87,51 @@ void PanelShortcuts::ShowModifyShortcutPanel()
 	ImGui::End();
 }
 
-const char * PanelShortcuts::GetKeysCharPtr(std::vector<SDL_Scancode> keys)
+//TO OPTIMIZE: This char * don't change every time so we can store them inside class Shortcut and only calculate them when they are modified.
+const char * PanelShortcuts::GetKeysCharPtr(std::vector<SDL_Scancode> keys, char * buffer, const uint buffer_size)
 {
-	const uint buffer_size = 128u;
-	uint curr_buffer_size = 1u;//1 space for the /0 character at the end
-	char buffer[buffer_size];
-	for (int i = 0; i < keys.size(); ++i)
+	if (keys.size() > 0)
 	{
-		const char * new_key = SDL_GetScancodeName(keys[i]);
-		uint new_key_size = strlen(new_key);
-		if (curr_buffer_size + new_key_size <= buffer_size)
+		uint curr_buffer_size = 1u;//1 space for the /0 character at the end
+		bool added_something = false;
+		for (int i = 0; i < keys.size(); ++i)
 		{
-			strcat(buffer, new_key);
+			const char * new_key = SDL_GetScancodeName(keys[i]);
+			uint new_key_size = strlen(new_key);
+			if (curr_buffer_size + new_key_size <= buffer_size)
+			{
+				if (!added_something)
+				{
+					strcpy_s(buffer, buffer_size, new_key);
+					added_something = true;
+				}
+				else
+				{
+					strcat_s(buffer, buffer_size, new_key);
+				}
+			}
+			else
+			{
+				LOG("Buffer overflow, please increase the buffer size.");
+				break;
+			}
 		}
-		else
-		{
-			LOG("Buffer overflow, please increase the buffer size.");
-			break;
-		}
+
+		//TO OPTIMIZE: strcpy_s and strcat_s replace the last null character and add a new one at the end, we can just add one when we're finished.
+
+		//if (!added_something)
+		//{
+		//	strcpy(buffer, '\0');
+		//}
+		//else
+		//{
+		//	strcat(buffer, '\0');
+		//}
 	}
-	//strcat(buffer, '\0');
-	//TODO: We should add the null character at the end
+	else
+	{
+		strcpy_s(buffer, buffer_size, "");
+	}
 	return buffer;
 }
 

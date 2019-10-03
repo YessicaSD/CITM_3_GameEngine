@@ -2,6 +2,7 @@
 #define __PANEL_SHORTCUTS_H__
 
 #include "Panel.h"
+#include "Globals.h"
 
 class PanelShortcuts : public Panel
 {
@@ -13,7 +14,7 @@ public:
 
 private:
 	void ShowModifyShortcutPanel();
-	const char * GetKeysCharPtr(std::vector<SDL_Scancode> keys);
+	const char * GetKeysCharPtr(std::vector<SDL_Scancode> keys, char * buffer, const uint buffer_size);
 
 private:
 	//Modify shortcut

@@ -50,7 +50,7 @@ bool ModuleGui::Init()
 
 	panel_config    = new PanelConfiguration("Configuration",true);
 	panel_console	= new PanelConsole("Console", true);
-	panel_shortcuts = new PanelShortcuts("Shortcuts", true, { SDL_SCANCODE_Q });
+	panel_shortcuts = new PanelShortcuts("Shortcuts", true/*, { SDL_SCANCODE_Q }*/);
 
 	char str[100];
 	
