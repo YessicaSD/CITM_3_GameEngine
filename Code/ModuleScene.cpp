@@ -31,8 +31,7 @@ bool ModuleScene::Start()
 	position = { 2,0,0 };
 	cube[1]=new Cube(1.f,1.f,1.f, position);
 
-	sphereInfo = par_shapes_create_trefoil_knot(20,20,2);
-	sphere_v_id = 0;
+	sphereInfo = par_shapes_create_trefoil_knot(50,20,2);
 	glGenBuffers(1, &sphere_v_id);
 	glBindBuffer(GL_ARRAY_BUFFER, sphere_v_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * sphereInfo->npoints * 3, sphereInfo->points, GL_STATIC_DRAW);
