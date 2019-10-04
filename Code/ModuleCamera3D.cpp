@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
+#include "ModuleInput.h"
 #include "Shortcut.h"
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
@@ -63,7 +64,8 @@ update_status ModuleCamera3D::Update(float dt)
 	if(navigate_forward->Held()) 
 		newPos -=Z * speed;
 
-	int mouse_wheel = App->input->GetMouseZ();
+	
+	int mouse_wheel = App->input->GetMouseWheel();
 	if (mouse_wheel != 0)
 	{
 		newPos -=Z* mouse_wheel * speed*2;
