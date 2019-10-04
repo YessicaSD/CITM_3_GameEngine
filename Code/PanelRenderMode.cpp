@@ -13,24 +13,27 @@ void PanelRenderMode::Draw()
 {
 	ImGui::Begin(name.c_str(), &active);
 	static int style_idx = -1;
-	if (ImGui::Combo("Mode", &style_idx, "Default\0Wireframe\0"))
+	if (ImGui::Combo("Mode", &style_idx, "Default\0Wireframe\0Vertex"))
 	{
 		switch (style_idx)
 		{
 		case 0: 
 		{
-			labelState = "Default";
+			
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
 		
 			break;
 		case 1:
 		{
-			labelState = "Wireframe";
+			
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
-			
 			break;
+
+		case 2:
+			glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+		break;
 		
 		}
 	}
