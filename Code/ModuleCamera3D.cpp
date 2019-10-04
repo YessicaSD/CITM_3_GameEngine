@@ -70,6 +70,11 @@ update_status ModuleCamera3D::Update(float dt)
 	{
 		newPos -=Z* mouse_wheel * speed*2;
 	}
+	if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE)==KEY_STATE::KEY_REPEAT)
+	{
+		newPos -= X* App->input->GetMouseMotionX()*speed*0.5f;
+		newPos += Y*App->input->GetMouseMotionY()*speed*0.5f;
+	}
 	if(navigate_backward->Held())
 		newPos += Z * speed;
 

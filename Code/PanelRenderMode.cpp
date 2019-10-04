@@ -22,7 +22,6 @@ void PanelRenderMode::Draw()
 			
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
-		
 			break;
 		case 1:
 		{
