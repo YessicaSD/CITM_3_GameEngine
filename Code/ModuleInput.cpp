@@ -43,17 +43,27 @@ update_status ModuleInput::PreUpdate()
 	{
 		if(keys[i] == 1)
 		{
-			if(keyboard[i] == KEY_IDLE)
+			if (keyboard[i] == KEY_IDLE)
+			{
 				keyboard[i] = KEY_DOWN;
+				App->gui->AddInputLog((SDL_Scancode)i, KEY_DOWN);
+				App->gui->ModifyShortcut((SDL_Scancode)i);
+			}
 			else
+			{
 				keyboard[i] = KEY_REPEAT;
+			}
 		}
 		else
 		{
-			if(keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
+			if (keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
+			{
 				keyboard[i] = KEY_UP;
+			}
 			else
+			{
 				keyboard[i] = KEY_IDLE;
+			}
 		}
 	}
 
@@ -61,23 +71,31 @@ update_status ModuleInput::PreUpdate()
 
 	mouse_x /= SCREEN_SIZE;
 	mouse_y /= SCREEN_SIZE;
-	mouse_z = 0;
+	mouse_wheel = 0;
 
 	for(int i = 0; i < 5; ++i)
 	{
 		if(buttons & SDL_BUTTON(i))
 		{
-			if(mouse_buttons[i] == KEY_IDLE)
+			if (mouse_buttons[i] == KEY_IDLE)
+			{
 				mouse_buttons[i] = KEY_DOWN;
+			}
 			else
+			{
 				mouse_buttons[i] = KEY_REPEAT;
+			}
 		}
 		else
 		{
-			if(mouse_buttons[i] == KEY_REPEAT || mouse_buttons[i] == KEY_DOWN)
+			if (mouse_buttons[i] == KEY_REPEAT || mouse_buttons[i] == KEY_DOWN)
+			{
 				mouse_buttons[i] = KEY_UP;
+			}
 			else
+			{
 				mouse_buttons[i] = KEY_IDLE;
+			}
 		}
 	}
 
@@ -91,7 +109,7 @@ update_status ModuleInput::PreUpdate()
 		switch(e.type)
 		{
 			case SDL_MOUSEWHEEL:
-			mouse_z = e.wheel.y;
+			mouse_wheel = e.wheel.y;
 			break;
 
 			case SDL_MOUSEMOTION:
@@ -111,6 +129,7 @@ update_status ModuleInput::PreUpdate()
 				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
 			}
+			break;
 		}
 	}
 

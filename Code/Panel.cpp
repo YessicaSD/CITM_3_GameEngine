@@ -6,6 +6,8 @@ Panel::Panel(std::string name, bool active) :
 	name(name),
 	active(active)
 {
+	shortcut.name = name;
+
 	App->gui->panels.push_back(this);
 }
 

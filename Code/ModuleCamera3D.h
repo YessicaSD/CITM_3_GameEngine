@@ -3,6 +3,8 @@
 #include "Globals.h"
 #include "glmath.h"
 
+class Shortcut;
+
 class ModuleCamera3D : public Module
 {
 public:
@@ -19,7 +21,6 @@ public:
 	float* GetViewMatrix();
 
 private:
-
 	void CalculateViewMatrix();
 
 public:
@@ -27,6 +28,14 @@ public:
 	vec3 X, Y, Z, Position, Reference;
 
 private:
+	Shortcut * navigate_forward = nullptr;
+	Shortcut * navigate_backward = nullptr;
+	Shortcut * navigate_left = nullptr;
+	Shortcut * navigate_right = nullptr;
+	Shortcut * navigate_up = nullptr;
+	Shortcut * navigate_down = nullptr;
+	Shortcut * navigate_fast = nullptr;
+
 
 	mat4x4 ViewMatrix, ViewMatrixInverse;
 };

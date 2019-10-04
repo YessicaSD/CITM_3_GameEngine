@@ -4,8 +4,6 @@
 #include <stdio.h>
 #include <string>
 
-
-
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 
@@ -14,6 +12,17 @@
 #include "PanelConfiguration.h"
 #include "PanelShortcuts.h"
 #include "PanelConsole.h"
+
+#define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
+#define IMGUI_GREY ImVec4(0.6f,0.6f,0.6f,1.f)
+#define IMGUI_BLUE ImVec4(0.2f,0.2f,1.f,1.f)
+#define IMGUI_GREEN ImVec4(0.f,1.f,0.f,1.f)
+#define IMGUI_YELLOW ImVec4(1.f,1.f,0.f,1.f)
+#define IMGUI_RED ImVec4(1.f,0.f,0.f,1.f)
+#define IMGUI_WHITE ImVec4(1.f,1.f,1.f,1.f)
+
+#define NORMAL_TEXT_COLOR IMGUI_LIGHT_GREY
+#define TITLE_1_TEXT_COLOR IMGUI_GREY
 
 ModuleGui::ModuleGui(bool start_enabled):Module(start_enabled)
 {
@@ -39,9 +48,9 @@ bool ModuleGui::Init()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
 
-	conf    =	new PanelConfiguration("Configuration",true);
-	console =	new PanelConsole("Console", true);
-				new PanelShortcuts("Shortcuts", true, { SDL_SCANCODE_Q });
+	panel_config    = new PanelConfiguration("Configuration",true);
+	panel_console	= new PanelConsole("Console", true);
+	panel_shortcuts = new PanelShortcuts("Shortcuts", true/*, { SDL_SCANCODE_Q }*/);
 
 	char str[100];
 	
@@ -108,7 +117,7 @@ bool ModuleGui::CleanUp()
 		}
 	}
 	panels.clear();
-	console = nullptr;
+	panel_console = nullptr;
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 
@@ -120,8 +129,8 @@ bool ModuleGui::CleanUp()
 
 void ModuleGui::Log(const char *sentence)
 {
-	if(console)
-		console->Log(sentence);
+	if(panel_console)
+		panel_console->Log(sentence);
 }
 
 void ModuleGui::DisplayMainMenuBar(update_status &ret)
@@ -174,7 +183,7 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 	if (ImGui::BeginMenu("Project"))
 	{
 		if (ImGui::MenuItem("Configuration		"))
-			conf->SwitchActive();
+			panel_config->SwitchActive();
 
 		ImGui::EndMenu();
 	}
@@ -196,7 +205,17 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 	}
 
 	ImGui::EndMainMenuBar();
-
 }
+
+void ModuleGui::AddInputLog(SDL_Scancode key, KEY_STATE state)
+{
+	panel_config->AddInputLog(key, state);
+}
+
+void ModuleGui::ModifyShortcut(SDL_Scancode key)
+{
+	panel_shortcuts->ModifyShortcut(key);
+}
+
 
 

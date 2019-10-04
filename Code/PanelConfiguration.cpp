@@ -1,5 +1,7 @@
 #include "PanelConfiguration.h"
 #include "Application.h"
+#include "ModuleInput.h"
+#include "ModuleGui.h"
 
 #include "mmgr\mmgr.h"
 
@@ -103,5 +105,42 @@ void PanelConfiguration::Draw()
 			ref_saved_style = style;
 	}
 
+	if (ImGui::CollapsingHeader("Input"))
+	{
+		int mouse_x = App->input->GetMouseX();
+		int mouse_y = App->input->GetMouseY();
+		ImGui::Text("Mouse Position:");
+		ImGui::SameLine();
+		ImGui::Text("%i,%i", mouse_x, mouse_y);
+
+		int mouse_motion_x = App->input->GetMouseMotionX();
+		int mouse_motion_y = App->input->GetMouseMotionY();
+		ImGui::Text("Mouse Motion:");
+		ImGui::SameLine();
+		ImGui::Text("%i,%i", mouse_x, mouse_y);
+
+		int mouse_wheel = App->input->GetMouseWheel();
+		ImGui::Text("Mouse Wheel:");
+		ImGui::SameLine();
+		ImGui::Text("%i", mouse_wheel);
+
+		ImGui::Separator();
+
+		ImGui::BeginChild("Input Log");
+		ImGui::TextUnformatted(input_log_buffer.begin());
+		if (scroll_input_log)
+		{
+			ImGui::SetScrollHere(1.0f);
+		}
+		scroll_input_log = false;
+		ImGui::EndChild();
+	}
+
 	ImGui::End();
+}
+
+void PanelConfiguration::AddInputLog(SDL_Scancode key, KEY_STATE state)
+{
+	std::string new_string = "Key: " + std::to_string(key) + ", State: " + std::to_string(state) + ". \n";
+	input_log_buffer.appendf(new_string.c_str());
 }
