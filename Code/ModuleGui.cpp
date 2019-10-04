@@ -12,6 +12,7 @@
 #include "PanelConfiguration.h"
 #include "PanelShortcuts.h"
 #include "PanelConsole.h"
+#include "PanelRenderMode.h"
 
 #define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
 #define IMGUI_GREY ImVec4(0.6f,0.6f,0.6f,1.f)
@@ -48,13 +49,11 @@ bool ModuleGui::Init()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
 
-	panel_config    = new PanelConfiguration("Configuration",true);
+	panel_config    = new PanelConfiguration("Configuration");
 	panel_console	= new PanelConsole("Console", true);
 	panel_shortcuts = new PanelShortcuts("Shortcuts", true/*, { SDL_SCANCODE_Q }*/);
+	panelRenderMode = new PanelRenderMode("Render Mode", true);
 
-	char str[100];
-	
-	
 	return ret;
 }
 
@@ -135,20 +134,7 @@ void ModuleGui::Log(const char *sentence)
 
 void ModuleGui::DisplayMainMenuBar(update_status &ret)
 {
-	ImGui::BeginMainMenuBar();
-	//if (ImGui::BeginMenu("Help"))
-	//{
-	//	ImGui::Button("Documentation");
-	//	ImGui::EndMenu();
-	//}
-
-
-	//ImGui::BeginMenu("File");
-	//	if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
-	//	if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff */ }
-	//	if (ImGui::MenuItem("Close", "Ctrl+W")) {   }
-	//	ImGui::EndMenu();
-	ImGui::EndMainMenuBar();
+	
 	ImGui::Begin("Config");
 	if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen))
 	{
@@ -178,15 +164,18 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 	ImGui::End();
 
 
-	// MAIN MENU BAR ======================================================================================
+	//ImGui::PushID(001);
 	ImGui::BeginMainMenuBar();
 	if (ImGui::BeginMenu("Project"))
 	{
 		if (ImGui::MenuItem("Configuration		"))
 			panel_config->SwitchActive();
+		if (ImGui::MenuItem("Render Mode		"))
+			panelRenderMode->SwitchActive();
 
 		ImGui::EndMenu();
 	}
+	//ImGui::PopID();
 
 	
 
@@ -205,6 +194,10 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 	}
 
 	ImGui::EndMainMenuBar();
+
+
+	
+
 }
 
 void ModuleGui::AddInputLog(SDL_Scancode key, KEY_STATE state)

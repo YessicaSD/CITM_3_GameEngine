@@ -16,6 +16,7 @@ class Shortcut;
 class PanelConfiguration;
 class PanelConsole;
 class PanelShortcuts;
+class PanelRenderMode;
 
 class ModuleGui : public Module
 {
@@ -25,7 +26,7 @@ private:
 	PanelConfiguration* panel_config = nullptr;
 	PanelConsole* panel_console = nullptr;
 	PanelShortcuts * panel_shortcuts = nullptr;
-
+	PanelRenderMode* panelRenderMode;
 	std::vector<Shortcut *> shortcuts;
 
 public:

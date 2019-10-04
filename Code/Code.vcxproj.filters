@@ -390,6 +390,9 @@
     <ClInclude Include="par\par_streamlines.h">
       <Filter>Sources\Par</Filter>
     </ClInclude>
+    <ClInclude Include="PanelRenderMode.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -577,6 +580,9 @@
     </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>Sources\3DPrimitive</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelRenderMode.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

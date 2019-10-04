@@ -57,7 +57,7 @@ update_status ModuleScene::Update(float dt)
 	const uint num_index = 6 * 2 * 3;
 
 	//change mode
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	//cube[0]->Draw_DirectMode();
 	cube[1]->Draw();
 
@@ -68,7 +68,7 @@ update_status ModuleScene::Update(float dt)
 
 	glDrawElements(GL_TRIANGLES, sphereInfo->ntriangles * 3, GL_UNSIGNED_SHORT, NULL);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	return UPDATE_CONTINUE;
 }
 
