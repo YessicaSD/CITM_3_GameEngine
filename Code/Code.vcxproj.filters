@@ -504,6 +504,9 @@
     <ClInclude Include="assimp\include\Compiler\pushpack1.h">
       <Filter>Sources\assimp</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleImporter.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -691,6 +694,9 @@
     </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>Sources\3DPrimitive</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleImporter.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

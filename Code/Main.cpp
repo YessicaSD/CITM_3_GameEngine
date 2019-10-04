@@ -8,6 +8,7 @@
 #pragma comment (lib, "glew/lib/glew32.lib")
 #pragma comment (lib, "glew/lib/glew32s.lib")
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
+#pragma comment (lib, "assimp/libx86/assimp.lib")
 
 enum main_states
 {
