@@ -52,6 +52,12 @@
     <Filter Include="Sources\Editor\Panels">
       <UniqueIdentifier>{5a18bdca-40d6-4638-aae7-0dd4f12ad5aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\3DPrimitive">
+      <UniqueIdentifier>{271b9217-f31c-400d-b2b0-3f5f10f0972a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Par">
+      <UniqueIdentifier>{23b6dace-c707-4b61-888e-5da1a94843e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -351,6 +357,39 @@
     <ClInclude Include="PanelConsole.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Sources\3DPrimitive</Filter>
+    </ClInclude>
+    <ClInclude Include="par\par_bluenoise.h">
+      <Filter>Sources\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="par\par_bubbles.h">
+      <Filter>Sources\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="par\par_easings.h">
+      <Filter>Sources\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="par\par_easycurl.h">
+      <Filter>Sources\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="par\par_filecache.h">
+      <Filter>Sources\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="par\par_msquares.h">
+      <Filter>Sources\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="par\par_shaders.h">
+      <Filter>Sources\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="par\par_shapes.h">
+      <Filter>Sources\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="par\par_sprune.h">
+      <Filter>Sources\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="par\par_streamlines.h">
+      <Filter>Sources\Par</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -535,6 +574,9 @@
     </ClCompile>
     <ClCompile Include="PanelConsole.cpp">
       <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Sources\3DPrimitive</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
