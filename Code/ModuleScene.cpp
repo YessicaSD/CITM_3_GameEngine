@@ -8,6 +8,7 @@
 
 #define PAR_SHAPES_IMPLEMENTATION
 #include "par\par_shapes.h"
+#include "Mesh.h"
 
 
 ModuleScene::ModuleScene(bool start_enabled) : Module(start_enabled)
@@ -68,6 +69,8 @@ update_status ModuleScene::Update(float dt)
 
 	glDrawElements(GL_TRIANGLES, sphereInfo->ntriangles * 3, GL_UNSIGNED_SHORT, NULL);
 
+
+	
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	return UPDATE_CONTINUE;
 }
