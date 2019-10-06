@@ -10,11 +10,16 @@
 
 class Mesh;
 
+struct Scene
+{
+	std::vector<Mesh*> array_mesh;
+};
 class ModuleImportFBX : public Module
 {
 private:
 	aiLogStream stream;
-	std::vector<Mesh*> array_mesh;
+
+	std::vector<Scene*> array_scene;
 public:
 	bool Start() override;
 	

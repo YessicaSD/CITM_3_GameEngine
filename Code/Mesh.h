@@ -2,7 +2,8 @@
 #define MESH_H_
 
 typedef unsigned int uint;
-
+#include "MathGeoLib/include/Math/float3.h"
+#include "Assimp/include/vector3.h"
 struct Mesh {
 
 	//Data ========================
@@ -15,11 +16,14 @@ struct Mesh {
 	uint num_vertices = 0;
 	float* vertices = nullptr;
 
+	aiVector3D* normals;
 
 
 	bool Load(uint num_vertices, float* mVetices);
 
 	void Draw();
+
+	void DrawVertexNormal();
 
 	
 

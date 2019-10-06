@@ -77,10 +77,10 @@ update_status ModuleScene::Update(float dt)
 
 update_status ModuleScene::PostUpdate()
 {
-	PPlane p(0, 1, 0, 0);
-	p.axis = true;
-	p.wire = false;
-	p.Render();
+	//PPlane p(0, 1, 0, 0);
+	//p.axis = true;
+	//p.wire = false;
+	//p.Render();
 	return UPDATE_CONTINUE;
 }
 

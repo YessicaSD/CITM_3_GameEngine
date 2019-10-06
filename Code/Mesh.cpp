@@ -22,3 +22,20 @@ void Mesh::Draw()
 
 	glDrawElements(GL_TRIANGLES, this->num_indices * 3, GL_UNSIGNED_INT, NULL);
 }
+
+void Mesh::DrawVertexNormal()
+{
+	glColor3f(0.2f, 1.f, 0.25f);
+	uint j = 0;
+	float lenght = 2;
+	for (uint i = 0; i < num_vertices*3; i+=3)
+	{
+
+		glBegin(GL_LINES);
+		glVertex3f(vertices[i], vertices[i+1], vertices[i+2]);
+		glVertex3f(vertices[i] + normals[j].x*lenght, vertices[i+1] + normals[j].y *lenght, vertices[i+2] + normals[j].z*lenght);
+		++j;
+		glEnd();
+	}
+	glColor3f(1, 1, 1);
+}

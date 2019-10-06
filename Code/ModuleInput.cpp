@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "imgui\imgui_impl_sdl.h"
+#include "ModuleImportFBX.h"
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput(bool start_enabled) : Module(start_enabled)
@@ -130,6 +131,19 @@ update_status ModuleInput::PreUpdate()
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
 			}
 			break;
+
+			case SDL_DROPFILE:
+				dropped_filedir=e.drop.file;
+				SDL_ShowSimpleMessageBox(
+					SDL_MESSAGEBOX_INFORMATION,
+					"File dropped on window",
+					dropped_filedir,
+					App->window->window
+				);
+				App->importFBX->LoadMesh(dropped_filedir);
+					SDL_free(dropped_filedir);
+
+				break;
 		}
 	}
 
