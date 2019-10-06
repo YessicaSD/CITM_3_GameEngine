@@ -141,6 +141,7 @@ void PanelConfiguration::Draw()
 
 void PanelConfiguration::AddInputLog(SDL_Scancode key, KEY_STATE state)
 {
-	std::string new_string = "Key: " + std::to_string(key) + ", State: " + std::to_string(state) + ". \n";
-	input_log_buffer.appendf(new_string.c_str());
+	std::string scancode_name = SDL_GetScancodeName(key);
+	std::string new_entry = "Key: " + scancode_name + ". \n";
+	input_log_buffer.appendf(new_entry.c_str());
 }
