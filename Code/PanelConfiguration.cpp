@@ -96,7 +96,7 @@ void PanelConfiguration::Draw()
 	ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
 
 
-	//Style
+	//STYLE ===========================================================
 	if (ImGui::CollapsingHeader("Style"))
 	{
 		ImGuiStyle& style = ImGui::GetStyle();

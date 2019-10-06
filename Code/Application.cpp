@@ -1,7 +1,7 @@
 #include "Application.h"
 #include <Windows.h>
 #include "parson/parson.h"
-
+#include "ModuleImportFBX.h"
 Application::Application()
 {
 	window = new ModuleWindow();
@@ -11,7 +11,7 @@ Application::Application()
 	scene = new ModuleScene();
 	gui = new ModuleGui();
 	random = new ModuleRandom();
-
+	importFBX = new ModuleImportFBX();
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -21,6 +21,7 @@ Application::Application()
 	AddModule(random);
 	AddModule(input);
 	AddModule(scene);
+	AddModule(importFBX);
 	AddModule(gui);
 	AddModule(camera);
 	// Renderer last!

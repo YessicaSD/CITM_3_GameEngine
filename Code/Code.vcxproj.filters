@@ -393,6 +393,17 @@
     <ClInclude Include="par\par_streamlines.h">
       <Filter>Sources\Par</Filter>
     </ClInclude>
+
+    <ClInclude Include="PanelRenderMode.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleImportFBX.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Sources\3DPrimitive</Filter>
+       </ClInclude>
+
     <ClInclude Include="assimp\include\ai_assert.h">
       <Filter>Sources\assimp</Filter>
     </ClInclude>
@@ -506,6 +517,7 @@
     </ClInclude>
     <ClInclude Include="ModuleImporter.h">
       <Filter>Sources\Modules</Filter>
+
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -695,9 +707,17 @@
     <ClCompile Include="Cube.cpp">
       <Filter>Sources\3DPrimitive</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleImporter.cpp">
+
+    <ClCompile Include="PanelRenderMode.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleImportFBX.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Sources\3DPrimitive</Filter>
+    </ClCompile>
+
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
