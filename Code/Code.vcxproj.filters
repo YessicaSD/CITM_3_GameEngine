@@ -393,7 +393,6 @@
     <ClInclude Include="par\par_streamlines.h">
       <Filter>Sources\Par</Filter>
     </ClInclude>
-
     <ClInclude Include="PanelRenderMode.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
@@ -402,8 +401,7 @@
     </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Sources\3DPrimitive</Filter>
-       </ClInclude>
-
+    </ClInclude>
     <ClInclude Include="assimp\include\ai_assert.h">
       <Filter>Sources\assimp</Filter>
     </ClInclude>
@@ -515,9 +513,8 @@
     <ClInclude Include="assimp\include\Compiler\pushpack1.h">
       <Filter>Sources\assimp</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleImporter.h">
-      <Filter>Sources\Modules</Filter>
-
+    <ClInclude Include="PanelProperties.h">
+      <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -707,7 +704,6 @@
     <ClCompile Include="Cube.cpp">
       <Filter>Sources\3DPrimitive</Filter>
     </ClCompile>
-
     <ClCompile Include="PanelRenderMode.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
@@ -717,7 +713,9 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Sources\3DPrimitive</Filter>
     </ClCompile>
-
+    <ClCompile Include="PanelProperties.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">

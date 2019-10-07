@@ -6,9 +6,10 @@
 
 
 #include "Module.h"
-#include "imgui\imgui.h"
 
+#include "imgui\imgui.h"
 #include <vector>
+#include "TabPanel.h"
 
 class Timer;
 class Panel;
@@ -17,7 +18,14 @@ class PanelConfiguration;
 class PanelConsole;
 class PanelShortcuts;
 class PanelRenderMode;
+class PanelProperties;
+struct TabPanel;
 
+enum class TYPE_TAB_PANEL
+{
+	RIGHT_TAB_PANEL = 0u,
+	MAX_TAB_PANEL
+};
 class ModuleGui : public Module
 {
 private:
@@ -26,7 +34,8 @@ private:
 	PanelConfiguration* panel_config = nullptr;
 	PanelConsole* panel_console = nullptr;
 	PanelShortcuts * panel_shortcuts = nullptr;
-	PanelRenderMode* panelRenderMode;
+	PanelRenderMode* panelRenderMode = nullptr;
+	PanelProperties* panel_properties = nullptr;
 	std::vector<Shortcut *> shortcuts;
 
 public:
@@ -40,10 +49,13 @@ public:
 
 	void AddInputLog(SDL_Scancode key, KEY_STATE state);
 	void ModifyShortcut(SDL_Scancode key);
-
+	void SetTabPanelsResized(int width, int height);
 private:
 	void DisplayMainMenuBar(update_status &ret);
 
+
+
+	TabPanel TabPanels[(uint)TYPE_TAB_PANEL::MAX_TAB_PANEL];
 	friend class Shortcut;
 	friend class Panel;
 	friend class PanelShortcuts;
