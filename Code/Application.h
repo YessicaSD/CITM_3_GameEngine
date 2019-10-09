@@ -14,7 +14,7 @@
 #include "ModuleRandom.h"
 
 #include <list>
-
+#include <map>
 #include "MathGeoLib\include\Time\Clock.h"
 
 typedef unsigned __int32 uint32;
@@ -50,7 +50,7 @@ private:
 	std::list<Module*> list_modules;
 
 	JSON_Value * configValue = nullptr;
-
+	
 public:
 
 	Application();
@@ -71,6 +71,8 @@ public:
 		return ms_timer.Read();
 	}
 	void Log(const char* sentece);
+	
+	void ChangeRenderMode(std::string variable);
 
 private:
 

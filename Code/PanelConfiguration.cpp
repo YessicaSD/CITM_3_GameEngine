@@ -140,33 +140,33 @@ void PanelConfiguration::Draw()
 		}
 	}
 
-	if (ImGui::CollapsingHeader("Render Mode"))
-	{
-		static int style_idx = -1;
-		if (ImGui::Combo("Mode", &style_idx, "Default\0Wireframe\0Vertex"))
-		{
-			switch (style_idx)
-			{
-			case 0:
-			{
+	//if (ImGui::CollapsingHeader("Render Mode"))
+	//{
+	//	static int style_idx = -1;
+	//	if (ImGui::Combo("Mode", &style_idx, "Default\0Wireframe\0Vertex"))
+	//	{
+	//		switch (style_idx)
+	//		{
+	//		case 0:
+	//		{
 
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			}
-			break;
-			case 1:
-			{
+	//			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//		}
+	//		break;
+	//		case 1:
+	//		{
 
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			}
-			break;
+	//			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//		}
+	//		break;
 
-			case 2:
-				glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-				break;
+	//		case 2:
+	//			glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	//			break;
 
-			}
-		}
-	}
+	//		}
+	//	}
+	//}
 }
 
 void PanelConfiguration::AddInputLog(SDL_Scancode key, KEY_STATE state)

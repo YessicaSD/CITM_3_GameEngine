@@ -36,7 +36,9 @@ private:
 	PanelProperties* panel_properties = nullptr;
 	std::vector<Shortcut *> shortcuts;
 
-	bool wireframe = false;
+	bool wireframe_view = false;
+	bool default_view = true;
+	bool vertices_view = false;
 
 public:
 	ModuleGui(bool start_enabled = true);

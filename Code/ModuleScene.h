@@ -4,8 +4,9 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Cube.h"
-
 typedef struct par_shapes_mesh_s par_shapes_mesh;
+#include <map>
+#include <string>
 
 class ModuleScene : public Module
 {
@@ -17,7 +18,8 @@ private:
 	par_shapes_mesh* sphereInfo = nullptr;
 	uint sphere_v_id;
 	uint sphere_indice_id;
-	//float vertices[4*3];
+	
+	std::map<std::string, bool> view_mode;
 public:
 	ModuleScene(bool start_enabled = true);
 	~ModuleScene();
@@ -26,6 +28,7 @@ public:
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;
 	bool CleanUp();
+	void ChangeRenderMode(std::string variable);
 
 public:
 };

@@ -103,7 +103,7 @@ update_status ModuleGui::PostUpdate()
 		//ImGui::SetNextWindowPos(ImVec2((float)tab.x, (float)tab.y), ImGuiCond_Always);
 		//ImGui::SetNextWindowSize(ImVec2((float)tab.width, (float)tab.height), ImGuiCond_Always);
 		//static bool tabBarOpen;
-		if (ImGui::Begin(tab.name,&tab.isActive/*nullptr*//*, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoFocusOnAppearing*/))
+		if (ImGui::Begin(tab.name/*nullptr*//*, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoFocusOnAppearing*/))
 		{
 			
 				if (ImGui::BeginTabBar("##tabs", ImGuiTabBarFlags_None))
@@ -127,10 +127,10 @@ update_status ModuleGui::PostUpdate()
 			
 			
 		
-			ImGui::End();
+			
 
 		}
-
+		ImGui::End();
 	}
 
 	for (std::vector<Panel*>::iterator iter = panels.begin(); iter != panels.end(); ++iter)
@@ -221,8 +221,19 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 	
 	if (ImGui::BeginMenu("Render Mode"))
 	{
-		ImGui::MenuItem("Wireframe", NULL, &wireframe);
+		if (ImGui::MenuItem("Wireframe			", NULL, &wireframe_view))
+		{
+			App->ChangeRenderMode("wireframe");
+		}
+		if (ImGui::MenuItem("Default			", NULL, &default_view))
+		{
+			App->ChangeRenderMode("default");
 
+		}
+		if (ImGui::MenuItem("Verteces			", NULL, &vertices_view))
+		{
+			App->ChangeRenderMode("vertex");
+		}
 
 		ImGui::EndMenu();
 	}

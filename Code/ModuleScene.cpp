@@ -13,6 +13,9 @@
 
 ModuleScene::ModuleScene(bool start_enabled) : Module(start_enabled)
 {
+	view_mode["wireframe"] = false;
+	view_mode["default"] = true;
+	view_mode["vertex"] = false;
 }
 
 ModuleScene::~ModuleScene()
@@ -50,28 +53,65 @@ bool ModuleScene::CleanUp()
 	return true;
 }
 
+void ModuleScene::ChangeRenderMode(std::string variable)
+{
+	std::map<std::string, bool>::iterator iter = view_mode.find(variable);
+	if (iter != view_mode.end())
+	{
+		(*iter).second = !(*iter).second;
+	}
+}
+
 // Update: draw background
 update_status ModuleScene::Update(float dt)
 {
-	//glBegin(GL_TRIANGLES);
+	if (view_mode["default"])
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		cube[1]->Draw();
 
-	const uint num_index = 6 * 2 * 3;
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, sphere_v_id);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indice_id);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	//change mode
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//cube[0]->Draw_DirectMode();
-	cube[1]->Draw();
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, sphere_v_id);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indice_id);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-	glDrawElements(GL_TRIANGLES, sphereInfo->ntriangles * 3, GL_UNSIGNED_SHORT, NULL);
-
-
+		glDrawElements(GL_TRIANGLES, sphereInfo->ntriangles * 3, GL_UNSIGNED_SHORT, NULL);
+	}	
 	
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	if (view_mode["wireframe"])
+	{
+		glColor3f(0, 0, 1);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		cube[1]->Draw();
+
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, sphere_v_id);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indice_id);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+		glDrawElements(GL_TRIANGLES, sphereInfo->ntriangles * 3, GL_UNSIGNED_SHORT, NULL);
+
+		glColor3f(1, 1, 1);
+	}
+
+	if (view_mode["vertex"])
+	{
+		glColor3f(1, 0, 0);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+		glPointSize(3);
+		cube[1]->Draw();
+
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, sphere_v_id);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indice_id);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+		glDrawElements(GL_TRIANGLES, sphereInfo->ntriangles * 3, GL_UNSIGNED_SHORT, NULL);
+		glColor3f(1, 1, 1);
+	}
+	
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	return UPDATE_CONTINUE;
 }
 
