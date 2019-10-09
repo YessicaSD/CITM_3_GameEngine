@@ -13,7 +13,6 @@
 #include "PanelConfiguration.h"
 #include "PanelShortcuts.h"
 #include "PanelConsole.h"
-#include "PanelRenderMode.h"
 #include "PanelProperties.h"
 
 #define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
@@ -59,15 +58,8 @@ bool ModuleGui::Init()
 	panels.pop_back();
 	panel_console = new PanelConsole("Console", true);
 	panel_shortcuts = new PanelShortcuts("Shortcuts", true/*, { SDL_SCANCODE_Q }*/);
-	panelRenderMode = new PanelRenderMode("Render Mode", true);
-
-	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(panel_config);
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelProperties("Properties", true));
-	panels.pop_back();
-
-
-
-	
+	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(panel_config);
 
 	return ret;
 }
@@ -215,20 +207,25 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 	ImGui::End();
 
 
-	//ImGui::PushID(001);
+	
 	ImGui::BeginMainMenuBar();
+	if (ImGui::BeginMenu("File"))
+	{
+		ImGui::EndMenu();
+	}
+
 	if (ImGui::BeginMenu("Project"))
 	{
-		if (ImGui::MenuItem("Configuration		"))
-			panel_config->SwitchActive();
-		if (ImGui::MenuItem("Render Mode		"))
-			panelRenderMode->SwitchActive();
+		ImGui::EndMenu();
+	}
+	
+	if (ImGui::BeginMenu("Render Mode"))
+	{
+		ImGui::MenuItem("Main menu bar", NULL, wireframe);
+
 
 		ImGui::EndMenu();
 	}
-	//ImGui::PopID();
-
-	
 
 	if (ImGui::BeginMenu("Help"))
 	{
@@ -243,6 +240,8 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 
 		ImGui::EndMenu();
 	}
+
+	
 
 	ImGui::EndMainMenuBar();
 

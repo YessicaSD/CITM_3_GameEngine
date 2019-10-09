@@ -17,7 +17,6 @@ class Shortcut;
 class PanelConfiguration;
 class PanelConsole;
 class PanelShortcuts;
-class PanelRenderMode;
 class PanelProperties;
 struct TabPanel;
 
@@ -34,9 +33,10 @@ private:
 	PanelConfiguration* panel_config = nullptr;
 	PanelConsole* panel_console = nullptr;
 	PanelShortcuts * panel_shortcuts = nullptr;
-	PanelRenderMode* panelRenderMode = nullptr;
 	PanelProperties* panel_properties = nullptr;
 	std::vector<Shortcut *> shortcuts;
+
+	bool wireframe = false;
 
 public:
 	ModuleGui(bool start_enabled = true);

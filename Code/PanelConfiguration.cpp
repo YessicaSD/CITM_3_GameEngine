@@ -9,6 +9,9 @@
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 
+#include "glew\include\GL\glew.h"
+#include <gl\GL.h>
+
 PanelConfiguration::PanelConfiguration(std::string name, bool active, std::vector<SDL_Scancode> shortcut) :
 	Panel(name, active, shortcut)
 {
@@ -20,7 +23,7 @@ PanelConfiguration::PanelConfiguration(std::string name, bool active, std::vecto
 void PanelConfiguration::Draw()
 {
 	ImGui::SetNextWindowSize(ImVec2(550, 680));
-	if (ImGui::CollapsingHeader("Configuration", &active))
+	if (ImGui::CollapsingHeader("Configuration"))
 	{
 		//Project name
 		static char projectName[128] = "Project name";
@@ -134,6 +137,34 @@ void PanelConfiguration::Draw()
 			}
 			scroll_input_log = false;
 			ImGui::EndChild();
+		}
+	}
+
+	if (ImGui::CollapsingHeader("Render Mode"))
+	{
+		static int style_idx = -1;
+		if (ImGui::Combo("Mode", &style_idx, "Default\0Wireframe\0Vertex"))
+		{
+			switch (style_idx)
+			{
+			case 0:
+			{
+
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			}
+			break;
+			case 1:
+			{
+
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			}
+			break;
+
+			case 2:
+				glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+				break;
+
+			}
 		}
 	}
 }
