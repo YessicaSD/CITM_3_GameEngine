@@ -18,8 +18,11 @@ private:
 	par_shapes_mesh* sphereInfo = nullptr;
 	uint sphere_v_id;
 	uint sphere_indice_id;
-	
+
+
 	std::map<std::string, bool> view_mode;
+	void Draw();
+	
 public:
 	ModuleScene(bool start_enabled = true);
 	~ModuleScene();
@@ -27,10 +30,10 @@ public:
 	bool Start();
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;
+	void DrawVertexNormals();
 	bool CleanUp();
 	void ChangeRenderMode(std::string variable);
-
-public:
+	bool GetRenderMode(std::string variable);
 };
 
 #endif // !MODULESCENE_H_

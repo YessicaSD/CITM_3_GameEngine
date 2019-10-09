@@ -1,4 +1,5 @@
 #include "ModuleImportFBX.h"
+#include "ModuleRenderer3D.h"
 
 
 #include "Assimp/include/scene.h"
@@ -10,6 +11,7 @@
 #include <gl\GL.h>
 
 #include "Mesh.h"
+
 //
 //#define PAR_SHAPES_IMPLEMENTATION
 //#include "par\par_shapes.h"
@@ -101,20 +103,6 @@ bool ModuleImportFBX::CleanUp()
 	return true;
 }
 
-update_status ModuleImportFBX::PostUpdate()
-{
-	for (std::vector<Scene*>::iterator scene_iter = array_scene.begin(); scene_iter != array_scene.end(); ++scene_iter)
-	{
-		for (std::vector<Mesh*>::iterator iter = (*scene_iter)->array_mesh.begin(); iter != (*scene_iter)->array_mesh.end(); ++iter)
-		{
-			if ((*iter))
-			{
-				
-				(*iter)->Draw();
-				(*iter)->DrawVertexNormal();
-			}
-		}
-	}
 
-	return UPDATE_CONTINUE;
-}
+
+
