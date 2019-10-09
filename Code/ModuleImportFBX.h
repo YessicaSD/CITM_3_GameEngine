@@ -14,6 +14,7 @@ struct Scene
 {
 	std::vector<Mesh*> array_mesh;
 };
+
 class ModuleImportFBX : public Module
 {
 protected:

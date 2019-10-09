@@ -225,6 +225,7 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 		static bool default_view = App->scene->GetRenderMode("default");
 		static bool vertices_view = App->scene->GetRenderMode("vertex");
 		static bool vertices_normals_view = App->scene->GetRenderMode("vertices_normals");
+		static bool face_normals_view = App->scene->GetRenderMode("face_normals");
 
 		if (ImGui::MenuItem("Wireframe			", NULL, &wireframe_view))
 		{
@@ -242,6 +243,11 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 		if (ImGui::MenuItem("Vertices Normals			", NULL, &vertices_normals_view))
 		{
 			App->ChangeRenderMode("vertices_normals");
+		}
+		
+		if (ImGui::MenuItem("Face Normals			", NULL, &face_normals_view))
+		{
+			App->ChangeRenderMode("face_normals");
 		}
 		ImGui::EndMenu();
 	}

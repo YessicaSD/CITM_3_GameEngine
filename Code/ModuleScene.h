@@ -30,6 +30,7 @@ public:
 	bool Start();
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;
+	void DrawFaceNormals();
 	void DrawVertexNormals();
 	bool CleanUp();
 	void ChangeRenderMode(std::string variable);

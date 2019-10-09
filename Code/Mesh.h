@@ -17,13 +17,17 @@ struct Mesh {
 	float* vertices = nullptr;
 
 	aiVector3D* normals;
-
+	uint numFaces = 0;
+	float3* faces_normals;
+	float3* face_middle_point;
 
 	bool Load(uint num_vertices, float* mVetices);
 
 	void Draw();
 
 	void DrawVertexNormal();
+
+	void DrawNormals();
 
 	
 

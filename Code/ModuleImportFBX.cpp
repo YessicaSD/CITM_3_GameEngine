@@ -12,9 +12,6 @@
 
 #include "Mesh.h"
 
-//
-//#define PAR_SHAPES_IMPLEMENTATION
-//#include "par\par_shapes.h"
 bool ModuleImportFBX::Start()
 {
 	
@@ -74,6 +71,28 @@ bool ModuleImportFBX::LoadMesh(const char * path)
 					}
 				}
 
+				new_mesh->numFaces = actual_mesh->mNumFaces;
+				new_mesh->faces_normals = new float3[actual_mesh->mNumFaces];
+				new_mesh->face_middle_point = new float3[actual_mesh->mNumFaces];
+
+				for (uint i = 0; i < new_mesh->num_indices; i+=3)
+				{
+					uint index = new_mesh->indices[i];
+					float3 vertex1 = { new_mesh->vertices[index * 3], new_mesh->vertices[index * 3 + 1] , new_mesh->vertices[index * 3 + 2] };
+					 index = new_mesh->indices[i+1];
+
+					float3 vertex2 = { new_mesh->vertices[index * 3], new_mesh->vertices[index * 3 + 1] , new_mesh->vertices[index * 3 + 2]  };
+					index = new_mesh->indices[i + 2];
+					float3 vertex3 = { new_mesh->vertices[index * 3], new_mesh->vertices[index * 3 + 1] , new_mesh->vertices[index * 3 + 2]  };
+
+					float3 vector1 = vertex2-vertex1;
+					float3 vector2  = vertex3 - vertex1;
+
+					new_mesh->faces_normals[i/3] = Cross(vector1, vector2);
+					new_mesh->faces_normals[i / 3].Normalize();
+					new_mesh->face_middle_point[i/3] = { (vertex1.x + vertex2.x + vertex3.x)/3, (vertex1.y + vertex2.y + vertex3.y) / 3, (vertex1.z + vertex2.z + vertex3.z) / 3 };
+
+				}
 				glGenBuffers(1, &new_mesh->id_indice);
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, new_mesh->id_indice);
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*actual_mesh->mNumFaces * 3, new_mesh->indices, GL_STATIC_DRAW);
