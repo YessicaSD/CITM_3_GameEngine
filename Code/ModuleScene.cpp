@@ -147,6 +147,9 @@ update_status ModuleScene::PostUpdate()
 	p.axis = true;
 	p.wire = false;
 	p.Render();
+
+
+
 	return UPDATE_CONTINUE;
 }
 
@@ -159,6 +162,7 @@ void ModuleScene::DrawVertexNormals()
 			if ((*iter))
 			{
 				(*iter)->DrawVertexNormal();
+				(*iter)->DrawNormals();
 			}
 		}
 	}

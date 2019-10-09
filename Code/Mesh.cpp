@@ -39,3 +39,17 @@ void Mesh::DrawVertexNormal()
 	}
 	glColor3f(1, 1, 1);
 }
+
+void Mesh::DrawNormals()
+{
+	glColor3f(0, 0, 1);
+	float lenght = 2;
+	for (uint i = 0; i < numFaces; ++i)
+	{
+		glBegin(GL_LINES);
+		glVertex3f(face_middle_point[i].x, face_middle_point[i].y, face_middle_point[i].z);
+		glVertex3f(face_middle_point[i].x + faces_normals[i].x*lenght, face_middle_point[i].y + faces_normals[i].y *lenght, face_middle_point[i].z + faces_normals[i].z*lenght);
+		glEnd();
+	}
+	glColor3f(1, 1, 1);
+}
