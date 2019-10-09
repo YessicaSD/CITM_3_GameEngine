@@ -26,6 +26,9 @@ Application::Application()
 	AddModule(camera);
 	// Renderer last!
 	AddModule(renderer3D);
+
+	
+
 	
 }
 
@@ -161,6 +164,13 @@ void Application::Log(const char * sentece)
 	if(gui)
 		gui->Log(sentece);
 }
+
+void Application::ChangeRenderMode(std::string variable)
+{
+	scene->ChangeRenderMode(variable);
+}
+
+
 
 void Application::AddModule(Module* mod)
 {

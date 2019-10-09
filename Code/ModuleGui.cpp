@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string>
 
+
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 
@@ -12,7 +13,7 @@
 #include "PanelConfiguration.h"
 #include "PanelShortcuts.h"
 #include "PanelConsole.h"
-#include "PanelRenderMode.h"
+#include "PanelProperties.h"
 
 #define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
 #define IMGUI_GREY ImVec4(0.6f,0.6f,0.6f,1.f)
@@ -49,10 +50,16 @@ bool ModuleGui::Init()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
 
-	panel_config    = new PanelConfiguration("Configuration");
-	panel_console	= new PanelConsole("Console", true);
+	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].name = "Inspector";
+
+	SetTabPanelsResized(App->window->GetWindowWidth(), App->window->GetWindowHeight());
+
+	panel_config    = new PanelConfiguration("Configuration",true);
+	panels.pop_back();
+	panel_console = new PanelConsole("Console", true);
 	panel_shortcuts = new PanelShortcuts("Shortcuts", true/*, { SDL_SCANCODE_Q }*/);
-	panelRenderMode = new PanelRenderMode("Render Mode", true);
+	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelProperties("Properties", true));
+	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(panel_config);
 
 	return ret;
 }
@@ -90,6 +97,42 @@ update_status ModuleGui::Update(float dt)
 update_status ModuleGui::PostUpdate()
 {
 	// Rendering
+	for (uint i = 0; i < (uint)TYPE_TAB_PANEL::MAX_TAB_PANEL; ++i)
+	{
+		TabPanel& tab = TabPanels[i];
+		//ImGui::SetNextWindowPos(ImVec2((float)tab.x, (float)tab.y), ImGuiCond_Always);
+		//ImGui::SetNextWindowSize(ImVec2((float)tab.width, (float)tab.height), ImGuiCond_Always);
+		//static bool tabBarOpen;
+		if (ImGui::Begin(tab.name/*nullptr*//*, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoFocusOnAppearing*/))
+		{
+			
+				if (ImGui::BeginTabBar("##tabs", ImGuiTabBarFlags_None))
+				{
+					for (std::vector<Panel*>::iterator iter = tab.panels.begin(); iter != tab.panels.end(); ++iter)
+					{
+						if (ImGui::BeginTabItem((*iter)->GetName()))
+						{
+
+							if ((*iter)->IsActive())
+							{
+								(*iter)->Draw();
+							}
+
+							ImGui::EndTabItem();
+						}
+
+					}
+					ImGui::EndTabBar();
+				}
+			
+			
+		
+			
+
+		}
+		ImGui::End();
+	}
+
 	for (std::vector<Panel*>::iterator iter = panels.begin(); iter != panels.end(); ++iter)
 	{
 		if ((*iter)->IsActive())
@@ -164,20 +207,36 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 	ImGui::End();
 
 
-	//ImGui::PushID(001);
+	
 	ImGui::BeginMainMenuBar();
+	if (ImGui::BeginMenu("File"))
+	{
+		ImGui::EndMenu();
+	}
+
 	if (ImGui::BeginMenu("Project"))
 	{
-		if (ImGui::MenuItem("Configuration		"))
-			panel_config->SwitchActive();
-		if (ImGui::MenuItem("Render Mode		"))
-			panelRenderMode->SwitchActive();
+		ImGui::EndMenu();
+	}
+	
+	if (ImGui::BeginMenu("Render Mode"))
+	{
+		if (ImGui::MenuItem("Wireframe			", NULL, &wireframe_view))
+		{
+			App->ChangeRenderMode("wireframe");
+		}
+		if (ImGui::MenuItem("Default			", NULL, &default_view))
+		{
+			App->ChangeRenderMode("default");
+
+		}
+		if (ImGui::MenuItem("Verteces			", NULL, &vertices_view))
+		{
+			App->ChangeRenderMode("vertex");
+		}
 
 		ImGui::EndMenu();
 	}
-	//ImGui::PopID();
-
-	
 
 	if (ImGui::BeginMenu("Help"))
 	{
@@ -192,6 +251,8 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 
 		ImGui::EndMenu();
 	}
+
+	
 
 	ImGui::EndMainMenuBar();
 
@@ -208,6 +269,15 @@ void ModuleGui::AddInputLog(SDL_Scancode key, KEY_STATE state)
 void ModuleGui::ModifyShortcut(SDL_Scancode key)
 {
 	panel_shortcuts->ModifyShortcut(key);
+}
+
+void ModuleGui::SetTabPanelsResized(int width, int height)
+{
+	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].width = 400;
+	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].height = height;
+	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].y = 21;
+	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].x = width - TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].width;
+
 }
 
 

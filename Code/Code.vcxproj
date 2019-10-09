@@ -214,7 +214,7 @@
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelConfiguration.h" />
     <ClInclude Include="PanelConsole.h" />
-    <ClInclude Include="PanelRenderMode.h" />
+    <ClInclude Include="PanelProperties.h" />
     <ClInclude Include="PanelShortcuts.h" />
     <ClInclude Include="parson\parson.h" />
     <ClInclude Include="par\par_bluenoise.h" />
@@ -294,7 +294,7 @@
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PanelConfiguration.cpp" />
     <ClCompile Include="PanelConsole.cpp" />
-    <ClCompile Include="PanelRenderMode.cpp" />
+    <ClCompile Include="PanelProperties.cpp" />
     <ClCompile Include="PanelShortcuts.cpp" />
     <ClCompile Include="parson\parson.c" />
     <ClCompile Include="Primitive.cpp" />

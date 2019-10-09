@@ -24,6 +24,10 @@ public:
 	bool IsActive() const;
 	bool HasShortcut();
 	void SetName(std::string name);
+	const char* GetName()
+	{
+		return name.c_str();
+	}
 	virtual void Draw() {}
 };
 #endif // !_PANEL_H_
