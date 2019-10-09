@@ -4,6 +4,7 @@
 
 #include "glew/include/GL/glew.h"
 
+
 ModuleRenderer3D::ModuleRenderer3D(bool start_enabled) : Module(start_enabled)
 {
 
@@ -103,6 +104,9 @@ bool ModuleRenderer3D::Init()
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
+
+
+
 	return ret;
 }
 
@@ -127,6 +131,9 @@ update_status ModuleRenderer3D::PreUpdate()
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate()
 {
+
+	
+
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -152,6 +159,9 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
+
+
+
 
 
 

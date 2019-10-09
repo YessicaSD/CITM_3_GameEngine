@@ -5,7 +5,7 @@
 #include <vector>
 #define INVALID_MATERIAL 0xFFFFFFFF
 #include "Assimp/include/assimp/cimport.h"
-
+#include "ModuleScene.h"
 
 
 class Mesh;
@@ -16,9 +16,8 @@ struct Scene
 };
 class ModuleImportFBX : public Module
 {
-private:
+protected:
 	aiLogStream stream;
-
 	std::vector<Scene*> array_scene;
 public:
 	bool Start() override;
@@ -27,9 +26,6 @@ public:
 
 	bool CleanUp() override;
 
-	update_status PostUpdate() override;
-
-	
-
+	friend ModuleScene;
 };
 #endif // !MODULE_IMPORT_FBX_H_

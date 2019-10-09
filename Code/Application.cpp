@@ -22,8 +22,9 @@ Application::Application()
 	AddModule(input);
 	AddModule(scene);
 	AddModule(importFBX);
-	AddModule(gui);
 	AddModule(camera);
+	AddModule(gui);
+
 	// Renderer last!
 	AddModule(renderer3D);
 
