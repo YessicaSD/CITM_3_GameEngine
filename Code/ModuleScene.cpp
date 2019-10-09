@@ -19,6 +19,7 @@ ModuleScene::ModuleScene(bool start_enabled) : Module(start_enabled)
 	view_mode["wireframe"] = false;
 	view_mode["vertex"] = false;
 	view_mode["vertices_normals"] = false;
+	view_mode["face_normals"] = false;
 }
 
 ModuleScene::~ModuleScene()
@@ -139,6 +140,12 @@ update_status ModuleScene::PostUpdate()
 		glLineWidth(5);
 		DrawVertexNormals();
 	}
+	if (view_mode["face_normals"])
+	{
+		glColor3f(0, 1, 0);
+		glLineWidth(5);
+		DrawFaceNormals();
+	}
 
 	glColor3f(1, 1, 1);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -153,6 +160,20 @@ update_status ModuleScene::PostUpdate()
 	return UPDATE_CONTINUE;
 }
 
+void ModuleScene::DrawFaceNormals()
+{
+	for (std::vector<Scene*>::iterator scene_iter = App->importFBX->array_scene.begin(); scene_iter != App->importFBX->array_scene.end(); ++scene_iter)
+	{
+		for (std::vector<Mesh*>::iterator iter = (*scene_iter)->array_mesh.begin(); iter != (*scene_iter)->array_mesh.end(); ++iter)
+		{
+			if ((*iter))
+			{
+				(*iter)->DrawNormals();
+			}
+		}
+	}
+}
+
 void ModuleScene::DrawVertexNormals()
 {
 	for (std::vector<Scene*>::iterator scene_iter = App->importFBX->array_scene.begin(); scene_iter != App->importFBX->array_scene.end(); ++scene_iter)
@@ -162,7 +183,6 @@ void ModuleScene::DrawVertexNormals()
 			if ((*iter))
 			{
 				(*iter)->DrawVertexNormal();
-				(*iter)->DrawNormals();
 			}
 		}
 	}
