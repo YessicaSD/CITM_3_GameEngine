@@ -221,7 +221,7 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 	
 	if (ImGui::BeginMenu("Render Mode"))
 	{
-		ImGui::MenuItem("Main menu bar", NULL, wireframe);
+		ImGui::MenuItem("Wireframe", NULL, &wireframe);
 
 
 		ImGui::EndMenu();
