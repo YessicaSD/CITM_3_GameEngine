@@ -108,37 +108,58 @@ void PanelConfiguration::Draw()
 				ref_saved_style = style;
 		}
 
-		if (ImGui::CollapsingHeader("Input"))
+		
+	}
+
+	if (ImGui::CollapsingHeader("Render"))
+	{
+		ImGui::Text("Change background color:");
+
+		static float default_color_background[3] = { 3 / 255.F,19 / 255.F,29 / 255.F };
+		static float col1[3] = { 1.0f,0.0f,0.2f };
+		if (ImGui::ColorPicker4("MyColor##4", col1))
 		{
-			int mouse_x = App->input->GetMouseX();
-			int mouse_y = App->input->GetMouseY();
-			ImGui::Text("Mouse Position:");
-			ImGui::SameLine();
-			ImGui::Text("%i,%i", mouse_x, mouse_y);
+			glClearColor(col1[0], col1[1] , col1[2] , 1);
+		}
+		if(ImGui::Button("Reset"))
+		{
+			glClearColor(default_color_background[0], default_color_background[1], default_color_background[2], 1);
 
-			int mouse_motion_x = App->input->GetMouseMotionX();
-			int mouse_motion_y = App->input->GetMouseMotionY();
-			ImGui::Text("Mouse Motion:");
-			ImGui::SameLine();
-			ImGui::Text("%i,%i", mouse_x, mouse_y);
-
-			int mouse_wheel = App->input->GetMouseWheel();
-			ImGui::Text("Mouse Wheel:");
-			ImGui::SameLine();
-			ImGui::Text("%i", mouse_wheel);
-
-			ImGui::Separator();
-
-			ImGui::BeginChild("Input Log");
-			ImGui::TextUnformatted(input_log_buffer.begin());
-			if (scroll_input_log)
-			{
-				ImGui::SetScrollHere(1.0f);
-			}
-			scroll_input_log = false;
-			ImGui::EndChild();
 		}
 	}
+
+	if (ImGui::CollapsingHeader("Input"))
+	{
+		int mouse_x = App->input->GetMouseX();
+		int mouse_y = App->input->GetMouseY();
+		ImGui::Text("Mouse Position:");
+		ImGui::SameLine();
+		ImGui::Text("%i,%i", mouse_x, mouse_y);
+
+		int mouse_motion_x = App->input->GetMouseMotionX();
+		int mouse_motion_y = App->input->GetMouseMotionY();
+		ImGui::Text("Mouse Motion:");
+		ImGui::SameLine();
+		ImGui::Text("%i,%i", mouse_x, mouse_y);
+
+		int mouse_wheel = App->input->GetMouseWheel();
+		ImGui::Text("Mouse Wheel:");
+		ImGui::SameLine();
+		ImGui::Text("%i", mouse_wheel);
+
+		ImGui::Separator();
+
+		ImGui::BeginChild("Input Log");
+		ImGui::TextUnformatted(input_log_buffer.begin());
+		if (scroll_input_log)
+		{
+			ImGui::SetScrollHere(1.0f);
+		}
+		scroll_input_log = false;
+		
+		ImGui::EndChild();
+	}
+
 
 	//if (ImGui::CollapsingHeader("Render Mode"))
 	//{
