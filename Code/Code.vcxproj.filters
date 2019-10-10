@@ -513,6 +513,9 @@
     <ClInclude Include="PanelProperties.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="PanelAbout.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -709,6 +712,9 @@
     </ClCompile>
     <ClCompile Include="log.cpp">
       <Filter>Sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelAbout.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

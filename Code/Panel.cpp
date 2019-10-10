@@ -1,6 +1,6 @@
 #include "Panel.h"
 #include "Application.h"
-#include "ModuleGui.h"
+
 
 Panel::Panel(std::string name, bool active) :
 	name(name),
@@ -8,7 +8,7 @@ Panel::Panel(std::string name, bool active) :
 {
 	shortcut.name = name;
 
-	App->gui->panels.push_back(this);
+
 }
 
 Panel::Panel(std::string name, bool active, std::vector<SDL_Scancode> shortcuts) :
