@@ -60,23 +60,25 @@ void PanelShortcuts::Draw()
 void PanelShortcuts::ShowModifyShortcutPanel()
 {
 	//TODO: Show if there is already a shortcut with the same key combination
-	ImGui::Begin("Reset shortcut");
-	ImGui::Text("Press the desired key combination");
-	char buffer[KEYS_BUFFER_SIZE];
-	ImGui::Text(GetKeysCharPtr(new_key_combination, buffer, KEYS_BUFFER_SIZE));
-	if (ImGui::Button("Cancel"))
-	{
-		modifying_shortcut = false;
-		new_key_combination.clear();
+	ImGui::OpenPopup("Reset shortcut");
+	if (ImGui::BeginPopupModal("Reset shortcut")) {
+		ImGui::Text("Press the desired key combination");
+		char buffer[KEYS_BUFFER_SIZE];
+		ImGui::Text(GetKeysCharPtr(new_key_combination, buffer, KEYS_BUFFER_SIZE));
+		if (ImGui::Button("Cancel"))
+		{
+			modifying_shortcut = false;
+			new_key_combination.clear();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Save"))
+		{
+			modifying_shortcut = false;
+			shortcut_to_modify->keys = new_key_combination;
+			new_key_combination.clear();
+		}
 	}
-	ImGui::SameLine();
-	if (ImGui::Button("Save"))
-	{
-		modifying_shortcut = false;
-		shortcut_to_modify->keys = new_key_combination;
-		new_key_combination.clear();
-	}
-	ImGui::End();
+	ImGui::EndPopup();
 }
 
 //TO OPTIMIZE: This char * don't change every time so we can store them inside class Shortcut and only calculate them when they are modified.
