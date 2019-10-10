@@ -14,10 +14,8 @@
 
 bool ModuleImportFBX::Start()
 {
-	
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
-	//LoadMesh("C:\Users\Yessica\Documents\GitHub\CITM_3_GameEngine\Code\Engine\warrior.FBX");
 	return true;
 }
 
@@ -34,8 +32,7 @@ bool ModuleImportFBX::LoadMesh(const char * path)
 		{
 			aiMesh* actual_mesh = scene->mMeshes[i];
 			Mesh* new_mesh  = new Mesh();
-			
-			
+
 			new_mesh->num_vertices = actual_mesh->mNumVertices;
 			new_mesh->vertices = new float[new_mesh->num_vertices * 3];
 			memcpy(new_mesh->vertices, actual_mesh->mVertices, sizeof(float) * new_mesh->num_vertices * 3);
@@ -62,9 +59,7 @@ bool ModuleImportFBX::LoadMesh(const char * path)
 					if (actual_mesh->mFaces[i].mNumIndices != 3)
 					{
 						LOG("WARNING, geometry face with != 3 indices!");
-
 					}
-
 					else
 					{
 						memcpy(&new_mesh->indices[i * 3], actual_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
@@ -96,21 +91,15 @@ bool ModuleImportFBX::LoadMesh(const char * path)
 				glGenBuffers(1, &new_mesh->id_indice);
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, new_mesh->id_indice);
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*actual_mesh->mNumFaces * 3, new_mesh->indices, GL_STATIC_DRAW);
-
 			}
-
-			
-
-			
-
 			new_scene->array_mesh.push_back(new_mesh);
 		}
-		
 		aiReleaseImport(scene);
 	}
 	else
+	{
 		LOG("Error loading scene %s", path);
-
+	}
 	
 	return true;
 }

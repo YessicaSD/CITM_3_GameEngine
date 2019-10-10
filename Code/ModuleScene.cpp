@@ -47,6 +47,9 @@ bool ModuleScene::Start()
 	glGenBuffers(1, &sphere_indice_id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indice_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T)*sphereInfo->ntriangles * 3, sphereInfo->triangles, GL_STATIC_DRAW);*/
+	
+	App->importFBX->LoadMesh("Assets/BakerHouse.FBX");
+
 	return ret;
 }
 
