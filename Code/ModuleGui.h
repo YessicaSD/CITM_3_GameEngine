@@ -45,7 +45,7 @@ public:
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
-	void Log(const char*);
+	bool Log(const char*);
 
 	void AddInputLog(SDL_Scancode key, KEY_STATE state);
 	void ModifyShortcut(SDL_Scancode key);
