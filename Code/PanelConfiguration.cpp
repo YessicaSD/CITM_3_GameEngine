@@ -108,37 +108,48 @@ void PanelConfiguration::Draw()
 				ref_saved_style = style;
 		}
 
-		if (ImGui::CollapsingHeader("Input"))
-		{
-			int mouse_x = App->input->GetMouseX();
-			int mouse_y = App->input->GetMouseY();
-			ImGui::Text("Mouse Position:");
-			ImGui::SameLine();
-			ImGui::Text("%i,%i", mouse_x, mouse_y);
-
-			int mouse_motion_x = App->input->GetMouseMotionX();
-			int mouse_motion_y = App->input->GetMouseMotionY();
-			ImGui::Text("Mouse Motion:");
-			ImGui::SameLine();
-			ImGui::Text("%i,%i", mouse_x, mouse_y);
-
-			int mouse_wheel = App->input->GetMouseWheel();
-			ImGui::Text("Mouse Wheel:");
-			ImGui::SameLine();
-			ImGui::Text("%i", mouse_wheel);
-
-			ImGui::Separator();
-
-			ImGui::BeginChild("Input Log");
-			ImGui::TextUnformatted(input_log_buffer.begin());
-			if (scroll_input_log)
-			{
-				ImGui::SetScrollHere(1.0f);
-			}
-			scroll_input_log = false;
-			ImGui::EndChild();
-		}
+		
 	}
+
+	if (ImGui::CollapsingHeader("Render"))
+	{
+		ImGui::Text("Holaaaa");
+		static float col1[3] = { 1.0f,0.0f,0.2f };
+		ImGui::ColorEdit4("color 2", col1);
+	}
+
+	if (ImGui::CollapsingHeader("Input"))
+	{
+		int mouse_x = App->input->GetMouseX();
+		int mouse_y = App->input->GetMouseY();
+		ImGui::Text("Mouse Position:");
+		ImGui::SameLine();
+		ImGui::Text("%i,%i", mouse_x, mouse_y);
+
+		int mouse_motion_x = App->input->GetMouseMotionX();
+		int mouse_motion_y = App->input->GetMouseMotionY();
+		ImGui::Text("Mouse Motion:");
+		ImGui::SameLine();
+		ImGui::Text("%i,%i", mouse_x, mouse_y);
+
+		int mouse_wheel = App->input->GetMouseWheel();
+		ImGui::Text("Mouse Wheel:");
+		ImGui::SameLine();
+		ImGui::Text("%i", mouse_wheel);
+
+		ImGui::Separator();
+
+		ImGui::BeginChild("Input Log");
+		ImGui::TextUnformatted(input_log_buffer.begin());
+		if (scroll_input_log)
+		{
+			ImGui::SetScrollHere(1.0f);
+		}
+		scroll_input_log = false;
+		
+		ImGui::EndChild();
+	}
+
 
 	//if (ImGui::CollapsingHeader("Render Mode"))
 	//{
