@@ -169,10 +169,14 @@ bool ModuleGui::CleanUp()
 	return true;
 }
 
-void ModuleGui::Log(const char *sentence)
+bool ModuleGui::Log(const char *sentence)
 {
-	if(panel_console)
+	if (panel_console)
+	{
 		panel_console->Log(sentence);
+		return true;
+	}
+	return false;
 }
 
 void ModuleGui::DisplayMainMenuBar(update_status &ret)
@@ -214,12 +218,19 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 		ImGui::EndMenu();
 	}
 
-	if (ImGui::BeginMenu("Project"))
+	if (ImGui::BeginMenu("Windows"))
 	{
+		bool console_state = panel_console->IsActive();
+		if (ImGui::MenuItem("Console window			", NULL, &console_state))
+		{
+			panel_console->SwitchActive();
+
+		}
+
 		ImGui::EndMenu();
 	}
 	
-	if (ImGui::BeginMenu("Render Mode"))
+	if (ImGui::BeginMenu("RenderMode"))
 	{
 		static bool wireframe_view = App->scene->GetRenderMode("wireframe");
 		static bool default_view = App->scene->GetRenderMode("default");

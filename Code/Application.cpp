@@ -82,6 +82,23 @@ void Application::PrepareUpdate()
 {
 	dt = (float)ms_timer.Read() / 1000.0f;
 	ms_timer.Start();
+
+	if (log_strings.size() > 0)
+	{
+		if (gui)
+		{
+			for (auto iter = log_strings.begin(); iter != log_strings.end(); ++iter)
+			{
+				if (!gui->Log((*iter).c_str()))
+				{
+					return;
+				}
+			}
+			log_strings.clear();
+		}
+		
+		
+	}
 }
 
 // ---------------------------------------------
@@ -162,8 +179,7 @@ void Application::RequestBrowser(const char* path)
 
 void Application::Log(const char * sentece)
 {
-	if(gui)
-		gui->Log(sentece);
+	log_strings.push_back(sentece);
 }
 
 void Application::ChangeRenderMode(std::string variable)

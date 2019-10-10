@@ -14,7 +14,6 @@
 #include "ModuleRandom.h"
 
 #include <list>
-#include <map>
 #include "MathGeoLib\include\Time\Clock.h"
 
 typedef unsigned __int32 uint32;
@@ -50,6 +49,8 @@ private:
 	std::list<Module*> list_modules;
 
 	JSON_Value * configValue = nullptr;
+
+	std::list<std::string> log_strings;
 	
 public:
 
