@@ -113,9 +113,19 @@ void PanelConfiguration::Draw()
 
 	if (ImGui::CollapsingHeader("Render"))
 	{
-		ImGui::Text("Holaaaa");
+		ImGui::Text("Change background color:");
+
+		static float default_color_background[3] = { 3 / 255.F,19 / 255.F,29 / 255.F };
 		static float col1[3] = { 1.0f,0.0f,0.2f };
-		ImGui::ColorEdit4("color 2", col1);
+		if (ImGui::ColorPicker4("MyColor##4", col1))
+		{
+			glClearColor(col1[0], col1[1] , col1[2] , 1);
+		}
+		if(ImGui::Button("Reset"))
+		{
+			glClearColor(default_color_background[0], default_color_background[1], default_color_background[2], 1);
+
+		}
 	}
 
 	if (ImGui::CollapsingHeader("Input"))
