@@ -47,6 +47,9 @@ bool ModuleScene::Start()
 	glGenBuffers(1, &sphere_indice_id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indice_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T)*sphereInfo->ntriangles * 3, sphereInfo->triangles, GL_STATIC_DRAW);*/
+	
+	//App->importFBX->LoadMesh("Assets/BakerHouse.FBX");
+
 	return ret;
 }
 
@@ -218,5 +221,67 @@ void ModuleScene::Draw()
 				(*iter)->Draw();
 			}
 		}
+	}
+}
+
+void ModuleScene::CreateMenu()
+{
+	if (ImGui::BeginMenu("Create"))
+	{
+		//Create the different par shapes
+
+		if (ImGui::Button("Cube"))
+		{
+
+		}
+		if (ImGui::Button("Sphere"))
+		{
+
+		}
+		if (ImGui::Button("Hemisphere"))
+		{
+
+		}
+		if (ImGui::Button("Plane"))
+		{
+
+		}
+		if (ImGui::Button("Klein"))
+		{
+
+		}
+		if (ImGui::Button("Cylinder"))
+		{
+
+		}
+		if (ImGui::Button("Cone"))
+		{
+
+		}
+		if (ImGui::Button("Torus"))
+		{
+
+		}
+		if (ImGui::Button("Trefoil"))
+		{
+			//TODO: Create a gameobject with a mesh component like this
+
+			//TODO: Show menu to configurate this
+
+			par_shapes_mesh* mesh = par_shapes_create_trefoil_knot(50, 20, 2);
+			uint mesh_id = 0u;
+			uint mesh_indices_id = 0u;
+
+			glGenBuffers(1, &mesh_id);
+			glBindBuffer(GL_ARRAY_BUFFER, mesh_id);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->npoints * 3, mesh->points, GL_STATIC_DRAW);
+			
+			glGenBuffers(1, &mesh_indices_id);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_indices_id);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T) * mesh->ntriangles * 3, mesh->triangles, GL_STATIC_DRAW);
+			
+			par_shapes_free_mesh(mesh);
+		}
+		ImGui::EndMenu();
 	}
 }
