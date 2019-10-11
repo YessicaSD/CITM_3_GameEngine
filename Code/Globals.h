@@ -32,3 +32,4 @@ enum update_status
 #define SCREEN_HEIGHT 1080 * 0.75f //TODO: Remove when releasing the game
 #define SCREEN_SIZE 1
 #define TITLE "GameEngine"
+#define VERSION "0.1"
