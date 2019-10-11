@@ -120,15 +120,9 @@ update_status ModuleGui::PostUpdate()
 
 							ImGui::EndTabItem();
 						}
-
 					}
 					ImGui::EndTabBar();
 				}
-			
-			
-		
-			
-
 		}
 		ImGui::End();
 	}
@@ -217,6 +211,8 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 	{
 		ImGui::EndMenu();
 	}
+
+	App->scene->CreateMenu();
 
 	if (ImGui::BeginMenu("Windows"))
 	{
