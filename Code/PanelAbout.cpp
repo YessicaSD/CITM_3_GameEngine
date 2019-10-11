@@ -15,8 +15,23 @@ void PanelAbout::Draw()
 	ImGui::Text("Hinata Engine is licensed under the Public Domain,");
 	ImGui::Text("click the button below  for more information.");
 	ImGui::Text("");
-	if (ImGui::Button("see more..."))
+	if (ImGui::Button("see more ..."))
 	{
 		App->RequestBrowser("https://github.com/YessicaSD/CITM_3_GameEngine/blob/master/LICENSE.md");
+	}
+
+	if(ImGui::CollapsingHeader("Credits"))
+	{
+		ImGui::Text("Hinata Engine Website:");
+		if(ImGui::Button("More"))
+			App->RequestBrowser("https://yessicasd.github.io/CITM_3_GameEngine/");
+
+		ImGui::Text("Yessica Servin Dominguez:");
+		if(ImGui::Button("More"))
+			App->RequestBrowser("https://github.com/YessicaSD");
+
+		ImGui::Text("Jaume Montagut i Guix:");
+		if(ImGui::Button("More"))
+			App->RequestBrowser("https://github.com/JaumeMontagut");
 	}
 }
