@@ -3,8 +3,10 @@
 #include "GameObject.h"
 class Component
 {
+private: 
+	GameObject* myObject = nullptr;
+public:
 	bool active = true;
-	GameObject* myObject;
 	virtual void Disable() {};
 	virtual void Enable() {};
 };

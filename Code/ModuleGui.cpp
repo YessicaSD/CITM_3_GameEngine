@@ -14,6 +14,7 @@
 #include "PanelShortcuts.h"
 #include "PanelConsole.h"
 #include "PanelProperties.h"
+#include "PanelAbout.h"
 
 #define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
 #define IMGUI_GREY ImVec4(0.6f,0.6f,0.6f,1.f)
@@ -54,12 +55,12 @@ bool ModuleGui::Init()
 
 	SetTabPanelsResized(App->window->GetWindowWidth(), App->window->GetWindowHeight());
 
-	panel_config    = new PanelConfiguration("Configuration",true);
-	panels.pop_back();
-	panel_console = new PanelConsole("Console", true);
-	panel_shortcuts = new PanelShortcuts("Shortcuts", true/*, { SDL_SCANCODE_Q }*/);
+	panels.push_back(panel_console = new PanelConsole("Console", true));
+	panels.push_back(panel_shortcuts = new PanelShortcuts("Shortcuts", true/*, { SDL_SCANCODE_Q }*/));
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelProperties("Properties", true));
-	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(panel_config);
+	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(panel_config = new PanelConfiguration("Configuration", true));
+	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelAbout("About",true));
+	
 
 	return ret;
 }
@@ -269,6 +270,9 @@ void ModuleGui::DisplayMainMenuBar(update_status &ret)
 			App->RequestBrowser("https://github.com/YessicaSD/CITM_3_GameEngine/releases");
 		if(ImGui::MenuItem("Report a bug		"))
 			App->RequestBrowser("https://github.com/YessicaSD/CITM_3_GameEngine/issues");
+		if (ImGui::MenuItem("License		"))
+			App->RequestBrowser("https://github.com/YessicaSD/CITM_3_GameEngine/blob/master/LICENSE.md");
+	
 
 		ImGui::EndMenu();
 	}

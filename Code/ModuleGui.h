@@ -18,6 +18,7 @@ class PanelConfiguration;
 class PanelConsole;
 class PanelShortcuts;
 class PanelProperties;
+class PanelAbout;
 struct TabPanel;
 
 enum class TYPE_TAB_PANEL
@@ -34,6 +35,7 @@ private:
 	PanelConsole* panel_console = nullptr;
 	PanelShortcuts * panel_shortcuts = nullptr;
 	PanelProperties* panel_properties = nullptr;
+	PanelAbout* panel_about = nullptr;
 	std::vector<Shortcut *> shortcuts;
 
 
