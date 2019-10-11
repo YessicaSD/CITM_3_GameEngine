@@ -18,6 +18,10 @@ PanelConfiguration::PanelConfiguration(std::string name, bool active, std::vecto
 	memset(fpsHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
 	memset(msHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
 	memset(RamHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
+
+	////Render options
+	depth_test = glIsEnabled(GL_DEPTH_BUFFER) == GL_TRUE;
+	cull_face  = glIsEnabled(GL_CULL_FACE) == GL_TRUE;
 }
 
 void PanelConfiguration::Draw()
@@ -125,6 +129,73 @@ void PanelConfiguration::Draw()
 		{
 			glClearColor(default_color_background[0], default_color_background[1], default_color_background[2], 1);
 
+		}
+
+		ImGui::Text("Window options");
+		const char * window_modes[] = {
+			"No fullscreen",
+			"Fullscreen",
+			"Fullscreen desktop" };
+		if (ImGui::Combo("Window mode", &current_window_mode, window_modes, IM_ARRAYSIZE(window_modes)))
+		{
+			Uint32 change_mode = 0;
+			if (current_window_mode == 0)
+			{
+				change_mode = 0;
+			}
+			else if (current_window_mode == 1)
+			{
+				change_mode = SDL_WINDOW_FULLSCREEN;
+			}
+			else if (current_window_mode == 2)
+			{
+				change_mode = SDL_WINDOW_FULLSCREEN_DESKTOP;
+			}
+			SDL_SetWindowFullscreen(App->window->window, change_mode);
+		}
+
+		if (ImGui::Checkbox("Resizable", &App->window->resizable))
+		{
+			SDL_SetWindowResizable(App->window->window, App->window->resizable ? SDL_TRUE : SDL_FALSE);
+		}
+		if (ImGui::Checkbox("Borderless", &App->window->borderless))
+		{
+			SDL_SetWindowBordered(App->window->window, App->window->borderless ? SDL_FALSE : SDL_TRUE);
+		}
+		if (ImGui::Checkbox("Vsync", &App->window->vsync))
+		{
+			if (SDL_GL_SetSwapInterval(App->window->vsync ? 1 : 0) == -1)
+				//1 for updates synchronized with the vertical retrace
+				//0 for immediate updates
+			{
+				LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+			}
+		}
+
+		ImGui::Text("Render options");
+		//TODO: Get initial value
+		if (ImGui::Checkbox("Depth test", &depth_test))
+		{
+			if (depth_test)
+			{
+				glEnable(GL_DEPTH_TEST);
+			}
+			else
+			{
+				glDisable(GL_DEPTH_TEST);
+			}
+		}
+
+		if (ImGui::Checkbox("Cull faces", &cull_face))
+		{
+			if (cull_face)
+			{
+				glEnable(GL_CULL_FACE);
+			}
+			else
+			{
+				glDisable(GL_CULL_FACE);
+			}
 		}
 	}
 

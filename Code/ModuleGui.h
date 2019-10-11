@@ -43,6 +43,7 @@ private:
 public:
 	ModuleGui(bool start_enabled = true);
 	bool Init() override;
+	bool Start() override;
 	update_status PreUpdate() override;
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;
@@ -53,7 +54,7 @@ public:
 	void ModifyShortcut(SDL_Scancode key);
 	void SetTabPanelsResized(int width, int height);
 private:
-	void DisplayMainMenuBar(update_status &ret);
+	void MainMenuBar(update_status &ret);
 
 
 

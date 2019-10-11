@@ -24,6 +24,11 @@ private:
 	float msHistory[CURRENT_FPS_MAX_VALUE];
 	float RamHistory[CURRENT_FPS_MAX_VALUE];
 	bool scroll_input_log = false;
+	int current_window_mode = 0;
+	//Render options
+	bool depth_test = false;
+	bool cull_face = false;
+
 };
 #endif // !PANEL_CONFIGURATION_H_
 

@@ -55,14 +55,18 @@ bool ModuleGui::Init()
 
 	SetTabPanelsResized(App->window->GetWindowWidth(), App->window->GetWindowHeight());
 
+	return ret;
+}
+
+bool ModuleGui::Start()
+{
 	panels.push_back(panel_console = new PanelConsole("Console", true));
 	panels.push_back(panel_shortcuts = new PanelShortcuts("Shortcuts", true/*, { SDL_SCANCODE_Q }*/));
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelProperties("Properties", true));
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(panel_config = new PanelConfiguration("Configuration", true));
-	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelAbout("About",true));
-	
+	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelAbout("About", true));
 
-	return ret;
+	return true;
 }
 
 update_status ModuleGui::PreUpdate()
@@ -88,7 +92,7 @@ update_status ModuleGui::Update(float dt)
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
-	DisplayMainMenuBar(ret);
+	MainMenuBar(ret);
 	if (showMenuImGui)
 		ImGui::ShowDemoWindow();
 
@@ -174,39 +178,8 @@ bool ModuleGui::Log(const char *sentence)
 	return false;
 }
 
-void ModuleGui::DisplayMainMenuBar(update_status &ret)
-{
-	
-	ImGui::Begin("Config");
-	if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen))
-	{
-		SDL_SetWindowFullscreen(App->window->window, App->window->fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
-	}
-	if (ImGui::Checkbox("Resizable", &App->window->resizable))
-	{
-		SDL_SetWindowResizable(App->window->window, App->window->resizable ? SDL_TRUE : SDL_FALSE);
-	}
-	if (ImGui::Checkbox("Borderless", &App->window->borderless))
-	{
-		SDL_SetWindowBordered(App->window->window, App->window->borderless ? SDL_FALSE : SDL_TRUE);
-	}
-	if (ImGui::Checkbox("Fullscreen Desktop", &App->window->fullscreen_desktop))
-	{
-		SDL_SetWindowFullscreen(App->window->window, App->window->fullscreen_desktop ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
-	}
-	if (ImGui::Checkbox("Vsync", &App->window->vsync))
-	{
-		if (SDL_GL_SetSwapInterval(App->window->vsync ? 1 : 0) == -1)
-			//1 for updates synchronized with the vertical retrace
-			//0 for immediate updates
-		{
-			LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
-		}
-	}
-	ImGui::End();
-
-
-	
+void ModuleGui::MainMenuBar(update_status &ret)
+{	
 	ImGui::BeginMainMenuBar();
 	if (ImGui::BeginMenu("File"))
 	{
