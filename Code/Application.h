@@ -13,6 +13,7 @@
 #include "ModuleGui.h"
 #include "ModuleRandom.h"
 
+#include <vector>
 #include <list>
 #include "MathGeoLib\include\Time\Clock.h"
 
@@ -46,7 +47,7 @@ private:
 
 	Timer	ms_timer;
 	float	dt;
-	std::list<Module*> list_modules;
+	std::vector<Module*> list_modules;
 
 	JSON_Value * configValue = nullptr;
 

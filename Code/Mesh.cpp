@@ -20,7 +20,7 @@ void Mesh::Draw()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->id_indice);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	glDrawElements(GL_TRIANGLES, this->num_indices * 3, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES, this->num_indices, GL_UNSIGNED_INT, NULL);
 }
 
 void Mesh::DrawVertexNormal()
