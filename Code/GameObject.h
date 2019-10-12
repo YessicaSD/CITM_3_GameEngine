@@ -12,6 +12,11 @@ class GameObject
 public:
 	GameObject(std::string name, Transform * parent);
 
+	template <class ComponentClass>
+	ComponentClass * CreateComponent();
+
+	//TODO: Get component method
+
 private:
 	bool OnStart();
 	bool OnUpdate(float dt);
@@ -22,7 +27,10 @@ public:
 	Transform transform;
 
 private:
+
 	Transform * parent = nullptr;
+	std::vector<Transform*> children;
+
 	bool active = true;
 	std::string name;
 	std::vector<Component*> components;

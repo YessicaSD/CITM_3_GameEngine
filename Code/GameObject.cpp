@@ -8,14 +8,15 @@ GameObject::GameObject(std::string name, Transform * parent):
 {
 }
 
+template <class ComponentClass>
+ComponentClass * GameObject::CreateComponent()
+{
+	return ComponentClass(this);
+}
+
 bool GameObject::OnStart()
 {
-	for (std::vector<Component*>::iterator iter = components.begin();
-		iter != components.end();
-		++iter)
-	{
-		(*iter)->OnStart();
-	}
+
 	return true;
 }
 
