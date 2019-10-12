@@ -19,9 +19,12 @@ PanelConfiguration::PanelConfiguration(std::string name, bool active, std::vecto
 	memset(msHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
 	memset(RamHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
 
-	////Render options
+	//Render options
 	depth_test = glIsEnabled(GL_DEPTH_BUFFER) == GL_TRUE;
 	cull_face  = glIsEnabled(GL_CULL_FACE) == GL_TRUE;
+	lighting = glIsEnabled(GL_LIGHTING) == GL_TRUE;
+	color_material = glIsEnabled(GL_COLOR_MATERIAL) == GL_TRUE;
+	texture_2d = glIsEnabled(GL_TEXTURE_2D) == GL_TRUE;
 }
 
 void PanelConfiguration::Draw()
@@ -173,30 +176,13 @@ void PanelConfiguration::Draw()
 		}
 
 		ImGui::Text("Render options");
-		//TODO: Get initial value
-		if (ImGui::Checkbox("Depth test", &depth_test))
-		{
-			if (depth_test)
-			{
-				glEnable(GL_DEPTH_TEST);
-			}
-			else
-			{
-				glDisable(GL_DEPTH_TEST);
-			}
-		}
 
-		if (ImGui::Checkbox("Cull faces", &cull_face))
-		{
-			if (cull_face)
-			{
-				glEnable(GL_CULL_FACE);
-			}
-			else
-			{
-				glDisable(GL_CULL_FACE);
-			}
-		}
+		RenderOption("Depth test", &depth_test, GL_DEPTH_TEST);
+		RenderOption("Cull faces", &cull_face, GL_CULL_FACE);
+		RenderOption("Lighting", &lighting, GL_LIGHTING);
+		RenderOption("Color materials", &color_material, GL_COLOR_MATERIAL);
+		RenderOption("Texture 2D", &texture_2d, GL_TEXTURE_2D);
+
 	}
 
 	if (ImGui::CollapsingHeader("Input"))
@@ -266,4 +252,19 @@ void PanelConfiguration::AddInputLog(SDL_Scancode key, KEY_STATE state)
 	std::string scancode_name = SDL_GetScancodeName(key);
 	std::string new_entry = "Key: " + scancode_name + ". \n";
 	input_log_buffer.appendf(new_entry.c_str());
+}
+
+void PanelConfiguration::RenderOption(const char * checkbox_string, bool *value, int gl_option)
+{
+	if (ImGui::Checkbox(checkbox_string, value))
+	{
+		if (*value)
+		{
+			glEnable(gl_option);
+		}
+		else
+		{
+			glDisable(gl_option);
+		}
+	}
 }

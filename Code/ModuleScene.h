@@ -7,6 +7,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Cube.h"
+#include "GameObject.h"
 
 typedef struct par_shapes_mesh_s par_shapes_mesh;
 
@@ -37,6 +38,9 @@ public:
 	bool GetRenderMode(std::string variable);
 
 	void CreateMenu();
+
+	//All gameobjects are children of the root gameobject
+	GameObject root_gameobject;
 };
 
 #endif // !MODULESCENE_H_

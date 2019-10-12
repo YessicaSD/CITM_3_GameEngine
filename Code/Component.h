@@ -3,12 +3,21 @@
 #include "GameObject.h"
 class Component
 {
-private: 
-	GameObject* myObject = nullptr;
 public:
+	Component(GameObject * gameobject);
+
+private:
+	virtual void OnStart() {};
+	virtual void OnUpdate(float dt) {};
+	virtual void OnEnable() {};
+	virtual void OnDisable() {};
+
+private: 
+	//The gameobject which has this component
+	GameObject* gameobject = nullptr;
 	bool active = true;
-	virtual void Disable() {};
-	virtual void Enable() {};
+	
+	friend class GameObject;
 };
 
 

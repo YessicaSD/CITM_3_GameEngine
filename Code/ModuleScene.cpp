@@ -13,7 +13,9 @@
 
 
 
-ModuleScene::ModuleScene(bool start_enabled) : Module(start_enabled)
+ModuleScene::ModuleScene(bool start_enabled) :
+	Module(start_enabled),
+	root_gameobject("Root", nullptr)
 {
 	view_mode["default"] = true;
 	view_mode["wireframe"] = false;

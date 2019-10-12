@@ -1,25 +1,31 @@
 #ifndef __GAMEOBJECT_H__
 #define __GAMEOBJECT_H__
 
-
-
 #include <vector>
 #include <string>
 
 class Component;
 class Transform;
+
 class GameObject
 {
 public:
-	GameObject() {};
+	GameObject(std::string name, Transform * parent);
+
+private:
+	bool OnStart();
+	bool OnUpdate(float dt);
+	bool OnEnable();
+	bool OnDisable();
 
 public:
-	Transform* transform;
-	std::string name;
+	Transform * transform = nullptr;
+
+private:
+	Transform * parent = nullptr;
 	bool active = true;
+	std::string name;
 	std::vector<Component*> components;
-	virtual void Disable() {};
-	virtual void Enable() {};
 };
 
 #endif // !GAMEOBJECT_H_
