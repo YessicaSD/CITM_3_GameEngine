@@ -13,12 +13,12 @@ private:
 	virtual void OnEnable() {};
 	virtual void OnDisable() {};
 
-private: 
-	//The gameobject which has this component
+public:
+	//The gameobject which contains this component
 	GameObject* gameobject = nullptr;
-	bool active = true;
 
-	//Component type
+private: 
+	bool active = true;
 	
 	friend class GameObject;
 };

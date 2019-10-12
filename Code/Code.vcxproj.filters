@@ -534,6 +534,12 @@
     <ClInclude Include="ModuleImport.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="PanelInspector.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelHierarchy.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -740,9 +746,17 @@
     <ClCompile Include="Material.cpp">
       <Filter>Sources\ECS\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Component.cpp" />
     <ClCompile Include="ModuleImport.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelInspector.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelHierarchy.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Sources\ECS\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

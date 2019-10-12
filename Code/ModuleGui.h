@@ -18,6 +18,8 @@ class PanelConfiguration;
 class PanelConsole;
 class PanelShortcuts;
 class PanelProperties;
+class PanelInspector;
+class PanelHierarchy;
 class PanelAbout;
 struct TabPanel;
 
@@ -36,6 +38,7 @@ private:
 	PanelShortcuts * panel_shortcuts = nullptr;
 	PanelProperties* panel_properties = nullptr;
 	PanelAbout* panel_about = nullptr;
+	PanelHierarchy * panel_hirearchy = nullptr;
 	std::vector<Shortcut *> shortcuts;
 
 

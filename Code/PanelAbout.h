@@ -6,7 +6,7 @@
 class PanelAbout : public Panel
 {
 public:
-	PanelAbout(const char* name, bool active = false);
+	PanelAbout(const char* name, bool active = false, std::vector<SDL_Scancode> shortcuts = {});
 	void Draw() override;
 };
 

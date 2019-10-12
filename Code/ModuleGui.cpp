@@ -15,6 +15,8 @@
 #include "PanelConsole.h"
 #include "PanelProperties.h"
 #include "PanelAbout.h"
+#include "PanelHierarchy.h"
+#include "PanelInspector.h"
 
 #define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
 #define IMGUI_GREY ImVec4(0.6f,0.6f,0.6f,1.f)
@@ -62,6 +64,7 @@ bool ModuleGui::Start()
 {
 	panels.push_back(panel_console = new PanelConsole("Console", true));
 	panels.push_back(panel_shortcuts = new PanelShortcuts("Shortcuts", true/*, { SDL_SCANCODE_Q }*/));
+	panels.push_back(panel_hirearchy = new PanelHierarchy("Hierarchy", true));
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelProperties("Properties", true));
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(panel_config = new PanelConfiguration("Configuration", true));
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelAbout("About", true));

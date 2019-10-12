@@ -1,16 +1,6 @@
 #include "Panel.h"
 #include "Application.h"
 
-
-Panel::Panel(std::string name, bool active) :
-	name(name),
-	active(active)
-{
-	shortcut.name = name;
-
-
-}
-
 Panel::Panel(std::string name, bool active, std::vector<SDL_Scancode> shortcuts) :
 	name(name),
 	active(active)

@@ -2,7 +2,8 @@
 #include "imgui/imgui.h"
 #include "Globals.h"
 #include "Application.h"
-PanelAbout::PanelAbout(const char* name, bool active): Panel(name, active)
+PanelAbout::PanelAbout(const char* name, bool active, std::vector<SDL_Scancode> shortcuts):
+	Panel(name, active, shortcuts)
 {
 }
 void PanelAbout::Draw()

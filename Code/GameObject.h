@@ -21,7 +21,14 @@ public:
 		return new_component;
 	}
 
-	//TODO: Get component method
+	//TODO: GetComponent method (in .h)
+	//template <class ComponentClass>
+	//ComponentClass * GetComponent()
+	//{
+	//return
+	//}
+
+	const char * GetName();
 
 private:
 	bool OnStart();
@@ -33,10 +40,6 @@ public:
 	Transform transform;
 
 private:
-
-	Transform * parent = nullptr;
-	std::vector<Transform*> children;
-
 	bool active = true;
 	std::string name;
 	std::vector<Component*> components;

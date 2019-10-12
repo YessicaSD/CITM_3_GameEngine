@@ -4,9 +4,14 @@
 
 GameObject::GameObject(std::string name, Transform * parent):
 	transform(this),
-	name(name),
-	parent(parent)
+	name(name)
 {
+	transform.parent = parent;
+}
+
+const char * GameObject::GetName()
+{
+	return name.c_str();
 }
 
 bool GameObject::OnStart()
