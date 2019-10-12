@@ -1,8 +1,6 @@
 #include "Application.h"
 #include "ModuleImport.h"
 #include "ModuleRenderer3D.h"
-#include "GameObject.h"
-
 
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
@@ -11,6 +9,7 @@
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
 
+#include "GameObject.h"
 #include "Mesh.h"
 
 bool ModuleImport::Start()
@@ -36,8 +35,7 @@ bool ModuleImport::LoadMesh(const char * path)
 		{
 			aiMesh* actual_mesh = scene->mMeshes[i];
 			GameObject * mesh_gameobject = new GameObject(std::string(actual_mesh->mName.C_Str()), &assimp_scene_gameobject->transform);
-			Mesh* new_mesh  = new Mesh(mesh_gameobject);
-
+			Mesh * new_mesh = mesh_gameobject->CreateComponent<Mesh>();
 
 			new_mesh->num_vertices = actual_mesh->mNumVertices;
 			new_mesh->vertices = new float[new_mesh->num_vertices * 3];

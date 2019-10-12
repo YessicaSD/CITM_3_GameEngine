@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "Transform.h"
+#include "Mesh.h"
 
 class Component;
 
@@ -13,7 +14,12 @@ public:
 	GameObject(std::string name, Transform * parent);
 
 	template <class ComponentClass>
-	ComponentClass * CreateComponent();
+	ComponentClass * CreateComponent()
+	{
+		ComponentClass * new_component = new ComponentClass(this);
+		components.push_back(new_component);
+		return new_component;
+	}
 
 	//TODO: Get component method
 

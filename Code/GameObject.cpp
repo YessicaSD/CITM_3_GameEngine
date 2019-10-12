@@ -1,17 +1,12 @@
 #include "GameObject.h"
 #include "Component.h"
+#include "Mesh.h"
 
 GameObject::GameObject(std::string name, Transform * parent):
 	transform(this),
 	name(name),
 	parent(parent)
 {
-}
-
-template <class ComponentClass>
-ComponentClass * GameObject::CreateComponent()
-{
-	return ComponentClass(this);
 }
 
 bool GameObject::OnStart()

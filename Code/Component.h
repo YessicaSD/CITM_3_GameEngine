@@ -3,13 +3,6 @@
 
 class GameObject;
 
-enum class ComponentTypes
-{
-	Transform,
-	Mesh,
-	Material
-};
-
 class Component
 {
 public:
