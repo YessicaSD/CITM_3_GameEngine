@@ -4,7 +4,11 @@
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
 
-bool Mesh::Load(uint num_vertices, float * mVetices)
+Mesh::Mesh(GameObject * gameobject) : Component(gameobject)
+{
+}
+
+bool Mesh::LoadMesh(uint num_vertices, float * mVetices)
 {
 	this->num_vertices = num_vertices;
 	this->vertices = new float[num_vertices * 3];

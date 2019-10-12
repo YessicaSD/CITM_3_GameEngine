@@ -1,5 +1,5 @@
-#ifndef MODULE_IMPORT_FBX_H_
-#define MODULE_IMPORT_FBX_H_
+#ifndef MODULE_IMPORT_H_
+#define MODULE_IMPORT_H_
 
 #include "Module.h"
 #include <vector>
@@ -10,16 +10,18 @@
 
 class Mesh;
 
-struct Scene
+struct AssimpScene
 {
-	std::vector<Mesh*> array_mesh;
+	std::vector<Mesh*> assimp_meshes;
 };
 
-class ModuleImportFBX : public Module
+//Module responsible for importing assets into the engine
+
+class ModuleImport : public Module
 {
 protected:
 	aiLogStream stream;
-	std::vector<Scene*> array_scene;
+	std::vector<AssimpScene*> array_scene;
 public:
 	bool Start() override;
 	

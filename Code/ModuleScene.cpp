@@ -9,7 +9,7 @@
 #define PAR_SHAPES_IMPLEMENTATION
 #include "par\par_shapes.h"
 #include "Mesh.h"
-#include "ModuleImportFBX.h"
+#include "ModuleImport.h"
 
 
 
@@ -167,9 +167,9 @@ update_status ModuleScene::PostUpdate()
 
 void ModuleScene::DrawFaceNormals()
 {
-	for (std::vector<Scene*>::iterator scene_iter = App->importFBX->array_scene.begin(); scene_iter != App->importFBX->array_scene.end(); ++scene_iter)
+	for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
 	{
-		for (std::vector<Mesh*>::iterator iter = (*scene_iter)->array_mesh.begin(); iter != (*scene_iter)->array_mesh.end(); ++iter)
+		for (std::vector<Mesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
 		{
 			if ((*iter))
 			{
@@ -181,9 +181,9 @@ void ModuleScene::DrawFaceNormals()
 
 void ModuleScene::DrawVertexNormals()
 {
-	for (std::vector<Scene*>::iterator scene_iter = App->importFBX->array_scene.begin(); scene_iter != App->importFBX->array_scene.end(); ++scene_iter)
+	for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
 	{
-		for (std::vector<Mesh*>::iterator iter = (*scene_iter)->array_mesh.begin(); iter != (*scene_iter)->array_mesh.end(); ++iter)
+		for (std::vector<Mesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
 		{
 			if ((*iter))
 			{
@@ -214,9 +214,9 @@ bool ModuleScene::GetRenderMode(std::string variable)
 
 void ModuleScene::Draw()
 {
-	for (std::vector<Scene*>::iterator scene_iter = App->importFBX->array_scene.begin(); scene_iter != App->importFBX->array_scene.end(); ++scene_iter)
+	for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
 	{
-		for (std::vector<Mesh*>::iterator iter = (*scene_iter)->array_mesh.begin(); iter != (*scene_iter)->array_mesh.end(); ++iter)
+		for (std::vector<Mesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
 		{
 			if ((*iter))
 			{

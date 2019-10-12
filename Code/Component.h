@@ -1,6 +1,8 @@
 #ifndef COMPONENT_H_
 #define COMPONENT_H_
-#include "GameObject.h"
+
+class GameObject;
+
 class Component
 {
 public:

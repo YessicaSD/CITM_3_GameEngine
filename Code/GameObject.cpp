@@ -2,6 +2,7 @@
 #include "Component.h"
 
 GameObject::GameObject(std::string name, Transform * parent):
+	transform(this),
 	name(name),
 	parent(parent)
 {

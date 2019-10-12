@@ -3,9 +3,9 @@
 
 #include <vector>
 #include <string>
+#include "Transform.h"
 
 class Component;
-class Transform;
 
 class GameObject
 {
@@ -19,7 +19,7 @@ private:
 	bool OnDisable();
 
 public:
-	Transform * transform = nullptr;
+	Transform transform;
 
 private:
 	Transform * parent = nullptr;

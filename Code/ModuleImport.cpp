@@ -1,37 +1,43 @@
-#include "ModuleImportFBX.h"
+#include "Application.h"
+#include "ModuleImport.h"
 #include "ModuleRenderer3D.h"
+#include "GameObject.h"
 
 
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/cfileio.h"
-#pragma comment (lib, "Assimp/libx86/assimp.lib")
 
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
 
 #include "Mesh.h"
 
-bool ModuleImportFBX::Start()
+bool ModuleImport::Start()
 {
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 	return true;
 }
 
-bool ModuleImportFBX::LoadMesh(const char * path)
+bool ModuleImport::LoadMesh(const char * path)
 {
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
-	
+
+
 	if (scene != nullptr && scene->HasMeshes())
 	{
-		Scene* new_scene = new Scene();
+		GameObject * assimp_scene_gameobject = new GameObject(std::string(path), &App->scene->root_gameobject.transform);
+
+		AssimpScene* new_scene = new AssimpScene();
 		array_scene.push_back(new_scene);
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (uint i = 0; i < scene->mNumMeshes; ++i)
 		{
 			aiMesh* actual_mesh = scene->mMeshes[i];
-			Mesh* new_mesh  = new Mesh();
+			GameObject * mesh_gameobject = new GameObject(std::string(actual_mesh->mName.C_Str()), &assimp_scene_gameobject->transform);
+			Mesh* new_mesh  = new Mesh(mesh_gameobject);
+
 
 			new_mesh->num_vertices = actual_mesh->mNumVertices;
 			new_mesh->vertices = new float[new_mesh->num_vertices * 3];
@@ -92,7 +98,7 @@ bool ModuleImportFBX::LoadMesh(const char * path)
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, new_mesh->id_indice);
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*actual_mesh->mNumFaces * 3, new_mesh->indices, GL_STATIC_DRAW);
 			}
-			new_scene->array_mesh.push_back(new_mesh);
+			new_scene->assimp_meshes.push_back(new_mesh);
 		}
 		aiReleaseImport(scene);
 	}
@@ -104,7 +110,7 @@ bool ModuleImportFBX::LoadMesh(const char * path)
 	return true;
 }
 
-bool ModuleImportFBX::CleanUp()
+bool ModuleImport::CleanUp()
 {
 	// detach log stream
 	aiDetachAllLogStreams();

@@ -20,7 +20,7 @@
 typedef unsigned __int32 uint32;
 typedef unsigned __int64 uint64;
 
-class ModuleImportFBX;
+class ModuleImport;
 
 class Application
 {
@@ -32,7 +32,7 @@ public:
 	ModuleScene* scene = nullptr;
 	ModuleGui* gui = nullptr;
 	ModuleRandom * random = nullptr;
-	ModuleImportFBX* importFBX = nullptr;
+	ModuleImport* import = nullptr;
 
 	bool saveRequest = false;
 	JSON_Object * config = nullptr;

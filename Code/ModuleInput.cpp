@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "imgui\imgui_impl_sdl.h"
-#include "ModuleImportFBX.h"
+#include "ModuleImport.h"
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput(bool start_enabled) : Module(start_enabled)
@@ -140,7 +140,7 @@ update_status ModuleInput::PreUpdate()
 					dropped_filedir,
 					App->window->window
 				);
-				App->importFBX->LoadMesh(dropped_filedir);
+				App->import->LoadMesh(dropped_filedir);
 					SDL_free(dropped_filedir);
 
 				break;
