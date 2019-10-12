@@ -11,13 +11,20 @@ class Transform : public Component
 {
 public:
 	Transform(GameObject * gameobject);
+	//Create 
+
+	void SetParent(Transform * parent);
+	//void SetChildren(std::vector<Transform*> children);
 
 public:
 	float3 position;
 	float3 rotation;
 
+private:
 	Transform * parent = nullptr;
 	std::vector<Transform*> children;
+
+	friend class PanelHierarchy;
 };
 #endif // !TRANSFORM_H_
 

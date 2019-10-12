@@ -6,7 +6,7 @@ GameObject::GameObject(std::string name, Transform * parent):
 	transform(this),
 	name(name)
 {
-	transform.parent = parent;
+	transform.SetParent(parent);
 }
 
 const char * GameObject::GetName()

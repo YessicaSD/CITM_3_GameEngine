@@ -77,8 +77,10 @@ void PanelHierarchy::TreeEntry(Transform * transform)
 		iter != transform->children.end();
 		++iter)
 	{
-		ImGui::TreeNodeEx((*iter)->gameobject->GetName());
-		TreeEntry((*iter));
-		//	ImGui::TreePop();
+		if (ImGui::TreeNodeEx((*iter)->gameobject->GetName()))
+		{
+			TreeEntry((*iter));
+			ImGui::TreePop();
+		}
 	}
 }
