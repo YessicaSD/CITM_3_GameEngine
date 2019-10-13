@@ -10,6 +10,7 @@
 #include "par\par_shapes.h"
 #include "ComponentMesh.h"
 #include "ModuleImport.h"
+#include "AssetMesh.h"
 
 
 
@@ -50,7 +51,7 @@ bool ModuleScene::Start()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indice_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T)*sphereInfo->ntriangles * 3, sphereInfo->triangles, GL_STATIC_DRAW);*/
 	
-	App->import->LoadMesh("Assets/warrior/warrior.FBX");
+	//App->import->LoadMesh("Assets/test_childs_2.FBX");
 
 	return ret;
 }
@@ -76,53 +77,6 @@ update_status ModuleScene::Update(float dt)
 	//		}
 	//	}
 	//}
-
-	/*if (view_mode["default"])
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		cube[1]->Draw();
-
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, sphere_v_id);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indice_id);
-		glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-		glDrawElements(GL_TRIANGLES, sphereInfo->ntriangles * 3, GL_UNSIGNED_SHORT, NULL);
-	}	
-	
-	if (view_mode["wireframe"])
-	{
-		glColor3f(0, 0, 1);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		cube[1]->Draw();
-
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, sphere_v_id);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indice_id);
-		glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-		glDrawElements(GL_TRIANGLES, sphereInfo->ntriangles * 3, GL_UNSIGNED_SHORT, NULL);
-
-		glColor3f(1, 1, 1);
-	}
-
-	if (view_mode["vertex"])
-	{
-		glColor3f(1, 0, 0);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-		glPointSize(3);
-		cube[1]->Draw();
-
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, sphere_v_id);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indice_id);
-		glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-		glDrawElements(GL_TRIANGLES, sphereInfo->ntriangles * 3, GL_UNSIGNED_SHORT, NULL);
-		glColor3f(1, 1, 1);
-	}
-	
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);*/
 
 	return UPDATE_CONTINUE;
 }
@@ -244,13 +198,22 @@ void ModuleScene::CreateMenu()
 	{
 		//Create the different par shapes
 
+		//TODO: Align buttons
+
 		if (ImGui::Button("Cube"))
 		{
-
+			GameObject * new_gameobject = new GameObject("Cube", &App->scene->root_gameobject.transform);
+			ComponentMesh * new_mesh = new_gameobject->CreateComponent<ComponentMesh>();
+			//Create cube
+			AssetMesh cube_mesh;
+			
 		}
 		if (ImGui::Button("Sphere"))
 		{
-
+			//GameObject * new_gameobject = new GameObject("Cube", &App->scene->root_gameobject.transform);
+			//ComponentMesh * new_mesh = new_gameobject->CreateComponent<ComponentMesh>();
+			//AssetMesh sphere_mesh;
+			//sphere_mesh.LoadMesh();
 		}
 		if (ImGui::Button("Hemisphere"))
 		{

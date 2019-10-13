@@ -9,9 +9,6 @@ typedef unsigned int uint;
 class AssetMesh
 {
 public:
-	bool LoadMesh(uint num_vertices, float * mVetices);
-
-public:
 	uint id_indice = 0u; // index in VRAM
 	uint num_indices = 0u;
 	uint* indices = nullptr;

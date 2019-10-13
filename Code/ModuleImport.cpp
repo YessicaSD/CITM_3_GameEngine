@@ -37,11 +37,11 @@ bool ModuleImport::LoadMesh(const char * path)
 			//1 Create meshes
 			LoadVertices(asset_mesh, assimp_mesh);
 			LoadFaces(assimp_mesh, asset_mesh);
-			assimp_scene->assimp_meshes.push_back(asset_mesh);
-
-			//2 associate meshes
-			CreateGameObjectsFromNodes(scene->mRootNode, &App->scene->root_gameobject.transform, assimp_scene);
 		}
+
+		//2 associate meshes
+		CreateGameObjectsFromNodes(scene->mRootNode, &App->scene->root_gameobject.transform, assimp_scene);
+
 		aiReleaseImport(scene);
 	}
 	else
@@ -52,19 +52,19 @@ bool ModuleImport::LoadMesh(const char * path)
 	return true;
 }
 
-void ModuleImport::LoadFaces(aiMesh * assimp_mesh, AssetMesh * &mesh_component)
+void ModuleImport::LoadFaces(aiMesh * assimp_mesh, AssetMesh * &asset_mesh)
 {
 	if (assimp_mesh->HasFaces())
 	{
 		if (assimp_mesh->HasNormals())
 		{
-			mesh_component->normals = new aiVector3D[assimp_mesh->mNumVertices];
-			memcpy(mesh_component->normals, assimp_mesh->mNormals, sizeof(aiVector3D) * assimp_mesh->mNumVertices);
+			asset_mesh->normals = new aiVector3D[assimp_mesh->mNumVertices];
+			memcpy(asset_mesh->normals, assimp_mesh->mNormals, sizeof(aiVector3D) * assimp_mesh->mNumVertices);
 		}
 
 
-		mesh_component->num_indices = assimp_mesh->mNumFaces * 3;
-		mesh_component->indices = new uint[mesh_component->num_indices]; // assume each face is a triangle
+		asset_mesh->num_indices = assimp_mesh->mNumFaces * 3;
+		asset_mesh->indices = new uint[asset_mesh->num_indices]; // assume each face is a triangle
 		for (uint i = 0; i < assimp_mesh->mNumFaces; ++i)
 		{
 			if (assimp_mesh->mFaces[i].mNumIndices != 3)
@@ -73,67 +73,62 @@ void ModuleImport::LoadFaces(aiMesh * assimp_mesh, AssetMesh * &mesh_component)
 			}
 			else
 			{
-				memcpy(&mesh_component->indices[i * 3], assimp_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+				memcpy(&asset_mesh->indices[i * 3], assimp_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
 			}
 		}
 
-		mesh_component->numFaces = assimp_mesh->mNumFaces;
-		mesh_component->faces_normals = new float3[assimp_mesh->mNumFaces];
-		mesh_component->face_middle_point = new float3[assimp_mesh->mNumFaces];
+		asset_mesh->numFaces = assimp_mesh->mNumFaces;
+		asset_mesh->faces_normals = new float3[assimp_mesh->mNumFaces];
+		asset_mesh->face_middle_point = new float3[assimp_mesh->mNumFaces];
 
-		for (uint i = 0; i < mesh_component->num_indices; i += 3)
+		for (uint i = 0; i < asset_mesh->num_indices; i += 3)
 		{
-			uint index = mesh_component->indices[i];
-			float3 vertex1 = { mesh_component->vertices[index * 3], mesh_component->vertices[index * 3 + 1] , mesh_component->vertices[index * 3 + 2] };
-			index = mesh_component->indices[i + 1];
+			uint index = asset_mesh->indices[i];
+			float3 vertex1 = { asset_mesh->vertices[index * 3], asset_mesh->vertices[index * 3 + 1] , asset_mesh->vertices[index * 3 + 2] };
+			index = asset_mesh->indices[i + 1];
 
-			float3 vertex2 = { mesh_component->vertices[index * 3], mesh_component->vertices[index * 3 + 1] , mesh_component->vertices[index * 3 + 2] };
-			index = mesh_component->indices[i + 2];
-			float3 vertex3 = { mesh_component->vertices[index * 3], mesh_component->vertices[index * 3 + 1] , mesh_component->vertices[index * 3 + 2] };
+			float3 vertex2 = { asset_mesh->vertices[index * 3], asset_mesh->vertices[index * 3 + 1] , asset_mesh->vertices[index * 3 + 2] };
+			index = asset_mesh->indices[i + 2];
+			float3 vertex3 = { asset_mesh->vertices[index * 3], asset_mesh->vertices[index * 3 + 1] , asset_mesh->vertices[index * 3 + 2] };
 
 			float3 vector1 = vertex2 - vertex1;
 			float3 vector2 = vertex3 - vertex1;
 
-			mesh_component->faces_normals[i / 3] = Cross(vector1, vector2);
-			mesh_component->faces_normals[i / 3].Normalize();
-			mesh_component->face_middle_point[i / 3] = { (vertex1.x + vertex2.x + vertex3.x) / 3, (vertex1.y + vertex2.y + vertex3.y) / 3, (vertex1.z + vertex2.z + vertex3.z) / 3 };
+			asset_mesh->faces_normals[i / 3] = Cross(vector1, vector2);
+			asset_mesh->faces_normals[i / 3].Normalize();
+			asset_mesh->face_middle_point[i / 3] = { (vertex1.x + vertex2.x + vertex3.x) / 3, (vertex1.y + vertex2.y + vertex3.y) / 3, (vertex1.z + vertex2.z + vertex3.z) / 3 };
 		}
-		glGenBuffers(1, &mesh_component->id_indice);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_component->id_indice);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*assimp_mesh->mNumFaces * 3, mesh_component->indices, GL_STATIC_DRAW);
+		glGenBuffers(1, &asset_mesh->id_indice);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, asset_mesh->id_indice);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*assimp_mesh->mNumFaces * 3, asset_mesh->indices, GL_STATIC_DRAW);
 	}
 }
 
-void ModuleImport::LoadVertices(AssetMesh * component_mesh, aiMesh * assimp_mesh)
+void ModuleImport::LoadVertices(AssetMesh * asset_mesh, aiMesh * assimp_mesh)
 {
-	component_mesh->num_vertices = assimp_mesh->mNumVertices;
-	component_mesh->vertices = new float[component_mesh->num_vertices * 3];
-	memcpy(component_mesh->vertices, assimp_mesh->mVertices, sizeof(float) * component_mesh->num_vertices * 3);
-	LOG("New mesh with %d vertices", component_mesh->num_vertices);
+	asset_mesh->num_vertices = assimp_mesh->mNumVertices;
+	asset_mesh->vertices = new float[asset_mesh->num_vertices * 3];
+	memcpy(asset_mesh->vertices, assimp_mesh->mVertices, sizeof(float) * asset_mesh->num_vertices * 3);
+	LOG("New mesh with %d vertices", asset_mesh->num_vertices);
 
-	glGenBuffers(1, &component_mesh->id_vertex);
-	glBindBuffer(GL_ARRAY_BUFFER, component_mesh->id_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * component_mesh->num_vertices * 3, component_mesh->vertices, GL_STATIC_DRAW);
+	glGenBuffers(1, &asset_mesh->id_vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, asset_mesh->id_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * asset_mesh->num_vertices * 3, asset_mesh->vertices, GL_STATIC_DRAW);
 }
 
 void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, AssimpScene * assimp_scene)
 {
 	GameObject * new_gameobject = new GameObject(std::string(node->mName.C_Str()), parent);
 
-	//new_gameobject->transform.local_matrix.Set(
-	//	node->mTransformation.a1, node->mTransformation.a2, node->mTransformation.a3, node->mTransformation.a4,
-	//	node->mTransformation.b1, node->mTransformation.b2, node->mTransformation.b3, node->mTransformation.b4,
-	//	node->mTransformation.c1, node->mTransformation.c2, node->mTransformation.c3, node->mTransformation.c4,
-	//	node->mTransformation.d1, node->mTransformation.d2, node->mTransformation.d3, node->mTransformation.d4);
-
-	////TODO: Calculate global matrix after that, don't set it directly to the local matrix of the fbx node
-	//new_gameobject->transform.global_matrix.Set(
-	//	node->mTransformation.a1, node->mTransformation.a2, node->mTransformation.a3, node->mTransformation.a4,
-	//	node->mTransformation.b1, node->mTransformation.b2, node->mTransformation.b3, node->mTransformation.b4,
-	//	node->mTransformation.c1, node->mTransformation.c2, node->mTransformation.c3, node->mTransformation.c4,
-	//	node->mTransformation.d1, node->mTransformation.d2, node->mTransformation.d3, node->mTransformation.d4);
-
 	//TODO: Search if there is a better way to convert from aiMatrix4x4 to math::float4x4 (both are arrays with 16 positions at the end)
+	new_gameobject->transform.local_matrix.Set(
+		node->mTransformation.a1, node->mTransformation.b1, node->mTransformation.c1, node->mTransformation.d1,
+		node->mTransformation.a2, node->mTransformation.b2, node->mTransformation.c2, node->mTransformation.d2,
+		node->mTransformation.a3, node->mTransformation.b3, node->mTransformation.c3, node->mTransformation.d3,
+		node->mTransformation.a4, node->mTransformation.b4, node->mTransformation.c4, node->mTransformation.d4);
+
+	//TODO: Calculate global matrix after that, don't set it directly to the local matrix of the fbx node
+	new_gameobject->transform.global_matrix = parent->global_matrix * new_gameobject->transform.local_matrix;
 
 	if (node->mNumMeshes > 0u)
 	{
