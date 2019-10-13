@@ -62,14 +62,25 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 	GameObject * new_gameobject = new GameObject(std::string(node->mName.C_Str()), parent);
 
 	//TODO: Search if there is a better way to convert from aiMatrix4x4 to math::float4x4 (both are arrays with 16 positions at the end)
+	//V1
 	new_gameobject->transform.local_matrix.Set(
 		node->mTransformation.a1, node->mTransformation.b1, node->mTransformation.c1, node->mTransformation.d1,
 		node->mTransformation.a2, node->mTransformation.b2, node->mTransformation.c2, node->mTransformation.d2,
 		node->mTransformation.a3, node->mTransformation.b3, node->mTransformation.c3, node->mTransformation.d3,
 		node->mTransformation.a4, node->mTransformation.b4, node->mTransformation.c4, node->mTransformation.d4);
+	//memcpy(&new_gameobject->transform.local_matrix, &node->mTransformation, sizeof(float) * 16);
+	//V2
+	//new_gameobject->transform.local_matrix.Set(
+	//	node->mTransformation.a1, node->mTransformation.a2, node->mTransformation.a3, node->mTransformation.a4,
+	//	node->mTransformation.b1, node->mTransformation.b2, node->mTransformation.b3, node->mTransformation.b4,
+	//	node->mTransformation.c1, node->mTransformation.c2, node->mTransformation.c3, node->mTransformation.c4,
+	//	node->mTransformation.d1, node->mTransformation.d2, node->mTransformation.d3, node->mTransformation.d4);
 
 	//TODO: Calculate global matrix after that, don't set it directly to the local matrix of the fbx node
-	new_gameobject->transform.global_matrix = parent->global_matrix * new_gameobject->transform.local_matrix;
+	//V1
+	new_gameobject->transform.global_matrix = new_gameobject->transform.local_matrix * parent->global_matrix;
+	//V2
+	//new_gameobject->transform.global_matrix = parent->global_matrix * new_gameobject->transform.local_matrix;
 
 	if (node->mNumMeshes > 0u)
 	{

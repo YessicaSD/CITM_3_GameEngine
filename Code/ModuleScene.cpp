@@ -241,23 +241,55 @@ void ModuleScene::CreateMenu()
 		}
 		if (ImGui::Button("Trefoil"))
 		{
-			//TODO: Create a gameobject with a mesh component like this
+			//Create mesh
+			par_shapes_mesh* mesh = par_shapes_create_trefoil_knot(50, 20, 2);
+
+			//Load everything from par_shapes mesh to asset_mesh
+			AssetMesh * asset_mesh = new AssetMesh();
+			//Vertices
+			asset_mesh->num_vertices = mesh->npoints;
+			asset_mesh->vertices = mesh->points;
+
+			//Indices
+			asset_mesh->num_indices = mesh->ntriangles;
+			asset_mesh->indices = (uint *)mesh->triangles;
+
+			par_shapes_free_mesh(mesh);
+
+			
+			glGenBuffers(1, &asset_mesh->id_vertex);
+			glBindBuffer(GL_ARRAY_BUFFER, asset_mesh->id_vertex);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * asset_mesh->num_vertices* 3, asset_mesh->vertices, GL_STATIC_DRAW);
+
+			//Index
+
+			glGenBuffers(1, &asset_mesh->id_indice);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, asset_mesh->id_indice);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T) * asset_mesh->num_indices * 3, asset_mesh->indices, GL_STATIC_DRAW);
+
+			//TODO: Add meshes to mesh array in ModuleImport
+
+			//Create gameobject
+			GameObject * new_gameobject = new GameObject("Trefoil", &root_gameobject.transform);
+			ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
+			component_mesh->mesh = asset_mesh;
+
 
 			//TODO: Show menu to configurate this
 
-			par_shapes_mesh* mesh = par_shapes_create_trefoil_knot(50, 20, 2);
-			uint mesh_id = 0u;
-			uint mesh_indices_id = 0u;
+			//par_shapes_mesh* mesh = par_shapes_create_trefoil_knot(50, 20, 2);
+			//uint mesh_id = 0u;
+			//uint mesh_indices_id = 0u;
 
-			glGenBuffers(1, &mesh_id);
-			glBindBuffer(GL_ARRAY_BUFFER, mesh_id);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->npoints * 3, mesh->points, GL_STATIC_DRAW);
+			//glGenBuffers(1, &mesh_id);
+			//glBindBuffer(GL_ARRAY_BUFFER, mesh_id);
+			//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->npoints * 3, mesh->points, GL_STATIC_DRAW);
+			//
+			//glGenBuffers(1, &mesh_indices_id);
+			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_indices_id);
+			//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T) * mesh->ntriangles * 3, mesh->triangles, GL_STATIC_DRAW);
 			
-			glGenBuffers(1, &mesh_indices_id);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_indices_id);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T) * mesh->ntriangles * 3, mesh->triangles, GL_STATIC_DRAW);
-			
-			par_shapes_free_mesh(mesh);
+			//par_shapes_free_mesh(mesh);
 		}
 		ImGui::EndMenu();
 	}
