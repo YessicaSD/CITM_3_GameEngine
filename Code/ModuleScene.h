@@ -12,7 +12,29 @@
 typedef struct par_shapes_mesh_s par_shapes_mesh;
 
 class ModuleScene : public Module
-{
+{	
+public:
+	ModuleScene(bool start_enabled = true);
+	~ModuleScene();
+
+	bool Start();
+	update_status Update(float dt) override;
+	update_status PostUpdate() override;
+	//void DrawFaceNormals();
+	//void DrawVertexNormals();
+	bool CleanUp();
+	void ChangeRenderMode(std::string variable);
+	bool GetRenderMode(std::string variable);
+
+	void CreateMenu();
+
+private:
+	void RecursivePostUpdate(ComponentTransform * object);
+
+public:
+	//All gameobjects are children of the root gameobject
+	GameObject root_gameobject;
+
 private:
 	uint my_id;
 	uint num_vertices = 3;
@@ -21,26 +43,6 @@ private:
 
 
 	std::map<std::string, bool> view_mode;
-	void Draw();
-
-	
-public:
-	ModuleScene(bool start_enabled = true);
-	~ModuleScene();
-
-	bool Start();
-	update_status Update(float dt) override;
-	update_status PostUpdate() override;
-	void DrawFaceNormals();
-	void DrawVertexNormals();
-	bool CleanUp();
-	void ChangeRenderMode(std::string variable);
-	bool GetRenderMode(std::string variable);
-
-	void CreateMenu();
-
-	//All gameobjects are children of the root gameobject
-	GameObject root_gameobject;
 };
 
 #endif // !MODULESCENE_H_

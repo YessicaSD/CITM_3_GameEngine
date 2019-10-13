@@ -540,6 +540,9 @@
     <ClInclude Include="ComponentTransform.h">
       <Filter>Sources\ECS\Components</Filter>
     </ClInclude>
+    <ClInclude Include="AssetMesh.h">
+      <Filter>Sources\ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -757,6 +760,9 @@
     </ClCompile>
     <ClCompile Include="ComponentTransform.cpp">
       <Filter>Sources\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetMesh.cpp">
+      <Filter>Sources\ECS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

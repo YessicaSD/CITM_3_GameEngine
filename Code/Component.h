@@ -10,6 +10,7 @@ public:
 
 private:
 	virtual void OnUpdate(float dt) {};
+	virtual void OnPostUpdate() {};
 	virtual void OnEnable() {};
 	virtual void OnDisable() {};
 
