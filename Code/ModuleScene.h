@@ -12,16 +12,7 @@
 typedef struct par_shapes_mesh_s par_shapes_mesh;
 
 class ModuleScene : public Module
-{
-private:
-	uint my_id;
-	uint num_vertices = 3;
-	uint my_indices = 0;
-	Cube* cube[2];
-
-
-	std::map<std::string, bool> view_mode;
-	
+{	
 public:
 	ModuleScene(bool start_enabled = true);
 	~ModuleScene();
@@ -37,8 +28,21 @@ public:
 
 	void CreateMenu();
 
+private:
+	void RecursivePostUpdate(ComponentTransform * object);
+
+public:
 	//All gameobjects are children of the root gameobject
 	GameObject root_gameobject;
+
+private:
+	uint my_id;
+	uint num_vertices = 3;
+	uint my_indices = 0;
+	Cube* cube[2];
+
+
+	std::map<std::string, bool> view_mode;
 };
 
 #endif // !MODULESCENE_H_

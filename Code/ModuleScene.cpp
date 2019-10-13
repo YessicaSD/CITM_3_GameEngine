@@ -127,14 +127,20 @@ update_status ModuleScene::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleScene::PostUpdate()
+void ModuleScene::RecursivePostUpdate(ComponentTransform * object)
 {
-	for (std::vector<ComponentTransform *>::iterator iter = root_gameobject.transform.children.begin();
-		iter != root_gameobject.transform.children.end();
+	object->gameobject->OnPostUpdate();
+	for(std::vector<ComponentTransform *>::iterator iter = object->children.begin();
+		iter != object->children.end();
 		++iter)
 	{
-		(*iter)->gameobject->OnPostUpdate();
+		RecursivePostUpdate((*iter));
 	}
+}
+
+update_status ModuleScene::PostUpdate()
+{
+	RecursivePostUpdate(&root_gameobject.transform);
 
 	//if (view_mode["default"])
 	//{
@@ -177,8 +183,6 @@ update_status ModuleScene::PostUpdate()
 	p.axis = true;
 	p.wire = false;
 	p.Render();
-
-
 
 	return UPDATE_CONTINUE;
 }
