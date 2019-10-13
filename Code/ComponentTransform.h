@@ -7,13 +7,13 @@
 
 class GameObject;
 
-class Transform : public Component
+class ComponentTransform : public Component
 {
 public:
-	Transform(GameObject * gameobject);
+	ComponentTransform(GameObject * gameobject);
 	//Create 
 
-	void SetParent(Transform * parent);
+	void SetParent(ComponentTransform * parent);
 	//void SetChildren(std::vector<Transform*> children);
 
 public:
@@ -21,8 +21,8 @@ public:
 	float3 rotation;
 
 private:
-	Transform * parent = nullptr;
-	std::vector<Transform*> children;
+	ComponentTransform * parent = nullptr;
+	std::vector<ComponentTransform*> children;
 
 	friend class PanelHierarchy;
 };

@@ -3,15 +3,15 @@
 
 #include <vector>
 #include <string>
-#include "Transform.h"
-#include "Mesh.h"
+#include "ComponentTransform.h"
+#include "ComponentMesh.h"
 
 class Component;
 
 class GameObject
 {
 public:
-	GameObject(std::string name, Transform * parent);
+	GameObject(std::string name, ComponentTransform * parent);
 
 	template <class ComponentClass>
 	ComponentClass * CreateComponent()
@@ -37,7 +37,7 @@ private:
 	bool OnDisable();
 
 public:
-	Transform transform;
+	ComponentTransform transform;
 
 private:
 	bool active = true;

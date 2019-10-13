@@ -8,11 +8,12 @@
 #include "ModuleScene.h"
 
 
-class Mesh;
+class ComponentMesh;
+struct aiMesh;
 
 struct AssimpScene
 {
-	std::vector<Mesh*> assimp_meshes;
+	std::vector<ComponentMesh*> assimp_meshes;
 };
 
 //Module responsible for importing assets into the engine
@@ -26,6 +27,8 @@ public:
 	bool Start() override;
 	
 	bool LoadMesh(const char* path);
+
+	void LoadVertices(ComponentMesh * component_mesh, aiMesh * assimp_mesh);
 
 	bool CleanUp() override;
 

@@ -8,7 +8,7 @@
 
 #define PAR_SHAPES_IMPLEMENTATION
 #include "par\par_shapes.h"
-#include "Mesh.h"
+#include "ComponentMesh.h"
 #include "ModuleImport.h"
 
 
@@ -50,7 +50,7 @@ bool ModuleScene::Start()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indice_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T)*sphereInfo->ntriangles * 3, sphereInfo->triangles, GL_STATIC_DRAW);*/
 	
-	App->import->LoadMesh("Assets/BakerHouse.FBX");
+	App->import->LoadMesh("Assets/test_childs_2.FBX");
 
 	return ret;
 }
@@ -169,7 +169,7 @@ void ModuleScene::DrawFaceNormals()
 {
 	for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
 	{
-		for (std::vector<Mesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
+		for (std::vector<ComponentMesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
 		{
 			if ((*iter))
 			{
@@ -183,7 +183,7 @@ void ModuleScene::DrawVertexNormals()
 {
 	for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
 	{
-		for (std::vector<Mesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
+		for (std::vector<ComponentMesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
 		{
 			if ((*iter))
 			{
@@ -216,7 +216,7 @@ void ModuleScene::Draw()
 {
 	for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
 	{
-		for (std::vector<Mesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
+		for (std::vector<ComponentMesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
 		{
 			if ((*iter))
 			{

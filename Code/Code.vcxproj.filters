@@ -522,15 +522,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>Sources\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Sources\ECS\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Sources\ECS\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Sources\ECS\Components</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleImport.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
@@ -539,6 +530,15 @@
     </ClInclude>
     <ClInclude Include="PanelHierarchy.h">
       <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMaterial.h">
+      <Filter>Sources\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMesh.h">
+      <Filter>Sources\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTransform.h">
+      <Filter>Sources\ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -737,15 +737,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Sources\ECS</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Sources\ECS\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Sources\ECS\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Sources\ECS\Components</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleImport.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
@@ -756,6 +747,15 @@
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
+      <Filter>Sources\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMaterial.cpp">
+      <Filter>Sources\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMesh.cpp">
+      <Filter>Sources\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentTransform.cpp">
       <Filter>Sources\ECS\Components</Filter>
     </ClCompile>
   </ItemGroup>

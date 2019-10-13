@@ -7,10 +7,10 @@ typedef unsigned int uint;
 #include "MathGeoLib/include/Math/float3.h"
 #include "Assimp/include/vector3.h"
 
-class Mesh : public Component
+class ComponentMesh : public Component
 {
 public:
-	Mesh(GameObject * gameobject);
+	ComponentMesh(GameObject * gameobject);
 	bool LoadMesh(uint num_vertices, float* mVetices);
 	void Draw();
 	void DrawVertexNormal();

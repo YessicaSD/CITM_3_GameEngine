@@ -3,7 +3,7 @@
 #include "ModuleScene.h"
 #include "Application.h"
 #include "GameObject.h"
-#include "Transform.h"
+#include "ComponentTransform.h"
 
 PanelHierarchy::PanelHierarchy(std::string name, bool active, std::vector<SDL_Scancode> shortcuts): Panel(name, active, shortcuts)
 {
@@ -71,9 +71,9 @@ void PanelHierarchy::Draw()
 	//}
 }
 
-void PanelHierarchy::TreeEntry(Transform * transform)
+void PanelHierarchy::TreeEntry(ComponentTransform * transform)
 {
-	for (std::vector<Transform*>::iterator iter = transform->children.begin();
+	for (std::vector<ComponentTransform*>::iterator iter = transform->children.begin();
 		iter != transform->children.end();
 		++iter)
 	{

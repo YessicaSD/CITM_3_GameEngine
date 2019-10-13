@@ -1,14 +1,14 @@
-#include "Mesh.h"
+#include "ComponentMesh.h"
 #include "Globals.h"
 
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
 
-Mesh::Mesh(GameObject * gameobject) : Component(gameobject)
+ComponentMesh::ComponentMesh(GameObject * gameobject) : Component(gameobject)
 {
 }
 
-bool Mesh::LoadMesh(uint num_vertices, float * mVetices)
+bool ComponentMesh::LoadMesh(uint num_vertices, float * mVetices)
 {
 	this->num_vertices = num_vertices;
 	this->vertices = new float[num_vertices * 3];
@@ -17,7 +17,7 @@ bool Mesh::LoadMesh(uint num_vertices, float * mVetices)
 	return true;
 }
 
-void Mesh::Draw()
+void ComponentMesh::Draw()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, this->id_vertex);
@@ -27,7 +27,7 @@ void Mesh::Draw()
 	glDrawElements(GL_TRIANGLES, this->num_indices, GL_UNSIGNED_INT, NULL);
 }
 
-void Mesh::DrawVertexNormal()
+void ComponentMesh::DrawVertexNormal()
 {
 	glColor3f(0.2f, 1.f, 0.25f);
 	uint j = 0;
@@ -44,7 +44,7 @@ void Mesh::DrawVertexNormal()
 	glColor3f(1, 1, 1);
 }
 
-void Mesh::DrawNormals()
+void ComponentMesh::DrawNormals()
 {
 	glColor3f(0, 0, 1);
 	float lenght = 2;

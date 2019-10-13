@@ -1,8 +1,8 @@
 #include "GameObject.h"
 #include "Component.h"
-#include "Mesh.h"
+#include "ComponentMesh.h"
 
-GameObject::GameObject(std::string name, Transform * parent):
+GameObject::GameObject(std::string name, ComponentTransform * parent):
 	transform(this),
 	name(name)
 {

@@ -4,14 +4,14 @@
 #include "Panel.h"
 
 class GameObject;
-class Transform;
+class ComponentTransform;
 
 class PanelHierarchy : public Panel
 {
 public:
 	PanelHierarchy(std::string name, bool active, std::vector<SDL_Scancode> shortcuts = {});
 	void Draw() override;
-	void TreeEntry(Transform * gameobject);
+	void TreeEntry(ComponentTransform * gameobject);
 };
 
 #endif
