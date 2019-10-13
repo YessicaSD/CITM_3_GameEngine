@@ -50,6 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "types.h"
 #include "importerdesc.h"
+#include "defs.h"
 
 #ifdef __cplusplus
 extern "C" {

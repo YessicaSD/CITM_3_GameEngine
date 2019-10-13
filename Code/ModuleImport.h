@@ -6,7 +6,7 @@
 #define INVALID_MATERIAL 0xFFFFFFFF
 #include "Assimp/include/assimp/cimport.h"
 #include "ModuleScene.h"
-
+#include "Texture.h"
 class AssetMesh;
 struct aiMesh;
 struct aiNode;
@@ -26,7 +26,7 @@ public:
 	bool Start() override;
 	bool LoadMesh(const char* path);
 	bool CleanUp() override;
-
+	Texture* lenna_img_id = 0;
 private:
 	void LoadFaces(aiMesh * assimp_mesh, AssetMesh * &mesh_component);
 	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, AssimpScene * assimp_scene);

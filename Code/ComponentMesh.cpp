@@ -9,6 +9,7 @@
 #include "ComponentTransform.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleImport.h"
 
 ComponentMesh::ComponentMesh(GameObject * gameobject) : Component(gameobject)
 {
@@ -16,6 +17,11 @@ ComponentMesh::ComponentMesh(GameObject * gameobject) : Component(gameobject)
 
 void ComponentMesh::OnPostUpdate()
 {
+	//ACTIVE TEXTURE MODE
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
 	glPushMatrix();
 	glMultMatrixf((const GLfloat *)&gameobject->transform.global_matrix[0]);
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -23,6 +29,21 @@ void ComponentMesh::OnPostUpdate()
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indice);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+
+	if (mesh->UVCoord != nullptr)
+	{
+		if (App->import->lenna_img_id)
+		{
+			glBindTexture(GL_TEXTURE_2D, App->import->lenna_img_id->buffer_id);
+
+		}
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
+		glTexCoordPointer(mesh->uv_num_components, GL_FLOAT, 0, (void*)0);
+	}
+
+
+
 	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
