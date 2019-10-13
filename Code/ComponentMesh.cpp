@@ -5,18 +5,26 @@
 #include <gl\GL.h>
 #include "AssetMesh.h"
 
+#include "GameObject.h"
+#include "ComponentTransform.h"
+
 ComponentMesh::ComponentMesh(GameObject * gameobject) : Component(gameobject)
 {
 }
 
 void ComponentMesh::OnPostUpdate()
 {
+	glPushMatrix();
+	glMultMatrixf((const GLfloat *)&gameobject->transform.global_matrix[0]);
 	glEnableClientState(GL_VERTEX_ARRAY);
+
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indice);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
 	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
+
+	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
+	glPopMatrix();
 }
 
 void ComponentMesh::DrawVertexNormal()

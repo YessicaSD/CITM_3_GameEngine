@@ -50,7 +50,7 @@ bool ModuleScene::Start()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indice_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T)*sphereInfo->ntriangles * 3, sphereInfo->triangles, GL_STATIC_DRAW);*/
 	
-	App->import->LoadMesh("Assets/test_childs_2.FBX");
+	App->import->LoadMesh("Assets/warrior/warrior.FBX");
 
 	return ret;
 }
