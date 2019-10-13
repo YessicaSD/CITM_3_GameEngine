@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include "parson/parson.h"
 #include "ModuleImport.h"
-
+#include "ModuleTexture.h"
 Application::Application()
 {
 	window = new ModuleWindow();
@@ -13,6 +13,7 @@ Application::Application()
 	gui = new ModuleGui();
 	random = new ModuleRandom();
 	import = new ModuleImport();
+	texture = new ModuleTexture();
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -21,6 +22,7 @@ Application::Application()
 	AddModule(window);
 	AddModule(random);
 	AddModule(input);
+	AddModule(texture);
 	AddModule(scene);
 	AddModule(import);
 	AddModule(camera);

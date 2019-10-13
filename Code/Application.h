@@ -21,6 +21,7 @@ typedef unsigned __int32 uint32;
 typedef unsigned __int64 uint64;
 
 class ModuleImport;
+class ModuleTexture;
 
 class Application
 {
@@ -33,7 +34,7 @@ public:
 	ModuleGui* gui = nullptr;
 	ModuleRandom * random = nullptr;
 	ModuleImport* import = nullptr;
-
+	ModuleTexture* texture = nullptr;
 	bool saveRequest = false;
 	JSON_Object * config = nullptr;
 
