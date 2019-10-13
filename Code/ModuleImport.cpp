@@ -23,24 +23,24 @@ bool ModuleImport::Start()
 bool ModuleImport::LoadMesh(const char * path)
 {
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
-
-
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		AssimpScene* assimp_scene = new AssimpScene();
-		array_scene.push_back(assimp_scene);
+		assimp_scenes.push_back(assimp_scene);
 
 		for (uint i = 0; i < scene->mNumMeshes; ++i)
 		{
 			aiMesh* assimp_mesh = scene->mMeshes[i];
-			AssetMesh * mesh_component = new AssetMesh();
+			AssetMesh * asset_mesh = new AssetMesh();
+			assimp_scene->assimp_meshes.push_back(asset_mesh);
 
 			//1 Create meshes
-			LoadVertices(mesh_component, assimp_mesh);
-			LoadFaces(assimp_mesh, mesh_component, assimp_scene);
+			LoadVertices(asset_mesh, assimp_mesh);
+			LoadFaces(assimp_mesh, asset_mesh);
+			assimp_scene->assimp_meshes.push_back(asset_mesh);
 
 			//2 associate meshes
-			CreateGameObjectsFromNodes(scene->mRootNode, &App->scene->root_gameobject.transform);
+			CreateGameObjectsFromNodes(scene->mRootNode, &App->scene->root_gameobject.transform, assimp_scene);
 		}
 		aiReleaseImport(scene);
 	}
@@ -52,7 +52,7 @@ bool ModuleImport::LoadMesh(const char * path)
 	return true;
 }
 
-void ModuleImport::LoadFaces(aiMesh * assimp_mesh, AssetMesh * &mesh_component, AssimpScene * new_scene)
+void ModuleImport::LoadFaces(aiMesh * assimp_mesh, AssetMesh * &mesh_component)
 {
 	if (assimp_mesh->HasFaces())
 	{
@@ -102,7 +102,6 @@ void ModuleImport::LoadFaces(aiMesh * assimp_mesh, AssetMesh * &mesh_component, 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_component->id_indice);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*assimp_mesh->mNumFaces * 3, mesh_component->indices, GL_STATIC_DRAW);
 	}
-	new_scene->assimp_meshes.push_back(mesh_component);
 }
 
 void ModuleImport::LoadVertices(AssetMesh * component_mesh, aiMesh * assimp_mesh)
@@ -117,12 +116,22 @@ void ModuleImport::LoadVertices(AssetMesh * component_mesh, aiMesh * assimp_mesh
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * component_mesh->num_vertices * 3, component_mesh->vertices, GL_STATIC_DRAW);
 }
 
-void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent)
+void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, AssimpScene * assimp_scene)
 {
 	GameObject * new_gameobject = new GameObject(std::string(node->mName.C_Str()), parent);
+	if (node->mNumMeshes > 0u)
+	{
+		//Load the meshes of this GameObject
+		for (int i = 0; i < node->mNumMeshes; ++i)
+		{
+			ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
+			component_mesh->mesh = assimp_scene->assimp_meshes[node->mMeshes[i]];
+		}
+	}
+
 	for (int i = 0 ; i < node->mNumChildren; ++i)
 	{
-		CreateGameObjectsFromNodes(node->mChildren[i], &new_gameobject->transform);
+		CreateGameObjectsFromNodes(node->mChildren[i], &new_gameobject->transform, assimp_scene);
 	}
 }
 

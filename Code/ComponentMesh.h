@@ -13,7 +13,7 @@ public:
 	void DrawVertexNormal();
 	void DrawNormals();
 
-private:
+public:
 	//One mesh can be used by more than one mesh component
 	AssetMesh * mesh = nullptr;
 };

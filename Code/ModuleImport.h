@@ -28,13 +28,13 @@ public:
 	bool CleanUp() override;
 
 private:
-	void LoadFaces(aiMesh * assimp_mesh, AssetMesh * &mesh_component, AssimpScene * new_scene);
+	void LoadFaces(aiMesh * assimp_mesh, AssetMesh * &mesh_component);
 	void LoadVertices(AssetMesh * component_mesh, aiMesh * assimp_mesh);
-	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent);
+	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, AssimpScene * assimp_scene);
 
 private:
 	aiLogStream stream;
-	std::vector<AssimpScene*> array_scene;
+	std::vector<AssimpScene*> assimp_scenes;
 
 	friend ModuleScene;
 };
