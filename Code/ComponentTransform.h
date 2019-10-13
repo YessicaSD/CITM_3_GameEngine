@@ -25,6 +25,7 @@ private:
 	std::vector<ComponentTransform*> children;
 
 	friend class PanelHierarchy;
+	friend class ModuleScene;
 };
 #endif // !TRANSFORM_H_
 

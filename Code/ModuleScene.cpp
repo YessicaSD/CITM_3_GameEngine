@@ -66,6 +66,17 @@ bool ModuleScene::CleanUp()
 // Update: draw background
 update_status ModuleScene::Update(float dt)
 {
+	//for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
+	//{
+	//	for (std::vector<ComponentMesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
+	//	{
+	//		if ((*iter))
+	//		{
+	//			(*iter)->Draw();
+	//		}
+	//	}
+	//}
+
 	/*if (view_mode["default"])
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -118,42 +129,49 @@ update_status ModuleScene::Update(float dt)
 
 update_status ModuleScene::PostUpdate()
 {
-	if (view_mode["default"])
+	for (std::vector<ComponentTransform *>::iterator iter = root_gameobject.transform.children.begin();
+		iter != root_gameobject.transform.children.end();
+		++iter)
 	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		glColor3f(1, 1, 1);
-		Draw();
+		(*iter)->gameobject->OnPostUpdate();
 	}
 
-	if (view_mode["wireframe"])
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glColor3f(0, 0, 1);
-		Draw();
-	}
+	//if (view_mode["default"])
+	//{
+	//	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//	glColor3f(1, 1, 1);
+	//	Draw();
+	//}
 
-	if (view_mode["vertex"])
-	{
-		glColor3f(1, 0, 0);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-		glPointSize(5);
-		Draw();
-	}
-	if (view_mode["vertices_normals"])
-	{
-		glColor3f(0, 1, 0);
-		glLineWidth(5);
-		DrawVertexNormals();
-	}
-	if (view_mode["face_normals"])
-	{
-		glColor3f(0, 1, 0);
-		glLineWidth(5);
-		DrawFaceNormals();
-	}
+	//if (view_mode["wireframe"])
+	//{
+	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//	glColor3f(0, 0, 1);
+	//	Draw();
+	//}
 
-	glColor3f(1, 1, 1);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//if (view_mode["vertex"])
+	//{
+	//	glColor3f(1, 0, 0);
+	//	glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	//	glPointSize(5);
+	//	Draw();
+	//}
+	//if (view_mode["vertices_normals"])
+	//{
+	//	glColor3f(0, 1, 0);
+	//	glLineWidth(5);
+	//	DrawVertexNormals();
+	//}
+	//if (view_mode["face_normals"])
+	//{
+	//	glColor3f(0, 1, 0);
+	//	glLineWidth(5);
+	//	DrawFaceNormals();
+	//}
+
+	//glColor3f(1, 1, 1);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;
@@ -165,33 +183,37 @@ update_status ModuleScene::PostUpdate()
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::DrawFaceNormals()
-{
-	for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
-	{
-		for (std::vector<ComponentMesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
-		{
-			if ((*iter))
-			{
-				(*iter)->DrawNormals();
-			}
-		}
-	}
-}
+//TODO: Remove this, we shouldn't iterate meshes directly
+//We should instead gameobjects
+//And if that gameobject has a mesh component, it should draw its mesh
+//Maybe if it's on debug, it should draw its normals
+//void ModuleScene::DrawFaceNormals()
+//{
+//	for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
+//	{
+//		for (std::vector<ComponentMesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
+//		{
+//			if ((*iter))
+//			{
+//				(*iter)->DrawNormals();
+//			}
+//		}
+//	}
+//}
 
-void ModuleScene::DrawVertexNormals()
-{
-	for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
-	{
-		for (std::vector<ComponentMesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
-		{
-			if ((*iter))
-			{
-				(*iter)->DrawVertexNormal();
-			}
-		}
-	}
-}
+//void ModuleScene::DrawVertexNormals()
+//{
+//	for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
+//	{
+//		for (std::vector<ComponentMesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
+//		{
+//			if ((*iter))
+//			{
+//				(*iter)->DrawVertexNormal();
+//			}
+//		}
+//	}
+//}
 
 void ModuleScene::ChangeRenderMode(std::string variable)
 {
@@ -210,20 +232,6 @@ bool ModuleScene::GetRenderMode(std::string variable)
 		return (*iter).second;
 	}
 	return false;
-}
-
-void ModuleScene::Draw()
-{
-	for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
-	{
-		for (std::vector<ComponentMesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
-		{
-			if ((*iter))
-			{
-				(*iter)->Draw();
-			}
-		}
-	}
 }
 
 void ModuleScene::CreateMenu()

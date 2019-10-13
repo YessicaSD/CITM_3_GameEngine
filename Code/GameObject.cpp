@@ -31,6 +31,17 @@ bool GameObject::OnUpdate(float dt)
 	return true;
 }
 
+bool GameObject::OnPostUpdate()
+{
+	for (std::vector<Component*>::iterator iter = components.begin();
+		iter != components.end();
+		++iter)
+	{
+		(*iter)->OnPostUpdate();
+	}
+	return true;
+}
+
 bool GameObject::OnEnable()
 {
 	for (std::vector<Component*>::iterator iter = components.begin();

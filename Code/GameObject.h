@@ -13,6 +13,12 @@ class GameObject
 public:
 	GameObject(std::string name, ComponentTransform * parent);
 
+	bool OnStart();
+	bool OnUpdate(float dt);
+	bool OnPostUpdate();
+	bool OnEnable();
+	bool OnDisable();
+
 	template <class ComponentClass>
 	ComponentClass * CreateComponent()
 	{
@@ -29,12 +35,6 @@ public:
 	//}
 
 	const char * GetName();
-
-private:
-	bool OnStart();
-	bool OnUpdate(float dt);
-	bool OnEnable();
-	bool OnDisable();
 
 public:
 	ComponentTransform transform;

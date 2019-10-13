@@ -21,8 +21,6 @@ private:
 
 
 	std::map<std::string, bool> view_mode;
-	void Draw();
-
 	
 public:
 	ModuleScene(bool start_enabled = true);
@@ -31,8 +29,8 @@ public:
 	bool Start();
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;
-	void DrawFaceNormals();
-	void DrawVertexNormals();
+	//void DrawFaceNormals();
+	//void DrawVertexNormals();
 	bool CleanUp();
 	void ChangeRenderMode(std::string variable);
 	bool GetRenderMode(std::string variable);

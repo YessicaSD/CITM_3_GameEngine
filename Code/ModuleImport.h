@@ -7,30 +7,34 @@
 #include "Assimp/include/assimp/cimport.h"
 #include "ModuleScene.h"
 
-
-class ComponentMesh;
+class AssetMesh;
 struct aiMesh;
+struct aiNode;
+class ComponentTransform;
 
 struct AssimpScene
 {
-	std::vector<ComponentMesh*> assimp_meshes;
+	std::vector<AssetMesh*> assimp_meshes;
 };
 
 //Module responsible for importing assets into the engine
 
 class ModuleImport : public Module
 {
-protected:
-	aiLogStream stream;
-	std::vector<AssimpScene*> array_scene;
+
 public:
 	bool Start() override;
-	
 	bool LoadMesh(const char* path);
-
-	void LoadVertices(ComponentMesh * component_mesh, aiMesh * assimp_mesh);
-
 	bool CleanUp() override;
+
+private:
+	void LoadFaces(aiMesh * assimp_mesh, AssetMesh * &mesh_component, AssimpScene * new_scene);
+	void LoadVertices(AssetMesh * component_mesh, aiMesh * assimp_mesh);
+	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent);
+
+private:
+	aiLogStream stream;
+	std::vector<AssimpScene*> array_scene;
 
 	friend ModuleScene;
 };
