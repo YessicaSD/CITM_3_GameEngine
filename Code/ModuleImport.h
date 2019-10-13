@@ -29,7 +29,6 @@ public:
 
 private:
 	void LoadFaces(aiMesh * assimp_mesh, AssetMesh * &mesh_component);
-	void LoadVertices(AssetMesh * component_mesh, aiMesh * assimp_mesh);
 	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, AssimpScene * assimp_scene);
 
 private:

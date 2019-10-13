@@ -210,10 +210,10 @@ void ModuleScene::CreateMenu()
 		}
 		if (ImGui::Button("Sphere"))
 		{
-			//GameObject * new_gameobject = new GameObject("Cube", &App->scene->root_gameobject.transform);
-			//ComponentMesh * new_mesh = new_gameobject->CreateComponent<ComponentMesh>();
-			//AssetMesh sphere_mesh;
-			//sphere_mesh.LoadMesh();
+			GameObject * new_gameobject = new GameObject("Cube", &App->scene->root_gameobject.transform);
+			ComponentMesh * new_mesh = new_gameobject->CreateComponent<ComponentMesh>();
+			AssetMesh sphere_mesh;
+
 		}
 		if (ImGui::Button("Hemisphere"))
 		{

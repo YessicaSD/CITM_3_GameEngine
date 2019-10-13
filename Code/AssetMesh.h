@@ -9,6 +9,11 @@ typedef unsigned int uint;
 class AssetMesh
 {
 public:
+	void LoadVertices(const uint num_vertices, float * vertices);
+	void LoadFaces();
+
+
+public:
 	uint id_indice = 0u; // index in VRAM
 	uint num_indices = 0u;
 	uint* indices = nullptr;
