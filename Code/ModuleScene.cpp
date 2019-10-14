@@ -210,9 +210,38 @@ void ModuleScene::CreateMenu()
 		}
 		if (ImGui::Button("Sphere"))
 		{
-			GameObject * new_gameobject = new GameObject("Cube", &App->scene->root_gameobject.transform);
-			ComponentMesh * new_mesh = new_gameobject->CreateComponent<ComponentMesh>();
-			AssetMesh sphere_mesh;
+			//Create mesh
+			par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(10, 10);
+
+			//Load everything from par_shapes mesh to asset_mesh
+			AssetMesh * asset_mesh = new AssetMesh();
+			//Vertices
+			asset_mesh->num_vertices = mesh->npoints;
+			asset_mesh->vertices = mesh->points;
+
+			//Indices
+			asset_mesh->num_indices = mesh->ntriangles;
+			asset_mesh->indices = (uint *)mesh->triangles;
+
+			par_shapes_free_mesh(mesh);
+
+
+			glGenBuffers(1, &asset_mesh->id_vertex);
+			glBindBuffer(GL_ARRAY_BUFFER, asset_mesh->id_vertex);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * asset_mesh->num_vertices * 3, asset_mesh->vertices, GL_STATIC_DRAW);
+
+			//Index
+
+			glGenBuffers(1, &asset_mesh->id_indice);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, asset_mesh->id_indice);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T) * asset_mesh->num_indices * 3, asset_mesh->indices, GL_STATIC_DRAW);
+
+			//TODO: Add meshes to mesh array in ModuleImport
+
+			//Create gameobject
+			GameObject * new_gameobject = new GameObject("Sphere", &root_gameobject.transform);
+			ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
+			component_mesh->mesh = asset_mesh;
 
 		}
 		if (ImGui::Button("Hemisphere"))
@@ -248,13 +277,13 @@ void ModuleScene::CreateMenu()
 			AssetMesh * asset_mesh = new AssetMesh();
 			//Vertices
 			asset_mesh->num_vertices = mesh->npoints;
-			asset_mesh->vertices = mesh->points;
+			asset_mesh->vertices = mesh->points;//Should this be a memcpy? We free the shape after this...
 
 			//Indices
 			asset_mesh->num_indices = mesh->ntriangles;
 			asset_mesh->indices = (uint *)mesh->triangles;
 
-			par_shapes_free_mesh(mesh);
+			//par_shapes_free_mesh(mesh);
 
 			
 			glGenBuffers(1, &asset_mesh->id_vertex);
