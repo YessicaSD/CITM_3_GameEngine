@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "imgui\imgui_impl_sdl.h"
 #include "ModuleImport.h"
+#include "Event.h"
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput(bool start_enabled) : Module(start_enabled)
@@ -133,15 +134,18 @@ update_status ModuleInput::PreUpdate()
 			break;
 
 			case SDL_DROPFILE:
-				dropped_filedir=e.drop.file;
-				SDL_ShowSimpleMessageBox(
-					SDL_MESSAGEBOX_INFORMATION,
-					"File dropped on window",
-					dropped_filedir,
-					App->window->window
-				);
-				App->import->LoadMesh(dropped_filedir);
-					SDL_free(dropped_filedir);
+				Event new_event(Event::EVENT_TYPE::DROPPED_FILE, e.drop.file);
+				App->EventRequest(new_event);
+
+				//dropped_filedir=e.drop.file;
+				//SDL_ShowSimpleMessageBox(
+				//	SDL_MESSAGEBOX_INFORMATION,
+				//	"File dropped on window",
+				//	dropped_filedir,
+				//	App->window->window
+				//);
+				
+					//SDL_free(dropped_filedir);
 
 				break;
 		}

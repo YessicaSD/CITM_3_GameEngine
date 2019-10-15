@@ -13,6 +13,9 @@
 #include "ComponentMesh.h"
 #include "AssetMesh.h"
 #include "ModuleTexture.h"
+#include "Event.h"
+
+#include "ModuleFileSystem.h"
 
 bool ModuleImport::Start()
 {
@@ -103,6 +106,30 @@ bool ModuleImport::CleanUp()
 	// detach log stream
 	aiDetachAllLogStreams();
 	return true;
+}
+
+void ModuleImport::EventRequest(const Event & event)
+{
+	if (event.type == Event::EVENT_TYPE::DROPPED_FILE)
+	{
+		
+		std::string extension;
+		App->file_system->GetExtension(event.path, extension);
+		if (extension == "fbx")
+		{
+			LoadMesh(event.path);
+
+		}
+		if (extension == "dds")
+		{
+			//Load texure 
+		}
+		else
+		{
+			return;
+		}
+		LOG("File dropped %s", event.path);
+	}
 }
 
 
