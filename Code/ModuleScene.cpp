@@ -37,29 +37,12 @@ bool ModuleScene::Start()
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));	
 
-	/*float3 position = { 0,0,0 };
-	cube[0]=new Cube(1.f,1.f,1.f, position);
-	position = { 2,0,0 };
-	cube[1]=new Cube(1.f,1.f,1.f, position);
-
-	sphereInfo = par_shapes_create_trefoil_knot(50,20,2);
-	glGenBuffers(1, &sphere_v_id);
-	glBindBuffer(GL_ARRAY_BUFFER, sphere_v_id);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * sphereInfo->npoints * 3, sphereInfo->points, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &sphere_indice_id);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indice_id);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T)*sphereInfo->ntriangles * 3, sphereInfo->triangles, GL_STATIC_DRAW);*/
-	
-	//App->import->LoadMesh("Assets/test_childs_2.FBX");
-
 	return ret;
 }
 
 // Load assets
 bool ModuleScene::CleanUp()
 {
-	//par_shapes_free_mesh(sphereInfo);
 	return true;
 }
 
@@ -67,17 +50,6 @@ bool ModuleScene::CleanUp()
 // Update: draw background
 update_status ModuleScene::Update(float dt)
 {
-	//for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
-	//{
-	//	for (std::vector<ComponentMesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
-	//	{
-	//		if ((*iter))
-	//		{
-	//			(*iter)->Draw();
-	//		}
-	//	}
-	//}
-
 	return UPDATE_CONTINUE;
 }
 
@@ -202,46 +174,10 @@ void ModuleScene::CreateMenu()
 
 		if (ImGui::Button("Cube"))
 		{
-			GameObject * new_gameobject = new GameObject("Cube", &App->scene->root_gameobject.transform);
-			ComponentMesh * new_mesh = new_gameobject->CreateComponent<ComponentMesh>();
-			//Create cube
-			AssetMesh cube_mesh;
-			
+
 		}
 		if (ImGui::Button("Sphere"))
 		{
-			//Create mesh
-			par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(10, 10);
-
-			//Load everything from par_shapes mesh to asset_mesh
-			AssetMesh * asset_mesh = new AssetMesh();
-			//Vertices
-			asset_mesh->num_vertices = mesh->npoints;
-			asset_mesh->vertices = mesh->points;
-
-			//Indices
-			asset_mesh->num_indices = mesh->ntriangles;
-			asset_mesh->indices = (uint *)mesh->triangles;
-
-			par_shapes_free_mesh(mesh);
-
-
-			glGenBuffers(1, &asset_mesh->id_vertex);
-			glBindBuffer(GL_ARRAY_BUFFER, asset_mesh->id_vertex);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * asset_mesh->num_vertices * 3, asset_mesh->vertices, GL_STATIC_DRAW);
-
-			//Index
-
-			glGenBuffers(1, &asset_mesh->id_indice);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, asset_mesh->id_indice);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T) * asset_mesh->num_indices * 3, asset_mesh->indices, GL_STATIC_DRAW);
-
-			//TODO: Add meshes to mesh array in ModuleImport
-
-			//Create gameobject
-			GameObject * new_gameobject = new GameObject("Sphere", &root_gameobject.transform);
-			ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
-			component_mesh->mesh = asset_mesh;
 
 		}
 		if (ImGui::Button("Hemisphere"))
@@ -274,27 +210,31 @@ void ModuleScene::CreateMenu()
 			par_shapes_mesh* mesh = par_shapes_create_trefoil_knot(50, 20, 2);
 
 			//Load everything from par_shapes mesh to asset_mesh
+
 			AssetMesh * asset_mesh = new AssetMesh();
+
 			//Vertices
 			asset_mesh->num_vertices = mesh->npoints;
-			asset_mesh->vertices = mesh->points;//Should this be a memcpy? We free the shape after this...
+			asset_mesh->vertices = new float[asset_mesh->num_vertices * 3];
+			memcpy(asset_mesh->vertices, mesh->points, sizeof(float) * asset_mesh->num_vertices * 3);
 
-			//Indices
-			asset_mesh->num_indices = mesh->ntriangles;
-			asset_mesh->indices = (uint *)mesh->triangles;
-
-			//par_shapes_free_mesh(mesh);
-
-			
 			glGenBuffers(1, &asset_mesh->id_vertex);
 			glBindBuffer(GL_ARRAY_BUFFER, asset_mesh->id_vertex);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * asset_mesh->num_vertices* 3, asset_mesh->vertices, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * asset_mesh->num_vertices * 3, asset_mesh->vertices, GL_STATIC_DRAW);
 
-			//Index
+			//Indices
+			asset_mesh->numFaces = mesh->ntriangles;
+			asset_mesh->num_indices = mesh->ntriangles * 3;
+			asset_mesh->indices = new uint16_t[asset_mesh->num_indices];
+			memcpy(asset_mesh->indices, mesh->triangles, asset_mesh->num_indices * sizeof(uint16_t));
+
 
 			glGenBuffers(1, &asset_mesh->id_indice);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, asset_mesh->id_indice);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T) * asset_mesh->num_indices * 3, asset_mesh->indices, GL_STATIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T) * asset_mesh->num_indices, asset_mesh->indices, GL_STATIC_DRAW);
+			//TODO: Put this on a method
+
+			par_shapes_free_mesh(mesh);
 
 			//TODO: Add meshes to mesh array in ModuleImport
 

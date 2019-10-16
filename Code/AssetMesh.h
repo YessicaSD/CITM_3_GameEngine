@@ -4,6 +4,7 @@
 #include "MathGeoLib/include/Math/float3.h"
 #include "Assimp/include/vector3.h"
 
+
 typedef unsigned int uint;
 struct aiMesh;
 
@@ -13,7 +14,9 @@ public:
 	//Data ========================
 	uint id_indice = 0u; // index in VRAM
 	uint num_indices = 0u;
-	uint* indices = nullptr;
+	uint16_t * indices = nullptr;
+	//TODO: Change to uint *
+	//Assimp uses uint * and par_shapes uses uint16_t *
 
 	//Vertec ================================
 	uint id_vertex = 0u; // unique vertex in VRAM

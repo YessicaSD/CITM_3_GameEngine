@@ -23,7 +23,7 @@ bool AssetMesh::LoadInfo(aiMesh * info)
 	{
 		numFaces = info->mNumFaces;
 		num_indices = info->mNumFaces * 3;
-		indices = new uint[num_indices]; // assume each face is a triangle
+		//indices = new uint[num_indices]; // assume each face is a triangle
 		for (uint i = 0; i < info->mNumFaces; ++i)
 		{
 			if (info->mFaces[i].mNumIndices != 3)
@@ -82,11 +82,8 @@ bool AssetMesh::LoadInfo(aiMesh * info)
 				memcpy(&UVCoord[i*uv_num_components], &info->mTextureCoords[0][i], sizeof(float)* uv_num_components);
 
 			}
-
 		}
-
 	}
-
 
 	return true;
 }

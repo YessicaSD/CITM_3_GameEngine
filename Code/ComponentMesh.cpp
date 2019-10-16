@@ -44,7 +44,7 @@ void ComponentMesh::OnPostUpdate()
 
 
 
-	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_SHORT, NULL);
 
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
 	glPopMatrix();
