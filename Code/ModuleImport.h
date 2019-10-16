@@ -12,11 +12,6 @@ struct aiMesh;
 struct aiNode;
 class ComponentTransform;
 
-struct AssimpScene
-{
-	std::vector<AssetMesh*> assimp_meshes;
-};
-
 //Module responsible for importing assets into the engine
 
 class ModuleImport : public Module
@@ -28,12 +23,11 @@ public:
 	bool CleanUp() override;
 	Texture* lenna_img_id = 0;
 private:
-	void LoadFaces(aiMesh * assimp_mesh, AssetMesh * &mesh_component);
-	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, AssimpScene * assimp_scene);
+	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<AssetMesh*> loaded_meshes);
 
 private:
 	aiLogStream stream;
-	std::vector<AssimpScene*> assimp_scenes;
+	std::vector<AssetMesh*> meshes;
 
 	friend ModuleScene;
 };

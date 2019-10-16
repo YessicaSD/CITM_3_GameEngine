@@ -120,7 +120,7 @@ void ComponentMesh::DrawNormals()
 {
 	glColor3f(0, 0, 1);
 	float lenght = 2;
-	for (uint i = 0; i < mesh->numFaces; ++i)
+	for (uint i = 0; i < mesh->num_faces; ++i)
 	{
 		glBegin(GL_LINES);
 		glVertex3f(mesh->face_middle_point[i].x, mesh->face_middle_point[i].y, mesh->face_middle_point[i].z);
