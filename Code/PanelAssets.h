@@ -5,8 +5,9 @@
 
 class PanelAssets : public Panel
 {
-public:
 
+public:
+	float image_size = 100;
 	PanelAssets(const char* name, bool state);
 	void Draw();
 };

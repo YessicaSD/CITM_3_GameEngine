@@ -26,6 +26,12 @@ bool ModuleTexture::Init()
 Texture* ModuleTexture::LoadTexture(const char* path)
 {
 	Texture* new_texture = nullptr;
+
+	std::map<std::string, Texture*>::iterator iter= textures.find(path);
+	if (iter!= textures.end())
+	{
+		return new_texture;
+	}
 	if (path != nullptr && path != "")
 	{
 		uint devil_id = 0;
@@ -75,7 +81,7 @@ Texture* ModuleTexture::LoadTexture(const char* path)
 
 bool ModuleTexture::CleanUp()
 {
-	for (std::map<const char*, Texture*>::iterator iter = textures.begin(); iter!= textures.end();++iter)
+	for (std::map<std::string, Texture*>::iterator iter = textures.begin(); iter!= textures.end();++iter)
 	{
 		if (((*iter).second))
 		{

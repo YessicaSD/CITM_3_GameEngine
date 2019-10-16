@@ -9,7 +9,7 @@ class Texture;
 class ModuleTexture : public Module
 {
 private:
-	std::map<const char* , Texture*> textures;
+	std::map<std::string, Texture*> textures;
 
 public:  
 	ModuleTexture() {};
