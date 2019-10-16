@@ -37,29 +37,12 @@ bool ModuleScene::Start()
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));	
 
-	/*float3 position = { 0,0,0 };
-	cube[0]=new Cube(1.f,1.f,1.f, position);
-	position = { 2,0,0 };
-	cube[1]=new Cube(1.f,1.f,1.f, position);
-
-	sphereInfo = par_shapes_create_trefoil_knot(50,20,2);
-	glGenBuffers(1, &sphere_v_id);
-	glBindBuffer(GL_ARRAY_BUFFER, sphere_v_id);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * sphereInfo->npoints * 3, sphereInfo->points, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &sphere_indice_id);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indice_id);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T)*sphereInfo->ntriangles * 3, sphereInfo->triangles, GL_STATIC_DRAW);*/
-	
-	//App->import->LoadMesh("Assets/test_childs_2.FBX");
-
 	return ret;
 }
 
 // Load assets
 bool ModuleScene::CleanUp()
 {
-	//par_shapes_free_mesh(sphereInfo);
 	return true;
 }
 
@@ -67,34 +50,23 @@ bool ModuleScene::CleanUp()
 // Update: draw background
 update_status ModuleScene::Update(float dt)
 {
-	//for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
-	//{
-	//	for (std::vector<ComponentMesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
-	//	{
-	//		if ((*iter))
-	//		{
-	//			(*iter)->Draw();
-	//		}
-	//	}
-	//}
-
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::RecursivePostUpdate(ComponentTransform * object)
+void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 {
 	object->gameobject->OnPostUpdate();
 	for(std::vector<ComponentTransform *>::iterator iter = object->children.begin();
 		iter != object->children.end();
 		++iter)
 	{
-		RecursivePostUpdate((*iter));
+		GameObjectPostUpdateRecursive((*iter));
 	}
 }
 
 update_status ModuleScene::PostUpdate()
 {
-	RecursivePostUpdate(&root_gameobject.transform);
+	GameObjectPostUpdateRecursive(&root_gameobject.transform);
 
 	//if (view_mode["default"])
 	//{
@@ -200,97 +172,133 @@ void ModuleScene::CreateMenu()
 
 		//TODO: Align buttons
 
-		if (ImGui::Button("Cube"))
+		if (ImGui::MenuItem("Cube"))
 		{
-			GameObject * new_gameobject = new GameObject("Cube", &App->scene->root_gameobject.transform);
-			ComponentMesh * new_mesh = new_gameobject->CreateComponent<ComponentMesh>();
-			//Create cube
-			AssetMesh cube_mesh;
-			
-		}
-		if (ImGui::Button("Sphere"))
-		{
-			GameObject * new_gameobject = new GameObject("Cube", &App->scene->root_gameobject.transform);
-			ComponentMesh * new_mesh = new_gameobject->CreateComponent<ComponentMesh>();
-			AssetMesh sphere_mesh;
-
-		}
-		if (ImGui::Button("Hemisphere"))
-		{
-
-		}
-		if (ImGui::Button("Plane"))
-		{
-
-		}
-		if (ImGui::Button("Klein"))
-		{
-
-		}
-		if (ImGui::Button("Cylinder"))
-		{
-
-		}
-		if (ImGui::Button("Cone"))
-		{
-
-		}
-		if (ImGui::Button("Torus"))
-		{
-
-		}
-		if (ImGui::Button("Trefoil"))
-		{
-			//Create mesh
-			par_shapes_mesh* mesh = par_shapes_create_trefoil_knot(50, 20, 2);
-
-			//Load everything from par_shapes mesh to asset_mesh
-			AssetMesh * asset_mesh = new AssetMesh();
-			//Vertices
-			asset_mesh->num_vertices = mesh->npoints;
-			asset_mesh->vertices = mesh->points;
-
-			//Indices
-			asset_mesh->num_indices = mesh->ntriangles;
-			asset_mesh->indices = (uint *)mesh->triangles;
-
+			par_shapes_mesh* mesh = par_shapes_create_cube();
+			LoadParShape("Cube", mesh);
 			par_shapes_free_mesh(mesh);
-
-			
-			glGenBuffers(1, &asset_mesh->id_vertex);
-			glBindBuffer(GL_ARRAY_BUFFER, asset_mesh->id_vertex);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * asset_mesh->num_vertices* 3, asset_mesh->vertices, GL_STATIC_DRAW);
-
-			//Index
-
-			glGenBuffers(1, &asset_mesh->id_indice);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, asset_mesh->id_indice);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T) * asset_mesh->num_indices * 3, asset_mesh->indices, GL_STATIC_DRAW);
-
-			//TODO: Add meshes to mesh array in ModuleImport
-
-			//Create gameobject
-			GameObject * new_gameobject = new GameObject("Trefoil", &root_gameobject.transform);
-			ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
-			component_mesh->mesh = asset_mesh;
-
-
-			//TODO: Show menu to configurate this
-
-			//par_shapes_mesh* mesh = par_shapes_create_trefoil_knot(50, 20, 2);
-			//uint mesh_id = 0u;
-			//uint mesh_indices_id = 0u;
-
-			//glGenBuffers(1, &mesh_id);
-			//glBindBuffer(GL_ARRAY_BUFFER, mesh_id);
-			//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->npoints * 3, mesh->points, GL_STATIC_DRAW);
-			//
-			//glGenBuffers(1, &mesh_indices_id);
-			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_indices_id);
-			//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T) * mesh->ntriangles * 3, mesh->triangles, GL_STATIC_DRAW);
-			
-			//par_shapes_free_mesh(mesh);
 		}
+		if (ImGui::MenuItem("Parametric sphere"))
+		{
+			par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(10, 10);
+			LoadParShape("Parametric sphere", mesh);
+			par_shapes_free_mesh(mesh);
+		}
+		if (ImGui::MenuItem("Subdivided sphere"))
+		{
+			par_shapes_mesh* mesh = par_shapes_create_subdivided_sphere(1);
+			LoadParShape("Subdivided sphere", mesh);
+			par_shapes_free_mesh(mesh);
+		}
+		if (ImGui::MenuItem("Hemisphere"))
+		{
+			par_shapes_mesh* mesh = par_shapes_create_hemisphere(50, 20);
+			LoadParShape("Hemisphere", mesh);
+			par_shapes_free_mesh(mesh);
+		}
+		if (ImGui::MenuItem("Plane"))
+		{
+			par_shapes_mesh* mesh = par_shapes_create_plane(10, 10);
+			LoadParShape("Plane", mesh);
+			par_shapes_free_mesh(mesh);
+		}
+		if (ImGui::MenuItem("Klein"))
+		{
+			par_shapes_mesh* mesh = par_shapes_create_klein_bottle(10, 10);
+			LoadParShape("Klein", mesh);
+			par_shapes_free_mesh(mesh);
+		}
+		if (ImGui::MenuItem("Cylinder"))
+		{
+			par_shapes_mesh* mesh = par_shapes_create_cylinder(50,10);
+			LoadParShape("Cylinder", mesh);
+			par_shapes_free_mesh(mesh);
+		}
+
+		//CONE
+		if (ImGui::BeginMenu("Cone"))
+		{
+			ImGui::MenuItem("Text");
+			ImGui::EndMenu();
+		}
+		if (ImGui::IsItemClicked())
+		{
+			par_shapes_mesh* mesh = par_shapes_create_cone(50, 20);
+			LoadParShape("Cone", mesh);
+			par_shapes_free_mesh(mesh);
+		}
+
+
+		//TODO: Options for creating shapes
+		if (ImGui::MenuItem("Torus"))
+		{
+			par_shapes_mesh* mesh = par_shapes_create_torus(12,12,0.5f);
+			LoadParShape("Torus", mesh);
+			par_shapes_free_mesh(mesh);
+		}
+		if (ImGui::MenuItem("Trefoil"))
+		{
+			par_shapes_mesh* mesh = par_shapes_create_trefoil_knot(50, 20, 2);
+			LoadParShape("Trefoil", mesh);
+			par_shapes_free_mesh(mesh);
+		}
+		if (ImGui::MenuItem("Dodecahedron"))
+		{
+			par_shapes_mesh* mesh = par_shapes_create_dodecahedron();
+			LoadParShape("Dodecahedron", mesh);
+			par_shapes_free_mesh(mesh);
+		}
+		if (ImGui::MenuItem("Icosahedron"))
+		{
+			par_shapes_mesh* mesh = par_shapes_create_icosahedron();
+			LoadParShape("Icosahedron", mesh);
+			par_shapes_free_mesh(mesh);
+		}
+		if (ImGui::MenuItem("Disk"))
+		{
+			float center[] = { 0.f, 0.f, 0.f };
+			float normal[] = { 0.f, 1.f, 0.f };
+			par_shapes_mesh* mesh = par_shapes_create_disk(12, 12, center, normal);
+			LoadParShape("Disk", mesh);
+			par_shapes_free_mesh(mesh);
+		}
+		//if (ImGui::MenuItem("Tetrahedron"))
+		//{
+		//	par_shapes_mesh* mesh = par_shapes_create_tetrahedron();
+		//	LoadParShape("Tetrahedron", mesh);
+		//	par_shapes_free_mesh(mesh);
+		//}
+		//if (ImGui::MenuItem("Lsystem"))
+		//{
+		//	par_shapes_mesh* mesh = par_shapes_create_lsystem("String", 10, 10);
+		//	LoadParShape("Lsystem", mesh);
+		//	par_shapes_free_mesh(mesh);
+		//}
+		//if (ImGui::MenuItem("Rock"))
+		//{
+		//	int random_seed = 0;//TODO: Random seed
+		//	//With each click it updates
+		//	par_shapes_mesh* mesh = par_shapes_create_rock(random_seed, 100);
+		//	LoadParShape("Rock", mesh);
+		//	par_shapes_free_mesh(mesh);
+		//}
+
+		//TODO: Show menu to configurate this
+
 		ImGui::EndMenu();
 	}
+}
+
+void ModuleScene::LoadParShape(std::string name, par_shapes_mesh * mesh)
+{
+	AssetMesh * asset_mesh = new AssetMesh();
+	asset_mesh->LoadVertices(mesh->npoints, mesh->points);
+	asset_mesh->LoadFacesAndNormals(mesh->ntriangles, mesh->triangles);
+	asset_mesh->GenerateVerticesBuffer();
+	asset_mesh->GenerateFacesAndNormalsBuffer();
+	App->import->meshes.push_back(asset_mesh);
+
+	GameObject * new_gameobject = new GameObject(name, &root_gameobject.transform);
+	ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
+	component_mesh->mesh = asset_mesh;
 }

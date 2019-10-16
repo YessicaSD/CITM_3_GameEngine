@@ -10,18 +10,28 @@
 
 
 
-bool AssetMesh::LoadInfo(aiMesh * info)
+bool AssetMesh::LoadVertices(const int num_vertices, const float * vertices)
 {
-	//VERTEX INFO
-	this->num_vertices = info->mNumVertices;
+	this->num_vertices = num_vertices;
 	this->vertices = new float[num_vertices * 3];
-	memcpy(this->vertices, info->mVertices, sizeof(float) *num_vertices * 3);
-	LOG("New mesh with %d vertices", num_vertices);
+	memcpy(this->vertices, vertices, sizeof(float) * num_vertices * 3);
+	return true;
+}
 
+bool AssetMesh::GenerateVerticesBuffer()
+{
+	glGenBuffers(1, &id_vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertices * 3, vertices, GL_STATIC_DRAW);
+	return true;
+}
+
+bool AssetMesh::LoadFacesAndNormals(aiMesh * info)
+{
 	//FACES INFO
 	if (info->HasFaces())
 	{
-		numFaces = info->mNumFaces;
+		num_faces = info->mNumFaces;
 		num_indices = info->mNumFaces * 3;
 		indices = new uint[num_indices]; // assume each face is a triangle
 		for (uint i = 0; i < info->mNumFaces; ++i)
@@ -30,7 +40,6 @@ bool AssetMesh::LoadInfo(aiMesh * info)
 			{
 				LOG("WARNING, geometry face with != 3 indices!");
 			}
-
 			else
 			{
 				memcpy(&indices[i * 3], info->mFaces[i].mIndices, 3 * sizeof(uint));
@@ -38,8 +47,8 @@ bool AssetMesh::LoadInfo(aiMesh * info)
 		}
 
 		//FACE NORMALS
-		faces_normals = new float3[numFaces];
-		face_middle_point = new float3[numFaces];
+		faces_normals = new float3[num_faces];
+		face_middle_point = new float3[num_faces];
 		for (uint i = 0; i < num_indices; i += 3)
 		{
 			uint index = indices[i];
@@ -82,28 +91,20 @@ bool AssetMesh::LoadInfo(aiMesh * info)
 				memcpy(&UVCoord[i*uv_num_components], &info->mTextureCoords[0][i], sizeof(float)* uv_num_components);
 
 			}
-
 		}
-
 	}
-
 
 	return true;
 }
 
-bool AssetMesh::GenereteBuffer(aiMesh * info)
+bool AssetMesh::GenerateFacesAndNormalsBuffer(aiMesh * info)
 {
-	//GENERETE VERTEX BUFFER 
-	glGenBuffers(1, &id_vertex);
-	glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertices * 3, vertices, GL_STATIC_DRAW);
-
 	//INDEX BUFFERS
-	if (numFaces > 0)
+	if (num_faces > 0)
 	{
 		glGenBuffers(1, &id_indice);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indice);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)* numFaces * 3, indices, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)* num_faces * 3, indices, GL_STATIC_DRAW);
 	}
 
 	//UV BUFFER
@@ -113,7 +114,37 @@ bool AssetMesh::GenereteBuffer(aiMesh * info)
 		glBindBuffer(GL_ARRAY_BUFFER, id_uv);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * uv_num_components * num_vertices, &UVCoord[0], GL_STATIC_DRAW);
 	}
+	return true;
+}
 
+
+//INFO: We could save some memory by keeping index as uint16_t values instead of uint
+//But we would need to create another class for AssetMesh with uint16_t or use templates with specialization
+//We should change:
+//- The indices type
+//- In ComponentMesh::OnPostUpdate() the parameter type in DrawElements() from GL_UNSIGNED_INT to GL_UNSIGNED_SHORT
+bool AssetMesh::LoadFacesAndNormals(const int num_faces, const uint16_t * indices)
+{
+	this->num_faces = num_faces;
+	this->num_indices = num_faces * 3;
+	this->indices = new uint[num_indices];
+
+	for (int i = 0; i < num_indices; ++i)
+	{
+		this->indices[i] = (uint)indices[i];
+	}
+	//TODO: Generate normals for par_shapes.h shapes
+
+	return true;
+}
+
+bool AssetMesh::GenerateFacesAndNormalsBuffer()
+{
+	glGenBuffers(1, &id_indice);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indice);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * num_indices, indices, GL_STATIC_DRAW);
+
+	//TODO: Generate normals for par_shapes.h shapes
 
 	return true;
 }
