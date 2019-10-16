@@ -30,25 +30,24 @@ bool ModuleImport::LoadMesh(const char * path)
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
-		AssimpScene* assimp_scene = new AssimpScene();
-		assimp_scenes.push_back(assimp_scene);
-
+		std::vector<AssetMesh*> object_meshes;
 		for (uint i = 0; i < scene->mNumMeshes; ++i)
 		{
-			aiMesh* assimp_mesh = scene->mMeshes[i];
 			AssetMesh * asset_mesh = new AssetMesh();
+			aiMesh* assimp_mesh = scene->mMeshes[i];
 			
-			asset_mesh->LoadInfo(assimp_mesh);
-			asset_mesh->GenereteBuffer(assimp_mesh);
-			
-			assimp_scene->assimp_meshes.push_back(asset_mesh);
+			//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
+			asset_mesh->LoadVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
+			asset_mesh->LoadFacesAndNormals(assimp_mesh);
 
+			asset_mesh->GenerateVerticesBuffer();
+			asset_mesh->GenerateFacesAndNormalsBuffer(assimp_mesh);
+			
+			object_meshes.push_back(asset_mesh);
+			meshes.push_back(asset_mesh);
 		}
-
-		//2 associate meshes
-		CreateGameObjectsFromNodes(scene->mRootNode, &App->scene->root_gameobject.transform, assimp_scene);
-
 		aiReleaseImport(scene);
+		CreateGameObjectsFromNodes(scene->mRootNode, &App->scene->root_gameobject.transform, object_meshes);
 	}
 	else
 	{
@@ -60,7 +59,7 @@ bool ModuleImport::LoadMesh(const char * path)
 
 
 
-void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, AssimpScene * assimp_scene)
+void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<AssetMesh*> loaded_meshes)
 {
 	GameObject * new_gameobject = new GameObject(std::string(node->mName.C_Str()), parent);
 
@@ -91,13 +90,13 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 		for (int i = 0; i < node->mNumMeshes; ++i)
 		{
 			ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
-			component_mesh->mesh = assimp_scene->assimp_meshes[node->mMeshes[i]];
+			component_mesh->mesh = loaded_meshes[node->mMeshes[i]];
 		}
 	}
 
 	for (int i = 0 ; i < node->mNumChildren; ++i)
 	{
-		CreateGameObjectsFromNodes(node->mChildren[i], &new_gameobject->transform, assimp_scene);
+		CreateGameObjectsFromNodes(node->mChildren[i], &new_gameobject->transform, loaded_meshes);
 	}
 }
 

@@ -28,8 +28,10 @@ public:
 
 	void CreateMenu();
 
+
 private:
-	void RecursivePostUpdate(ComponentTransform * object);
+	void LoadParShape(std::string name, par_shapes_mesh * mesh);
+	void GameObjectPostUpdateRecursive(ComponentTransform * object);
 
 public:
 	//All gameobjects are children of the root gameobject
