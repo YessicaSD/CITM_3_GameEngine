@@ -23,14 +23,13 @@ bool AssetMesh::LoadInfo(aiMesh * info)
 	{
 		numFaces = info->mNumFaces;
 		num_indices = info->mNumFaces * 3;
-		//indices = new uint[num_indices]; // assume each face is a triangle
+		indices = new uint[num_indices]; // assume each face is a triangle
 		for (uint i = 0; i < info->mNumFaces; ++i)
 		{
 			if (info->mFaces[i].mNumIndices != 3)
 			{
 				LOG("WARNING, geometry face with != 3 indices!");
 			}
-
 			else
 			{
 				memcpy(&indices[i * 3], info->mFaces[i].mIndices, 3 * sizeof(uint));

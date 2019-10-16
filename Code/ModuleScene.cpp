@@ -225,14 +225,21 @@ void ModuleScene::CreateMenu()
 			//Indices
 			asset_mesh->numFaces = mesh->ntriangles;
 			asset_mesh->num_indices = mesh->ntriangles * 3;
-			asset_mesh->indices = new uint16_t[asset_mesh->num_indices];
-			memcpy(asset_mesh->indices, mesh->triangles, asset_mesh->num_indices * sizeof(uint16_t));
+			asset_mesh->indices = new uint[asset_mesh->num_indices];
 
+			//INFO: We could save some memory by keeping index as uint16_t values instead of uint
+			//But we would need to create another class for AssetMesh with uint16_t or use templates with specialization
+			//We should change:
+			//- The indices type
+			//- In ComponentMesh::OnPostUpdate() the parameter type in DrawElements() from GL_UNSIGNED_INT to GL_UNSIGNED_SHORT
+			for (int i = 0; i < asset_mesh->num_indices; ++i)
+			{
+				asset_mesh->indices[i] = (uint)mesh->triangles[i];
+			}
 
 			glGenBuffers(1, &asset_mesh->id_indice);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, asset_mesh->id_indice);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(PAR_SHAPES_T) * asset_mesh->num_indices, asset_mesh->indices, GL_STATIC_DRAW);
-			//TODO: Put this on a method
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * asset_mesh->num_indices, asset_mesh->indices, GL_STATIC_DRAW);
 
 			par_shapes_free_mesh(mesh);
 

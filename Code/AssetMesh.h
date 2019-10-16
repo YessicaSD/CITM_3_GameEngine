@@ -14,7 +14,7 @@ public:
 	//Data ========================
 	uint id_indice = 0u; // index in VRAM
 	uint num_indices = 0u;
-	uint16_t * indices = nullptr;
+	uint * indices = nullptr;
 	//TODO: Change to uint *
 	//Assimp uses uint * and par_shapes uses uint16_t *
 
