@@ -4,6 +4,7 @@
 #include "parson/parson.h"
 
 class Application;
+struct Event;
 
 class Module
 {
@@ -51,4 +52,5 @@ public:
 	{
 		return true;
 	}
+	virtual void EventRequest(const Event& event) {};
 };

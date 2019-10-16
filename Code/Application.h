@@ -22,7 +22,8 @@ typedef unsigned __int64 uint64;
 
 class ModuleImport;
 class ModuleTexture;
-
+class ModuleFileSystem;
+struct Event;
 class Application
 {
 public:
@@ -35,6 +36,7 @@ public:
 	ModuleRandom * random = nullptr;
 	ModuleImport* import = nullptr;
 	ModuleTexture* texture = nullptr;
+	ModuleFileSystem* file_system = nullptr;
 	bool saveRequest = false;
 	JSON_Object * config = nullptr;
 
@@ -76,9 +78,9 @@ public:
 	void Log(const char* sentece);
 	
 	void ChangeRenderMode(std::string variable);
+	void EventRequest(const Event& event);
 
 private:
-
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();

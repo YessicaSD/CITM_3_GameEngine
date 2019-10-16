@@ -32,6 +32,7 @@ bool ModuleWindow::Init()
 		DecideGLAndGLSLVersions();
 		ret = SetWindow();
 	}
+	
 
 	return ret;
 }

@@ -22,6 +22,7 @@ public:
 	bool LoadMesh(const char* path);
 	bool CleanUp() override;
 	Texture* lenna_img_id = 0;
+	void EventRequest(const Event& event) override;
 private:
 	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<AssetMesh*> loaded_meshes);
 

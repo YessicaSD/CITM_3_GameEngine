@@ -3,6 +3,8 @@
 #include "parson/parson.h"
 #include "ModuleImport.h"
 #include "ModuleTexture.h"
+#include "ModuleFileSystem.h"
+#include "Event.h"
 Application::Application()
 {
 	window = new ModuleWindow();
@@ -14,6 +16,7 @@ Application::Application()
 	random = new ModuleRandom();
 	import = new ModuleImport();
 	texture = new ModuleTexture();
+	file_system = new ModuleFileSystem();
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -21,6 +24,7 @@ Application::Application()
 	// Main Modules
 	AddModule(window);
 	AddModule(random);
+	AddModule(file_system);
 	AddModule(input);
 	AddModule(texture);
 	AddModule(scene);
@@ -191,6 +195,14 @@ void Application::ChangeRenderMode(std::string variable)
 }
 
 
+
+void Application::EventRequest(const Event & event)
+{
+	for (std::vector<Module*>::iterator iter = list_modules.begin(); iter != list_modules.end(); ++iter)
+	{
+		(*iter)->EventRequest(event);
+	}
+}
 
 void Application::AddModule(Module* mod)
 {
