@@ -555,6 +555,9 @@
     <ClInclude Include="ModuleFileSystem.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="PanelAssets.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -783,6 +786,9 @@
       <Filter>Sources\Containers</Filter>
     </ClCompile>
     <ClCompile Include="ModuleFileSystem.cpp" />
+    <ClCompile Include="PanelAssets.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">

@@ -17,7 +17,7 @@ protected:
 	std::string name = "";
 
 public:
-	Panel(std::string name, bool active, std::vector<SDL_Scancode> shortcuts);
+	Panel(std::string name, bool active, std::vector<SDL_Scancode> shortcuts = {});
 
 	void SwitchActive();
 	bool IsActive() const;

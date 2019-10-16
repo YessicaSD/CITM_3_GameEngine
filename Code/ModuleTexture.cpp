@@ -32,23 +32,6 @@ Texture* ModuleTexture::LoadTexture(const char* path)
 		ilGenImages(1, &devil_id);
 		ilBindImage(devil_id);
 		ilutRenderer(ILUT_OPENGL);
-		
-		//FILE* file;
-		//
-		//file = fopen(path, "rb");
-		//if (!file)
-		//{
-		//	return new_texture;
-		//}
-		//fseek(file, 0, SEEK_END);
-		//uint size = ftell(file);
-
-		
-		//
-		//unsigned char* lump= (unsigned char*)malloc(size);
-		//fseek(file, 0, SEEK_SET);
-		//fread(lump, 1, size, file);
-		//fclose(file);
 
 		if (!ilLoad(IL_PNG, path))
 		{
@@ -71,7 +54,6 @@ Texture* ModuleTexture::LoadTexture(const char* path)
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-			//new_texture->GenerateTexture();
 			textures[path] = new_texture;
 
 			glBindTexture(GL_TEXTURE_2D, 0);
@@ -89,4 +71,18 @@ Texture* ModuleTexture::LoadTexture(const char* path)
 	
 
 	return new_texture;
+}
+
+bool ModuleTexture::CleanUp()
+{
+	for (std::map<const char*, Texture*>::iterator iter = textures.begin(); iter!= textures.end();++iter)
+	{
+		if (((*iter).second))
+		{
+			delete ((*iter).second);
+			(*iter).second = nullptr;
+		}
+	}
+	textures.clear();
+	return true;
 }

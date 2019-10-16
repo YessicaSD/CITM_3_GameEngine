@@ -15,6 +15,8 @@ public:
 	ModuleTexture() {};
 	bool Init() override;
 	Texture* LoadTexture(const char* path);
+	bool CleanUp() override;
+	friend class PanelAssets;
 };
 
 
