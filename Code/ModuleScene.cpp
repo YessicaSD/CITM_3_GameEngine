@@ -172,79 +172,89 @@ void ModuleScene::CreateMenu()
 
 		//TODO: Align buttons
 
-		if (ImGui::Button("Cube"))
+		if (ImGui::MenuItem("Cube"))
 		{
 			par_shapes_mesh* mesh = par_shapes_create_cube();
 			LoadParShape("Cube", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-		if (ImGui::Button("Parametric sphere"))
+		if (ImGui::MenuItem("Parametric sphere"))
 		{
 			par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(10, 10);
 			LoadParShape("Parametric sphere", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-		if (ImGui::Button("Subdivided sphere"))
+		if (ImGui::MenuItem("Subdivided sphere"))
 		{
 			par_shapes_mesh* mesh = par_shapes_create_subdivided_sphere(1);
 			LoadParShape("Subdivided sphere", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-		if (ImGui::Button("Hemisphere"))
+		if (ImGui::MenuItem("Hemisphere"))
 		{
 			par_shapes_mesh* mesh = par_shapes_create_hemisphere(50, 20);
 			LoadParShape("Hemisphere", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-		if (ImGui::Button("Plane"))
+		if (ImGui::MenuItem("Plane"))
 		{
 			par_shapes_mesh* mesh = par_shapes_create_plane(10, 10);
 			LoadParShape("Plane", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-		if (ImGui::Button("Klein"))
+		if (ImGui::MenuItem("Klein"))
 		{
 			par_shapes_mesh* mesh = par_shapes_create_klein_bottle(10, 10);
 			LoadParShape("Klein", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-		if (ImGui::Button("Cylinder"))
+		if (ImGui::MenuItem("Cylinder"))
 		{
 			par_shapes_mesh* mesh = par_shapes_create_cylinder(50,10);
 			LoadParShape("Cylinder", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-		if (ImGui::Button("Cone"))
+
+		//CONE
+		if (ImGui::BeginMenu("Cone"))
+		{
+			ImGui::MenuItem("Text");
+			ImGui::EndMenu();
+		}
+		if (ImGui::IsItemClicked())
 		{
 			par_shapes_mesh* mesh = par_shapes_create_cone(50, 20);
 			LoadParShape("Cone", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-		if (ImGui::Button("Torus"))
+
+
+		//TODO: Options for creating shapes
+		if (ImGui::MenuItem("Torus"))
 		{
 			par_shapes_mesh* mesh = par_shapes_create_torus(12,12,0.5f);
 			LoadParShape("Torus", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-		if (ImGui::Button("Trefoil"))
+		if (ImGui::MenuItem("Trefoil"))
 		{
 			par_shapes_mesh* mesh = par_shapes_create_trefoil_knot(50, 20, 2);
 			LoadParShape("Trefoil", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-		if (ImGui::Button("Dodecahedron"))
+		if (ImGui::MenuItem("Dodecahedron"))
 		{
 			par_shapes_mesh* mesh = par_shapes_create_dodecahedron();
 			LoadParShape("Dodecahedron", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-		if (ImGui::Button("Icosahedron"))
+		if (ImGui::MenuItem("Icosahedron"))
 		{
 			par_shapes_mesh* mesh = par_shapes_create_icosahedron();
 			LoadParShape("Icosahedron", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-		if (ImGui::Button("Disk"))
+		if (ImGui::MenuItem("Disk"))
 		{
 			float center[] = { 0.f, 0.f, 0.f };
 			float normal[] = { 0.f, 1.f, 0.f };
@@ -252,19 +262,19 @@ void ModuleScene::CreateMenu()
 			LoadParShape("Disk", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-		//if (ImGui::Button("Tetrahedron"))
+		//if (ImGui::MenuItem("Tetrahedron"))
 		//{
 		//	par_shapes_mesh* mesh = par_shapes_create_tetrahedron();
 		//	LoadParShape("Tetrahedron", mesh);
 		//	par_shapes_free_mesh(mesh);
 		//}
-		//if (ImGui::Button("Lsystem"))
+		//if (ImGui::MenuItem("Lsystem"))
 		//{
 		//	par_shapes_mesh* mesh = par_shapes_create_lsystem("String", 10, 10);
 		//	LoadParShape("Lsystem", mesh);
 		//	par_shapes_free_mesh(mesh);
 		//}
-		//if (ImGui::Button("Rock"))
+		//if (ImGui::MenuItem("Rock"))
 		//{
 		//	int random_seed = 0;//TODO: Random seed
 		//	//With each click it updates
