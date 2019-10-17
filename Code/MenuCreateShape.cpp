@@ -59,8 +59,7 @@ void MenuCreateShape::Display()
 			par_shapes_free_mesh(mesh);
 		}
 
-		std::function<par_shapes_mesh*()> cone_function = [slices = cone_slices, stacks = cone_stacks] () { return par_shapes_create_cone(slices, stacks); };
-		MenuItem("Cone", cone_function);
+		MenuItem("Cone", [slices = cone_slices, stacks = cone_stacks]() { return par_shapes_create_cone(slices, stacks); });
 
 		//TODO: Options for creating shapes
 		if (ImGui::MenuItem("Torus"))
