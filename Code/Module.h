@@ -53,4 +53,5 @@ public:
 		return true;
 	}
 	virtual void EventRequest(const Event& event) {};
+	virtual void DrawConfigurationUi() {};
 };

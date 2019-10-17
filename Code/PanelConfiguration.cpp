@@ -35,6 +35,8 @@ void PanelConfiguration::Draw()
 		//Project name
 		static char projectName[128] = "Project name";
 		ImGui::InputText("Project Name:", projectName, IM_ARRAYSIZE(projectName));
+		static char projectOrganization[128] = "Early Birds";
+		ImGui::InputText("Organization:", projectOrganization, IM_ARRAYSIZE(projectName));
 
 		//FPS
 		static float fpsMax = 0;
@@ -118,6 +120,30 @@ void PanelConfiguration::Draw()
 		
 	}
 
+	if (ImGui::CollapsingHeader("Window"))
+	{
+		static float brightness = 100;
+		if (ImGui::SliderFloat("Brightness", &brightness, 0.2f, 1.0f))
+		{
+			App->window->SetBrightness(brightness);
+		}
+		static float max_width, max_height,  min_width = 640, min_height = 480;
+		static float width = App->window->GetWindowWidth(),
+					 height = App->window->GetWindowHeight();
+		App->window->GetMaxWindowSize(max_width, max_height);
+		
+
+		if (ImGui::SliderFloat("Width", &width, min_width, max_width))
+		{
+			App->window->SetWidth(width);
+		}
+		if (ImGui::SliderFloat("Height", &height, min_height, max_height))
+		{
+			App->window->SetHeight(height);
+		}
+
+			
+	}
 	if (ImGui::CollapsingHeader("Render"))
 	{
 		ImGui::Text("Change background color:");

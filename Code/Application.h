@@ -79,7 +79,7 @@ public:
 	
 	void ChangeRenderMode(std::string variable);
 	void EventRequest(const Event& event);
-
+	void DrawModulesConfigUi();
 private:
 	void AddModule(Module* mod);
 	void PrepareUpdate();

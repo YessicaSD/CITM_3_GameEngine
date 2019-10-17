@@ -204,6 +204,14 @@ void Application::EventRequest(const Event & event)
 	}
 }
 
+void Application::DrawModulesConfigUi()
+{
+	for (std::vector<Module*>::iterator iter = list_modules.begin(); iter != list_modules.end(); ++iter)
+	{
+		(*iter)->DrawConfigurationUi();
+	}
+}
+
 void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);

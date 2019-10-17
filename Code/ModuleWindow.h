@@ -29,12 +29,17 @@ public:
 	int GetWindowWidth();
 	int GetWindowHeight();
 	bool IsVsync();
-
+	void SetBrightness(float brightness);
+	void GetMaxWindowSize(float& width, float& hight);
+	void SetWidth(float& width);
+	void SetHeight(float& height);
 private:
 	void LoadConfigValues(JSON_Object * config);
 	Uint32 GetFlags();
 	void DecideGLAndGLSLVersions();
 	bool SetWindow();
+	
+	
 
 public:
 	//The window we'll be rendering to
