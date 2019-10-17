@@ -224,13 +224,13 @@ void ModuleScene::CreateMenu()
 		ImVec4 color = ImGui::GetStyleColorVec4(ImGuiCol_::ImGuiCol_Text);
 		ImVec2 button_size(button_height, button_height);
 
-		ImGui::Selectable("Cone", false);
+		ImGui::MenuItem("Cone");
 		ImGui::SetItemAllowOverlap();
 		selectable_clicked = ImGui::IsItemClicked();
 
 		ImGui::SameLine(space);
 
-		//INFO: Center button
+		//INFO: Center button horizontally
 		ImGuiStyle style = ImGui::GetStyle();
 		ImVec2 cursor_pos = ImGui::GetCursorPos();
 		cursor_pos.y += (ImGui::GetFontSize() - button_height) * 0.5f;
