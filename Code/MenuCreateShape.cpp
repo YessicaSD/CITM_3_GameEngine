@@ -58,9 +58,8 @@ void MenuCreateShape::Display()
 			App->import->LoadParShape("Cylinder", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-		int slices = 12;
-		int stacks = 12;
-		std::function<par_shapes_mesh*()> cone_function = [slices, stacks] () { return par_shapes_create_cone(slices, stacks); };
+
+		std::function<par_shapes_mesh*()> cone_function = [slices = cone_slices, stacks = cone_stacks] () { return par_shapes_create_cone(slices, stacks); };
 		MenuItem("Cone", cone_function);
 
 		//TODO: Options for creating shapes
