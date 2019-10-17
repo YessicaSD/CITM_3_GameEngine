@@ -216,59 +216,27 @@ void ModuleScene::CreateMenu()
 		}
 
 		//CONE
-		//int button_height = 20;
-		//float keys_column_distance = 150 + button_height * 0.5f;
-		//ImVec2 button_size(150, button_height);
-		//ImVec2 config_size(button_height, button_height);
-		//ImGui::Button("Cone", button_size);
-		////TODO: Center button text
-		//if (ImGui::IsItemClicked())
-		//{
-		//	par_shapes_mesh* mesh = par_shapes_create_cone(50, 20);
-		//	LoadParShape("Cone", mesh);
-		//	par_shapes_free_mesh(mesh);
-		//}
-		//ImGui::SameLine(keys_column_distance);
-		//ImGui::Button("", config_size);
-		////TODO: Open Create Cone menu
-		//if (ImGui::IsItemClicked())
-		//{
-		//	par_shapes_mesh* mesh = par_shapes_create_cone(50, 20);
-		//	LoadParShape("Cone", mesh);
-		//	par_shapes_free_mesh(mesh);
-		//}
-
-		//ImGui::MenuItem("Cone");
-		//ImGui::SameLine();
-		//ImGui::Button("Config");
-		//if (ImGui::IsItemClicked())
-		//{
-		//	par_shapes_mesh* mesh = par_shapes_create_cone(50, 20);
-		//	LoadParShape("Cone", mesh);
-		//	par_shapes_free_mesh(mesh);
-		//}
-
-		//ImGui::MenuItem("Cone");
-		//ImGui::SameLine();
-		//ImGui::MenuItem("Config");
-		//if (ImGui::IsItemClicked())
-		//{
-		//	par_shapes_mesh* mesh = par_shapes_create_cone(50, 20);
-		//	LoadParShape("Cone", mesh);
-		//	par_shapes_free_mesh(mesh);
-		//}
-
 		float button_height = 12.5f;
 		float space = 150;
 		bool selectable_clicked = false;
 		bool button_clicked = false;
+		ImVec4 color = ImGui::GetStyleColorVec4(ImGuiCol_::ImGuiCol_Text);
+		//ImVec4 color = ImGui::GetStyleColorVec4(ImGuiCol_::ImGuiCol_PopupBg);
 		ImVec2 selectable_size(space - button_height, button_height);
 		ImVec2 button_size(button_height, button_height);
 		ImGui::Selectable("Cone", false/*, 0, selectable_size*/);
 		ImGui::SetItemAllowOverlap();
 		selectable_clicked = ImGui::IsItemClicked();
 		ImGui::SameLine(space);
+
+		//TODO: Change the color when it's selected
+		//TODO: Can also use "ImGui::ColorButton"
+		ImGui::PushStyleColor(ImGuiCol_::ImGuiCol_Button, color);
 		ImGui::Button("", button_size);
+		ImGui::PopStyleColor();
+
+		//ImGui::Selectable(">", false, 0, button_size);
+
 		button_clicked = ImGui::IsItemClicked();//INFO: We're using ImGui::IsItemClicked() instead of the return of ImGui::Button because they execute on different frames
 		if (selectable_clicked && !button_clicked)
 		{
