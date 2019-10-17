@@ -227,16 +227,17 @@ void ModuleScene::CreateMenu()
 		ImGui::Selectable("Cone", false);
 		ImGui::SetItemAllowOverlap();
 		selectable_clicked = ImGui::IsItemClicked();
+
 		ImGui::SameLine(space);
-		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 100.f);
-		ImGui::PushStyleColor(ImGuiCol_::ImGuiCol_Button, color);
+
+		//INFO: Center button
+		ImGuiStyle style = ImGui::GetStyle();
 		ImVec2 cursor_pos = ImGui::GetCursorPos();
-		int text_height = ImGui::GetFontSize() * 1;
-		ImGuiStyle style = ImGui::GetStyle();//ImGuiStyleVar_FramePadding
-		int y_center = /*style.FramePadding.y +*/ text_height * 0.5f;
-		int y_button = y_center - button_height * 0.5f;
-		cursor_pos.y += y_button;
+		cursor_pos.y += (ImGui::GetFontSize() - button_height) * 0.5f;
 		ImGui::SetCursorPos(cursor_pos);
+
+		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 250.f);
+		ImGui::PushStyleColor(ImGuiCol_::ImGuiCol_Button, color);
 		ImGui::Button("", button_size);
 		ImGui::PopStyleColor();
 		ImGui::PopStyleVar();
