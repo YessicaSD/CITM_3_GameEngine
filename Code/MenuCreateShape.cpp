@@ -4,19 +4,18 @@
 #include "Application.h"
 #include "ModuleImport.h"
 
+MenuCreateShape::MenuCreateShape()
+{
+	button_size.x = button_size.y = button_height;
+}
+
 void MenuCreateShape::Display()
 {
-	float button_height = 7.5f;
-	float button_space = 150.f;
-	ImVec4 button_color = ImGui::GetStyleColorVec4(ImGuiCol_::ImGuiCol_Text);
-	ImVec2 button_size(button_height, button_height);
+	//TODO: Put in constructor
+	button_color = ImGui::GetStyleColorVec4(ImGuiCol_::ImGuiCol_Text);
 
 	if (ImGui::BeginMenu("Create"))
 	{
-		//Create the different par shapes
-
-		//TODO: Align buttons
-
 		if (ImGui::MenuItem("Cube"))
 		{
 			par_shapes_mesh* mesh = par_shapes_create_cube();
@@ -59,8 +58,10 @@ void MenuCreateShape::Display()
 			App->import->LoadParShape("Cylinder", mesh);
 			par_shapes_free_mesh(mesh);
 		}
-
-		MenuItemCreateShape(button_space, button_height, button_color, button_size);
+		int slices = 12;
+		int stacks = 12;
+		std::function<par_shapes_mesh*()> cone_function = [slices, stacks] () { return par_shapes_create_cone(slices, stacks); };
+		MenuItem("Cone", cone_function);
 
 		//TODO: Options for creating shapes
 		if (ImGui::MenuItem("Torus"))
@@ -122,13 +123,13 @@ void MenuCreateShape::Display()
 	}
 }
 
-void MenuCreateShape::MenuItemCreateShape(const float space, const float button_height, const ImVec4 &button_color, const ImVec2 &button_size)
+void MenuCreateShape::MenuItem(std::string name, std::function<par_shapes_mesh*()> mesh_function)
 {
-	ImGui::MenuItem("Cone");
+	ImGui::MenuItem(name.c_str());
 	ImGui::SetItemAllowOverlap();
 	bool selectable_clicked = ImGui::IsItemClicked();
 
-	ImGui::SameLine(space);
+	ImGui::SameLine(button_space);
 
 	//INFO: Center button vertically
 	ImGuiStyle style = ImGui::GetStyle();
@@ -146,8 +147,8 @@ void MenuCreateShape::MenuItemCreateShape(const float space, const float button_
 
 	if (selectable_clicked && !button_clicked)
 	{
-		par_shapes_mesh* mesh = par_shapes_create_cone(12, 12);
-		App->import->LoadParShape("Cone", mesh);
+		par_shapes_mesh* mesh = mesh_function();
+		App->import->LoadParShape(name, mesh);
 		par_shapes_free_mesh(mesh);
 		LOG("Menu item clicked");
 	}

@@ -147,5 +147,3 @@ void ModuleImport::LoadParShape(std::string name, par_shapes_mesh * mesh)
 	ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 	component_mesh->mesh = asset_mesh;
 }
-
-
