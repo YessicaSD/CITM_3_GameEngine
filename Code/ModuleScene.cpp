@@ -217,7 +217,7 @@ void ModuleScene::CreateMenu()
 
 		//CONE
 		//TODO: Find a way to make the size smaller but keep it in the center
-		float button_height = 12.5f;
+		float button_height = 7.5f;
 		float space = 150;
 		bool selectable_clicked = false;
 		bool button_clicked = false;
@@ -233,7 +233,9 @@ void ModuleScene::CreateMenu()
 		ImVec2 cursor_pos = ImGui::GetCursorPos();
 		int text_height = ImGui::GetFontSize() * 1;
 		ImGuiStyle style = ImGui::GetStyle();//ImGuiStyleVar_FramePadding
-		cursor_pos.y += text_height + style.FramePadding.y * 2;
+		int y_center = /*style.FramePadding.y +*/ text_height * 0.5f;
+		int y_button = y_center - button_height * 0.5f;
+		cursor_pos.y += y_button;
 		ImGui::SetCursorPos(cursor_pos);
 		ImGui::Button("", button_size);
 		ImGui::PopStyleColor();
