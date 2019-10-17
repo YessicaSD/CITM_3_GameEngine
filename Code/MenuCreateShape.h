@@ -27,6 +27,30 @@ private:
 	ImVec4 button_color;
 	ImVec2 button_size;
 
+
+	//Parametric sphere
+	int parametric_sphere_slices = 10;
+	int parametric_sphere_stacks = 10;
+
+	//Subdivided sphere
+	int subdivided_sphere_nsubdivisions = 1;
+
+	//Hemisphere
+	int hemisphere_slices = 50;
+	int hemisphere_stacks = 20;
+
+	//Plane
+	int plane_slices = 10;
+	int plane_stacks = 10;
+
+	//Klein bottle
+	int klein_bottle_slices = 10;
+	int klein_bottle_stacks = 10;
+
+	//Cylinder
+	int cylinder_slices = 50;
+	int cylinder_stacks = 10;
+
 	//Cone variables
 	int cone_slices = 12;
 	int cone_stacks = 12;
