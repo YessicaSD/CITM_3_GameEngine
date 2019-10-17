@@ -216,33 +216,26 @@ void ModuleScene::CreateMenu()
 		}
 
 		//CONE
+		//TODO: Find a way to make the size smaller but keep it in the center
 		float button_height = 12.5f;
 		float space = 150;
 		bool selectable_clicked = false;
 		bool button_clicked = false;
-		//ImDrawList draw_list;
 		ImVec4 color = ImGui::GetStyleColorVec4(ImGuiCol_::ImGuiCol_Text);
-		//ImVec4 color = ImGui::GetStyleColorVec4(ImGuiCol_::ImGuiCol_PopupBg);
-		ImVec2 selectable_size(space - button_height, button_height);
 		ImVec2 button_size(button_height, button_height);
-		ImGui::Selectable("Cone", false/*, 0, selectable_size*/);
+
+		ImGui::Selectable("Cone", false);
 		ImGui::SetItemAllowOverlap();
 		selectable_clicked = ImGui::IsItemClicked();
 		ImGui::SameLine(space);
-
-		//TODO: Change the color when it's selected
-		//TODO: Can also use "ImGui::ColorButton"
+		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 100.f);
 		ImGui::PushStyleColor(ImGuiCol_::ImGuiCol_Button, color);
-		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 24.f);
 		ImGui::Button("", button_size);
-		//draw_list.AddRect(button_size, button_size, ImGui::GetColorU32(color));
-		//draw_list.AddCircle(ImVec2(0.f, 0.f), 10.f, ImGui::GetColorU32(color));
-		ImGui::PopStyleVar();
 		ImGui::PopStyleColor();
+		ImGui::PopStyleVar();
+		//INFO: We're using ImGui::IsItemClicked() instead of the return of ImGui::Button because they execute on different frames
+		button_clicked = ImGui::IsItemClicked();
 
-		//ImGui::Selectable(">", false, 0, button_size);
-
-		button_clicked = ImGui::IsItemClicked();//INFO: We're using ImGui::IsItemClicked() instead of the return of ImGui::Button because they execute on different frames
 		if (selectable_clicked && !button_clicked)
 		{
 			LOG("Selectable clicked");
