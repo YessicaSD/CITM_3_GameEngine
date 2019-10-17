@@ -11,6 +11,8 @@ class MenuCreateShape
 {
 public:
 	MenuCreateShape();
+	~MenuCreateShape();
+
 	void Display();
 
 private:
@@ -28,6 +30,23 @@ private:
 	//Cone variables
 	int cone_slices = 12;
 	int cone_stacks = 12;
+
+	//Torus variables
+	int torus_slices = 12;
+	int torus_stacks = 12;
+	float torus_radius = 0.5f;
+
+	//Trefoil knot
+	int trefoil_knot_slices = 50;
+	int trefoil_knot_stacks = 20;
+	float trefoil_knot_radius = 2.f;
+
+	//Disk
+	float * disk_center = nullptr;
+	float * disk_normal = nullptr;
+	int disk_slices = 12;
+	float disk_radius = 12.f;
+
 };
 
 #endif

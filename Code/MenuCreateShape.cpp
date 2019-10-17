@@ -3,11 +3,28 @@
 #include "imgui/imgui.h"
 #include "Application.h"
 #include "ModuleImport.h"
+#include "Globals.h"
 
 MenuCreateShape::MenuCreateShape()
 {
 	button_size.x = button_size.y = button_height;
+
+	//Disk
+	disk_center = new float[3];
+	disk_center[0] = 0.f;
+	disk_center[1] = 0.f;
+	disk_center[2] = 0.f;
+
+	disk_normal = new float[3];
+	disk_normal[0] = 0.f;
+	disk_normal[1] = 1.f;
+	disk_normal[2] = 0.f;
 }
+MenuCreateShape::~MenuCreateShape()
+{
+	RELEASE_ARRAY(disk_center);
+	RELEASE_ARRAY(disk_normal);
+};
 
 void MenuCreateShape::Display()
 {
@@ -59,41 +76,36 @@ void MenuCreateShape::Display()
 			par_shapes_free_mesh(mesh);
 		}
 
-		MenuItem("Cone", [slices = cone_slices, stacks = cone_stacks]() { return par_shapes_create_cone(slices, stacks); });
+		MenuItem(
+			"Cone",
+			[slices = cone_slices, stacks = cone_stacks]()
+			{ return par_shapes_create_cone(slices, stacks); });
 
-		//TODO: Options for creating shapes
-		if (ImGui::MenuItem("Torus"))
-		{
-			par_shapes_mesh* mesh = par_shapes_create_torus(12, 12, 0.5f);
-			App->import->LoadParShape("Torus", mesh);
-			par_shapes_free_mesh(mesh);
-		}
-		if (ImGui::MenuItem("Trefoil"))
-		{
-			par_shapes_mesh* mesh = par_shapes_create_trefoil_knot(50, 20, 2);
-			App->import->LoadParShape("Trefoil", mesh);
-			par_shapes_free_mesh(mesh);
-		}
-		if (ImGui::MenuItem("Dodecahedron"))
-		{
-			par_shapes_mesh* mesh = par_shapes_create_dodecahedron();
-			App->import->LoadParShape("Dodecahedron", mesh);
-			par_shapes_free_mesh(mesh);
-		}
-		if (ImGui::MenuItem("Icosahedron"))
-		{
-			par_shapes_mesh* mesh = par_shapes_create_icosahedron();
-			App->import->LoadParShape("Icosahedron", mesh);
-			par_shapes_free_mesh(mesh);
-		}
-		if (ImGui::MenuItem("Disk"))
-		{
-			float center[] = { 0.f, 0.f, 0.f };
-			float normal[] = { 0.f, 1.f, 0.f };
-			par_shapes_mesh* mesh = par_shapes_create_disk(12, 12, center, normal);
-			App->import->LoadParShape("Disk", mesh);
-			par_shapes_free_mesh(mesh);
-		}
+		MenuItem(
+			"Torus",
+			[slices = torus_slices, stacks = torus_stacks, radius = torus_radius]()
+			{ return par_shapes_create_torus(slices, stacks, radius); });
+
+		MenuItem(
+			"Trefoil Knot",
+			[slices = trefoil_knot_slices, stacks = trefoil_knot_stacks, radius = trefoil_knot_radius]()
+			{return par_shapes_create_trefoil_knot(slices, stacks, radius); });
+
+		MenuItem(
+			"Dodecahedron",
+			[]()
+			{ return par_shapes_create_dodecahedron(); });
+
+		MenuItem(
+			"Icosahedron",
+			[]()
+			{ return par_shapes_create_icosahedron(); });
+
+		MenuItem(
+			"Disk",
+			[radius = disk_radius, slices = disk_slices, center = disk_center, normal = disk_normal]()
+			{ return par_shapes_create_disk(radius, slices, center, normal); });
+
 		//if (ImGui::MenuItem("Tetrahedron"))
 		//{
 		//	par_shapes_mesh* mesh = par_shapes_create_tetrahedron();
