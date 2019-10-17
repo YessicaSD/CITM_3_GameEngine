@@ -230,6 +230,11 @@ void ModuleScene::CreateMenu()
 		ImGui::SameLine(space);
 		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 100.f);
 		ImGui::PushStyleColor(ImGuiCol_::ImGuiCol_Button, color);
+		ImVec2 cursor_pos = ImGui::GetCursorPos();
+		int text_height = ImGui::GetFontSize() * 1;
+		ImGuiStyle style = ImGui::GetStyle();//ImGuiStyleVar_FramePadding
+		cursor_pos.y += text_height + style.FramePadding.y * 2;
+		ImGui::SetCursorPos(cursor_pos);
 		ImGui::Button("", button_size);
 		ImGui::PopStyleColor();
 		ImGui::PopStyleVar();
