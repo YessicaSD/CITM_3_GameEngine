@@ -10,6 +10,7 @@
 #include "imgui\imgui.h"
 #include <vector>
 #include "TabPanel.h"
+#include "MenuCreateShape.h"
 
 class Timer;
 class Panel;
@@ -40,7 +41,7 @@ private:
 	PanelAbout* panel_about = nullptr;
 	PanelHierarchy * panel_hirearchy = nullptr;
 	std::vector<Shortcut *> shortcuts;
-
+	MenuCreateShape create_menu;
 
 
 public:

@@ -189,7 +189,7 @@ void ModuleGui::MainMenuBar(update_status &ret)
 		ImGui::EndMenu();
 	}
 
-	App->scene->CreateMenu();
+	create_menu.Display();
 
 	if (ImGui::BeginMenu("Windows"))
 	{
