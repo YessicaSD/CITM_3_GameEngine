@@ -11,6 +11,11 @@ Panel::Panel(std::string name, bool active, std::vector<SDL_Scancode> shortcuts)
 	//App->gui->panels.push_back(this);
 }
 
+void Panel::SetActive(bool value)
+{
+	active = value;
+}
+
 void Panel::SwitchActive()
 {
 	active = !active;

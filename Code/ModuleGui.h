@@ -31,6 +31,9 @@ enum class TYPE_TAB_PANEL
 };
 class ModuleGui : public Module
 {
+public:
+	MenuCreateShape create_menu;
+
 private:
 	bool showMenuImGui = false;
 	std::vector<Panel*> panels;
@@ -41,7 +44,6 @@ private:
 	PanelAbout* panel_about = nullptr;
 	PanelHierarchy * panel_hirearchy = nullptr;
 	std::vector<Shortcut *> shortcuts;
-	MenuCreateShape create_menu;
 
 
 public:

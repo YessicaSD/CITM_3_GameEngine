@@ -189,7 +189,7 @@ void ModuleGui::MainMenuBar(update_status &ret)
 		ImGui::EndMenu();
 	}
 
-	create_menu.Display();
+	create_menu.MenuBarTab();
 
 	if (ImGui::BeginMenu("Windows"))
 	{
