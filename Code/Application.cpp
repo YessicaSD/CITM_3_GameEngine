@@ -4,36 +4,40 @@
 #include "ModuleImport.h"
 #include "ModuleTexture.h"
 #include "ModuleFileSystem.h"
+#include "ModuleAudio.h"
+#include "imgui/imgui.h"
 #include "Event.h"
 Application::Application()
 {
-	window = new ModuleWindow();
-	input = new ModuleInput();
-	renderer3D = new ModuleRenderer3D();
-	camera = new ModuleCamera3D();
-	scene = new ModuleScene();
-	gui = new ModuleGui();
-	random = new ModuleRandom();
-	import = new ModuleImport();
-	texture = new ModuleTexture();
-	file_system = new ModuleFileSystem();
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
 
 	// Main Modules
-	AddModule(window);
-	AddModule(random);
-	AddModule(file_system);
-	AddModule(input);
-	AddModule(texture);
-	AddModule(scene);
-	AddModule(import);
-	AddModule(camera);
-	AddModule(gui);
+	AddModule(window = new ModuleWindow("Window"));
+	AddModule(random = new ModuleRandom());
+	AddModule(file_system = new ModuleFileSystem());
+	AddModule(input = new ModuleInput("Input"));
+	AddModule(texture = new ModuleTexture());
+	AddModule(scene = new ModuleScene());
+	AddModule(import = new ModuleImport());
+	AddModule(camera = new ModuleCamera3D());
+	AddModule(audio = new ModuleAudio("Audio"));
+	AddModule(gui = new ModuleGui());
 
 	// Renderer last!
-	AddModule(renderer3D);
+	AddModule(renderer3D = new ModuleRenderer3D("Render"));
 
 	
 
@@ -118,7 +122,7 @@ void Application::FinishUpdate()
 	}
 
 	frame_count++;
-	
+
 	seconds_since_startup = startup_time.ReadSec();
 	avg_fps = float(frame_count) / seconds_since_startup;
 
@@ -129,10 +133,10 @@ update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
-	
+
 	std::vector<Module*>::iterator item = list_modules.begin();
-	
-	while(item != list_modules.end() && ret == UPDATE_CONTINUE)
+
+	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
 		ret = (*item)->PreUpdate();
 		item = ++item;
@@ -140,7 +144,7 @@ update_status Application::Update()
 
 	item = list_modules.begin();
 
-	while(item != list_modules.end() && ret == UPDATE_CONTINUE)
+	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
 		ret = (*item)->Update(dt);
 		item = ++item;
@@ -148,7 +152,7 @@ update_status Application::Update()
 
 	item = list_modules.begin();
 
-	while(item != list_modules.end() && ret == UPDATE_CONTINUE)
+	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
 		ret = (*item)->PostUpdate();
 		item = ++item;
@@ -163,7 +167,7 @@ bool Application::CleanUp()
 	bool ret = true;
 	std::vector<Module*>::reverse_iterator item = list_modules.rbegin();
 
-	while(item != list_modules.rend() && ret == true)
+	while (item != list_modules.rend() && ret == true)
 	{
 		ret = (*item)->CleanUp();
 		item = ++item;
@@ -201,6 +205,22 @@ void Application::EventRequest(const Event & event)
 	for (std::vector<Module*>::iterator iter = list_modules.begin(); iter != list_modules.end(); ++iter)
 	{
 		(*iter)->EventRequest(event);
+	}
+}
+
+void Application::DrawModulesConfigUi()
+{
+	for (std::vector<Module*>::iterator iter = list_modules.begin(); iter != list_modules.end(); ++iter)
+	{
+		if ((*iter)->name != "")
+		{
+			if (ImGui::CollapsingHeader((*iter)->name))
+			{
+				(*iter)->DrawConfigurationUi();
+
+			}
+		}
+	
 	}
 }
 

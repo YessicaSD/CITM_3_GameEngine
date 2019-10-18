@@ -265,10 +265,6 @@ void ModuleGui::MainMenuBar(update_status &ret)
 
 }
 
-void ModuleGui::AddInputLog(SDL_Scancode key, KEY_STATE state)
-{
-	panel_config->AddInputLog(key, state);
-}
 
 void ModuleGui::ModifyShortcut(SDL_Scancode key)
 {

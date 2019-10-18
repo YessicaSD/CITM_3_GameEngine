@@ -3,7 +3,7 @@
 #include "ModuleWindow.h"
 #include "Application.h"
 
-ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
+ModuleWindow::ModuleWindow(const char* name, bool start_enabled) : Module(start_enabled, name)
 {
 	window = NULL;
 	screen_surface = NULL;
@@ -141,6 +141,36 @@ int ModuleWindow::GetWindowHeight()
 bool ModuleWindow::IsVsync()
 {
 	return vsync;
+}
+
+void ModuleWindow::SetBrightness(float brightness)
+{
+	SDL_SetWindowBrightness(window,brightness);
+}
+
+void ModuleWindow::GetMaxWindowSize(float & width, float & hight)
+{
+	SDL_DisplayMode display_mode;
+	if (SDL_GetDesktopDisplayMode(0, &display_mode) != 0)
+	{
+		LOG("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
+	}
+	else
+	{
+		width = display_mode.w;
+		hight = display_mode.h;
+	}
+}
+
+void ModuleWindow::SetWidth(float & width)
+{
+	SDL_SetWindowSize(window, width, this->GetWindowHeight());
+}
+
+void ModuleWindow::SetHeight(float & height)
+{
+	SDL_SetWindowSize(window, this->GetWindowWidth(), height);
+
 }
 
 // Called before quitting
