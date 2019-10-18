@@ -4,13 +4,11 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleInput.h"
 #include "PanelConfiguration.h"
-
+#include "ModuleAudio.h"
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
 
 void ModuleWindow::DrawConfigurationUi()
-
-
 {
 	static float brightness = 100;
 	if (ImGui::SliderFloat("Brightness", &brightness, 0.2f, 1.0f))
@@ -35,7 +33,6 @@ SetHeight(height);
 }
 
 void ModuleRenderer3D::DrawConfigurationUi()
-
 {
 	
 		ImGui::Text("Change background color:");
@@ -140,4 +137,12 @@ void ModuleInput::DrawConfigurationUi()
 		scroll_input_log = false;
 		
 		ImGui::EndChild();
+}
+
+void ModuleAudio::DrawConfigurationUi()
+{
+	if (ImGui::SliderFloat("General volum", &general_volume, 0.0f, 1.0f))
+	{
+		SetVolum(general_volume);
+	}
 }

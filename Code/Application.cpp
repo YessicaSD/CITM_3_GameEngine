@@ -4,37 +4,40 @@
 #include "ModuleImport.h"
 #include "ModuleTexture.h"
 #include "ModuleFileSystem.h"
+#include "ModuleAudio.h"
 #include "imgui/imgui.h"
 #include "Event.h"
 Application::Application()
 {
-	window = new ModuleWindow("Window");
-	input = new ModuleInput("Input");
-	renderer3D = new ModuleRenderer3D("Render");
-	camera = new ModuleCamera3D();
-	scene = new ModuleScene();
-	gui = new ModuleGui();
-	random = new ModuleRandom();
-	import = new ModuleImport();
-	texture = new ModuleTexture();
-	file_system = new ModuleFileSystem();
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
 
 	// Main Modules
-	AddModule(window);
-	AddModule(random);
-	AddModule(file_system);
-	AddModule(input);
-	AddModule(texture);
-	AddModule(scene);
-	AddModule(import);
-	AddModule(camera);
-	AddModule(gui);
+	AddModule(window = new ModuleWindow("Window"));
+	AddModule(random = new ModuleRandom());
+	AddModule(file_system = new ModuleFileSystem());
+	AddModule(input = new ModuleInput("Input"));
+	AddModule(texture = new ModuleTexture());
+	AddModule(scene = new ModuleScene());
+	AddModule(import = new ModuleImport());
+	AddModule(camera = new ModuleCamera3D());
+	AddModule(audio = new ModuleAudio("Audio"));
+	AddModule(gui = new ModuleGui());
 
 	// Renderer last!
-	AddModule(renderer3D);
+	AddModule(renderer3D = new ModuleRenderer3D("Render"));
 
 	
 

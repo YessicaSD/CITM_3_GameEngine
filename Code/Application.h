@@ -23,6 +23,7 @@ typedef unsigned __int64 uint64;
 class ModuleImport;
 class ModuleTexture;
 class ModuleFileSystem;
+class ModuleAudio;
 struct Event;
 class Application
 {
@@ -37,6 +38,7 @@ public:
 	ModuleImport* import = nullptr;
 	ModuleTexture* texture = nullptr;
 	ModuleFileSystem* file_system = nullptr;
+	ModuleAudio* audio = nullptr;
 	bool saveRequest = false;
 	JSON_Object * config = nullptr;
 
