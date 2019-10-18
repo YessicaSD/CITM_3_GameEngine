@@ -20,13 +20,43 @@ MenuCreateShape::MenuCreateShape()
 	disk_normal[1] = 1.f;
 	disk_normal[2] = 0.f;
 
-	panel_cube				= App->gui->CreatePanel<PanelCreateShape>("Create cube");
+	panel_cube = App->gui->CreatePanel<PanelCreateShape>("Create cube");
+	panel_cube->mesh_function = par_shapes_create_cube;
+
 	panel_parametric_sphere = App->gui->CreatePanel<PanelCreateShape>("Create parametric sphere");
+	panel_parametric_sphere->shape_values.push_back({ "Slices", ImGuiDataType_S32, &parametric_sphere_slices });
+	panel_parametric_sphere->shape_values.push_back({ "Stacks", ImGuiDataType_S32, &parametric_sphere_stacks });
+	panel_parametric_sphere->mesh_function = [&slices = parametric_sphere_slices, &stacks = parametric_sphere_stacks]()
+	{ return par_shapes_create_parametric_sphere(slices, stacks); };
+
 	panel_subdivided_sphere = App->gui->CreatePanel<PanelCreateShape>("Create subdivided sphere");
-	panel_hemisphere		= App->gui->CreatePanel<PanelCreateShape>("Create hemisphere");
-	panel_plane				= App->gui->CreatePanel<PanelCreateShape>("Create plane");
-	panel_klein_bottle		= App->gui->CreatePanel<PanelCreateShape>("Create klein bottle");
-	panel_cylinder			= App->gui->CreatePanel<PanelCreateShape>("Create cylinder");
+	panel_subdivided_sphere->shape_values.push_back({"Number of subdivisions", ImGuiDataType_S32, &subdivided_sphere_nsubdivisions});
+	panel_subdivided_sphere->mesh_function = [&nsubdivisions = subdivided_sphere_nsubdivisions]()
+	{ return par_shapes_create_subdivided_sphere(nsubdivisions); };
+
+	panel_hemisphere = App->gui->CreatePanel<PanelCreateShape>("Create hemisphere");
+	panel_hemisphere->shape_values.push_back({ "Slices", ImGuiDataType_S32, &hemisphere_slices });
+	panel_hemisphere->shape_values.push_back({ "Stacks", ImGuiDataType_S32, &hemisphere_stacks });
+	panel_hemisphere->mesh_function = [&slices = hemisphere_slices, &stacks = hemisphere_stacks]()
+	{ return par_shapes_create_hemisphere(slices, stacks); };
+
+	panel_plane = App->gui->CreatePanel<PanelCreateShape>("Create plane");
+	panel_plane->shape_values.push_back({ "Slices", ImGuiDataType_S32, &plane_slices });
+	panel_plane->shape_values.push_back({ "Stacks", ImGuiDataType_S32, &plane_stacks });
+	panel_plane->mesh_function = [&slices = plane_slices, &stacks = plane_stacks]
+	{ return par_shapes_create_plane(slices, stacks); };
+
+	panel_klein_bottle = App->gui->CreatePanel<PanelCreateShape>("Create klein bottle");
+	panel_klein_bottle->shape_values.push_back({ "Slices", ImGuiDataType_S32, &klein_bottle_slices });
+	panel_klein_bottle->shape_values.push_back({ "Stacks", ImGuiDataType_S32, &klein_bottle_stacks });
+	panel_klein_bottle->mesh_function = [&slices = klein_bottle_slices, &stacks = klein_bottle_stacks]
+	{ return par_shapes_create_klein_bottle(slices, stacks); };
+
+	panel_cylinder = App->gui->CreatePanel<PanelCreateShape>("Create cylinder");
+	panel_cylinder->shape_values.push_back({ "Slices", ImGuiDataType_S32, &cylinder_slices });
+	panel_cylinder->shape_values.push_back({ "Stacks", ImGuiDataType_S32, &cylinder_stacks });
+	panel_cylinder->mesh_function = [&slices = cylinder_slices, &stacks = cylinder_stacks]()
+	{ return par_shapes_create_cylinder(slices, stacks); };
 	
 	panel_cone = App->gui->CreatePanel<PanelCreateShape>("Create cone");
 	panel_cone->shape_values.push_back({"Slices", ImGuiDataType_S32, &cone_slices});
@@ -34,11 +64,32 @@ MenuCreateShape::MenuCreateShape()
 	panel_cone->mesh_function = [&slices = cone_slices, &stacks = cone_stacks]()
 	{ return par_shapes_create_cone(slices, stacks); };
 
-	panel_torus				= App->gui->CreatePanel<PanelCreateShape>("Create torus");
-	panel_trefoil_knot		= App->gui->CreatePanel<PanelCreateShape>("Create trefoil knot");
-	panel_dodecahedron		= App->gui->CreatePanel<PanelCreateShape>("Create dodecahedron");
-	panel_icosahedron		= App->gui->CreatePanel<PanelCreateShape>("Create icosahedron");
-	panel_disk				= App->gui->CreatePanel<PanelCreateShape>("Create disk");
+	panel_torus = App->gui->CreatePanel<PanelCreateShape>("Create torus");
+	panel_torus->shape_values.push_back({ "Slices", ImGuiDataType_S32, &torus_slices });
+	panel_torus->shape_values.push_back({ "Stacks", ImGuiDataType_S32, &torus_stacks });
+	panel_torus->shape_values.push_back({ "Radius", ImGuiDataType_Float, &torus_radius });
+	panel_torus->mesh_function = [&slices = torus_slices, &stacks = torus_stacks, &radius = torus_radius]()
+	{ return par_shapes_create_torus(slices, stacks, radius); };
+
+	panel_trefoil_knot = App->gui->CreatePanel<PanelCreateShape>("Create trefoil knot");
+	panel_trefoil_knot->shape_values.push_back({ "Slices", ImGuiDataType_S32, &trefoil_knot_stacks });
+	panel_trefoil_knot->shape_values.push_back({ "Stacks", ImGuiDataType_S32, &trefoil_knot_stacks });
+	panel_trefoil_knot->shape_values.push_back({ "Radius", ImGuiDataType_Float, &trefoil_knot_radius });
+	panel_trefoil_knot->mesh_function = [&slices = trefoil_knot_slices, &stacks = trefoil_knot_stacks, &radius = trefoil_knot_radius]()
+	{return par_shapes_create_trefoil_knot(slices, stacks, radius); };
+
+	panel_dodecahedron = App->gui->CreatePanel<PanelCreateShape>("Create dodecahedron");
+	panel_dodecahedron->mesh_function = par_shapes_create_dodecahedron;
+
+	panel_icosahedron = App->gui->CreatePanel<PanelCreateShape>("Create icosahedron");
+	panel_icosahedron->mesh_function = par_shapes_create_icosahedron;
+
+	panel_disk = App->gui->CreatePanel<PanelCreateShape>("Create disk");
+	panel_disk->shape_values.push_back({ "Slices", ImGuiDataType_S32, &disk_slices });
+	panel_disk->shape_values.push_back({ "Radius", ImGuiDataType_Float, &disk_radius });
+	panel_disk->mesh_function = [&radius = disk_radius, &slices = disk_slices, &center = disk_center, &normal = disk_normal]()
+	{ return par_shapes_create_disk(radius, slices, center, normal); };
+
 }
 MenuCreateShape::~MenuCreateShape()
 {
@@ -60,7 +111,7 @@ void MenuCreateShape::MenuBarTab()
 
 		MenuItem(
 			"Parametric sphere",
-			[slices = parametric_sphere_slices, stacks = parametric_sphere_stacks]()
+			[&slices = parametric_sphere_slices, &stacks = parametric_sphere_stacks]()
 			{ return par_shapes_create_parametric_sphere(slices, stacks); },
 			panel_parametric_sphere);
 
@@ -182,6 +233,7 @@ void PanelCreateShape::CreateMultiple()
 {
 	ImGui::Separator();
 	ImGui::Text("Create Multiple");
+	ImGui::Separator();
 }
 
 //Panels code
