@@ -67,6 +67,9 @@
     <Filter Include="Sources\ECS\Components">
       <UniqueIdentifier>{87a2bc02-65ef-4e81-980a-345c47e52872}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\gpudetect">
+      <UniqueIdentifier>{3a1c84d6-c8c1-4cc2-aa19-aebbb537a881}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -561,6 +564,12 @@
     <ClInclude Include="ModuleAudio.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleHardware.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="gpudetect\DeviceId.h">
+      <Filter>Sources\Tools\gpudetect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -799,6 +808,12 @@
     </ClCompile>
     <ClCompile Include="ModuleFileSystem.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleHardware.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="gpudetect\DeviceId.cpp">
+      <Filter>Sources\Tools\gpudetect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

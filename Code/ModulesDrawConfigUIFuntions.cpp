@@ -5,6 +5,7 @@
 #include "ModuleInput.h"
 #include "PanelConfiguration.h"
 #include "ModuleAudio.h"
+#include "ModuleHardware.h"
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
 
@@ -145,4 +146,35 @@ void ModuleAudio::DrawConfigurationUi()
 	{
 		SetVolum(general_volume);
 	}
+}
+void ModuleHardware::DrawConfigurationUi()
+{
+	ImGui::Text("SDL Version: %s", info.sdl_version);
+	ImGui::Separator();
+
+	ImGui::Text("CPUs: %u (Cache: %ukb)", info.cpu_cores, info.cachekb);
+
+	ImGui::Text("System RAM: %.1fGb", info.ram_gb);
+	ImGui::Text("Caps: %s%s%s%s%s%s",
+		info.rdtsc ? "RDTSC," : "",
+		info.altivec ? "AltiVec," : "",
+		info.mmx ? "MMX," : "",
+		info.now3d ? "3DNow," : "",
+		info.sse ? "SSE," : "",
+		info.sse2 ? "SSE2," : "");
+	ImGui::Text("", "%s%s%s%s%s",
+		info.sse3 ? "SSE3," : "",
+		info.sse41 ? "SSE41," : "",
+		info.sse42 ? "SSE42," : "",
+		info.avx ? "AVX," : "",
+		info.avx2 ? "AVX2" : "");
+
+
+	ImGui::Separator();
+	ImGui::Text("GPU: vendor %u device %u", info.gpu_vendor, info.gpu_device);
+	ImGui::Text("Brand: %s", info.gpu_brand);
+	ImGui::Text("VRAM Budget: %.1f Mb", info.vram_mb_budget);
+	ImGui::Text("VRAM Usage: %.1f Mb", info.vram_mb_usage);
+	ImGui::Text("VRAM Available: %.1f Mb", info.vram_mb_available);
+	ImGui::Text("VRAM Reserved: %.1f Mb", info.vram_mb_reserved);
 }

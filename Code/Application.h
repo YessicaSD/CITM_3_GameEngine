@@ -24,6 +24,7 @@ class ModuleImport;
 class ModuleTexture;
 class ModuleFileSystem;
 class ModuleAudio;
+class ModuleHardware;
 struct Event;
 class Application
 {
@@ -39,6 +40,7 @@ public:
 	ModuleTexture* texture = nullptr;
 	ModuleFileSystem* file_system = nullptr;
 	ModuleAudio* audio = nullptr;
+	ModuleHardware* hardware = nullptr;
 	bool saveRequest = false;
 	JSON_Object * config = nullptr;
 

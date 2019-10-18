@@ -5,21 +5,11 @@
 #include "ModuleTexture.h"
 #include "ModuleFileSystem.h"
 #include "ModuleAudio.h"
+#include "ModuleHardware.h"
 #include "imgui/imgui.h"
 #include "Event.h"
 Application::Application()
 {
-	
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -28,6 +18,7 @@ Application::Application()
 	AddModule(window = new ModuleWindow("Window"));
 	AddModule(random = new ModuleRandom());
 	AddModule(file_system = new ModuleFileSystem());
+	AddModule(hardware = new ModuleHardware("Hardware"));
 	AddModule(input = new ModuleInput("Input"));
 	AddModule(texture = new ModuleTexture());
 	AddModule(scene = new ModuleScene());
@@ -39,9 +30,6 @@ Application::Application()
 	// Renderer last!
 	AddModule(renderer3D = new ModuleRenderer3D("Render"));
 
-	
-
-	
 }
 
 Application::~Application()
