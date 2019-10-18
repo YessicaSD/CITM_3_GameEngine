@@ -188,29 +188,57 @@ PanelCreateCube::PanelCreateCube(std::string name, MenuCreateShape * menu_create
 	PanelCreateShape(name, menu_create_shape, active, shortcut)
 {}
 
+void PanelCreateCube::Draw()
+{
+}
+
 PanelCreateParametricSphere::PanelCreateParametricSphere(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
 	PanelCreateShape(name, menu_create_shape, active, shortcut)
 {}
+
+void PanelCreateParametricSphere::Draw()
+{
+}
 
 PanelCreateSubdividedSphere::PanelCreateSubdividedSphere(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
 	PanelCreateShape(name, menu_create_shape, active, shortcut)
 {}
 
+void PanelCreateSubdividedSphere::Draw()
+{
+}
+
 PanelCreateHemisphere::PanelCreateHemisphere(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
 	PanelCreateShape(name, menu_create_shape, active, shortcut)
 {}
+
+void PanelCreateHemisphere::Draw()
+{
+}
 
 PanelCreatePlane::PanelCreatePlane(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
 	PanelCreateShape(name, menu_create_shape, active, shortcut)
 {}
 
+void PanelCreatePlane::Draw()
+{
+}
+
 PanelCreateKleinBottle::PanelCreateKleinBottle(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
 	PanelCreateShape(name, menu_create_shape, active, shortcut)
 {}
 
+void PanelCreateKleinBottle::Draw()
+{
+}
+
 PanelCreateCylinder::PanelCreateCylinder(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
 	PanelCreateShape(name, menu_create_shape, active, shortcut)
 {}
+
+void PanelCreateCylinder::Draw()
+{
+}
 
 PanelCreateCone::PanelCreateCone(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
 	PanelCreateShape(name, menu_create_shape, active, shortcut)
@@ -220,26 +248,46 @@ PanelCreateTorus::PanelCreateTorus(std::string name, MenuCreateShape * menu_crea
 	PanelCreateShape(name, menu_create_shape, active, shortcut)
 {}
 
+void PanelCreateTorus::Draw()
+{
+}
+
 PanelCreateTrefoilKnot::PanelCreateTrefoilKnot(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
 	PanelCreateShape(name, menu_create_shape, active, shortcut)
 {}
+
+void PanelCreateTrefoilKnot::Draw()
+{
+}
 
 PanelCreateDodecahedron::PanelCreateDodecahedron(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
 	PanelCreateShape(name, menu_create_shape, active, shortcut)
 {}
 
+void PanelCreateDodecahedron::Draw()
+{
+}
+
 PanelCreateIcosahedron::PanelCreateIcosahedron(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
 	PanelCreateShape(name, menu_create_shape, active, shortcut)
 {}
+
+void PanelCreateIcosahedron::Draw()
+{
+}
 
 PanelCreateDisk::PanelCreateDisk(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
 	PanelCreateShape(name, menu_create_shape, active, shortcut)
 {}
 
+void PanelCreateDisk::Draw()
+{
+}
+
 void PanelCreateCone::Draw()
 {
 	ImGui::Begin("Create Cone");
-	App->gui->create_menu.PanelCreateMultiple();
+	menu_create_shape->PanelCreateMultiple();
 	if (ImGui::Button("Cancel"))
 	{
 		SetActive(false);
@@ -247,7 +295,7 @@ void PanelCreateCone::Draw()
 	ImGui::SameLine();
 	if (ImGui::Button("Create"))
 	{
-		par_shapes_create_cone(App->gui->create_menu.cone_slices, App->gui->create_menu.cone_stacks);
+		par_shapes_create_cone(menu_create_shape->cone_slices, menu_create_shape->cone_stacks);
 	}
 	ImGui::End();
 }
