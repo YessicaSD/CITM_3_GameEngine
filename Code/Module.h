@@ -5,14 +5,15 @@
 
 class Application;
 struct Event;
-
+#include <string>
 class Module
 {
 private :
 	bool enabled;
 
 public:
-	Module(bool start_enabled = true)
+	const char* name = "";
+	Module( bool start_enabled = true, const char* name = ""):name(name),enabled(start_enabled)
 	{}
 
 	virtual ~Module()

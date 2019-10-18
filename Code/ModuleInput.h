@@ -1,7 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-
+#include "imgui/imgui.h"
 #define MAX_MOUSE_BUTTONS 5
 
 enum KEY_STATE
@@ -24,10 +24,11 @@ private:
 	int mouse_y_motion;
 	char *dropped_filedir;
 	//int mouse_z_motion;
+	ImGuiTextBuffer input_log_buffer;
 
 public:
 	
-	ModuleInput(bool start_enabled = true);
+	ModuleInput(const char* name, bool start_enabled = true);
 	~ModuleInput();
 
 	bool Init() override;
@@ -69,5 +70,7 @@ public:
 		return mouse_y_motion;
 	}
 
+	void DrawConfigurationUi();
 
+	void AddInputLog(SDL_Scancode key, KEY_STATE state);
 };

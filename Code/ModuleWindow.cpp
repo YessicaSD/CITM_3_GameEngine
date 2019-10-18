@@ -3,7 +3,7 @@
 #include "ModuleWindow.h"
 #include "Application.h"
 
-ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
+ModuleWindow::ModuleWindow(const char* name, bool start_enabled) : Module(start_enabled, name)
 {
 	window = NULL;
 	screen_surface = NULL;

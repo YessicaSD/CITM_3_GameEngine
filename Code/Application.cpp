@@ -4,12 +4,13 @@
 #include "ModuleImport.h"
 #include "ModuleTexture.h"
 #include "ModuleFileSystem.h"
+#include "imgui/imgui.h"
 #include "Event.h"
 Application::Application()
 {
-	window = new ModuleWindow();
-	input = new ModuleInput();
-	renderer3D = new ModuleRenderer3D();
+	window = new ModuleWindow("Window");
+	input = new ModuleInput("Input");
+	renderer3D = new ModuleRenderer3D("Render");
 	camera = new ModuleCamera3D();
 	scene = new ModuleScene();
 	gui = new ModuleGui();
@@ -118,7 +119,7 @@ void Application::FinishUpdate()
 	}
 
 	frame_count++;
-	
+
 	seconds_since_startup = startup_time.ReadSec();
 	avg_fps = float(frame_count) / seconds_since_startup;
 
@@ -129,10 +130,10 @@ update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
-	
+
 	std::vector<Module*>::iterator item = list_modules.begin();
-	
-	while(item != list_modules.end() && ret == UPDATE_CONTINUE)
+
+	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
 		ret = (*item)->PreUpdate();
 		item = ++item;
@@ -140,7 +141,7 @@ update_status Application::Update()
 
 	item = list_modules.begin();
 
-	while(item != list_modules.end() && ret == UPDATE_CONTINUE)
+	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
 		ret = (*item)->Update(dt);
 		item = ++item;
@@ -148,7 +149,7 @@ update_status Application::Update()
 
 	item = list_modules.begin();
 
-	while(item != list_modules.end() && ret == UPDATE_CONTINUE)
+	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
 		ret = (*item)->PostUpdate();
 		item = ++item;
@@ -163,7 +164,7 @@ bool Application::CleanUp()
 	bool ret = true;
 	std::vector<Module*>::reverse_iterator item = list_modules.rbegin();
 
-	while(item != list_modules.rend() && ret == true)
+	while (item != list_modules.rend() && ret == true)
 	{
 		ret = (*item)->CleanUp();
 		item = ++item;
@@ -208,7 +209,15 @@ void Application::DrawModulesConfigUi()
 {
 	for (std::vector<Module*>::iterator iter = list_modules.begin(); iter != list_modules.end(); ++iter)
 	{
-		(*iter)->DrawConfigurationUi();
+		if ((*iter)->name != "")
+		{
+			if (ImGui::CollapsingHeader((*iter)->name))
+			{
+				(*iter)->DrawConfigurationUi();
+
+			}
+		}
+	
 	}
 }
 

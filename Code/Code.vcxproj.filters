@@ -789,6 +789,9 @@
     <ClCompile Include="PanelAssets.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ModulesDrawConfigUIFuntions.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
