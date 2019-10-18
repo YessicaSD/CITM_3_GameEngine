@@ -5,20 +5,7 @@
 #include "ModuleImport.h"
 #include "Globals.h"
 
-MenuCreateShape::MenuCreateShape() :
-	panel_cube("Create cube", this),
-	panel_parametric_sphere("Create parametric sphere", this),
-	panel_subdivided_sphere("Create subdivided sphere", this),
-	panel_hemisphere("Create hemisphere", this),
-	panel_plane("Create plane", this),
-	panel_klein_bottle("Create klein bottle", this),
-	panel_cylinder("Create cylinder", this),
-	panel_cone("Create cone", this),
-	panel_torus("Create torus", this),
-	panel_trefoil_knot("Create trefoil knot", this),
-	panel_dodecahedron("Create dodecahedron", this),
-	panel_icosahedron("Create icosahedron", this),
-	panel_disk("Create disk", this)
+MenuCreateShape::MenuCreateShape()
 {
 	button_size.x = button_size.y = button_height;
 
@@ -32,6 +19,26 @@ MenuCreateShape::MenuCreateShape() :
 	disk_normal[0] = 0.f;
 	disk_normal[1] = 1.f;
 	disk_normal[2] = 0.f;
+
+	panel_cube				= App->gui->CreatePanel<PanelCreateShape>("Create cube");
+	panel_parametric_sphere = App->gui->CreatePanel<PanelCreateShape>("Create parametric sphere");
+	panel_subdivided_sphere = App->gui->CreatePanel<PanelCreateShape>("Create subdivided sphere");
+	panel_hemisphere		= App->gui->CreatePanel<PanelCreateShape>("Create hemisphere");
+	panel_plane				= App->gui->CreatePanel<PanelCreateShape>("Create plane");
+	panel_klein_bottle		= App->gui->CreatePanel<PanelCreateShape>("Create klein bottle");
+	panel_cylinder			= App->gui->CreatePanel<PanelCreateShape>("Create cylinder");
+	
+	panel_cone = App->gui->CreatePanel<PanelCreateShape>("Create cone");
+	panel_cone->shape_values.push_back({"Slices", ImGuiDataType_S32, &cone_slices});
+	panel_cone->shape_values.push_back({"Stacks", ImGuiDataType_S32, &cone_stacks});
+	panel_cone->mesh_function = [&slices = cone_slices, &stacks = cone_stacks]()
+	{ return par_shapes_create_cone(slices, stacks); };
+
+	panel_torus				= App->gui->CreatePanel<PanelCreateShape>("Create torus");
+	panel_trefoil_knot		= App->gui->CreatePanel<PanelCreateShape>("Create trefoil knot");
+	panel_dodecahedron		= App->gui->CreatePanel<PanelCreateShape>("Create dodecahedron");
+	panel_icosahedron		= App->gui->CreatePanel<PanelCreateShape>("Create icosahedron");
+	panel_disk				= App->gui->CreatePanel<PanelCreateShape>("Create disk");
 }
 MenuCreateShape::~MenuCreateShape()
 {
@@ -131,7 +138,7 @@ void MenuCreateShape::MenuBarTab()
 	}
 }
 
-void MenuCreateShape::MenuItem(std::string name, std::function<par_shapes_mesh*()> mesh_function, Panel & panel)
+void MenuCreateShape::MenuItem(std::string name, std::function<par_shapes_mesh*()> mesh_function, Panel * panel)
 {
 	ImGui::MenuItem(name.c_str());
 	ImGui::SetItemAllowOverlap();
@@ -161,7 +168,7 @@ void MenuCreateShape::MenuItem(std::string name, std::function<par_shapes_mesh*(
 	}
 	if (button_clicked)
 	{
-		panel.SetActive(true);
+		panel->SetActive(true);
 		//TODO: Open panel
 		//Keep a pointer to the panel you've accessed
 		//Draw it every frame the panel is closed
@@ -171,7 +178,7 @@ void MenuCreateShape::MenuItem(std::string name, std::function<par_shapes_mesh*(
 
 //TODO: Pass arguments
 //Mainly the function to be called
-void MenuCreateShape::PanelCreateMultiple()
+void PanelCreateShape::CreateMultiple()
 {
 	ImGui::Separator();
 	ImGui::Text("Create Multiple");
@@ -179,115 +186,20 @@ void MenuCreateShape::PanelCreateMultiple()
 
 //Panels code
 
-PanelCreateShape::PanelCreateShape(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
-	Panel(name, active, shortcut),
-	menu_create_shape(menu_create_shape)
+PanelCreateShape::PanelCreateShape(std::string name, bool active, std::vector<SDL_Scancode> shortcut) :
+	Panel(name, active, shortcut)
 {}
 
-PanelCreateCube::PanelCreateCube(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
-	PanelCreateShape(name, menu_create_shape, active, shortcut)
-{}
-
-void PanelCreateCube::Draw()
-{
-}
-
-PanelCreateParametricSphere::PanelCreateParametricSphere(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
-	PanelCreateShape(name, menu_create_shape, active, shortcut)
-{}
-
-void PanelCreateParametricSphere::Draw()
-{
-}
-
-PanelCreateSubdividedSphere::PanelCreateSubdividedSphere(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
-	PanelCreateShape(name, menu_create_shape, active, shortcut)
-{}
-
-void PanelCreateSubdividedSphere::Draw()
-{
-}
-
-PanelCreateHemisphere::PanelCreateHemisphere(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
-	PanelCreateShape(name, menu_create_shape, active, shortcut)
-{}
-
-void PanelCreateHemisphere::Draw()
-{
-}
-
-PanelCreatePlane::PanelCreatePlane(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
-	PanelCreateShape(name, menu_create_shape, active, shortcut)
-{}
-
-void PanelCreatePlane::Draw()
-{
-}
-
-PanelCreateKleinBottle::PanelCreateKleinBottle(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
-	PanelCreateShape(name, menu_create_shape, active, shortcut)
-{}
-
-void PanelCreateKleinBottle::Draw()
-{
-}
-
-PanelCreateCylinder::PanelCreateCylinder(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
-	PanelCreateShape(name, menu_create_shape, active, shortcut)
-{}
-
-void PanelCreateCylinder::Draw()
-{
-}
-
-PanelCreateCone::PanelCreateCone(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
-	PanelCreateShape(name, menu_create_shape, active, shortcut)
-{}
-
-PanelCreateTorus::PanelCreateTorus(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
-	PanelCreateShape(name, menu_create_shape, active, shortcut)
-{}
-
-void PanelCreateTorus::Draw()
-{
-}
-
-PanelCreateTrefoilKnot::PanelCreateTrefoilKnot(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
-	PanelCreateShape(name, menu_create_shape, active, shortcut)
-{}
-
-void PanelCreateTrefoilKnot::Draw()
-{
-}
-
-PanelCreateDodecahedron::PanelCreateDodecahedron(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
-	PanelCreateShape(name, menu_create_shape, active, shortcut)
-{}
-
-void PanelCreateDodecahedron::Draw()
-{
-}
-
-PanelCreateIcosahedron::PanelCreateIcosahedron(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
-	PanelCreateShape(name, menu_create_shape, active, shortcut)
-{}
-
-void PanelCreateIcosahedron::Draw()
-{
-}
-
-PanelCreateDisk::PanelCreateDisk(std::string name, MenuCreateShape * menu_create_shape, bool active, std::vector<SDL_Scancode> shortcut) :
-	PanelCreateShape(name, menu_create_shape, active, shortcut)
-{}
-
-void PanelCreateDisk::Draw()
-{
-}
-
-void PanelCreateCone::Draw()
+void PanelCreateShape::Draw()
 {
 	ImGui::Begin("Create Cone");
-	menu_create_shape->PanelCreateMultiple();
+	for (std::vector<ShapeValue>::iterator iter = shape_values.begin();
+		iter != shape_values.end();
+		++iter)
+	{
+		ImGui::InputScalar((*iter).name.c_str(), (*iter).data_type, (*iter).value_ptr);
+	}
+	CreateMultiple();
 	if (ImGui::Button("Cancel"))
 	{
 		SetActive(false);
@@ -295,7 +207,13 @@ void PanelCreateCone::Draw()
 	ImGui::SameLine();
 	if (ImGui::Button("Create"))
 	{
-		par_shapes_create_cone(menu_create_shape->cone_slices, menu_create_shape->cone_stacks);
+		mesh_function();
 	}
 	ImGui::End();
 }
+
+ShapeValue::ShapeValue(std::string name, ImGuiDataType data_type, void * value_ptr):
+	name(name),
+	data_type(data_type),
+	value_ptr(value_ptr)
+{}
