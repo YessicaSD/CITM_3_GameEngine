@@ -67,7 +67,7 @@ bool ModuleGui::Start()
 	panels.push_back(panel_shortcuts = new PanelShortcuts("Shortcuts", true/*, { SDL_SCANCODE_Q }*/));
 	panels.push_back(panel_hirearchy = new PanelHierarchy("Hierarchy", true));
 
-	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelProperties("Properties", true));
+	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(panel_properties = new PanelProperties("Properties", true));
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(panel_config = new PanelConfiguration("Configuration", true));
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelAbout("About", true));
 	TabPanels[(uint)TYPE_TAB_PANEL::DOWN_TAB_PANEL].panels.push_back(panel_assets = new PanelAssets("Assets", true));

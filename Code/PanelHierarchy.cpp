@@ -4,8 +4,10 @@
 #include "Application.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ModuleGui.h"
+#include "PanelProperties.h"
 
-PanelHierarchy::PanelHierarchy(std::string name, bool active, std::vector<SDL_Scancode> shortcuts): Panel(name, active, shortcuts)
+PanelHierarchy::PanelHierarchy(std::string name, bool active, std::vector<SDL_Scancode> shortcuts) : Panel(name, active, shortcuts)
 {
 
 }
@@ -14,6 +16,9 @@ void PanelHierarchy::Draw()
 {
 	ImGui::Begin("Hierarchy");
 	TreeEntry(&App->scene->root_gameobject.transform);
+	App->gui->panel_properties->SetGameObject(selected_object);
+	selected_object = nullptr;
+	sended_to_properties = false;
 	ImGui::End();
 
 	//if (("Advanced, with Selectable nodes"))
@@ -73,14 +78,28 @@ void PanelHierarchy::Draw()
 
 void PanelHierarchy::TreeEntry(ComponentTransform * transform)
 {
+	ImGuiTreeNodeFlags node_flags = 0;
+
+	if (transform->children.size() == 0)
+		node_flags |= ImGuiTreeNodeFlags_Leaf;
 	for (std::vector<ComponentTransform*>::iterator iter = transform->children.begin();
 		iter != transform->children.end();
 		++iter)
 	{
-		if (ImGui::TreeNodeEx((*iter)->gameobject->GetName()))
-		{
-			TreeEntry((*iter));
-			ImGui::TreePop();
-		}
+		
+		
+			if (ImGui::TreeNodeEx((*iter)->gameobject->GetName(), node_flags))
+			{
+				if (selected_object == nullptr)
+					selected_object = (*iter);
+
+				TreeEntry((*iter));
+				ImGui::TreePop();
+			}
+			
+
+		
+		
+		
 	}
 }
