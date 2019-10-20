@@ -15,6 +15,7 @@ public:
 	PanelHierarchy(std::string name, bool active, std::vector<SDL_Scancode> shortcuts = {});
 	void Draw() override;
 	void TreeEntry(ComponentTransform * gameobject);
+	
 };
 
 #endif

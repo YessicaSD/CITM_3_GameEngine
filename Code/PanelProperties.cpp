@@ -20,5 +20,6 @@ void PanelProperties::Draw()
 		ImGui::Text("Name:");
 		ImGui::SameLine();
 		ImGui::Text("%s", selected_gameobject->gameobject->GetName());
+
 	}
 }
