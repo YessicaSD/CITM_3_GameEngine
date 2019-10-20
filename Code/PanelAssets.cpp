@@ -3,12 +3,12 @@
 #include "Application.h"
 #include "ModuleTexture.h"
 #include "Texture.h"
-PanelAssets::PanelAssets(const char* name, bool state):Panel(name, state)
+PanelAssets::PanelAssets(std::string name, bool state, std::vector<SDL_Scancode> shortcuts):Panel(name, state, shortcuts)
 {
 }
 void PanelAssets::Draw()
 {
-	
+	ImGui::Begin(name.c_str());
 	float num_colum = ImGui::GetWindowWidth()/ image_size;
 	uint i = 1;
 	for (std::map<std::string, Texture*>::iterator iter = App->texture->textures.begin();
@@ -29,6 +29,5 @@ void PanelAssets::Draw()
 
 
 	}
-	//ImGui::Begin(name.c_str());
-	//ImGui::End();
+	ImGui::End();
 }

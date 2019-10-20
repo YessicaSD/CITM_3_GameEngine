@@ -2,13 +2,13 @@
 #define PANEL_ASSETS_H_
 
 #include "Panel.h"
-
+#include <string>
 class PanelAssets : public Panel
 {
 
 public:
 	float image_size = 100;
-	PanelAssets(const char* name, bool state);
+	PanelAssets(std::string name, bool state, std::vector<SDL_Scancode> shortcuts = {});
 	void Draw();
 };
 
