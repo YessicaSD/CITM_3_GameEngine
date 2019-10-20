@@ -101,13 +101,16 @@ void ComponentMesh::DrawNormals()
 	glColor3f(1, 1, 1);
 }
 
-void ComponentMesh::ShowInspector()
+void ComponentMesh::ShowProperties()
 {
-	ImGui::Text("Render options");
-	ImGui::Checkbox("View fill     ", &render_mode.fill);
-	ImGui::Checkbox("View wireframe", &render_mode.wireframe);
-	ImGui::Checkbox("View vertex   ", &render_mode.point);
-	ImGui::Text("View normals");
-	ImGui::Checkbox("View points normals", &render_mode.vertex_normals);
-	ImGui::Checkbox("View faces normals", &render_mode.face_normals);
+	if (ImGui::CollapsingHeader("Mesh"))
+	{
+		ImGui::Text("Render options");
+		ImGui::Checkbox("View fill     ", &render_mode.fill);
+		ImGui::Checkbox("View wireframe", &render_mode.wireframe);
+		ImGui::Checkbox("View vertex   ", &render_mode.point);
+		ImGui::Text("View normals");
+		ImGui::Checkbox("View points normals", &render_mode.vertex_normals);
+		ImGui::Checkbox("View faces normals", &render_mode.face_normals);
+	}
 }

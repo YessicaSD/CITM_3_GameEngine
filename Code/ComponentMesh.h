@@ -21,7 +21,7 @@ public:
 	void OnPostUpdate() override;
 	void DrawVertexNormal();
 	void DrawNormals();
-	void ShowInspector();
+	void ShowProperties() override;
 
 public:
 	//One mesh can be used by more than one mesh component
