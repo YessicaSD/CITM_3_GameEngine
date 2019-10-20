@@ -97,6 +97,8 @@ update_status ModuleGui::PreUpdate()
 
 update_status ModuleGui::PostUpdate()
 {
+	update_status ret = UPDATE_CONTINUE;
+
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
@@ -118,7 +120,7 @@ update_status ModuleGui::PostUpdate()
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	return update_status::UPDATE_CONTINUE;
+	return ret;
 }
 
 bool ModuleGui::CleanUp()
