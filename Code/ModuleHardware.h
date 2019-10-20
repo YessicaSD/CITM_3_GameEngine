@@ -13,7 +13,7 @@ private:
 		uint cpu_cores = 0;
 		uint cachekb = 0;
 		bool rdtsc = false;
-		bool altivec = false;
+		bool alti_vec = false;
 		bool now3d = false;
 		bool mmx = false;
 		bool sse = false;
