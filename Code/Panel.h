@@ -19,6 +19,7 @@ protected:
 public:
 	Panel(std::string name, bool active, std::vector<SDL_Scancode> shortcuts = {});
 
+	void SetActive(bool value);
 	void SwitchActive();
 	bool IsActive() const;
 	bool HasShortcut();

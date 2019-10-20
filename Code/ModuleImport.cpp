@@ -17,6 +17,9 @@
 
 #include "ModuleFileSystem.h"
 
+#define PAR_SHAPES_IMPLEMENTATION
+#include "par\par_shapes.h"
+
 bool ModuleImport::Start()
 {
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
@@ -130,6 +133,20 @@ void ModuleImport::EventRequest(const Event & event)
 	}
 }
 
+AssetMesh* ModuleImport::LoadParShape(par_shapes_mesh * mesh)
+{
+	AssetMesh * asset_mesh = new AssetMesh();
+	asset_mesh->LoadVertices(mesh->npoints, mesh->points);
+	asset_mesh->LoadFacesAndNormals(mesh->ntriangles, mesh->triangles);
+	asset_mesh->GenerateVerticesBuffer();
+	asset_mesh->GenerateFacesAndNormalsBuffer();
+	App->import->meshes.push_back(asset_mesh);
+	return asset_mesh;
+}
 
-
-
+void ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh)
+{
+	GameObject * new_gameobject = new GameObject(name, parent);
+	ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
+	component_mesh->mesh = asset_mesh;
+}
