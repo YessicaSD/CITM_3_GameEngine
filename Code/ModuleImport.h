@@ -24,7 +24,8 @@ public:
 	bool CleanUp() override;
 
 	void EventRequest(const Event& event) override;
-	AssetMesh* LoadParShape(par_shapes_mesh * mesh);
+	AssetMesh* LoadAssimpMesh(aiMesh * assimp_mesh);
+	AssetMesh* LoadParShapeMesh(par_shapes_mesh * mesh);
 	void CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh);
 private:
 	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<AssetMesh*> loaded_meshes);

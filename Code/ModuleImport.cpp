@@ -36,21 +36,15 @@ bool ModuleImport::LoadMesh(const char * path)
 		std::vector<AssetMesh*> object_meshes;
 		for (uint i = 0; i < scene->mNumMeshes; ++i)
 		{
-			AssetMesh * asset_mesh = new AssetMesh();
 			aiMesh* assimp_mesh = scene->mMeshes[i];
 			
-			//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
-			asset_mesh->LoadVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
-			asset_mesh->LoadFacesAndNormals(assimp_mesh);
-
-			asset_mesh->GenerateVerticesBuffer();
-			asset_mesh->GenerateFacesAndNormalsBuffer(assimp_mesh);
+			AssetMesh * asset_mesh = LoadAssimpMesh(assimp_mesh);
 			
 			object_meshes.push_back(asset_mesh);
 			meshes.push_back(asset_mesh);
 		}
-		aiReleaseImport(scene);
 		CreateGameObjectsFromNodes(scene->mRootNode, &App->scene->root_gameobject.transform, object_meshes);
+		aiReleaseImport(scene);
 	}
 	else
 	{
@@ -60,7 +54,39 @@ bool ModuleImport::LoadMesh(const char * path)
 	return true;
 }
 
+AssetMesh * ModuleImport::LoadAssimpMesh(aiMesh * assimp_mesh)
+{
+	AssetMesh * asset_mesh = new AssetMesh();
+	//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
+	asset_mesh->LoadVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
+	asset_mesh->LoadVerticesNormals(assimp_mesh);
+	asset_mesh->LoadFaces(assimp_mesh);
+	asset_mesh->CalculateFaceNormals();
+	asset_mesh->LoadUVs(assimp_mesh);
 
+	asset_mesh->GenerateVerticesBuffer();
+	asset_mesh->GenerateFacesAndNormalsBuffer();
+	asset_mesh->GenerateUVsBuffer();
+	return asset_mesh;
+}
+
+AssetMesh* ModuleImport::LoadParShapeMesh(par_shapes_mesh * mesh)
+{
+	AssetMesh * asset_mesh = new AssetMesh();
+
+	asset_mesh->LoadVertices(mesh->npoints, mesh->points);
+	//TODO: Get vertices normals
+	asset_mesh->LoadFaces(mesh->ntriangles, mesh->triangles);
+	asset_mesh->CalculateFaceNormals();
+	//asset_mesh->LoadUV();
+
+	asset_mesh->GenerateVerticesBuffer();
+	asset_mesh->GenerateFacesAndNormalsBuffer();
+	//asset_mesh->GenerateUVBuffer();
+
+	App->import->meshes.push_back(asset_mesh);
+	return asset_mesh;
+}
 
 void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<AssetMesh*> loaded_meshes)
 {
@@ -131,17 +157,6 @@ void ModuleImport::EventRequest(const Event & event)
 		}
 		LOG("File dropped %s", event.path);
 	}
-}
-
-AssetMesh* ModuleImport::LoadParShape(par_shapes_mesh * mesh)
-{
-	AssetMesh * asset_mesh = new AssetMesh();
-	asset_mesh->LoadVertices(mesh->npoints, mesh->points);
-	asset_mesh->LoadFacesAndNormals(mesh->ntriangles, mesh->triangles);
-	asset_mesh->GenerateVerticesBuffer();
-	asset_mesh->GenerateFacesAndNormalsBuffer();
-	App->import->meshes.push_back(asset_mesh);
-	return asset_mesh;
 }
 
 void ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh)

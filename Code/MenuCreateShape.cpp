@@ -226,7 +226,7 @@ void MenuCreateShape::MenuItem(std::string name, std::function<par_shapes_mesh*(
 	if (selectable_clicked && !button_clicked)
 	{
 		par_shapes_mesh* mesh = mesh_function();
-		AssetMesh * asset_mesh = App->import->LoadParShape(mesh);
+		AssetMesh * asset_mesh = App->import->LoadParShapeMesh(mesh);
 		par_shapes_free_mesh(mesh);
 		App->import->CreateGameObjectWithMesh(name, &App->scene->root_gameobject.transform, asset_mesh);
 	}
@@ -276,7 +276,7 @@ void PanelCreateShape::Draw()
 	if (ImGui::Button("Create"))
 	{
 		par_shapes_mesh* mesh = mesh_function();
-		AssetMesh * asset_mesh = App->import->LoadParShape(mesh);
+		AssetMesh * asset_mesh = App->import->LoadParShapeMesh(mesh);
 		par_shapes_free_mesh(mesh);
 		if (copies[0] > 0 && copies[1] > 0 && copies[2] > 0)
 		{

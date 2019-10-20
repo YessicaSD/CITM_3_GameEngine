@@ -11,6 +11,18 @@ struct aiMesh;
 class AssetMesh
 {
 public:
+	bool LoadVertices(const int num_vertices, const float * vertices);
+	bool LoadVerticesNormals(aiMesh * info);
+	bool LoadFaces(aiMesh* info);
+	bool CalculateFaceNormals();
+	bool LoadFaces(const int num_faces, const uint16_t * indices);
+	bool LoadUVs(aiMesh * info);
+
+	bool GenerateVerticesBuffer();
+	bool GenerateFacesAndNormalsBuffer();
+	bool GenerateUVsBuffer();
+
+public:
 	//Data ========================
 	uint id_indice = 0u; // index in VRAM
 	uint num_indices = 0u;
@@ -30,22 +42,11 @@ public:
 	float3* faces_normals = nullptr;
 	float3* face_middle_point = nullptr;
 
-
 	// UV ==================
 	float* UVCoord = nullptr;
-	uint id_uv = 0;
-	uint uv_num_components = 0;
-
-	uint id_texture;
-
-	bool LoadVertices(const int num_vertices, const float * vertices);
-	bool GenerateVerticesBuffer();
-	
-	bool LoadFacesAndNormals(aiMesh* info);
-	bool GenerateFacesAndNormalsBuffer(aiMesh* info);
-
-	bool LoadFacesAndNormals(const int num_faces, const uint16_t * indices);
-	bool GenerateFacesAndNormalsBuffer();
+	uint id_uv = 0u;
+	uint uv_num_components = 0u;
+	uint id_texture = 0u;
 };
 
 
