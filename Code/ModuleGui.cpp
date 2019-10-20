@@ -69,7 +69,7 @@ bool ModuleGui::Start()
 	panel_console = CreatePanel<PanelConsole>("Console", true);
 	panel_shortcuts = CreatePanel<PanelShortcuts>("Shortcuts", true);
 	panel_hirearchy = CreatePanel<PanelHierarchy>("Hirearchy", true);
-	CreatePanel<PanelProperties>("Properties", true);
+	panel_properties = CreatePanel<PanelProperties>("Properties", true);
 	panel_config = CreatePanel<PanelConfiguration>("Configuration", true);
 	
 	CreatePanel<PanelAbout>("About", true);
