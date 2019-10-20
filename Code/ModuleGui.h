@@ -22,11 +22,13 @@ class PanelProperties;
 class PanelInspector;
 class PanelHierarchy;
 class PanelAbout;
+class PanelAssets;
 struct TabPanel;
 
 enum class TYPE_TAB_PANEL
 {
 	RIGHT_TAB_PANEL = 0u,
+	DOWN_TAB_PANEL,
 	MAX_TAB_PANEL
 };
 class ModuleGui : public Module
@@ -43,6 +45,7 @@ private:
 	PanelProperties* panel_properties = nullptr;
 	PanelAbout* panel_about = nullptr;
 	PanelHierarchy * panel_hirearchy = nullptr;
+	PanelAssets* panel_assets = nullptr;
 	std::vector<Shortcut *> shortcuts;
 
 

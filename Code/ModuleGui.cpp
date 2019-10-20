@@ -17,6 +17,7 @@
 #include "PanelAbout.h"
 #include "PanelHierarchy.h"
 #include "PanelInspector.h"
+#include "PanelAssets.h"
 
 #define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
 #define IMGUI_GREY ImVec4(0.6f,0.6f,0.6f,1.f)
@@ -59,6 +60,7 @@ bool ModuleGui::Init()
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
 
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].name = "Inspector";
+	TabPanels[(uint)TYPE_TAB_PANEL::DOWN_TAB_PANEL].name = " ";
 
 	SetTabPanelsResized(App->window->GetWindowWidth(), App->window->GetWindowHeight());
 
@@ -74,6 +76,8 @@ bool ModuleGui::Start()
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelProperties("Properties", true));
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(panel_config = new PanelConfiguration("Configuration", true));
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelAbout("About", true));
+	TabPanels[(uint)TYPE_TAB_PANEL::DOWN_TAB_PANEL].panels.push_back(panel_assets = new PanelAssets("Assets", true));
+	TabPanels[(uint)TYPE_TAB_PANEL::DOWN_TAB_PANEL].panels.push_back(panel_console = new PanelConsole("Console", true));
 
 	create_menu = new MenuCreateShape();
 
@@ -258,10 +262,6 @@ void ModuleGui::MainMenuBar(update_status &ret)
 	ImGui::EndMainMenuBar();
 }
 
-void ModuleGui::AddInputLog(SDL_Scancode key, KEY_STATE state)
-{
-	panel_config->AddInputLog(key, state);
-}
 
 void ModuleGui::ModifyShortcut(SDL_Scancode key)
 {

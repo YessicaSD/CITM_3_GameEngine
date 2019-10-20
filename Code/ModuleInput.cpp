@@ -6,7 +6,7 @@
 #include "Event.h"
 #define MAX_KEYS 300
 
-ModuleInput::ModuleInput(bool start_enabled) : Module(start_enabled)
+ModuleInput::ModuleInput(const char* name, bool start_enabled) : Module(start_enabled, name)
 {
 	keyboard = new KEY_STATE[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(KEY_STATE) * MAX_KEYS);
@@ -48,7 +48,7 @@ update_status ModuleInput::PreUpdate()
 			if (keyboard[i] == KEY_IDLE)
 			{
 				keyboard[i] = KEY_DOWN;
-				App->gui->AddInputLog((SDL_Scancode)i, KEY_DOWN);
+				AddInputLog((SDL_Scancode)i, KEY_DOWN);
 				App->gui->ModifyShortcut((SDL_Scancode)i);
 			}
 			else
@@ -163,4 +163,10 @@ bool ModuleInput::CleanUp()
 	LOG("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
+}
+void ModuleInput::AddInputLog(SDL_Scancode key, KEY_STATE state)
+{
+	std::string scancode_name = SDL_GetScancodeName(key);
+	std::string new_entry = "Key: " + scancode_name + ". \n";
+	input_log_buffer.appendf(new_entry.c_str());
 }

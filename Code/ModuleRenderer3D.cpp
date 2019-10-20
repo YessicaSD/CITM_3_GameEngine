@@ -5,7 +5,7 @@
 #include "glew/include/GL/glew.h"
 
 
-ModuleRenderer3D::ModuleRenderer3D(bool start_enabled) : Module(start_enabled)
+ModuleRenderer3D::ModuleRenderer3D(const char* name, bool start_enabled) : Module(start_enabled, name)
 {
 
 }
@@ -104,7 +104,12 @@ bool ModuleRenderer3D::Init()
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-
+	//Render options
+	depth_test = glIsEnabled(GL_DEPTH_BUFFER) == GL_TRUE;
+	cull_face = glIsEnabled(GL_CULL_FACE) == GL_TRUE;
+	lighting = glIsEnabled(GL_LIGHTING) == GL_TRUE;
+	color_material = glIsEnabled(GL_COLOR_MATERIAL) == GL_TRUE;
+	texture_2d = glIsEnabled(GL_TEXTURE_2D) == GL_TRUE;
 
 
 	return ret;

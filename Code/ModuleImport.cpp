@@ -24,7 +24,7 @@ bool ModuleImport::Start()
 {
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
-	lenna_img_id = App->texture->LoadTexture("Assets/Baker_house.dds");
+	//lenna_img_id = App->texture->LoadTexture("Assets/Baker_house.dds");
 	return true;
 }
 
@@ -117,14 +117,13 @@ void ModuleImport::EventRequest(const Event & event)
 		
 		std::string extension;
 		App->file_system->GetExtension(event.path, extension);
-		if (extension == "fbx")
+		if (extension == "fbx" || extension == "FBX")
 		{
 			LoadMesh(event.path);
-
 		}
 		else if (extension == "dds")
 		{
-			//Load texure 
+			App->texture->LoadTexture(event.path);
 		}
 		else
 		{

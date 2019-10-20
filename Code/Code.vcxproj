@@ -133,6 +133,7 @@
     <ClInclude Include="glew\include\GL\wglew.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="gpudetect\DeviceId.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_opengl3.h" />
@@ -209,9 +210,11 @@
     <ClInclude Include="MenuCreateShape.h" />
     <ClInclude Include="mmgr\mmgr.h" />
     <ClInclude Include="mmgr\nommgr.h" />
+    <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="ModuleGui.h" />
+    <ClInclude Include="ModuleHardware.h" />
     <ClInclude Include="ModuleImport.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="ModuleScene.h" />
@@ -221,6 +224,7 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelAbout.h" />
+    <ClInclude Include="PanelAssets.h" />
     <ClInclude Include="PanelConfiguration.h" />
     <ClInclude Include="PanelConsole.h" />
     <ClInclude Include="PanelHierarchy.h" />
@@ -256,6 +260,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glmath.cpp" />
+    <ClCompile Include="gpudetect\DeviceId.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -302,17 +307,21 @@
     <ClCompile Include="ComponentMesh.cpp" />
     <ClCompile Include="MenuCreateShape.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp" />
+    <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="ModuleGui.cpp" />
+    <ClCompile Include="ModuleHardware.cpp" />
     <ClCompile Include="ModuleImport.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
+    <ClCompile Include="ModulesDrawConfigUIFuntions.cpp" />
     <ClCompile Include="ModuleTexture.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PanelAbout.cpp" />
+    <ClCompile Include="PanelAssets.cpp" />
     <ClCompile Include="PanelConfiguration.cpp" />
     <ClCompile Include="PanelConsole.cpp" />
     <ClCompile Include="PanelHierarchy.cpp" />

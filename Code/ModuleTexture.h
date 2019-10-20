@@ -9,12 +9,14 @@ class Texture;
 class ModuleTexture : public Module
 {
 private:
-	std::map<const char* , Texture*> textures;
+	std::map<std::string, Texture*> textures;
 
 public:  
 	ModuleTexture() {};
 	bool Init() override;
 	Texture* LoadTexture(const char* path);
+	bool CleanUp() override;
+	friend class PanelAssets;
 };
 
 

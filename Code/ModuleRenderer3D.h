@@ -10,9 +10,14 @@ struct SDL_Window;
 
 class ModuleRenderer3D : public Module
 {
-
+private:
+	bool depth_test = false;
+	bool cull_face = false;
+	bool lighting = false;
+	bool color_material = false;
+	bool texture_2d = false;
 public:
-	ModuleRenderer3D(bool start_enabled = true);
+	ModuleRenderer3D(const char* name, bool start_enabled = true);
 	~ModuleRenderer3D();
 
 	bool Init();
@@ -22,10 +27,11 @@ public:
 
 	void OnResize(int width, int height);
 	
+	void DrawConfigurationUi();
 public:
 	Light lights[MAX_LIGHTS];
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
-	
+	friend class PanelConfiguration;
 };

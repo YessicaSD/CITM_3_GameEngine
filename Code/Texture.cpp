@@ -26,3 +26,11 @@
 //void Texture::Render()
 //{
 //}
+
+Texture::~Texture()
+{
+	if (buffer_id > 0)
+	{
+		ilDeleteImages(1, (ILuint*)&buffer_id);
+	}
+};
