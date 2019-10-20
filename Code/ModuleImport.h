@@ -12,8 +12,9 @@ struct aiMesh;
 struct aiNode;
 class ComponentTransform;
 
-//Module responsible for importing assets into the engine
+typedef struct par_shapes_mesh_s par_shapes_mesh;
 
+//Module responsible for importing assets into the engine
 class ModuleImport : public Module
 {
 
@@ -21,10 +22,15 @@ public:
 	bool Start() override;
 	bool LoadMesh(const char* path);
 	bool CleanUp() override;
-	Texture* lenna_img_id = 0;
+
 	void EventRequest(const Event& event) override;
+	AssetMesh* LoadParShape(par_shapes_mesh * mesh);
+	void CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh);
 private:
 	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<AssetMesh*> loaded_meshes);
+
+public:
+	Texture * lenna_img_id = nullptr;
 
 private:
 	aiLogStream stream;

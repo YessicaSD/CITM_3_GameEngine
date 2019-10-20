@@ -157,7 +157,7 @@ void ModuleHardware::DrawConfigurationUi()
 	ImGui::Text("System RAM: %.1fGb", info.ram_gb);
 	ImGui::Text("Caps: %s%s%s%s%s%s",
 		info.rdtsc ? "RDTSC," : "",
-		info.altivec ? "AltiVec," : "",
+		info.alti_vec ? "AltiVec," : "",
 		info.mmx ? "MMX," : "",
 		info.now3d ? "3DNow," : "",
 		info.sse ? "SSE," : "",

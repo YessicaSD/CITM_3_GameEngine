@@ -6,10 +6,9 @@
 
 #include "Module.h"
 #include "Globals.h"
-#include "Cube.h"
 #include "GameObject.h"
 
-typedef struct par_shapes_mesh_s par_shapes_mesh;
+struct ImVec4;
 
 class ModuleScene : public Module
 {	
@@ -26,11 +25,7 @@ public:
 	void ChangeRenderMode(std::string variable);
 	bool GetRenderMode(std::string variable);
 
-	void CreateMenu();
-
-
 private:
-	void LoadParShape(std::string name, par_shapes_mesh * mesh);
 	void GameObjectPostUpdateRecursive(ComponentTransform * object);
 
 public:
@@ -38,12 +33,6 @@ public:
 	GameObject root_gameobject;
 
 private:
-	uint my_id;
-	uint num_vertices = 3;
-	uint my_indices = 0;
-	Cube* cube[2];
-
-
 	std::map<std::string, bool> view_mode;
 };
 

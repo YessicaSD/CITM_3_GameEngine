@@ -35,6 +35,11 @@ ModuleGui::ModuleGui(bool start_enabled):Module(start_enabled)
 
 }
 
+ModuleGui::~ModuleGui()
+{
+	RELEASE(create_menu);
+}
+
 bool ModuleGui::Init()
 {
 	bool ret = true;
@@ -44,6 +49,7 @@ bool ModuleGui::Init()
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	(void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
@@ -64,14 +70,18 @@ bool ModuleGui::Init()
 
 bool ModuleGui::Start()
 {
-	panels.push_back(panel_shortcuts = new PanelShortcuts("Shortcuts", true/*, { SDL_SCANCODE_Q }*/));
-	panels.push_back(panel_hirearchy = new PanelHierarchy("Hierarchy", true));
+	panel_console = CreatePanel<PanelConsole>("Console", true);
+	panel_shortcuts = CreatePanel<PanelShortcuts>("Shortcuts", true);
+	panel_hirearchy = CreatePanel<PanelHierarchy>("Hirearchy", true);
 
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(panel_properties = new PanelProperties("Properties", true));
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(panel_config = new PanelConfiguration("Configuration", true));
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelAbout("About", true));
 	TabPanels[(uint)TYPE_TAB_PANEL::DOWN_TAB_PANEL].panels.push_back(panel_assets = new PanelAssets("Assets", true));
 	TabPanels[(uint)TYPE_TAB_PANEL::DOWN_TAB_PANEL].panels.push_back(panel_console = new PanelConsole("Console", true));
+
+	create_menu = new MenuCreateShape();
+
 	return true;
 }
 
@@ -156,12 +166,7 @@ bool ModuleGui::CleanUp()
 {
 	for (std::vector<Panel*>::reverse_iterator iter = panels.rbegin(); iter != panels.rend(); ++iter)
 	{
-		if ((*iter))
-		{
-			delete (*iter);
-			(*iter) = nullptr;
-
-		}
+		RELEASE((*iter));
 	}
 	panels.clear();
 	panel_console = nullptr;
@@ -192,7 +197,7 @@ void ModuleGui::MainMenuBar(update_status &ret)
 		ImGui::EndMenu();
 	}
 
-	App->scene->CreateMenu();
+	create_menu->MenuBarTab();
 
 	if (ImGui::BeginMenu("Windows"))
 	{
@@ -255,14 +260,7 @@ void ModuleGui::MainMenuBar(update_status &ret)
 
 		ImGui::EndMenu();
 	}
-
-	
-
 	ImGui::EndMainMenuBar();
-
-
-	
-
 }
 
 
@@ -279,6 +277,3 @@ void ModuleGui::SetTabPanelsResized(int width, int height)
 	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].x = width - TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].width;
 
 }
-
-
-
