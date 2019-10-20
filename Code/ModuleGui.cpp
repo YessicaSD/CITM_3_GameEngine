@@ -164,6 +164,7 @@ update_status ModuleGui::PostUpdate()
 
 bool ModuleGui::CleanUp()
 {
+	RELEASE(create_menu);
 	for (std::vector<Panel*>::reverse_iterator iter = panels.rbegin(); iter != panels.rend(); ++iter)
 	{
 		RELEASE((*iter));
@@ -194,6 +195,10 @@ void ModuleGui::MainMenuBar(update_status &ret)
 	ImGui::BeginMainMenuBar();
 	if (ImGui::BeginMenu("File"))
 	{
+		if (ImGui::MenuItem("Quit"))
+		{
+			ret = UPDATE_STOP;
+		}
 		ImGui::EndMenu();
 	}
 
