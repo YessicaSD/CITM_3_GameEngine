@@ -60,10 +60,6 @@ bool ModuleGui::Init()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
 
-	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].name = "Inspector";
-	TabPanels[(uint)TYPE_TAB_PANEL::DOWN_TAB_PANEL].name = " ";
-
-	SetTabPanelsResized(App->window->GetWindowWidth(), App->window->GetWindowHeight());
 
 	return ret;
 }
@@ -73,12 +69,12 @@ bool ModuleGui::Start()
 	panel_console = CreatePanel<PanelConsole>("Console", true);
 	panel_shortcuts = CreatePanel<PanelShortcuts>("Shortcuts", true);
 	panel_hirearchy = CreatePanel<PanelHierarchy>("Hirearchy", true);
-
-	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelProperties("Properties", true));
-	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(panel_config = new PanelConfiguration("Configuration", true));
-	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].panels.push_back(new PanelAbout("About", true));
-	TabPanels[(uint)TYPE_TAB_PANEL::DOWN_TAB_PANEL].panels.push_back(panel_assets = new PanelAssets("Assets", true));
-	TabPanels[(uint)TYPE_TAB_PANEL::DOWN_TAB_PANEL].panels.push_back(panel_console = new PanelConsole("Console", true));
+	CreatePanel<PanelProperties>("Properties", true);
+	panel_config = CreatePanel<PanelConfiguration>("Configuration", true);
+	
+	CreatePanel<PanelAbout>("About", true);
+	panel_assets = CreatePanel<PanelAssets>("Assets", true);
+	panel_console = CreatePanel <PanelConsole>("Console", true);
 
 	create_menu = new MenuCreateShape();
 
@@ -117,37 +113,6 @@ update_status ModuleGui::Update(float dt)
 
 update_status ModuleGui::PostUpdate()
 {
-	// Rendering
-	for (uint i = 0; i < (uint)TYPE_TAB_PANEL::MAX_TAB_PANEL; ++i)
-	{
-		TabPanel& tab = TabPanels[i];
-		//ImGui::SetNextWindowPos(ImVec2((float)tab.x, (float)tab.y), ImGuiCond_Always);
-		//ImGui::SetNextWindowSize(ImVec2((float)tab.width, (float)tab.height), ImGuiCond_Always);
-		//static bool tabBarOpen;
-		if (ImGui::Begin(tab.name/*nullptr*//*, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoFocusOnAppearing*/))
-		{
-			
-				if (ImGui::BeginTabBar("##tabs", ImGuiTabBarFlags_None))
-				{
-					for (std::vector<Panel*>::iterator iter = tab.panels.begin(); iter != tab.panels.end(); ++iter)
-					{
-						if (ImGui::BeginTabItem((*iter)->GetName()))
-						{
-
-							if ((*iter)->IsActive())
-							{
-								(*iter)->Draw();
-							}
-
-							ImGui::EndTabItem();
-						}
-					}
-					ImGui::EndTabBar();
-				}
-		}
-		ImGui::End();
-	}
-
 	for (std::vector<Panel*>::iterator iter = panels.begin(); iter != panels.end(); ++iter)
 	{
 		if ((*iter)->IsActive())
@@ -274,11 +239,3 @@ void ModuleGui::ModifyShortcut(SDL_Scancode key)
 	panel_shortcuts->ModifyShortcut(key);
 }
 
-void ModuleGui::SetTabPanelsResized(int width, int height)
-{
-	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].width = 400;
-	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].height = height;
-	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].y = 21;
-	TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].x = width - TabPanels[(uint)TYPE_TAB_PANEL::RIGHT_TAB_PANEL].width;
-
-}

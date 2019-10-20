@@ -2,13 +2,13 @@
 #include "imgui/imgui.h"
 #include "Globals.h"
 #include "Application.h"
-PanelAbout::PanelAbout(const char* name, bool active, std::vector<SDL_Scancode> shortcuts):
+PanelAbout::PanelAbout(std::string name, bool active, std::vector<SDL_Scancode> shortcuts):
 	Panel(name, active, shortcuts)
 {
 }
 void PanelAbout::Draw()
 {
-	
+	ImGui::Begin(name.c_str());
 	ImGui::Text("Version %s", VERSION);
 	ImGui::Separator();
 	ImGui::Text("By Yessica Servin & Jaume Montagut i Guix");
@@ -35,4 +35,5 @@ void PanelAbout::Draw()
 		if(ImGui::Button("More"))
 			App->RequestBrowser("https://github.com/JaumeMontagut");
 	}
+	ImGui::End();
 }

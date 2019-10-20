@@ -2,11 +2,11 @@
 #define PANEL_ABOUT_H_
 
 #include "Panel.h"
-
+#include <string>
 class PanelAbout : public Panel
 {
 public:
-	PanelAbout(const char* name, bool active = false, std::vector<SDL_Scancode> shortcuts = {});
+	PanelAbout(std::string name, bool active = false, std::vector<SDL_Scancode> shortcuts = {});
 	void Draw() override;
 };
 
