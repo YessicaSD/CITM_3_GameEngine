@@ -4,8 +4,10 @@
 #include "Application.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ModuleGui.h"
+#include "PanelProperties.h"
 
-PanelHierarchy::PanelHierarchy(std::string name, bool active, std::vector<SDL_Scancode> shortcuts): Panel(name, active, shortcuts)
+PanelHierarchy::PanelHierarchy(std::string name, bool active, std::vector<SDL_Scancode> shortcuts) : Panel(name, active, shortcuts)
 {
 
 }
@@ -14,6 +16,15 @@ void PanelHierarchy::Draw()
 {
 	ImGui::Begin("Hierarchy");
 	TreeEntry(&App->scene->root_gameobject.transform);
+	//for (std::vector<ComponentTransform*>::iterator iter = App->scene->root_gameobject.transform.children.begin();
+	//	iter != App->scene->root_gameobject.transform.children.end();
+	//	++iter)
+	//{
+	//	TreeEntry((*iter));
+	//}
+	//App->gui->panel_properties->SetGameObject(selected_object);
+	//selected_object = nullptr;
+	sended_to_properties = false;
 	ImGui::End();
 
 	//if (("Advanced, with Selectable nodes"))
@@ -73,14 +84,33 @@ void PanelHierarchy::Draw()
 
 void PanelHierarchy::TreeEntry(ComponentTransform * transform)
 {
+	ImGuiTreeNodeFlags node_flags = 0;
+	node_flags |= ImGuiTreeNodeFlags_OpenOnArrow;
+	if (transform->children.size() == 0)
+		node_flags |= ImGuiTreeNodeFlags_Leaf;
+	if (selected_object == transform)
+	{
+		node_flags |= ImGuiTreeNodeFlags_Selected;
+		ImGui::PushStyleColor(ImGuiCol_HeaderHovered, (ImVec4)ImColor(220, 220, 220, 255));
+	}
+
+	node_flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
+	
 	for (std::vector<ComponentTransform*>::iterator iter = transform->children.begin();
 		iter != transform->children.end();
 		++iter)
 	{
-		if (ImGui::TreeNodeEx((*iter)->gameobject->GetName()))
+		bool node_open = ImGui::TreeNodeEx((*iter)->gameobject->GetName(), node_flags);
+		bool clicked = ImGui::IsItemClicked(0);
+		if (clicked)
 		{
-			TreeEntry((*iter));
-			ImGui::TreePop();
+			App->gui->panel_properties->SetGameObject((*iter));
 		}
+		if(node_open)
+			{
+				TreeEntry((*iter));
+				ImGui::TreePop();
+			}
+	
 	}
 }

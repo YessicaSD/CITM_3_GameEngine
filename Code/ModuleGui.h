@@ -69,6 +69,7 @@ private:
 	friend class Shortcut;
 	friend class Panel;
 	friend class PanelShortcuts;
+	friend class PanelHierarchy;
 
 };
 #endif // !MODULEGUI_H_
