@@ -31,8 +31,6 @@ private:
 public:
 	//All gameobjects are children of the root gameobject
 	GameObject root_gameobject;
-
-private:
 	std::map<std::string, bool> view_mode;
 };
 
