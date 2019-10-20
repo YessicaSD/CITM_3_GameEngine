@@ -14,7 +14,7 @@ ModuleHardware::ModuleHardware(const char * name):Module(true, name)
 	info.cpu_cores = SDL_GetCPUCount();
 	info.cachekb = SDL_GetCPUCacheLineSize();
 	info.rdtsc = SDL_HasRDTSC() == SDL_TRUE;
-	info.alti_vec = SDL_HasAltiVec() == SDL_TRUE;
+	info.altivec = SDL_HasAltiVec() == SDL_TRUE;
 	info.now3d = SDL_Has3DNow() == SDL_TRUE;
 	info.mmx = SDL_HasMMX() == SDL_TRUE;
 	info.sse = SDL_HasSSE() == SDL_TRUE;
