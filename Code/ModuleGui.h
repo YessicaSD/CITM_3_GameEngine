@@ -11,6 +11,7 @@
 #include <vector>
 #include "TabPanel.h"
 #include "MenuCreateShape.h"
+#include "ComponentMesh.h"
 
 class Timer;
 class Panel;
@@ -55,7 +56,6 @@ public:
 	bool Init() override;
 	bool Start() override;
 	update_status PreUpdate() override;
-	update_status Update(float dt) override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 	bool Log(const char*);
@@ -75,9 +75,10 @@ public:
 private:
 	void MainMenuBar(update_status &ret);
 
-
-
 	TabPanel TabPanels[(uint)TYPE_TAB_PANEL::MAX_TAB_PANEL];
+
+	RenderMode render_mode_all;
+
 	friend class Shortcut;
 	friend class Panel;
 	friend class PanelShortcuts;

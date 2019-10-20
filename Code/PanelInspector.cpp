@@ -7,4 +7,5 @@ PanelInspector::PanelInspector(std::string name, bool active, std::vector<SDL_Sc
 
 void PanelInspector::Draw()
 {
+
 }

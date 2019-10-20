@@ -80,8 +80,6 @@ public:
 		return ms_timer.Read();
 	}
 	void Log(const char* sentece);
-	
-	void ChangeRenderMode(std::string variable);
 	void EventRequest(const Event& event);
 	void DrawModulesConfigUi();
 private:

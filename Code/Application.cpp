@@ -181,13 +181,6 @@ void Application::Log(const char * sentece)
 	log_strings.push_back(sentece);
 }
 
-void Application::ChangeRenderMode(std::string variable)
-{
-	scene->ChangeRenderMode(variable);
-}
-
-
-
 void Application::EventRequest(const Event & event)
 {
 	for (std::vector<Module*>::iterator iter = list_modules.begin(); iter != list_modules.end(); ++iter)

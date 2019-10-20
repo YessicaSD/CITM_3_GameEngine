@@ -10,11 +10,6 @@ ModuleScene::ModuleScene(bool start_enabled) :
 	Module(start_enabled),
 	root_gameobject("Root", nullptr)
 {
-	view_mode["default"] = true;
-	view_mode["wireframe"] = false;
-	view_mode["vertex"] = false;
-	view_mode["vertices_normals"] = false;
-	view_mode["face_normals"] = false;
 }
 
 ModuleScene::~ModuleScene()
@@ -99,22 +94,3 @@ update_status ModuleScene::PostUpdate()
 //		}
 //	}
 //}
-
-void ModuleScene::ChangeRenderMode(std::string variable)
-{
-	std::map<std::string, bool>::iterator iter = view_mode.find(variable);
-	if (iter != view_mode.end())
-	{
-		(*iter).second = !(*iter).second;
-	}
-}
-
-bool ModuleScene::GetRenderMode(std::string variable)
-{
-	std::map<std::string, bool>::iterator iter = view_mode.find(variable);
-	if (iter != view_mode.end())
-	{
-		return (*iter).second;
-	}
-	return false;
-}

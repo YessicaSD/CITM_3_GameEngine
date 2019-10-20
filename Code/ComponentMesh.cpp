@@ -30,13 +30,13 @@ void ComponentMesh::OnPostUpdate()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indice);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	if (App->scene->view_mode["default"])
+	if (render_mode.fill)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	}
 
-	if (App->scene->view_mode["wireframe"])
+	if (render_mode.wireframe)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glLineWidth(3);
@@ -44,7 +44,7 @@ void ComponentMesh::OnPostUpdate()
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	}
 
-	if (App->scene->view_mode["vertex"])
+	if (render_mode.point)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 		glPointSize(3);
@@ -99,4 +99,15 @@ void ComponentMesh::DrawNormals()
 		glEnd();
 	}
 	glColor3f(1, 1, 1);
+}
+
+void ComponentMesh::ShowInspector()
+{
+	ImGui::Text("Render options");
+	ImGui::Checkbox("View fill     ", &render_mode.fill);
+	ImGui::Checkbox("View wireframe", &render_mode.wireframe);
+	ImGui::Checkbox("View vertex   ", &render_mode.point);
+	ImGui::Text("View normals");
+	ImGui::Checkbox("View points normals", &render_mode.vertex_normals);
+	ImGui::Checkbox("View faces normals", &render_mode.face_normals);
 }

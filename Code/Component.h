@@ -14,6 +14,8 @@ private:
 	virtual void OnEnable() {};
 	virtual void OnDisable() {};
 
+	virtual void ShowInspector() {};
+
 public:
 	//The gameobject which contains this component
 	GameObject* gameobject = nullptr;

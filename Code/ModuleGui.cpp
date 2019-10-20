@@ -99,24 +99,20 @@ update_status ModuleGui::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleGui::Update(float dt)
+update_status ModuleGui::PostUpdate()
 {
 	update_status ret = update_status::UPDATE_CONTINUE;
 
-	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
 	MainMenuBar(ret);
 	if (showMenuImGui)
+	{
 		ImGui::ShowDemoWindow();
+	}
 
-	return ret;
-}
-
-update_status ModuleGui::PostUpdate()
-{
 	// Rendering
 	for (uint i = 0; i < (uint)TYPE_TAB_PANEL::MAX_TAB_PANEL; ++i)
 	{
@@ -216,36 +212,25 @@ void ModuleGui::MainMenuBar(update_status &ret)
 		ImGui::EndMenu();
 	}
 	
-	if (ImGui::BeginMenu("RenderMode"))
+	if (ImGui::BeginMenu("Render Mode All"))
 	{
-		static bool wireframe_view = App->scene->GetRenderMode("wireframe");
-		static bool default_view = App->scene->GetRenderMode("default");
-		static bool vertices_view = App->scene->GetRenderMode("vertex");
-		static bool vertices_normals_view = App->scene->GetRenderMode("vertices_normals");
-		static bool face_normals_view = App->scene->GetRenderMode("face_normals");
+		if (ImGui::Checkbox("Fill", &render_mode_all.fill))
+		{
+			//TODO: Activate / deactivate render mode for every game object
+		}
+		if (ImGui::Checkbox("Wireframe", &render_mode_all.wireframe))
+		{
+		}
+		if (ImGui::Checkbox("Points", &render_mode_all.point))
+		{
+		}
+		if (ImGui::Checkbox("Vertices Normals", &render_mode_all.vertex_normals))
+		{
+		}
+		if (ImGui::Checkbox("Face Normals", &render_mode_all.face_normals))
+		{
+		}
 
-		if (ImGui::MenuItem("Wireframe			", NULL, &wireframe_view))
-		{
-			App->ChangeRenderMode("wireframe");
-		}
-		if (ImGui::MenuItem("Default			", NULL, &default_view))
-		{
-			App->ChangeRenderMode("default");
-
-		}
-		if (ImGui::MenuItem("Verteces			", NULL, &vertices_view))
-		{
-			App->ChangeRenderMode("vertex");
-		}
-		if (ImGui::MenuItem("Vertices Normals			", NULL, &vertices_normals_view))
-		{
-			App->ChangeRenderMode("vertices_normals");
-		}
-		
-		if (ImGui::MenuItem("Face Normals			", NULL, &face_normals_view))
-		{
-			App->ChangeRenderMode("face_normals");
-		}
 		ImGui::EndMenu();
 	}
 
