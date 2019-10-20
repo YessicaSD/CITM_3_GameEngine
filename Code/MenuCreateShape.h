@@ -6,6 +6,7 @@
 #include "Panel.h"
 #include <vector>
 
+typedef unsigned int uint;
 typedef struct par_shapes_mesh_s par_shapes_mesh;
 class MenuCreateShape;
 
@@ -32,6 +33,17 @@ private:
 public:
 	std::function<par_shapes_mesh*()> mesh_function;
 	std::vector<ShapeValue> shape_values;
+	std::string shape_name;
+
+private:
+	//Create multiple
+	//How many copies are going to be created in x, y and z?
+	int copies[3] = { 0u };
+	//How many separation is going to be between the copies?
+	float separation[3] = { 0.f };
+
+	//TODO: Think does each panel need to have its own copies value?
+	//TODO: Should this values be reset to 0 when you close the panel?
 };
 
 //A class to handle the create shapes menu which lets you create different geometric shapes
@@ -44,12 +56,9 @@ public:
 	void MenuBarTab();
 
 private:
-	void PanelCreateMultiple();
 	void MenuItem(std::string name, std::function<par_shapes_mesh*()> mesh_function, Panel * panel);
 
 	//TODO: Load variables with a function from ModuleGui
-
-public:
 
 private:
 	const float button_height = 7.5f;

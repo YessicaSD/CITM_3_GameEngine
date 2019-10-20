@@ -122,7 +122,7 @@ void ModuleImport::EventRequest(const Event & event)
 			LoadMesh(event.path);
 
 		}
-		if (extension == "dds")
+		else if (extension == "dds")
 		{
 			//Load texure 
 		}
@@ -134,7 +134,7 @@ void ModuleImport::EventRequest(const Event & event)
 	}
 }
 
-void ModuleImport::LoadParShape(std::string name, par_shapes_mesh * mesh)
+AssetMesh* ModuleImport::LoadParShape(par_shapes_mesh * mesh)
 {
 	AssetMesh * asset_mesh = new AssetMesh();
 	asset_mesh->LoadVertices(mesh->npoints, mesh->points);
@@ -142,8 +142,12 @@ void ModuleImport::LoadParShape(std::string name, par_shapes_mesh * mesh)
 	asset_mesh->GenerateVerticesBuffer();
 	asset_mesh->GenerateFacesAndNormalsBuffer();
 	App->import->meshes.push_back(asset_mesh);
+	return asset_mesh;
+}
 
-	GameObject * new_gameobject = new GameObject(name, &App->scene->root_gameobject.transform);
+void ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh)
+{
+	GameObject * new_gameobject = new GameObject(name, parent);
 	ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 	component_mesh->mesh = asset_mesh;
 }
