@@ -114,12 +114,11 @@ void ModuleImport::EventRequest(const Event & event)
 		
 		std::string extension;
 		App->file_system->GetExtension(event.path, extension);
-		if (extension == "fbx")
+		if (extension == "fbx" || extension == "FBX")
 		{
 			LoadMesh(event.path);
-
 		}
-		if (extension == "dds")
+		else if (extension == "dds")
 		{
 			App->texture->LoadTexture(event.path);
 		}
