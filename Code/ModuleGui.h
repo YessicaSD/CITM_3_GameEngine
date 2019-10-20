@@ -2,9 +2,6 @@
 #ifndef MODULEGUI_H_
 #define MODULEGUI_H_
 
-
-
-
 #include "Module.h"
 
 #include "imgui\imgui.h"

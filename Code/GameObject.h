@@ -7,6 +7,7 @@
 #include "ComponentMesh.h"
 
 class Component;
+class PanelProperties;
 
 class GameObject
 {
@@ -43,6 +44,8 @@ private:
 	bool active = true;
 	std::string name;
 	std::vector<Component*> components;
+
+	friend PanelProperties;
 };
 
 #endif // !GAMEOBJECT_H_

@@ -16,7 +16,6 @@
 #include "PanelProperties.h"
 #include "PanelAbout.h"
 #include "PanelHierarchy.h"
-#include "PanelInspector.h"
 #include "PanelAssets.h"
 
 #define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)

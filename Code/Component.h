@@ -8,13 +8,14 @@ class Component
 public:
 	Component(GameObject * gameobject);
 
+	virtual void ShowProperties() {};
+
 private:
 	virtual void OnUpdate(float dt) {};
 	virtual void OnPostUpdate() {};
 	virtual void OnEnable() {};
 	virtual void OnDisable() {};
 
-	virtual void ShowInspector() {};
 
 public:
 	//The gameobject which contains this component
