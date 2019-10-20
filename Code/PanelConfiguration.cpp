@@ -26,8 +26,7 @@ PanelConfiguration::PanelConfiguration(std::string name, bool active, std::vecto
 void PanelConfiguration::Draw()
 {
 	ImGui::SetNextWindowSize(ImVec2(550, 680));
-	if (ImGui::CollapsingHeader("Configuration"))
-	{
+	ImGui::Begin(name.c_str());
 		//Project name
 		static char projectName[128] = "Project name";
 		ImGui::InputText("Project Name:", projectName, IM_ARRAYSIZE(projectName));
@@ -114,7 +113,7 @@ void PanelConfiguration::Draw()
 		}
 
 		
-	}
+	
 	App->DrawModulesConfigUi();
 	
 	//if (ImGui::CollapsingHeader("Render Mode"))
@@ -144,6 +143,7 @@ void PanelConfiguration::Draw()
 	//		}
 	//	}
 	//}
+	ImGui::End();
 }
 
 
