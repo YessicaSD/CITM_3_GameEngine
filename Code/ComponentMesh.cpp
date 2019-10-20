@@ -13,6 +13,9 @@
 
 ComponentMesh::ComponentMesh(GameObject * gameobject) : Component(gameobject)
 {
+	fill_color[0] = fill_color[1] = fill_color[2] = fill_color[3] = 1.f;
+	line_color[0] = line_color[1] = line_color[2] = line_color[3] = 1.f;
+	point_color[0] = point_color[1] = point_color[2] = point_color[3] = 1.f;
 }
 
 void ComponentMesh::OnPostUpdate()
@@ -33,23 +36,24 @@ void ComponentMesh::OnPostUpdate()
 	if (render_mode.fill)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glColor4f(fill_color[0], fill_color[1], fill_color[2], fill_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	}
 
 	if (render_mode.wireframe)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glLineWidth(3);
-		glColor3f(1, 0, 0);
+		glLineWidth(line_width);
+		glColor4f(line_color[0], line_color[1], line_color[2], line_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	}
 
 	if (render_mode.point)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-		glPointSize(3);
-		glColor3f(1, 1, 1);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+		glPointSize(point_size);
+		glColor4f(point_color[0], point_color[1], point_color[2], point_color[3]);
+		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	}
 
 	//UV
@@ -63,8 +67,6 @@ void ComponentMesh::OnPostUpdate()
 	//	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 	//	glTexCoordPointer(mesh->uv_num_components, GL_FLOAT, 0, (void*)0);
 	//}
-
-	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
 	glPopMatrix();
@@ -106,9 +108,27 @@ void ComponentMesh::ShowProperties()
 	if (ImGui::CollapsingHeader("Mesh"))
 	{
 		ImGui::Text("Render options");
-		ImGui::Checkbox("View fill     ", &render_mode.fill);
+
+		ImGui::Checkbox("View fill", &render_mode.fill);
+		if(render_mode.fill)
+		{
+			ImGui::ColorPicker4("Fill color", fill_color);
+		}
+
 		ImGui::Checkbox("View wireframe", &render_mode.wireframe);
-		ImGui::Checkbox("View vertex   ", &render_mode.point);
+		if (render_mode.wireframe)
+		{
+			ImGui::InputFloat("Wireframe width", &line_width);
+			ImGui::ColorPicker4("Wireframe color", line_color);
+		}
+
+		ImGui::Checkbox("View point", &render_mode.point);
+		if (render_mode.point)
+		{
+			ImGui::InputFloat("Point size", &point_size);
+			ImGui::ColorPicker4("Point color", point_color);
+		}
+
 		ImGui::Text("View normals");
 		ImGui::Checkbox("View points normals", &render_mode.vertex_normals);
 		ImGui::Checkbox("View faces normals", &render_mode.face_normals);

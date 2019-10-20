@@ -29,6 +29,17 @@ public:
 
 private:
 	RenderMode render_mode;
+
+	//Fill
+	float fill_color[4];
+
+	//Wireframe
+	float line_color[4];
+	float line_width = 1.f;
+
+	//Point
+	float point_color[4];
+	float point_size = 1.f;
 };
 
 #endif // !MESH_H_
