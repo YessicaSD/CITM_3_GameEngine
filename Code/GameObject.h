@@ -8,6 +8,7 @@
 
 class Component;
 class PanelProperties;
+class PanelHierarchy;
 
 class GameObject
 {
@@ -17,8 +18,8 @@ public:
 	bool OnStart();
 	bool OnUpdate(float dt);
 	bool OnPostUpdate();
-	bool OnEnable();
-	bool OnDisable();
+	bool OnActivate();
+	bool OnDeactivate();
 
 	template <class ComponentClass>
 	ComponentClass * CreateComponent()
@@ -46,6 +47,7 @@ private:
 	std::vector<Component*> components;
 
 	friend PanelProperties;
+	friend PanelHierarchy;
 };
 
 #endif // !GAMEOBJECT_H_

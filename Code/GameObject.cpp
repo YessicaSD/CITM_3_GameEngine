@@ -27,7 +27,10 @@ bool GameObject::OnUpdate(float dt)
 		iter != components.end();
 		++iter)
 	{
-		(*iter)->OnUpdate(dt);
+		if ((*iter)->enabled)
+		{
+			(*iter)->OnUpdate(dt);
+		}
 	}
 	return true;
 }
@@ -38,29 +41,40 @@ bool GameObject::OnPostUpdate()
 		iter != components.end();
 		++iter)
 	{
-		(*iter)->OnPostUpdate();
+		if ((*iter)->enabled)
+		{
+			(*iter)->OnPostUpdate();
+		}
 	}
 	return true;
 }
 
-bool GameObject::OnEnable()
+bool GameObject::OnActivate()
 {
-	for (std::vector<Component*>::iterator iter = components.begin();
-		iter != components.end();
-		++iter)
+	if (!active) 
 	{
-		(*iter)->OnDisable();
+		for (std::vector<Component*>::iterator iter = components.begin();
+			iter != components.end();
+			++iter)
+		{
+			(*iter)->OnEnable();
+		}
+		active = true;
 	}
 	return true;
 }
 
-bool GameObject::OnDisable()
+bool GameObject::OnDeactivate()
 {
-	for (std::vector<Component*>::iterator iter = components.begin();
-		iter != components.end();
-		++iter)
+	if (active) 
 	{
-		(*iter)->OnEnable();
+		for (std::vector<Component*>::iterator iter = components.begin();
+			iter != components.end();
+			++iter)
+		{
+			(*iter)->OnDisable();
+		}
+		active = false;
 	}
 	return true;
 }

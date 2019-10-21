@@ -103,7 +103,7 @@ void ComponentMesh::DrawNormals()
 	glColor3f(1, 1, 1);
 }
 
-void ComponentMesh::ShowProperties()
+void ComponentMesh::PropertiesEditor()
 {
 	if (ImGui::CollapsingHeader("Mesh"))
 	{

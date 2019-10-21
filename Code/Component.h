@@ -8,7 +8,8 @@ class Component
 public:
 	Component(GameObject * gameobject);
 
-	virtual void ShowProperties() {};
+	virtual void PropertiesEditor() {};
+	void SetActive(bool value);
 
 private:
 	virtual void OnUpdate(float dt) {};
@@ -22,7 +23,7 @@ public:
 	GameObject* gameobject = nullptr;
 
 private: 
-	bool active = true;
+	bool enabled = true;
 	
 	friend class GameObject;
 };

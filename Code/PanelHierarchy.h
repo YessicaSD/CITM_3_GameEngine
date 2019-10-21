@@ -2,6 +2,7 @@
 #define __PANEL_HIERARCHY_H_
 
 #include "Panel.h"
+#include "imgui/imgui.h"
 
 class GameObject;
 class ComponentTransform;
@@ -13,6 +14,9 @@ public:
 	void Draw() override;
 	void DisplayChildren(ComponentTransform * gameobject);
 	
+private:
+	const ImVec4 hover_color;
+	//TODO: Make this configurable
 };
 
 #endif

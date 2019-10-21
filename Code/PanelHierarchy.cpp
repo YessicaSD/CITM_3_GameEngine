@@ -7,7 +7,9 @@
 #include "ModuleGui.h"
 #include "PanelProperties.h"
 
-PanelHierarchy::PanelHierarchy(std::string name, bool active, std::vector<SDL_Scancode> shortcuts) : Panel(name, active, shortcuts)
+PanelHierarchy::PanelHierarchy(std::string name, bool active, std::vector<SDL_Scancode> shortcuts) :
+	Panel(name, active, shortcuts),
+	hover_color(220, 220, 220, 255)
 {
 
 }
@@ -91,7 +93,6 @@ void PanelHierarchy::DisplayChildren(ComponentTransform * transform)
 		bool is_open = false;
 		bool is_clicked = false;
 		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
-
 		if ((*iter)->children.size() == 0)
 		{
 			node_flags |= ImGuiTreeNodeFlags_Leaf;
@@ -100,7 +101,7 @@ void PanelHierarchy::DisplayChildren(ComponentTransform * transform)
 		if (is_selected)
 		{
 			node_flags |= ImGuiTreeNodeFlags_Selected;
-			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, (ImVec4)ImColor(220, 220, 220, 255));
+			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, hover_color);
 		}
 		is_open = ImGui::TreeNodeEx((*iter)->gameobject->GetName(), node_flags);
 		if (is_selected)
