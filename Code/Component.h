@@ -1,6 +1,8 @@
 #ifndef COMPONENT_H_
 #define COMPONENT_H_
 
+#include <string>
+
 class GameObject;
 
 class Component
@@ -9,7 +11,7 @@ public:
 	Component(GameObject * gameobject);
 
 	virtual void PropertiesEditor() {};
-	void SetActive(bool value);
+	void EnableComponent(bool value);
 
 protected:
 	virtual void OnUpdate(float dt) {};
@@ -17,6 +19,7 @@ protected:
 	virtual void OnEnable() {};
 	virtual void OnDisable() {};
 
+	bool CollapsigHeaderWithCheckbox();
 
 public:
 	//The gameobject which contains this component
@@ -24,6 +27,7 @@ public:
 
 protected: 
 	bool enabled = true;
+	std::string name;
 	
 	friend class GameObject;
 };

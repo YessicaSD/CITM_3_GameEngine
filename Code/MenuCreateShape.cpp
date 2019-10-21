@@ -196,7 +196,6 @@ void MenuCreateShape::MenuBarTab()
 		//par_shapes_create_lsystem();
 		//par_shapes_create_rock();
 
-		//TODO: Show menu to configurate this
 		ImGui::EndMenu();
 	}
 }

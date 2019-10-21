@@ -13,6 +13,8 @@
 
 ComponentMesh::ComponentMesh(GameObject * gameobject) : Component(gameobject)
 {
+	name = "Mesh";
+
 	fill_color[0] = fill_color[1] = fill_color[2] = fill_color[3] = 1.f;
 	line_color[0] = line_color[1] = line_color[2] = line_color[3] = 1.f;
 	point_color[0] = point_color[1] = point_color[2] = point_color[3] = 1.f;
@@ -105,13 +107,7 @@ void ComponentMesh::DrawNormals()
 
 void ComponentMesh::PropertiesEditor()
 {
-	ImGui::PushID("Mesh");//Because we don't want to display any label, the header can get confused with other headers without name and we need to push an id
-	bool header_expanded = ImGui::CollapsingHeader("");
-	ImGui::PopID();
-	ImGui::SameLine();
-	enabled = ImGui::Checkbox("Mesh", &enabled);
-
-	if (header_expanded)
+	if (CollapsigHeaderWithCheckbox())
 	{
 		ImGui::Text("Render options");
 
