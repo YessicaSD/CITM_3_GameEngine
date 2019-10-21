@@ -87,28 +87,32 @@ void PanelHierarchy::DisplayChildren(ComponentTransform * transform)
 		iter != transform->children.end();
 		++iter)
 	{
+		bool is_selected = false;
+		bool is_open = false;
+		bool is_clicked = false;
 		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+
 		if ((*iter)->children.size() == 0)
 		{
 			node_flags |= ImGuiTreeNodeFlags_Leaf;
 		}
-		bool is_selected = (*iter) == App->gui->panel_properties->selected_transform;
+		is_selected = (*iter) == App->gui->panel_properties->selected_transform;
 		if (is_selected)
 		{
 			node_flags |= ImGuiTreeNodeFlags_Selected;
 			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, (ImVec4)ImColor(220, 220, 220, 255));
 		}
-		bool node_open = ImGui::TreeNodeEx((*iter)->gameobject->GetName(), node_flags);
+		is_open = ImGui::TreeNodeEx((*iter)->gameobject->GetName(), node_flags);
 		if (is_selected)
 		{
 			ImGui::PopStyleColor();
 		}
-		bool clicked = ImGui::IsItemClicked(0);
-		if (clicked)
+		is_clicked = ImGui::IsItemClicked(0);
+		if (is_clicked)
 		{
 			App->gui->panel_properties->SetSelectedTransform((*iter));
 		}
-		if (node_open)
+		if (is_open)
 		{
 			DisplayChildren((*iter));
 			ImGui::TreePop();
