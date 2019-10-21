@@ -8,11 +8,13 @@ class ComponentTransform;
 class PanelProperties : public Panel
 {
 private:
-	ComponentTransform* selected_gameobject = nullptr;
+	ComponentTransform* selected_transform = nullptr;
 public:
 	PanelProperties(std::string name, bool state, std::vector<SDL_Scancode> shortcuts = {});
-	void SetGameObject(ComponentTransform* gameobject);
+	void SetSelectedTransform(ComponentTransform* gameobject);
 	void Draw() override;
+
+	friend class PanelHierarchy;
 };
 
 

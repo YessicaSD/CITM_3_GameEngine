@@ -42,7 +42,7 @@ void PanelConfiguration::Draw()
 		ImGui::Text("Limit fps:");
 		ImVec4 textColor_fpsmas = { 1.f,1.0f,0.3f,1.0f };
 		ImGui::SameLine();
-		ImGui::TextColored(textColor_fpsmas, std::to_string(fpsMax).c_str());
+		//ImGui::TextColored(textColor_fpsmas, std::to_string(fpsMax).c_str());
 
 
 		//FPS GRAPH ==================================

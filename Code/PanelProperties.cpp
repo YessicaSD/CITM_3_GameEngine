@@ -7,24 +7,24 @@
 PanelProperties::PanelProperties(std::string name, bool state, std::vector<SDL_Scancode> shortcuts): Panel(name, state, shortcuts)
 {
 }
-void PanelProperties::SetGameObject(ComponentTransform * gameobject)
+void PanelProperties::SetSelectedTransform(ComponentTransform * transform)
 {
-	if (gameobject)
+	if (transform != nullptr)
 	{
-		this->selected_gameobject = gameobject;
+		this->selected_transform = transform;
 	}
 }
 void PanelProperties::Draw()
 {
 	ImGui::Begin(name.c_str());
-	if (selected_gameobject != nullptr)
+	if (selected_transform != nullptr)
 	{
 		ImGui::Text("Name:");
 		ImGui::SameLine();
-		ImGui::Text("%s", selected_gameobject->gameobject->GetName());
+		ImGui::Text("%s", selected_transform->gameobject->GetName());
 
-		for (std::vector<Component *>::iterator iter = selected_gameobject->gameobject->components.begin();
-			iter != selected_gameobject->gameobject->components.end();
+		for (std::vector<Component *>::iterator iter = selected_transform->gameobject->components.begin();
+			iter != selected_transform->gameobject->components.end();
 			++iter)
 		{
 			(*iter)->ShowProperties();
