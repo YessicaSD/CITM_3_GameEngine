@@ -105,7 +105,13 @@ void ComponentMesh::DrawNormals()
 
 void ComponentMesh::PropertiesEditor()
 {
-	if (ImGui::CollapsingHeader("Mesh"))
+	ImGui::PushID("Mesh");//Because we don't want to display any label, the header can get confused with other headers without name and we need to push an id
+	bool header_expanded = ImGui::CollapsingHeader("");
+	ImGui::PopID();
+	ImGui::SameLine();
+	enabled = ImGui::Checkbox("Mesh", &enabled);
+
+	if (header_expanded)
 	{
 		ImGui::Text("Render options");
 

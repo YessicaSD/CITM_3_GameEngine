@@ -27,9 +27,6 @@ void PanelProperties::Draw()
 			//TODO: Call SetActive with the corresponding value
 		}
 		ImGui::SameLine();
-		//const int name_buffer_size = 64;
-		//char name_buffer[name_buffer_size] = "";
-		//ImGui::InputText(selected_transform->gameobject->GetName(), name_buffer, name_buffer_size);//finish
 		ImGui::InputText("", &selected_transform->gameobject->name);
 
 		//todo add enable / disable for each component

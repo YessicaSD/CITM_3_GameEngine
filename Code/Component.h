@@ -11,7 +11,7 @@ public:
 	virtual void PropertiesEditor() {};
 	void SetActive(bool value);
 
-private:
+protected:
 	virtual void OnUpdate(float dt) {};
 	virtual void OnPostUpdate() {};
 	virtual void OnEnable() {};
@@ -22,7 +22,7 @@ public:
 	//The gameobject which contains this component
 	GameObject* gameobject = nullptr;
 
-private: 
+protected: 
 	bool enabled = true;
 	
 	friend class GameObject;
