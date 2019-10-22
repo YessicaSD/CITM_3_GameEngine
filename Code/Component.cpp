@@ -27,13 +27,11 @@ bool Component::CollapsigHeaderWithCheckbox()
 	bool header_expanded = ImGui::CollapsingHeader("", ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_OpenOnArrow);
 	ImGui::PopID();
 	ImGui::SameLine();
-	LOG("%d", enabled);
-	bool checkbox_pressed = ImGui::Checkbox(name.c_str(), &enabled);
-	LOG("%d", enabled);
-	//bool checkbox_pressed = ImGui::IsItemClicked();
+	ImGui::Checkbox(name.c_str(), &enabled);
+	bool checkbox_pressed = ImGui::IsItemClicked();//INFO: We're using IsItemClicked because the Checkbox function is always returning us false
 	if (checkbox_pressed)
 	{
 		EnableComponent(!enabled);
 	}
-	return header_expanded && !checkbox_pressed;
+	return header_expanded;
 }
