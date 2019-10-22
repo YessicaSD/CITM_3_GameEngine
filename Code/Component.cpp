@@ -24,7 +24,7 @@ void Component::EnableComponent(bool value)
 bool Component::CollapsigHeaderWithCheckbox()
 {
 	ImGui::PushID(name.c_str());//Because we don't want to display any label, the header can get confused with other headers without name and we need to push an id
-	bool header_expanded = ImGui::CollapsingHeader("", ImGuiTreeNodeFlags_AllowItemOverlap);
+	bool header_expanded = ImGui::CollapsingHeader("", ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_OpenOnArrow);
 	ImGui::PopID();
 	ImGui::SameLine();
 	LOG("%d", enabled);
@@ -35,5 +35,5 @@ bool Component::CollapsigHeaderWithCheckbox()
 	{
 		EnableComponent(!enabled);
 	}
-	return /*header_expanded &&*/ !checkbox_pressed;
+	return header_expanded && !checkbox_pressed;
 }
