@@ -4,3 +4,10 @@ ComponentMaterial::ComponentMaterial(GameObject * gameobject) : Component(gameob
 {
 	name = "Material";
 }
+
+void ComponentMaterial::OnPostUpdate()
+{
+	if (CollapsigHeaderWithCheckbox())
+	{
+	}
+}

@@ -81,7 +81,6 @@ void ComponentMesh::DrawVertexNormal()
 	float lenght = 2;
 	for (uint i = 0; i < mesh->num_vertices*3; i+=3)
 	{
-
 		glBegin(GL_LINES);
 		glVertex3f(mesh->vertices[i], mesh->vertices[i+1], mesh->vertices[i+2]);
 		glVertex3f(mesh->vertices[i] + mesh->normals[j].x*lenght, mesh->vertices[i+1] + mesh->normals[j].y *lenght, mesh->vertices[i+2] + mesh->normals[j].z*lenght);

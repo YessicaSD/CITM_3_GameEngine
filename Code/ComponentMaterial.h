@@ -7,6 +7,8 @@ class ComponentMaterial : public Component
 {
 public:
 	ComponentMaterial(GameObject * gameobject);
+
+	void OnPostUpdate() override;
 };
 
 #endif
