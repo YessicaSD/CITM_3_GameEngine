@@ -8,6 +8,7 @@ ModuleRandom::ModuleRandom(bool start_enabled) : Module(start_enabled)
 
 bool ModuleRandom::Init()
 {
+	LOG("Initializing random seed source from Module Random");
 	// Seed with a real random value, if available
 	pcg_extras::seed_seq_from<std::random_device> seed_source;
 

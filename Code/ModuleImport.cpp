@@ -2,6 +2,7 @@
 #include "ModuleImport.h"
 #include "ModuleRenderer3D.h"
 
+#include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/cfileio.h"
@@ -20,11 +21,23 @@
 #define PAR_SHAPES_IMPLEMENTATION
 #include "par\par_shapes.h"
 
+#pragma comment (lib, "Assimp/libx86/assimp.lib")
+
+void AssimpWrite(const char * text, char * data)
+{
+	
+	std::string tmp_txt = text;
+	std::string::const_iterator index = std::remove(tmp_txt.begin(), tmp_txt.end(), '%');
+	tmp_txt.erase(index, tmp_txt.end());
+	LOG(tmp_txt.c_str());
+}
 bool ModuleImport::Start()
 {
+	LOG("Creating assimp LOG stream");
+	aiLogStream stream;
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
+	stream.callback = AssimpWrite;
 	aiAttachLogStream(&stream);
-	//lenna_img_id = App->texture->LoadTexture("Assets/Baker_house.dds");
 	return true;
 }
 
@@ -130,6 +143,8 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 		CreateGameObjectsFromNodes(node->mChildren[i], new_gameobject->transform, loaded_meshes);
 	}
 }
+
+
 
 bool ModuleImport::CleanUp()
 {
