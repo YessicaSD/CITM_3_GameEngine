@@ -30,7 +30,7 @@ public:
 private:
 	bool showMenuImGui = false;
 	std::vector<Panel*> panels;
-	PanelConfiguration* panel_config = nullptr;
+	PanelConfiguration* panel_configuration = nullptr;
 	PanelConsole* panel_console = nullptr;
 	PanelShortcuts * panel_shortcuts = nullptr;
 	PanelProperties* panel_properties = nullptr;
