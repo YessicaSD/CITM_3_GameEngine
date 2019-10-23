@@ -32,7 +32,7 @@ bool ModuleCamera3D::Start()
 	navigate_up			= new Shortcut("Move camera up",		{ SDL_SCANCODE_R });
 	navigate_down		= new Shortcut("Move camera right",		{ SDL_SCANCODE_F });
 	navigate_fast		= new Shortcut("Move camera faster",	{ SDL_SCANCODE_LSHIFT });
-
+	focus_object		= new Shortcut("Focus to object", { SDL_SCANCODE_F });
 	return ret;
 }
 
@@ -47,6 +47,10 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
+	if (focus_object->Pressed())
+	{
+
+	}
 	vec3 newPos(0,0,0);
 	float speed = 3.0f * dt;
 
