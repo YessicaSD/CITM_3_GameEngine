@@ -17,7 +17,10 @@ Shortcut::Shortcut(std::string name, std::vector<SDL_Scancode> keys) :
 bool Shortcut::Pressed()
 {
 	bool ret = false;
-
+	if (this == nullptr)
+	{
+		return false;
+	}
 	if (keys.size() > 0)
 	{
 		ret = true;

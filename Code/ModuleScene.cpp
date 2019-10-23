@@ -7,9 +7,9 @@
 #include <gl\GL.h>
 
 ModuleScene::ModuleScene(bool start_enabled) :
-	Module(start_enabled),
-	root_gameobject("Root", nullptr)
+	Module(start_enabled)
 {
+	root_gameobject = new GameObject("Root", nullptr);
 }
 
 ModuleScene::~ModuleScene()
@@ -30,6 +30,7 @@ bool ModuleScene::Start()
 // Load assets
 bool ModuleScene::CleanUp()
 {
+	DeleteGameObject(root_gameobject);
 	return true;
 }
 
@@ -51,9 +52,21 @@ void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 	}
 }
 
+void ModuleScene::DeleteGameObject(GameObject * gameobject)
+{
+	if (gameobject->transform->children.size() > 0)
+	{
+		for (std::vector<ComponentTransform*>::iterator iter = gameobject->transform->children.begin(); iter != gameobject->transform->children.end(); ++iter)
+		{
+			DeleteGameObject((*iter)->gameobject);
+		}
+	}
+	delete gameobject;
+}
+
 update_status ModuleScene::PostUpdate()
 {
-	GameObjectPostUpdateRecursive(&root_gameobject.transform);
+	GameObjectPostUpdateRecursive(root_gameobject->transform);
 
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;

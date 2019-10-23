@@ -3,11 +3,24 @@
 #include "ComponentMesh.h"
 
 GameObject::GameObject(std::string name, ComponentTransform * parent):
-	transform(this),
 	name(name)
 {
-	transform.SetParent(parent);
-	components.push_back(&transform);
+	transform = new ComponentTransform(this);
+	transform->SetParent(parent);
+	components.push_back(transform);
+}
+
+GameObject::~GameObject()
+{
+	for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); iter++)
+	{
+		Component* aux = (*iter);
+		if (aux)
+		{
+			delete aux;
+		}
+	}
+	components.clear();
 }
 
 const char * GameObject::GetName()

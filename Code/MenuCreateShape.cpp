@@ -106,8 +106,17 @@ MenuCreateShape::MenuCreateShape()
 }
 MenuCreateShape::~MenuCreateShape()
 {
-	RELEASE_ARRAY(disk_center);
-	RELEASE_ARRAY(disk_normal);
+	//if (disk_center)
+	//{
+	//	delete [] disk_center;
+	//	disk_center = nullptr;
+	//}
+	//if (disk_normal)
+	//{
+	//	delete[] disk_normal;
+	//	disk_normal = nullptr;
+	//}
+	//
 };
 
 void MenuCreateShape::MenuBarTab()
@@ -228,7 +237,7 @@ void MenuCreateShape::MenuItem(std::string name, std::function<par_shapes_mesh*(
 		par_shapes_mesh* mesh = mesh_function();
 		AssetMesh * asset_mesh = App->import->LoadParShapeMesh(mesh);
 		par_shapes_free_mesh(mesh);
-		App->import->CreateGameObjectWithMesh(name, &App->scene->root_gameobject.transform, asset_mesh);
+		App->import->CreateGameObjectWithMesh(name, App->scene->root_gameobject->transform, asset_mesh);
 	}
 	if (button_clicked)
 	{
@@ -286,7 +295,7 @@ void PanelCreateShape::Draw()
 				{
 					for (int z = 0; z < copies[2]; ++z)
 					{
-						App->import->CreateGameObjectWithMesh(shape_name, &App->scene->root_gameobject.transform, asset_mesh);
+						App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
 						//TODO: Move gameobjects
 					}
 				}
@@ -298,7 +307,7 @@ void PanelCreateShape::Draw()
 			{
 				for (int y = 0; y < copies[1]; ++y)
 				{
-					App->import->CreateGameObjectWithMesh(shape_name, &App->scene->root_gameobject.transform, asset_mesh);
+					App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
 					//TODO: Move gameobjects
 				}
 			}
@@ -309,7 +318,7 @@ void PanelCreateShape::Draw()
 			{
 				for (int z = 0; z < copies[2]; ++z)
 				{
-					App->import->CreateGameObjectWithMesh(shape_name, &App->scene->root_gameobject.transform, asset_mesh);
+					App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
 					//TODO: Move gameobjects
 				}
 			}
@@ -320,7 +329,7 @@ void PanelCreateShape::Draw()
 			{
 				for (int z = 0; z < copies[2]; ++z)
 				{
-					App->import->CreateGameObjectWithMesh(shape_name, &App->scene->root_gameobject.transform, asset_mesh);
+					App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
 					//TODO: Move gameobjects
 				}
 			}
@@ -329,7 +338,7 @@ void PanelCreateShape::Draw()
 		{
 			for (int x = 0; x < copies[0]; ++x)
 			{
-				App->import->CreateGameObjectWithMesh(shape_name, &App->scene->root_gameobject.transform, asset_mesh);
+				App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
 				//TODO: Move gameobjects
 			}
 		}
@@ -337,7 +346,7 @@ void PanelCreateShape::Draw()
 		{
 			for (int y = 0; y < copies[1]; ++y)
 			{
-				App->import->CreateGameObjectWithMesh(shape_name, &App->scene->root_gameobject.transform, asset_mesh);
+				App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
 				//TODO: Move gameobjects
 			}
 		}
@@ -345,7 +354,7 @@ void PanelCreateShape::Draw()
 		{
 			for (int z = 0; z < copies[2]; ++z)
 			{
-				App->import->CreateGameObjectWithMesh(shape_name, &App->scene->root_gameobject.transform, asset_mesh);
+				App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
 				//TODO: Move gameobjects
 			}
 		}

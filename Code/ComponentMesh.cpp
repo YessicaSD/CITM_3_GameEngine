@@ -18,6 +18,11 @@ ComponentMesh::ComponentMesh(GameObject * gameobject) : Component(gameobject)
 	point_color[0] = point_color[1] = point_color[2] = point_color[3] = 1.f;
 }
 
+ComponentMesh::~ComponentMesh()
+{
+	CleanUp();
+}
+
 void ComponentMesh::OnPostUpdate()
 {
 	//ACTIVE TEXTURE MODE
@@ -26,7 +31,7 @@ void ComponentMesh::OnPostUpdate()
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glPushMatrix();
-	glMultMatrixf((const GLfloat *)&gameobject->transform.global_matrix[0]);
+	glMultMatrixf((const GLfloat *)&gameobject->transform->global_matrix[0]);
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
@@ -133,4 +138,14 @@ void ComponentMesh::PropertiesEditor()
 		ImGui::Checkbox("View points normals", &render_mode.vertex_normals);
 		ImGui::Checkbox("View faces normals", &render_mode.face_normals);
 	}
+}
+
+void ComponentMesh::CleanUp()
+{
+	if (mesh)
+	{
+		delete mesh;
+		mesh = nullptr;
+	}
+
 }

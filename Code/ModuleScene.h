@@ -27,10 +27,11 @@ public:
 
 private:
 	void GameObjectPostUpdateRecursive(ComponentTransform * object);
+	void DeleteGameObject(GameObject* gameobject);
 
 public:
 	//All gameobjects are children of the root gameobject
-	GameObject root_gameobject;
+	GameObject* root_gameobject;
 };
 
 #endif // !MODULESCENE_H_

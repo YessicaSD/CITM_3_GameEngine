@@ -11,6 +11,7 @@ struct aiMesh;
 class AssetMesh
 {
 public:
+	~AssetMesh();
 	bool LoadVertices(const int num_vertices, const float * vertices);
 	bool LoadVerticesNormals(aiMesh * info);
 	bool LoadFaces(aiMesh* info);
@@ -21,7 +22,7 @@ public:
 	bool GenerateVerticesBuffer();
 	bool GenerateFacesAndNormalsBuffer();
 	bool GenerateUVsBuffer();
-
+	void CleanUp();
 public:
 	//Data ========================
 	uint id_indice = 0u; // index in VRAM

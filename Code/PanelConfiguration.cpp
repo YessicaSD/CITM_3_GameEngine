@@ -3,7 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleGui.h"
 
-#include "mmgr\mmgr.h"
+
 
 #include "imgui\imgui.h"
 #include "imgui/imgui_impl_sdl.h"
@@ -77,7 +77,7 @@ void PanelConfiguration::Draw()
 		ImGui::PlotHistogram("##ASDFASF", msHistory, IM_ARRAYSIZE(msHistory), lastMsArrayIndex, titleGraph, 0.0f, 15.0f, size);
 
 		////MEMORY CONSUMPTION =====================================
-		sMStats stats = m_getMemoryStatistics();
+		/*sMStats stats = m_getMemoryStatistics();
 		static int MemoryArrayIndex = 0;
 		static float lastMemoryConsume = 0.0f;
 		static int loops_counter = 0;
@@ -100,7 +100,7 @@ void PanelConfiguration::Draw()
 		ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
 		ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
 		ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
-		ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
+		ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);*/
 
 
 		//STYLE ===========================================================

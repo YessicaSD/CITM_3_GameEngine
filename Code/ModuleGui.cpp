@@ -73,7 +73,7 @@ bool ModuleGui::Start()
 	panel_assets		= CreatePanel<PanelAssets>("Assets", true);
 	panel_about			= CreatePanel<PanelAbout>("About", true);
 
-	create_menu = DBG_NEW MenuCreateShape();
+	create_menu = new MenuCreateShape();
 
 	return true;
 }
@@ -84,7 +84,7 @@ update_status ModuleGui::PreUpdate()
 		iter != panels.end();
 		++iter)
 	{
-		if ((*iter)->shortcut.Pressed())
+		if ((*iter)->shortcut->Pressed())
 		{
 			(*iter)->SwitchActive();
 		}
@@ -122,13 +122,30 @@ update_status ModuleGui::PostUpdate()
 
 bool ModuleGui::CleanUp()
 {
-	RELEASE(create_menu);
+	if (create_menu)
+	{
+		delete create_menu;
+		create_menu = nullptr;
+	}
+	
 	for (std::vector<Panel*>::reverse_iterator iter = panels.rbegin(); iter != panels.rend(); ++iter)
 	{
-		RELEASE((*iter));
+		if ((*iter))
+		{
+			RELEASE(*iter);
+		}
 	}
 	panels.clear();
 	panel_console = nullptr;
+	
+	if (int size = shortcuts.size() > 0)
+	{
+		for (std::vector<Shortcut*>::iterator iter = shortcuts.begin(); iter != shortcuts.end(); ++iter)
+		{
+			RELEASE((*iter));
+		}
+		shortcuts.clear();
+	}
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 

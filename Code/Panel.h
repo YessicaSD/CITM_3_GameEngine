@@ -10,7 +10,7 @@
 class Panel
 {
 public:
-	Shortcut shortcut;
+	Shortcut* shortcut = nullptr;
 
 protected:
 	bool active = false;

@@ -5,8 +5,7 @@ Panel::Panel(std::string name, bool active, std::vector<SDL_Scancode> shortcuts)
 	name(name),
 	active(active)
 {
-	shortcut.name = name;
-	shortcut.keys = shortcuts;
+	shortcut = new Shortcut(name, shortcuts);
 }
 
 void Panel::SetActive(bool value)
@@ -24,7 +23,14 @@ bool Panel::IsActive() const
 }
 bool Panel::HasShortcut()
 {
-	return (shortcut.keys.size() > 0u && shortcut.keys[0] != SDL_SCANCODE_UNKNOWN);
+	if (shortcut)
+	{
+		return (shortcut->keys.size() > 0u && shortcut->keys[0] != SDL_SCANCODE_UNKNOWN);
+	}
+	else
+	{
+		return false;
+	}
 }
 void Panel::SetName(std::string name)
 {

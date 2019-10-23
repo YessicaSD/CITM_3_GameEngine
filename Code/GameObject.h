@@ -14,7 +14,7 @@ class GameObject
 {
 public:
 	GameObject(std::string name, ComponentTransform * parent);
-
+	~GameObject();
 	bool OnStart();
 	bool OnUpdate(float dt);
 	bool OnPostUpdate();
@@ -39,7 +39,7 @@ public:
 	const char * GetName();
 
 public:
-	ComponentTransform transform;
+	ComponentTransform* transform;
 
 private:
 	bool active = true;
@@ -48,6 +48,7 @@ private:
 
 	friend PanelProperties;
 	friend PanelHierarchy;
+	friend class ModuleScene;
 };
 
 #endif // !GAMEOBJECT_H_

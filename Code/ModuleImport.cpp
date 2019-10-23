@@ -43,7 +43,7 @@ bool ModuleImport::LoadMesh(const char * path)
 			object_meshes.push_back(asset_mesh);
 			meshes.push_back(asset_mesh);
 		}
-		CreateGameObjectsFromNodes(scene->mRootNode, &App->scene->root_gameobject.transform, object_meshes);
+		CreateGameObjectsFromNodes(scene->mRootNode, App->scene->root_gameobject->transform, object_meshes);
 		aiReleaseImport(scene);
 	}
 	else
@@ -94,7 +94,7 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 
 	//TODO: Search if there is a better way to convert from aiMatrix4x4 to math::float4x4 (both are arrays with 16 positions at the end)
 	//V1
-	new_gameobject->transform.local_matrix.Set(
+	new_gameobject->transform->local_matrix.Set(
 		node->mTransformation.a1, node->mTransformation.b1, node->mTransformation.c1, node->mTransformation.d1,
 		node->mTransformation.a2, node->mTransformation.b2, node->mTransformation.c2, node->mTransformation.d2,
 		node->mTransformation.a3, node->mTransformation.b3, node->mTransformation.c3, node->mTransformation.d3,
@@ -109,8 +109,8 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 
 	//TODO: Calculate global matrix after that, don't set it directly to the local matrix of the fbx node
 	//V1
-	new_gameobject->transform.global_matrix = new_gameobject->transform.local_matrix * parent->global_matrix;
-	new_gameobject->transform.UpdatePos();
+	new_gameobject->transform->global_matrix = new_gameobject->transform->local_matrix * parent->global_matrix;
+	new_gameobject->transform->UpdatePos();
 
 	//V2
 	//new_gameobject->transform.global_matrix = parent->global_matrix * new_gameobject->transform.local_matrix;
@@ -127,7 +127,7 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 
 	for (int i = 0 ; i < node->mNumChildren; ++i)
 	{
-		CreateGameObjectsFromNodes(node->mChildren[i], &new_gameobject->transform, loaded_meshes);
+		CreateGameObjectsFromNodes(node->mChildren[i], new_gameobject->transform, loaded_meshes);
 	}
 }
 

@@ -18,11 +18,12 @@ class ComponentMesh : public Component
 {
 public:
 	ComponentMesh(GameObject * gameobject);
+	~ComponentMesh();
 	void OnPostUpdate() override;
 	void DrawVertexNormal();
 	void DrawNormals();
 	void PropertiesEditor() override;
-
+	void CleanUp() override;
 public:
 	//One mesh can be used by more than one mesh component
 	AssetMesh * mesh = nullptr;

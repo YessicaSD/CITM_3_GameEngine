@@ -327,12 +327,6 @@
     <ClInclude Include="pcg-cpp-0.98\include\pcg_uint128.hpp">
       <Filter>Sources\Tools\cpc</Filter>
     </ClInclude>
-    <ClInclude Include="mmgr\mmgr.h">
-      <Filter>Sources\Tools\mmgr</Filter>
-    </ClInclude>
-    <ClInclude Include="mmgr\nommgr.h">
-      <Filter>Sources\Tools\mmgr</Filter>
-    </ClInclude>
     <ClInclude Include="parson\parson.h">
       <Filter>Sources\Tools\parson</Filter>
     </ClInclude>
@@ -568,6 +562,12 @@
       <Filter>Sources\Tools\gpudetect</Filter>
     </ClInclude>
     <ClInclude Include="MenuCreateShape.h" />
+    <ClInclude Include="mmgr\mmgr.h">
+      <Filter>Sources\Tools\mmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="mmgr\nommgr.h">
+      <Filter>Sources\Tools\mmgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -711,9 +711,6 @@
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="mmgr\mmgr.cpp">
-      <Filter>Sources\Tools\mmgr</Filter>
-    </ClCompile>
     <ClCompile Include="parson\parson.c">
       <Filter>Sources\Tools\parson</Filter>
     </ClCompile>
@@ -811,6 +808,9 @@
       <Filter>Sources\Tools\gpudetect</Filter>
     </ClCompile>
     <ClCompile Include="MenuCreateShape.cpp" />
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>Sources\Tools\mmgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">

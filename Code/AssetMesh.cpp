@@ -10,6 +10,11 @@
 
 
 
+AssetMesh::~AssetMesh()
+{
+	CleanUp();
+}
+
 bool AssetMesh::LoadVertices(const int num_vertices, const float * vertices)
 {
 	this->num_vertices = num_vertices;
@@ -129,6 +134,40 @@ bool AssetMesh::GenerateUVsBuffer()
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * uv_num_components * num_vertices, &UVCoord[0], GL_STATIC_DRAW);
 	}
 	return true;
+}
+
+void AssetMesh::CleanUp()
+{
+	if (indices)
+	{
+		delete indices;
+		indices = nullptr;
+	}
+	if (vertices)
+	{
+		delete vertices;
+		vertices = nullptr;
+	}
+	if (normals)
+	{
+		delete normals;
+		normals = nullptr;
+	}
+	if (faces_normals)
+	{
+		delete faces_normals;
+		faces_normals = nullptr;
+	}
+	if (face_middle_point)
+	{
+		delete face_middle_point;
+		face_middle_point = nullptr;
+	}
+	if (UVCoord)
+	{
+		delete UVCoord;
+		UVCoord = nullptr;
+	}
 }
 
 

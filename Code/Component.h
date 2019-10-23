@@ -16,7 +16,7 @@ private:
 	virtual void OnPostUpdate() {};
 	virtual void OnEnable() {};
 	virtual void OnDisable() {};
-
+	virtual void CleanUp() {};
 
 public:
 	//The gameobject which contains this component

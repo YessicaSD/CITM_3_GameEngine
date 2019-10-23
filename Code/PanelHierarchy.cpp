@@ -17,7 +17,7 @@ PanelHierarchy::PanelHierarchy(std::string name, bool active, std::vector<SDL_Sc
 void PanelHierarchy::Draw()
 {
 	ImGui::Begin("Hierarchy");
-	DisplayChildren(&App->scene->root_gameobject.transform);
+	DisplayChildren(App->scene->root_gameobject->transform);
 	//for (std::vector<ComponentTransform*>::iterator iter = App->scene->root_gameobject.transform.children.begin();
 	//	iter != App->scene->root_gameobject.transform.children.end();
 	//	++iter)
