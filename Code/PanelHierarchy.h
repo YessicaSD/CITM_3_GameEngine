@@ -15,7 +15,7 @@ public:
 	void DisplayChildren(ComponentTransform * gameobject);
 	
 private:
-	const ImVec4 hover_color;
+	ImVec4 hover_color;
 
 	friend class ModuleGui;
 };

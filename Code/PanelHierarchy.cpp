@@ -16,6 +16,7 @@ PanelHierarchy::PanelHierarchy(std::string name, bool active, std::vector<SDL_Sc
 
 void PanelHierarchy::Draw()
 {
+	hover_color = ImGui::GetStyleColorVec4(ImGuiCol_::ImGuiCol_ButtonActive);//TODO: Put in constructor
 	ImGui::Begin("Hierarchy");
 	DisplayChildren(App->scene->root_gameobject->transform);
 	//for (std::vector<ComponentTransform*>::iterator iter = App->scene->root_gameobject.transform.children.begin();

@@ -205,7 +205,6 @@ void MenuCreateShape::MenuBarTab()
 		//par_shapes_create_lsystem();
 		//par_shapes_create_rock();
 
-		//TODO: Show menu to configurate this
 		ImGui::EndMenu();
 	}
 }
@@ -242,15 +241,9 @@ void MenuCreateShape::MenuItem(std::string name, std::function<par_shapes_mesh*(
 	if (button_clicked)
 	{
 		panel->SetActive(true);
-		//TODO: Open panel
-		//Keep a pointer to the panel you've accessed
-		//Draw it every frame the panel is closed
-		//This should be done in another function, because this one is going to be executed while creating the main menu bar
 	}
 }
 
-//TODO: Pass arguments
-//Mainly the function to be called
 void PanelCreateShape::CreateMultiple()
 {
 	ImGui::Separator();

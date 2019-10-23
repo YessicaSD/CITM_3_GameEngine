@@ -13,6 +13,8 @@
 
 ComponentMesh::ComponentMesh(GameObject * gameobject) : Component(gameobject)
 {
+	name = "Mesh";
+
 	fill_color[0] = fill_color[1] = fill_color[2] = fill_color[3] = 1.f;
 	line_color[0] = line_color[1] = line_color[2] = line_color[3] = 1.f;
 	point_color[0] = point_color[1] = point_color[2] = point_color[3] = 1.f;
@@ -84,7 +86,6 @@ void ComponentMesh::DrawVertexNormal()
 	float lenght = 2;
 	for (uint i = 0; i < mesh->num_vertices*3; i+=3)
 	{
-
 		glBegin(GL_LINES);
 		glVertex3f(mesh->vertices[i], mesh->vertices[i+1], mesh->vertices[i+2]);
 		glVertex3f(mesh->vertices[i] + mesh->normals[j].x*lenght, mesh->vertices[i+1] + mesh->normals[j].y *lenght, mesh->vertices[i+2] + mesh->normals[j].z*lenght);
@@ -110,7 +111,7 @@ void ComponentMesh::DrawNormals()
 
 void ComponentMesh::PropertiesEditor()
 {
-	if (ImGui::CollapsingHeader("Mesh"))
+	if (CollapsigHeaderWithCheckbox())
 	{
 		ImGui::Text("Render options");
 

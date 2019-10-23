@@ -18,8 +18,7 @@ public:
 	bool OnStart();
 	bool OnUpdate(float dt);
 	bool OnPostUpdate();
-	bool OnActivate();
-	bool OnDeactivate();
+	void SetActive(bool value);
 
 	template <class ComponentClass>
 	ComponentClass * CreateComponent()
@@ -37,6 +36,10 @@ public:
 	//}
 
 	const char * GetName();
+
+private:
+	bool ActivateComponents();
+	bool DeactivateComponents();
 
 public:
 	ComponentTransform* transform;
