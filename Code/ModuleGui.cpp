@@ -132,7 +132,7 @@ bool ModuleGui::CleanUp()
 	{
 		if ((*iter))
 		{
-			RELEASE(*iter);
+			delete (*iter);
 		}
 	}
 	panels.clear();
@@ -142,7 +142,7 @@ bool ModuleGui::CleanUp()
 	{
 		for (std::vector<Shortcut*>::iterator iter = shortcuts.begin(); iter != shortcuts.end(); ++iter)
 		{
-			RELEASE((*iter));
+			delete ((*iter));
 		}
 		shortcuts.clear();
 	}

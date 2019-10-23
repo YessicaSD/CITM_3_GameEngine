@@ -62,6 +62,14 @@ void ComponentMesh::OnPostUpdate()
 		glColor4f(point_color[0], point_color[1], point_color[2], point_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	}
+	if (render_mode.vertex_normals)
+	{
+		DrawVertexNormal();
+	}
+	if (render_mode.face_normals)
+	{
+		DrawNormals();
+	}
 
 	//UV
 	//if (mesh->UVCoord != nullptr)
@@ -84,14 +92,18 @@ void ComponentMesh::DrawVertexNormal()
 	glColor3f(0.2f, 1.f, 0.25f);
 	uint j = 0;
 	float lenght = 2;
-	for (uint i = 0; i < mesh->num_vertices*3; i+=3)
+	if (mesh->vertex_normals != nullptr)
 	{
-		glBegin(GL_LINES);
-		glVertex3f(mesh->vertices[i], mesh->vertices[i+1], mesh->vertices[i+2]);
-		glVertex3f(mesh->vertices[i] + mesh->normals[j].x*lenght, mesh->vertices[i+1] + mesh->normals[j].y *lenght, mesh->vertices[i+2] + mesh->normals[j].z*lenght);
-		++j;
-		glEnd();
+		for (uint i = 0; i < mesh->num_vertices * 3; i += 3)
+		{
+			glBegin(GL_LINES);
+			glVertex3f(mesh->vertices[i], mesh->vertices[i + 1], mesh->vertices[i + 2]);
+			glVertex3f(mesh->vertices[i] + mesh->vertex_normals[j].x*lenght, mesh->vertices[i + 1] + mesh->vertex_normals[j].y *lenght, mesh->vertices[i + 2] + mesh->vertex_normals[j].z*lenght);
+			++j;
+			glEnd();
+		}
 	}
+
 	glColor3f(1, 1, 1);
 }
 
@@ -138,6 +150,8 @@ void ComponentMesh::PropertiesEditor()
 		ImGui::Text("View normals");
 		ImGui::Checkbox("View points normals", &render_mode.vertex_normals);
 		ImGui::Checkbox("View faces normals", &render_mode.face_normals);
+
+
 	}
 }
 

@@ -27,8 +27,8 @@ bool AssetMesh::LoadVerticesNormals(aiMesh * info)
 {
 	if (info->HasNormals())
 	{
-		normals = new float3[info->mNumVertices];
-		memcpy(normals, info->mNormals, sizeof(aiVector3D) * num_vertices);
+		vertex_normals = new float3[info->mNumVertices];
+		memcpy(vertex_normals, info->mNormals, sizeof(aiVector3D) * num_vertices);
 	}
 	return true;
 }
@@ -148,10 +148,10 @@ void AssetMesh::CleanUp()
 		delete vertices;
 		vertices = nullptr;
 	}
-	if (normals)
+	if (vertex_normals)
 	{
-		delete normals;
-		normals = nullptr;
+		delete vertex_normals;
+		vertex_normals = nullptr;
 	}
 	if (faces_normals)
 	{
