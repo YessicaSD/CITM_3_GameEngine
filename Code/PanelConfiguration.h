@@ -27,9 +27,7 @@ private:
 	float msHistory[CURRENT_FPS_MAX_VALUE];
 	float RamHistory[CURRENT_FPS_MAX_VALUE];
 	
-	
-	
-
+	friend class ModuleGui;
 };
 #endif // !PANEL_CONFIGURATION_H_
 

@@ -13,12 +13,12 @@ PanelConsole::~PanelConsole()
 void PanelConsole::Log(const char * sentence)
 {
 	output.appendf(sentence);
-
 }
 
 void PanelConsole::Draw()
 {
-	//ImGui::Begin(name.c_str(), &active);
-	ImGui::TextUnformatted(output.begin());
-	//ImGui::End();
+	ImGui::Begin(name.c_str());
+	ImGui::Text("Hello");
+	ImGui::End();
+	//ImGui::TextUnformatted(output.begin());
 }

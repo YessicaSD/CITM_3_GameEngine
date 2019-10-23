@@ -35,7 +35,7 @@ private:
 	PanelShortcuts * panel_shortcuts = nullptr;
 	PanelProperties* panel_properties = nullptr;
 	PanelAbout* panel_about = nullptr;
-	PanelHierarchy * panel_hirearchy = nullptr;
+	PanelHierarchy * panel_hierarchy = nullptr;
 	PanelAssets* panel_assets = nullptr;
 	std::vector<Shortcut *> shortcuts;
 

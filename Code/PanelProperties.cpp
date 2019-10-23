@@ -9,6 +9,7 @@
 PanelProperties::PanelProperties(std::string name, bool state, std::vector<SDL_Scancode> shortcuts): Panel(name, state, shortcuts)
 {
 }
+
 void PanelProperties::SetSelectedTransform(ComponentTransform * transform)
 {
 	if (transform != nullptr)

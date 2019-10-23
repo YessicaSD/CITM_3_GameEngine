@@ -12,6 +12,8 @@ public:
 
 	void Log(const char* sentence);
 	void Draw() override;
+
+	friend class ModuleGui;
 };
 #endif // !PANEL_CONSOLE_H_
 

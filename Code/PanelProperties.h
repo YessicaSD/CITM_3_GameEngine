@@ -15,6 +15,7 @@ public:
 	void Draw() override;
 
 	friend class PanelHierarchy;
+	friend class ModuleGui;
 };
 
 
