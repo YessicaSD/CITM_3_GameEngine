@@ -73,7 +73,7 @@ bool ModuleGui::Start()
 	panel_assets		= CreatePanel<PanelAssets>("Assets", true);
 	panel_about			= CreatePanel<PanelAbout>("About", true);
 
-	create_menu = new MenuCreateShape();
+	create_menu = DBG_NEW MenuCreateShape();
 
 	return true;
 }

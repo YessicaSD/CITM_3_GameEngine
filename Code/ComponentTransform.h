@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
+#include "MathGeoLib/include/Math/Quat.h"
 #include <vector>
 
 class GameObject;
@@ -18,8 +19,8 @@ public:
 	//void SetChildren(std::vector<Transform*> children);
 	void UpdatePos();
 public:
-	float3 position;
-	float3 rotation;
+	float3 position, scale;
+	Quat rotation;
 
 	//You should modify the local matrix, the global matrix is recalculated from it and the parents' local matrix
 	float4x4 local_matrix;

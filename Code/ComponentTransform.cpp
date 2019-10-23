@@ -22,5 +22,6 @@ void ComponentTransform::UpdatePos()
 	float4 homogeneous_vec_pos = { 0,0,0,1 };
 	homogeneous_vec_pos = homogeneous_vec_pos * global_matrix;
 	position = { homogeneous_vec_pos.x, homogeneous_vec_pos.y,homogeneous_vec_pos.z };
+	global_matrix.Decompose(position, rotation, scale);
 
 }
