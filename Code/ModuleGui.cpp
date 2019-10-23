@@ -69,9 +69,9 @@ bool ModuleGui::Start()
 	panel_shortcuts		= CreatePanel<PanelShortcuts>("Shortcuts", true);
 	panel_hierarchy		= CreatePanel<PanelHierarchy>("Hirearchy", true);
 	panel_properties	= CreatePanel<PanelProperties>("Properties", true);
-	panel_configuration		= CreatePanel<PanelConfiguration>("Configuration", true);
+	panel_configuration	= CreatePanel<PanelConfiguration>("Configuration", true);
 	panel_assets		= CreatePanel<PanelAssets>("Assets", true);
-						  CreatePanel<PanelAbout>("About", true);
+	panel_about			= CreatePanel<PanelAbout>("About", true);
 
 	create_menu = new MenuCreateShape();
 
@@ -217,7 +217,9 @@ void ModuleGui::MainMenuBar(update_status &ret)
 	if (ImGui::BeginMenu("Help"))
 	{
 		if (ImGui::MenuItem("Menu ImGui example		"))
+		{
 			showMenuImGui = !showMenuImGui;
+		}
 		if (ImGui::MenuItem("Documentation		"))
 			App->RequestBrowser("https://github.com/YessicaSD/CITM_3_GameEngine/wiki");
 		if(ImGui::MenuItem("Download latest		"))
@@ -226,7 +228,11 @@ void ModuleGui::MainMenuBar(update_status &ret)
 			App->RequestBrowser("https://github.com/YessicaSD/CITM_3_GameEngine/issues");
 		if (ImGui::MenuItem("License		"))
 			App->RequestBrowser("https://github.com/YessicaSD/CITM_3_GameEngine/blob/master/LICENSE.md");
-	
+		
+		if(ImGui::MenuItem("About", NULL, &panel_about->active))
+		{
+			panel_about->SetActive(panel_about->active);
+		}
 
 		ImGui::EndMenu();
 	}
