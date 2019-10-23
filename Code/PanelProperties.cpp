@@ -22,20 +22,15 @@ void PanelProperties::Draw()
 	ImGui::Begin(name.c_str());
 	if (selected_transform != nullptr)
 	{
+		ImGui::PushID(name.c_str());//It doesn't have a name which identifies it, so we must Push and Pop the ID
 		if (ImGui::Checkbox("", &selected_transform->gameobject->active))
 		{
-			LOG("Active checkbox");
-			//TODO: Call SetActive with the corresponding value
+			selected_transform->gameobject->SetActive(selected_transform->gameobject->active);
 		}
+		ImGui::PopID();
 		ImGui::SameLine();
-		//const int name_buffer_size = 64;
-		//char name_buffer[name_buffer_size] = "";
-		//ImGui::InputText(selected_transform->gameobject->GetName(), name_buffer, name_buffer_size);//finish
 		ImGui::InputText("", &selected_transform->gameobject->name);
 
-		//todo add enable / disable for each component
-		//maybe on a function
-		//so not all of them have that capability
 		for (std::vector<Component *>::iterator iter = selected_transform->gameobject->components.begin();
 			iter != selected_transform->gameobject->components.end();
 			++iter)

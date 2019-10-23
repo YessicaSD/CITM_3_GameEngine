@@ -49,7 +49,7 @@ bool GameObject::OnPostUpdate()
 	return true;
 }
 
-bool GameObject::OnActivate()
+bool GameObject::ActivateComponents()
 {
 	if (!active) 
 	{
@@ -64,7 +64,7 @@ bool GameObject::OnActivate()
 	return true;
 }
 
-bool GameObject::OnDeactivate()
+bool GameObject::DeactivateComponents()
 {
 	if (active) 
 	{
@@ -77,4 +77,9 @@ bool GameObject::OnDeactivate()
 		active = false;
 	}
 	return true;
+}
+
+void GameObject::SetActive(bool value)
+{
+	active = value;
 }
