@@ -4,6 +4,7 @@
 #include "SDL/include/SDL.h"
 #include <xstring>
 #include <stdio.h>
+#include "glew/include/GL/glew.h"
 
 ModuleHardware::ModuleHardware(const char * name):Module(true, name)
 {
@@ -49,15 +50,8 @@ ModuleHardware::ModuleHardware(const char * name):Module(true, name)
 
 update_status ModuleHardware::PreUpdate()
 {
-	static unsigned __int64 video_mem_budget, video_mem_usage, video_mem_available, video_mem_reserved;
+	
 
-	if (getGraphicsDeviceInfo(nullptr, nullptr, nullptr, &video_mem_budget, &video_mem_usage, &video_mem_available, &video_mem_reserved))
-	{
-		info.vram_mb_budget = float(video_mem_budget) / (1024.f * 1024.f);
-		info.vram_mb_usage = float(video_mem_usage) / (1024.f * 1024.f);
-		info.vram_mb_available = float(video_mem_available) / (1024.f * 1024.f);
-		info.vram_mb_reserved = float(video_mem_reserved) / (1024.f * 1024.f);
-	}
 	return update_status::UPDATE_CONTINUE;
 }
 

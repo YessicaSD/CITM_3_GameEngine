@@ -19,7 +19,8 @@ bool ModuleAudio::Init()
 	if (BASS_Init(-1, 44100, BASS_DEVICE_3D, 0, NULL) != TRUE)
 	{
 		LOG("BASS_Init() error num: %i", BASS_ErrorGetCode());
-		return false;
+		this->Disable();
+		return true;
 	}
 	else
 	{
@@ -38,7 +39,7 @@ bool ModuleAudio::Init()
 	if (general_volume == -1)
 	{
 		LOG("BASS_GetVolum error: %i", BASS_ErrorGetCode());
-		return false;
+		this->Disable();
 	}
 	return true;
 }

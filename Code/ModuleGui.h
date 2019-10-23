@@ -30,12 +30,12 @@ public:
 private:
 	bool showMenuImGui = false;
 	std::vector<Panel*> panels;
-	PanelConfiguration* panel_config = nullptr;
+	PanelConfiguration* panel_configuration = nullptr;
 	PanelConsole* panel_console = nullptr;
 	PanelShortcuts * panel_shortcuts = nullptr;
 	PanelProperties* panel_properties = nullptr;
 	PanelAbout* panel_about = nullptr;
-	PanelHierarchy * panel_hirearchy = nullptr;
+	PanelHierarchy * panel_hierarchy = nullptr;
 	PanelAssets* panel_assets = nullptr;
 	std::vector<Shortcut *> shortcuts;
 
@@ -70,6 +70,7 @@ private:
 	friend class Panel;
 	friend class PanelShortcuts;
 	friend class PanelHierarchy;
+	friend class ModuleCamera3D;
 
 };
 #endif // !MODULEGUI_H_

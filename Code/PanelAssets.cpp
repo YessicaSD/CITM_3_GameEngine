@@ -26,8 +26,6 @@ void PanelAssets::Draw()
 			++i;
 
 		}
-
-
 	}
 	ImGui::End();
 }

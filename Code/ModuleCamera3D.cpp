@@ -2,8 +2,9 @@
 #include "Application.h"
 #include "ModuleCamera3D.h"
 #include "ModuleInput.h"
+#include "ModuleGui.h"
 #include "Shortcut.h"
-
+#include "PanelProperties.h"
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
 	CalculateViewMatrix();
@@ -32,7 +33,7 @@ bool ModuleCamera3D::Start()
 	navigate_up			= new Shortcut("Move camera up",		{ SDL_SCANCODE_R });
 	navigate_down		= new Shortcut("Move camera right",		{ SDL_SCANCODE_F });
 	navigate_fast		= new Shortcut("Move camera faster",	{ SDL_SCANCODE_LSHIFT });
-
+	focus_object		= new Shortcut("Focus to object", { SDL_SCANCODE_F });
 	return ret;
 }
 
@@ -47,6 +48,12 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
+	if (focus_object->Pressed())
+	{
+		const ComponentTransform* selected_transform = App->gui->panel_properties->GetSelecteTransform();
+		if (selected_transform != nullptr)
+			LookAt(vec3(selected_transform->position.x, selected_transform->position.y, selected_transform->position.z));
+	}
 	vec3 newPos(0,0,0);
 	float speed = 3.0f * dt;
 

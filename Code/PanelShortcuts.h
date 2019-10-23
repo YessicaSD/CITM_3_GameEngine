@@ -23,6 +23,8 @@ private:
 	bool modifying_shortcut = false;
 	Shortcut * shortcut_to_modify = nullptr;
 	std::vector<SDL_Scancode> new_key_combination;
+
+	friend class ModuleGui;
 };
 
 #endif

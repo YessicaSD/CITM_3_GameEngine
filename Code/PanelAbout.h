@@ -8,9 +8,8 @@ class PanelAbout : public Panel
 public:
 	PanelAbout(std::string name, bool active = false, std::vector<SDL_Scancode> shortcuts = {});
 	void Draw() override;
+
+	friend class ModuleGui;
 };
-
-
-
 
 #endif // !PANEL_ABOUT_H_

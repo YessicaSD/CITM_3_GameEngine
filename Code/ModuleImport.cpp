@@ -110,6 +110,8 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 	//TODO: Calculate global matrix after that, don't set it directly to the local matrix of the fbx node
 	//V1
 	new_gameobject->transform.global_matrix = new_gameobject->transform.local_matrix * parent->global_matrix;
+	new_gameobject->transform.UpdatePos();
+
 	//V2
 	//new_gameobject->transform.global_matrix = parent->global_matrix * new_gameobject->transform.local_matrix;
 

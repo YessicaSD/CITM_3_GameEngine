@@ -2,6 +2,10 @@
 #include "Application.h"
 #include "Globals.h"
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #include "SDL/include/SDL.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
@@ -89,5 +93,6 @@ int main(int argc, char ** argv)
 	delete App;
 	App = nullptr;
 	LOG("Exiting game '%s'...\n", TITLE);
+	_CrtDumpMemoryLeaks();
 	return main_return;
 }

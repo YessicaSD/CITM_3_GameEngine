@@ -16,7 +16,8 @@ public:
 	
 private:
 	ImVec4 hover_color;
-	//TODO: Make this configurable
+
+	friend class ModuleGui;
 };
 
 #endif

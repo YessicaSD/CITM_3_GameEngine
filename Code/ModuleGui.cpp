@@ -65,17 +65,15 @@ bool ModuleGui::Init()
 
 bool ModuleGui::Start()
 {
-	panel_console = CreatePanel<PanelConsole>("Console", true);
-	panel_shortcuts = CreatePanel<PanelShortcuts>("Shortcuts", true);
-	panel_hirearchy = CreatePanel<PanelHierarchy>("Hirearchy", true);
-	panel_properties = CreatePanel<PanelProperties>("Properties", true);
-	panel_config = CreatePanel<PanelConfiguration>("Configuration", true);
-	
-	CreatePanel<PanelAbout>("About", true);
-	panel_assets = CreatePanel<PanelAssets>("Assets", true);
-	panel_console = CreatePanel <PanelConsole>("Console", true);
+	panel_console		= CreatePanel<PanelConsole>("Console", true);
+	panel_shortcuts		= CreatePanel<PanelShortcuts>("Shortcuts", true);
+	panel_hierarchy = CreatePanel<PanelHierarchy>("Hirearchy", true);
+	panel_properties	= CreatePanel<PanelProperties>("Properties", true);
+	panel_configuration	= CreatePanel<PanelConfiguration>("Configuration", true);
+	panel_assets		= CreatePanel<PanelAssets>("Assets", true);
+	panel_about			= CreatePanel<PanelAbout>("About", true);
 
-	create_menu = new MenuCreateShape();
+	create_menu = DBG_NEW MenuCreateShape();
 
 	return true;
 }
@@ -102,6 +100,8 @@ update_status ModuleGui::PostUpdate()
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
+	MainMenuBar(ret);
+
 	for (std::vector<Panel*>::iterator iter = panels.begin(); iter != panels.end(); ++iter)
 	{
 		if ((*iter)->IsActive())
@@ -109,8 +109,6 @@ update_status ModuleGui::PostUpdate()
 			(*iter)->Draw();
 		}
 	}
-
-	MainMenuBar(ret);
 	if (showMenuImGui)
 	{
 		ImGui::ShowDemoWindow();
@@ -166,13 +164,31 @@ void ModuleGui::MainMenuBar(update_status &ret)
 
 	if (ImGui::BeginMenu("Windows"))
 	{
-		bool console_state = panel_console->IsActive();
-		if (ImGui::MenuItem("Console window			", NULL, &console_state))
+
+		if (ImGui::MenuItem("Hierarchy", NULL, &panel_hierarchy->active))
 		{
-			panel_console->SwitchActive();
-
+			panel_console->SetActive(panel_hierarchy->active);
 		}
-
+		if(ImGui::MenuItem("Properties", NULL, &panel_properties->active))
+		{
+			panel_properties->SetActive(panel_properties->active);
+		}
+		if (ImGui::MenuItem("Assets", NULL, &panel_assets->active))
+		{
+			panel_assets->SetActive(panel_assets->active);
+		}
+		if (ImGui::MenuItem("Debug console", NULL, &panel_console->active))
+		{
+			panel_console->SetActive(panel_console->active);
+		}
+		if (ImGui::MenuItem("Configuration", NULL, &panel_configuration->active))
+		{
+			panel_configuration->SetActive(panel_configuration->active);
+		}
+		if (ImGui::MenuItem("Shortcuts", NULL, &panel_shortcuts->active))
+		{
+			panel_shortcuts->SetActive(panel_shortcuts->active);
+		}
 		ImGui::EndMenu();
 	}
 	
@@ -201,7 +217,9 @@ void ModuleGui::MainMenuBar(update_status &ret)
 	if (ImGui::BeginMenu("Help"))
 	{
 		if (ImGui::MenuItem("Menu ImGui example		"))
+		{
 			showMenuImGui = !showMenuImGui;
+		}
 		if (ImGui::MenuItem("Documentation		"))
 			App->RequestBrowser("https://github.com/YessicaSD/CITM_3_GameEngine/wiki");
 		if(ImGui::MenuItem("Download latest		"))
@@ -210,7 +228,11 @@ void ModuleGui::MainMenuBar(update_status &ret)
 			App->RequestBrowser("https://github.com/YessicaSD/CITM_3_GameEngine/issues");
 		if (ImGui::MenuItem("License		"))
 			App->RequestBrowser("https://github.com/YessicaSD/CITM_3_GameEngine/blob/master/LICENSE.md");
-	
+		
+		if(ImGui::MenuItem("About", NULL, &panel_about->active))
+		{
+			panel_about->SetActive(panel_about->active);
+		}
 
 		ImGui::EndMenu();
 	}

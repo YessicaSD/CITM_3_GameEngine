@@ -10,6 +10,8 @@ public:
 	float image_size = 100;
 	PanelAssets(std::string name, bool state, std::vector<SDL_Scancode> shortcuts = {});
 	void Draw();
+
+	friend class ModuleGui;
 };
 
 
