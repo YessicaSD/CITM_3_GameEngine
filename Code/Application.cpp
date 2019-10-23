@@ -162,8 +162,9 @@ bool Application::CleanUp()
 
 	while (item != list_modules.rend() && ret == true)
 	{
-
+		
 		ret = (*item)->CleanUp();
+
 		item = ++item;
 	}
 	gui = nullptr;

@@ -37,7 +37,7 @@ public:
 	float* vertices = nullptr;
 
 	//Normals ===================
-	float3* normals = nullptr;
+	float3* vertex_normals = nullptr;
 	uint num_faces = 0u;
 	//TODO: We don't need float 3 pointer, we can do it with float, as the vertices
 	float3* faces_normals = nullptr;

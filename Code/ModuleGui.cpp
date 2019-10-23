@@ -131,9 +131,7 @@ bool ModuleGui::CleanUp()
 	for (std::vector<Panel*>::reverse_iterator iter = panels.rbegin(); iter != panels.rend(); ++iter)
 	{
 		if ((*iter))
-		{
-			RELEASE(*iter);
-		}
+			delete (*iter);
 	}
 	panels.clear();
 	panel_console = nullptr;
@@ -142,7 +140,8 @@ bool ModuleGui::CleanUp()
 	{
 		for (std::vector<Shortcut*>::iterator iter = shortcuts.begin(); iter != shortcuts.end(); ++iter)
 		{
-			RELEASE((*iter));
+			if((*iter))
+				delete ((*iter));
 		}
 		shortcuts.clear();
 	}
