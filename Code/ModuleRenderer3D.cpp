@@ -154,7 +154,7 @@ update_status ModuleRenderer3D::PreUpdate()
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	// Config  color texture ------------------------------------------
-	glBindTexture(GL_TEXTURE_2D, frame_buffer);
+	glBindTexture(GL_TEXTURE_2D, render_texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -166,7 +166,7 @@ update_status ModuleRenderer3D::PreUpdate()
 	// Attach texture and render buffer to frame buffer -------
 	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_render_buffer);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frame_buffer, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, render_texture, 0);
 
 	// If program can generate the texture ----------------------
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -199,7 +199,7 @@ update_status ModuleRenderer3D::PreUpdate()
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate()
 {
-	//Scene panel
+	LOG("%i", frame_buffer);
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -208,6 +208,8 @@ update_status ModuleRenderer3D::PostUpdate()
 bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
+
+	//TODO: Delete buffers
 
 	SDL_GL_DeleteContext(App->window->gl_context);
 

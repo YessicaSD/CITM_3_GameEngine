@@ -72,7 +72,6 @@ update_status ModuleScene::PostUpdate()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(App->camera->GetViewMatrix());
 
-
 	// Start Buffer Frame ----------------------------------
 	glBindFramebuffer(GL_FRAMEBUFFER, App->renderer3D->frame_buffer);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -81,12 +80,12 @@ update_status ModuleScene::PostUpdate()
 	glStencilFunc(GL_ALWAYS, 1, -1);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
-	GameObjectPostUpdateRecursive(root_gameobject->transform);
-
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;
 	p.wire = false;
 	p.Render();
+
+	GameObjectPostUpdateRecursive(root_gameobject->transform);
 
 	glStencilFunc(GL_ALWAYS, 1, 0);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);

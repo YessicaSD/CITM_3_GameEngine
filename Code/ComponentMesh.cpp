@@ -87,6 +87,8 @@ void ComponentMesh::OnPostUpdate()
 
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
 	glPopMatrix();
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void ComponentMesh::DrawVertexNormal()
