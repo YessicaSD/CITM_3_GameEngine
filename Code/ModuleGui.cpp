@@ -115,9 +115,6 @@ update_status ModuleGui::PostUpdate()
 		ImGui::ShowDemoWindow();
 	}
 
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
 	return ret;
 }
 

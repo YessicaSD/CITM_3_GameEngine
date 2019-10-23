@@ -3,6 +3,7 @@
 #include "ModuleRenderer3D.h"
 
 #include "glew/include/GL/glew.h"
+#include "imgui/imgui_impl_opengl3.h"
 
 
 ModuleRenderer3D::ModuleRenderer3D(const char* name, bool start_enabled) : Module(start_enabled, name)
@@ -105,6 +106,7 @@ bool ModuleRenderer3D::Init()
 		lights[1].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
+		glEnable(GL_TEXTURE_2D);
 	}
 
 	// Projection matrix for
@@ -117,6 +119,9 @@ bool ModuleRenderer3D::Init()
 	color_material = glIsEnabled(GL_COLOR_MATERIAL) == GL_TRUE;
 	texture_2d = glIsEnabled(GL_TEXTURE_2D) == GL_TRUE;
 
+	glGenRenderbuffers(1, &depth_render_buffer);
+	glGenTextures(1, &render_texture);
+	glGenFramebuffers(1, &frame_buffer);
 
 	return ret;
 }
@@ -124,11 +129,11 @@ bool ModuleRenderer3D::Init()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glLoadIdentity();
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->GetViewMatrix());
+	//glMatrixMode(GL_MODELVIEW);
+	//glLoadMatrixf(App->camera->GetViewMatrix());
 
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
@@ -136,16 +141,75 @@ update_status ModuleRenderer3D::PreUpdate()
 	for (uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, App->renderer3D->render_texture);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	return UPDATE_CONTINUE;
 }
 
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate()
 {
+	//Scene panel
+	ImGui::Begin("Scene");
+	ImVec2 current_viewport_size = ImGui::GetContentRegionAvail();
+	ImGui::Image((ImTextureID)render_texture, ImVec2(current_viewport_size.x, current_viewport_size.y), ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::End();
 
-	
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	SDL_GL_SwapWindow(App->window->window);
+
+	glViewport(0, 0, current_viewport_size.x, current_viewport_size.y);
+
+	glMatrixMode(GL_PROJECTION);
+	ProjectionMatrix = perspective(60.0f, (float)current_viewport_size.x / (float)current_viewport_size.y, 0.125f, 512.0f);
+	glLoadMatrixf(&ProjectionMatrix);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
+	// Depth
+	glBindRenderbuffer(GL_RENDERBUFFER, depth_render_buffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, current_viewport_size.x, current_viewport_size.y);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	// Texture
+	glBindTexture(GL_TEXTURE_2D, render_texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, current_viewport_size.x, current_viewport_size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// Depth and Texture to Frame buffer
+	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_render_buffer);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, render_texture, 0);
+
+	// If program can generate the texture 
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		LOG("[Error] creating screen buffer");
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	//Clear
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glLoadIdentity();
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf(App->camera->GetViewMatrix());
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClearColor(0.1, 0.1, 0.1, 1.f);
+
 	return UPDATE_CONTINUE;
 }
 
@@ -170,9 +234,3 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
-
-
-
-
-
-

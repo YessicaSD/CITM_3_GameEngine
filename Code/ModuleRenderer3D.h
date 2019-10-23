@@ -33,5 +33,10 @@ public:
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
+	uint frame_buffer = 0u;
+	uint render_texture = 0u;
+	uint depth_render_buffer = 0u;
+	uint stencil_buffer = 0u;
+
 	friend class PanelConfiguration;
 };
