@@ -153,27 +153,19 @@ update_status ModuleRenderer3D::PreUpdate()
 update_status ModuleRenderer3D::PostUpdate()
 {
 	//Scene panel
-	ImGui::Begin("Scene");
-	ImVec2 current_viewport_size = ImGui::GetContentRegionAvail();
-	ImGui::Image((ImTextureID)render_texture, ImVec2(current_viewport_size.x, current_viewport_size.y), ImVec2(0, 1), ImVec2(1, 0));
-	ImGui::End();
-
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
 	SDL_GL_SwapWindow(App->window->window);
 
-	glViewport(0, 0, current_viewport_size.x, current_viewport_size.y);
+	glViewport(0, 0, App->gui->current_viewport_size.x, App->gui->current_viewport_size.y);
 
 	glMatrixMode(GL_PROJECTION);
-	ProjectionMatrix = perspective(60.0f, (float)current_viewport_size.x / (float)current_viewport_size.y, 0.125f, 512.0f);
+	ProjectionMatrix = perspective(60.0f, (float)App->gui->current_viewport_size.x / (float)App->gui->current_viewport_size.y, 0.125f, 512.0f);
 	glLoadMatrixf(&ProjectionMatrix);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
 	// Depth
 	glBindRenderbuffer(GL_RENDERBUFFER, depth_render_buffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, current_viewport_size.x, current_viewport_size.y);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, App->gui->current_viewport_size.x, App->gui->current_viewport_size.y);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	// Texture
@@ -183,7 +175,7 @@ update_status ModuleRenderer3D::PostUpdate()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, current_viewport_size.x, current_viewport_size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, App->gui->current_viewport_size.x, App->gui->current_viewport_size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	// Depth and Texture to Frame buffer

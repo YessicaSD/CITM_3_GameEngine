@@ -68,7 +68,7 @@ bool ModuleGui::Start()
 {
 	panel_console		= CreatePanel<PanelConsole>("Console", true);
 	panel_shortcuts		= CreatePanel<PanelShortcuts>("Shortcuts", true);
-	panel_hierarchy = CreatePanel<PanelHierarchy>("Hirearchy", true);
+	panel_hierarchy		= CreatePanel<PanelHierarchy>("Hirearchy", true);
 	panel_properties	= CreatePanel<PanelProperties>("Properties", true);
 	panel_configuration	= CreatePanel<PanelConfiguration>("Configuration", true);
 	panel_assets		= CreatePanel<PanelAssets>("Assets", true);
@@ -103,17 +103,29 @@ update_status ModuleGui::PostUpdate()
 
 	MainMenuBar(ret);
 
-	for (std::vector<Panel*>::iterator iter = panels.begin(); iter != panels.end(); ++iter)
-	{
-		if ((*iter)->IsActive())
-		{
-			(*iter)->Draw();
-		}
-	}
-	if (showMenuImGui)
-	{
-		ImGui::ShowDemoWindow();
-	}
+	//for (std::vector<Panel*>::iterator iter = panels.begin(); iter != panels.end(); ++iter)
+	//{
+	//	if ((*iter)->IsActive())
+	//	{
+	//		(*iter)->Draw();
+	//	}
+	//}
+	//if (showMenuImGui)
+	//{
+	//	ImGui::ShowDemoWindow();
+	//}
+
+	ImGui::Begin("Scene");
+	ImGui::Text("Test text");
+	current_viewport_size = ImGui::GetContentRegionAvail();
+	ImVec2 min = ImGui::GetCursorScreenPos();
+	ImVec2 max = ImVec2(min.x + current_viewport_size.x, min.y + current_viewport_size.y);
+	bool mouse_is_hovering = ImGui::IsMouseHoveringRect(min, max);
+	ImGui::Image((ImTextureID)App->renderer3D->render_texture, ImVec2(current_viewport_size.x, current_viewport_size.y), ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::End();
+
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	return ret;
 }

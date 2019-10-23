@@ -21,6 +21,8 @@ class PanelHierarchy;
 class PanelAbout;
 class PanelAssets;
 
+struct ImVec2;
+
 
 class ModuleGui : public Module
 {
@@ -65,6 +67,9 @@ private:
 	void MainMenuBar(update_status &ret);
 
 	RenderMode render_mode_all;
+
+public:
+	ImVec2 current_viewport_size;
 	
 	friend class Shortcut;
 	friend class Panel;
