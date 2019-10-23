@@ -103,17 +103,17 @@ update_status ModuleGui::PostUpdate()
 
 	MainMenuBar(ret);
 
-	//for (std::vector<Panel*>::iterator iter = panels.begin(); iter != panels.end(); ++iter)
-	//{
-	//	if ((*iter)->IsActive())
-	//	{
-	//		(*iter)->Draw();
-	//	}
-	//}
-	//if (showMenuImGui)
-	//{
-	//	ImGui::ShowDemoWindow();
-	//}
+	for (std::vector<Panel*>::iterator iter = panels.begin(); iter != panels.end(); ++iter)
+	{
+		if ((*iter)->IsActive())
+		{
+			(*iter)->Draw();
+		}
+	}
+	if (showMenuImGui)
+	{
+		ImGui::ShowDemoWindow();
+	}
 
 	ImGui::Begin("Scene");
 	ImGui::Text("Test text");
