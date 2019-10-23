@@ -16,7 +16,7 @@ public:
 
 	void SetParent(ComponentTransform * parent);
 	//void SetChildren(std::vector<Transform*> children);
-
+	void UpdatePos();
 public:
 	float3 position;
 	float3 rotation;
