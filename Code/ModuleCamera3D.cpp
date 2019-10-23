@@ -2,8 +2,9 @@
 #include "Application.h"
 #include "ModuleCamera3D.h"
 #include "ModuleInput.h"
+#include "ModuleGui.h"
 #include "Shortcut.h"
-
+#include "PanelProperties.h"
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
 	CalculateViewMatrix();
@@ -49,7 +50,9 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	if (focus_object->Pressed())
 	{
-
+		const ComponentTransform* selected_transform = App->gui->panel_properties->GetSelecteTransform();
+		if (selected_transform != nullptr)
+			LookAt(vec3(selected_transform->position.x, selected_transform->position.y, selected_transform->position.z));
 	}
 	vec3 newPos(0,0,0);
 	float speed = 3.0f * dt;

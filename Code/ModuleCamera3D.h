@@ -35,6 +35,7 @@ private:
 	Shortcut * navigate_up = nullptr;
 	Shortcut * navigate_down = nullptr;
 	Shortcut * navigate_fast = nullptr;
+	Shortcut * focus_object = nullptr;
 
 
 	mat4x4 ViewMatrix, ViewMatrixInverse;
