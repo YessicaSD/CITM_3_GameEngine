@@ -2,7 +2,7 @@
 #define MESH_H_
 
 #include "Component.h"
-
+#include "MathGeoLib/include/Math/float3.h"
 class AssetMesh;
 
 struct RenderMode
@@ -29,8 +29,9 @@ public:
 	AssetMesh * mesh = nullptr;
 
 private:
-	RenderMode render_mode;
 
+	RenderMode render_mode;
+	
 	//Fill
 	float fill_color[4];
 
@@ -41,7 +42,9 @@ private:
 	//Point
 	float point_color[4];
 	float point_size = 1.f;
-
+	float3* global_face_normals = nullptr;
+	float3* global_vertex_normals = nullptr;
+	float3* global_vertex;
 };
 
 #endif // !MESH_H_
