@@ -56,6 +56,7 @@ bool Application::Init()
 
 	while(item != list_modules.end() && ret == true)
 	{
+		if ((*item)->IsActive())
 		ret = (*item)->Init();
 		++item;
 	}
@@ -64,8 +65,9 @@ bool Application::Init()
 	LOG("Application Start --------------");
 	item = list_modules.begin();
 
-	while(item != list_modules.end() && ret == true)
+	while(item != list_modules.end() && ret == true )
 	{
+		if ((*item)->IsActive())
 		ret = (*item)->Start();
 		++item;
 	}
@@ -126,7 +128,8 @@ update_status Application::Update()
 
 	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = (*item)->PreUpdate();
+		if((*item)->IsActive())
+			ret = (*item)->PreUpdate();
 		item = ++item;
 	}
 
@@ -134,6 +137,7 @@ update_status Application::Update()
 
 	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
+		if ((*item)->IsActive())
 		ret = (*item)->Update(dt);
 		item = ++item;
 	}
@@ -142,7 +146,8 @@ update_status Application::Update()
 
 	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = (*item)->PostUpdate();
+		if ((*item)->IsActive())
+			ret = (*item)->PostUpdate();
 		item = ++item;
 	}
 
@@ -157,6 +162,7 @@ bool Application::CleanUp()
 
 	while (item != list_modules.rend() && ret == true)
 	{
+
 		ret = (*item)->CleanUp();
 		item = ++item;
 	}
