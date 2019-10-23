@@ -45,3 +45,8 @@ void PanelProperties::Draw()
 	}
 	ImGui::End();
 }
+
+const ComponentTransform * PanelProperties::GetSelecteTransform()
+{
+	return selected_transform;
+}

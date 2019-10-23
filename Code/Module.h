@@ -9,7 +9,7 @@ struct Event;
 class Module
 {
 private :
-	bool enabled;
+	bool enabled = true;
 
 public:
 	const char* name = "";
@@ -55,4 +55,12 @@ public:
 	}
 	virtual void EventRequest(const Event& event) {};
 	virtual void DrawConfigurationUi() {};
+	bool IsActive() {
+		return enabled;
+	}
+	void Disable()
+	{
+		enabled = false;
+		CleanUp();
+	}
 };
