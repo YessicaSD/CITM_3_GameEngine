@@ -90,17 +90,17 @@ void PanelConfiguration::Draw()
 			MemoryArrayIndex = (MemoryArrayIndex >= CURRENT_FPS_MAX_VALUE) ? 0 : ++MemoryArrayIndex;
 		}
 
-		sprintf_s(titleGraph, 100, "Ram Consume: %.2f", lastMemoryConsume);
-		ImGui::PlotHistogram("##ASDFASF", RamHistory, IM_ARRAYSIZE(RamHistory), MemoryArrayIndex, titleGraph, 0.0f, (float)stats.peakReportedMemory * 2.f, size);
-		ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
-		ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
-		ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);
-		ImGui::Text("Peak Actual Mem: %u", stats.peakActualMemory);
-		ImGui::Text("Accumulated Reported Mem: %u", stats.accumulatedReportedMemory);
-		ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
-		ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
-		ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
-		ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
+		//sprintf_s(titleGraph, 100, "Ram Consume: %.2f", lastMemoryConsume);
+		//ImGui::PlotHistogram("##ASDFASF", RamHistory, IM_ARRAYSIZE(RamHistory), MemoryArrayIndex, titleGraph, 0.0f, (float)stats.peakReportedMemory * 2.f, size);
+		//ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
+		//ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
+		//ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);
+		//ImGui::Text("Peak Actual Mem: %u", stats.peakActualMemory);
+		//ImGui::Text("Accumulated Reported Mem: %u", stats.accumulatedReportedMemory);
+		//ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
+		//ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
+		//ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
+		//ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
 
 
 		//STYLE ===========================================================
