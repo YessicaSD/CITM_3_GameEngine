@@ -24,6 +24,7 @@ public:
 	void DrawNormals();
 	void PropertiesEditor() override;
 	void CleanUp() override;
+
 public:
 	//One mesh can be used by more than one mesh component
 	AssetMesh * mesh = nullptr;
@@ -42,9 +43,6 @@ private:
 	//Point
 	float point_color[4];
 	float point_size = 1.f;
-	float3* global_face_normals = nullptr;
-	float3* global_vertex_normals = nullptr;
-	float3* global_vertex;
 };
 
 #endif // !MESH_H_

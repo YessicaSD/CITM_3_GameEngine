@@ -22,12 +22,18 @@ bool ModuleRenderer3D::Init()
 	// Initialize OpenGL loader
 	if (glewInit() != GLEW_OK)
 	{
-		fprintf(stderr, "Failed to initialize OpenGL loader!\n");
+		//fprintf(stderr, "Failed to initialize OpenGL loader!\n");
+		LOG("Failed to initialize OpenGL loader!\n");
 		ret = false;
+	}
+	else
+	{
+		LOG("Successful initialization of GLEW");
 	}
 
 	if(ret)
 	{
+		LOG("Initializing module render");
 		//Use Vsync
 		if (App->window->IsVsync() && SDL_GL_SetSwapInterval(1) < 0)
 		{

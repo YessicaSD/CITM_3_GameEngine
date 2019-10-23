@@ -29,12 +29,12 @@ public:
 	void CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh);
 private:
 	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<AssetMesh*> loaded_meshes);
-
+	
 public:
 	Texture * lenna_img_id = nullptr;
 
 private:
-	aiLogStream stream;
+	
 	std::vector<AssetMesh*> meshes;
 
 	friend ModuleScene;

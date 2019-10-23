@@ -164,60 +164,6 @@ void ComponentMesh::CleanUp()
 		delete mesh;
 		mesh = nullptr;
 	}
-	if (global_face_normals)
-	{
-		delete global_face_normals;
-		global_face_normals = nullptr;
-	}
-	if (global_vertex_normals)
-	{
-		delete global_vertex_normals;
-		global_vertex_normals = nullptr;
-	}
+
 }
 
-void ComponentMesh::UpdateVertexAndNormals()
-{
-	if(mesh->vertices)
-	{
-		if(!global_vertex)
-		{
-			global_vertex = new float3[mesh->num_vertices];
-		}
-		for (uint i = 0; i < mesh->num_vertices * 3; i += 3)
-		{
-			float4 vertex4 = { mesh->vertices[i],mesh->vertices[i + 1], mesh->vertices[i + 2],1 };
-			vertex4 = vertex4 * gameobject->transform->global_matrix;
-			global_vertex[i / 3] = { vertex4.x, vertex4.y, vertex4.z };
-		}
-	}
-	else
-	{
-		return;
-	}
-	if (mesh->faces_normals)
-	{
-		if (!global_face_normals)
-		{
-			global_face_normals = new float3[mesh->num_faces];
-		}
-
-		for (uint i = 0; i < mesh->num_faces; ++i)
-		{
-			float4 vertex4 = { mesh->faces_normals[i].x,mesh->faces_normals[i].y, mesh->faces_normals[i].z,1 };
-			vertex4 = vertex4 * gameobject->transform->global_matrix;
-			global_face_normals[i] = { vertex4.x,vertex4.y, vertex4.z };
-		}
-	}
-	if (mesh->vertex_normals)
-	{
-		if (!global_vertex_normals)
-		{
-			global_vertex_normals = new float3[mesh->num_vertices];
-		}
-		for (uint i = 0; i < mesh->num_vertices; ++i)
-		{
-
-		}
-	}
-}

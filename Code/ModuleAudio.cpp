@@ -24,7 +24,7 @@ bool ModuleAudio::Init()
 	}
 	else
 	{
-		LOG("Using Bass %s", BASSVERSIONTEXT);
+		LOG("Init Bass successfully, Now you are using Bass %s", BASSVERSIONTEXT);
 		BASS_DEVICEINFO info;
 		for (int device = 0; BASS_GetDeviceInfo(device, &info); ++device)
 		{

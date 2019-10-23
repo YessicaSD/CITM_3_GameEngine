@@ -15,6 +15,7 @@
 bool ModuleTexture::Init()
 {
 	//Initialize DevIL libraries
+	LOG("Initializing DevIl libraries");
 	ilInit();
 	iluInit();
 	ilutInit();

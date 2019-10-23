@@ -45,6 +45,7 @@ bool ModuleGui::Init()
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
+	LOG("Creating ImGui Context");
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	(void)io;
