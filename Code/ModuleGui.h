@@ -70,6 +70,7 @@ private:
 	friend class Panel;
 	friend class PanelShortcuts;
 	friend class PanelHierarchy;
+	friend class ModuleCamera3D;
 
 };
 #endif // !MODULEGUI_H_
