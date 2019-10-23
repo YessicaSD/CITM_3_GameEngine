@@ -66,12 +66,36 @@ void ModuleScene::DeleteGameObject(GameObject * gameobject)
 
 update_status ModuleScene::PostUpdate()
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glLoadIdentity();
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf(App->camera->GetViewMatrix());
+
+
+	// Start Buffer Frame ----------------------------------
+	glBindFramebuffer(GL_FRAMEBUFFER, App->renderer3D->frame_buffer);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClearColor(0.1, 0.1, 0.1, 1.f);
+	// Object Draw Stencil Settings ------------------------
+	glStencilFunc(GL_ALWAYS, 1, -1);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
 	GameObjectPostUpdateRecursive(root_gameobject->transform);
 
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;
 	p.wire = false;
 	p.Render();
+
+	glStencilFunc(GL_ALWAYS, 1, 0);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+	// Start Buffer Frame ----------------------------------
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, App->renderer3D->render_texture);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	return UPDATE_CONTINUE;
 }
