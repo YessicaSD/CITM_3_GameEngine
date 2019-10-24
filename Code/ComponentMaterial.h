@@ -16,6 +16,8 @@ public:
 	void SetTexture(Texture* texture);
 	void DisableGLModes();
 	void RenderTexture();
+	void PropertiesEditor() override;
+
 };
 
 #endif

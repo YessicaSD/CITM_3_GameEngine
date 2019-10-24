@@ -3,6 +3,8 @@
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
 
+#include "imgui/imgui.h"
+
 CLASS_DEFINITION(Component, ComponentMaterial)
 
 ComponentMaterial::ComponentMaterial(GameObject * gameobject, ComponentMesh* mesh) : Component(gameobject)
@@ -47,5 +49,31 @@ void ComponentMaterial::RenderTexture()
 		glTexCoordPointer(mesh->uv_num_components, GL_FLOAT, 0, (void*)0);
 	}
 	
+}
+
+void ComponentMaterial::PropertiesEditor()
+{
+	ImGuiStyle& style = ImGui::GetStyle();
+	if (ImGui::CollapsingHeader(name.c_str()))
+	{
+		if (texture)
+		{
+			
+			ImGui::Image((void*)(intptr_t)texture->buffer_id, ImVec2(100, 100));
+			
+			float child_height = ImGui::GetTextLineHeight() + style.ScrollbarSize + style.WindowPadding.y * 2.0f;
+			int i = 0;
+			ImGuiWindowFlags child_flags = ImGuiWindowFlags_HorizontalScrollbar;
+			ImGui::BeginChild(ImGui::GetID((void*)(intptr_t)i), ImVec2(-100, child_height), true, child_flags);
+			ImGui::Text("Path: %s", texture->path);
+			ImGui::EndChild();
+			
+		}
+	}
+
+
+
+
+
 }
 
