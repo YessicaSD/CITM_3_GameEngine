@@ -28,6 +28,16 @@ public:
 		return new_component;
 	}
 
+	template< class ComponentClass >
+	ComponentClass &        GetComponent()
+	{
+		for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
+		{
+			if ((*iter)->IsClassType(ComponentType::Type))
+				return *static_cast<ComponentType *>(component.get());
+		}
+		return *std::unique_ptr< ComponentType >(nullptr);
+	}
 	//TODO: GetComponent method (in .h)
 	//template <class ComponentClass>
 	//ComponentClass * GetComponent()
