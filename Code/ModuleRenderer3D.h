@@ -25,7 +25,7 @@ public:
 	void AttachRenderBuffers();
 	void PrepareTextureBuffer(ImVec2 &size);
 	void PrepareDepthBuffer(ImVec2 &size);
-	void PrepareViewport(ImVec2 &size);
+	void PrepareCamera(ImVec2 &size);
 	update_status PostUpdate() override;
 	bool CleanUp();
 

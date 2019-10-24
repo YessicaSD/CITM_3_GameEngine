@@ -132,18 +132,16 @@ update_status ModuleRenderer3D::PreUpdate()
 	//TODO: If this is updated in ModuleInput->PreUpdate we maybe should change the viewport size after
 	ImVec2 size = App->gui->current_viewport_size;
 
-	PrepareViewport(size);
+	PrepareCamera(size);
 	PrepareDepthBuffer(size);
 	PrepareTextureBuffer(size);
 	AttachRenderBuffers();
 
-	// If program can generate the texture ----------------------
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		LOG("[Error] creating screen buffer");
 	}
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	// light 0 on cam pos
@@ -158,12 +156,15 @@ update_status ModuleRenderer3D::PreUpdate()
 }
 
 
-void ModuleRenderer3D::PrepareViewport(ImVec2 &size)
+void ModuleRenderer3D::PrepareCamera(ImVec2 &size)
 {
 	glViewport(0, 0, size.x, size.y);
+
 	glMatrixMode(GL_PROJECTION);
 	projection_matrix = perspective(60.0f, size.x / size.y, camera_near, camera_far);
 	glLoadMatrixf(&projection_matrix);
+
+	//Reset camera
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
@@ -172,6 +173,8 @@ void ModuleRenderer3D::PrepareDepthBuffer(ImVec2 &size)
 {
 	glBindRenderbuffer(GL_RENDERBUFFER, depth_render_buffer);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.x, size.y);
+	
+	//Reset buffer
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
@@ -184,6 +187,8 @@ void ModuleRenderer3D::PrepareTextureBuffer(ImVec2 &size)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	
+	//Reset buffer
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -193,6 +198,9 @@ void ModuleRenderer3D::AttachRenderBuffers()
 	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_render_buffer);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, render_texture, 0);
+
+	//Reset buffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate()
