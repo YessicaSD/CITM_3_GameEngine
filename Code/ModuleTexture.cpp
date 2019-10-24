@@ -35,16 +35,16 @@ Texture* ModuleTexture::LoadTexture(const char* path)
 	std::map<std::string, Texture*>::iterator iter= textures.find(path);
 	if (iter!= textures.end())
 	{
-		return new_texture;
+		return (*iter).second;
 	}
 	if (path != nullptr && path != "")
 	{
 		uint devil_id = 0;
 		ilGenImages(1, &devil_id);
 		ilBindImage(devil_id);
-		ilutRenderer(ILUT_OPENGL);
+		//ilutRenderer(ILUT_OPENGL);
 
-		if (!ilLoad(IL_PNG, path))
+		if (!ilLoadImage(path))
 		{
 			auto error = ilGetError();
 			LOG("Failed to load texture with path: %s. Error: %s", path, ilGetString(error));
@@ -57,7 +57,7 @@ Texture* ModuleTexture::LoadTexture(const char* path)
 			new_texture->buffer_id = ilutGLBindTexImage();
 			new_texture->height  = ilGetInteger(IL_IMAGE_HEIGHT);
 			new_texture->width = ilGetInteger(IL_IMAGE_WIDTH);
-
+			new_texture->size = ilGetInteger(IL_IMAGE_SIZE_OF_DATA);
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 			glBindTexture(GL_TEXTURE_2D, new_texture->buffer_id);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -78,7 +78,7 @@ Texture* ModuleTexture::LoadTexture(const char* path)
 	}
 	else
 	{
-		LOG("there is no path")
+		LOG("Invalid path");
 	}
 	
 

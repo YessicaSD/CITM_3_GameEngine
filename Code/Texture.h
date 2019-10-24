@@ -12,7 +12,7 @@ public:
 	//void Render();
 
 public:
-	int buffer_id = -1;
+	int buffer_id = -1, size = 0;
 	uint width = 0, height = 0;
 	const char* path = "";
 };

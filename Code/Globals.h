@@ -19,6 +19,7 @@ void log(const char file[], int line, const char* format, ...);
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
 #define HAVE_M_PI
+#define ASSETS_FOLDER "Assets/"
 
 typedef unsigned int uint;
 typedef unsigned __int32 uint32;

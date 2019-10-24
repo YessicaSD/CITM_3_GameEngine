@@ -12,6 +12,7 @@
 
 #include "GameObject.h"
 #include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 #include "AssetMesh.h"
 #include "ModuleTexture.h"
 #include "Event.h"
@@ -47,16 +48,17 @@ bool ModuleImport::LoadMesh(const char * path)
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		std::vector<AssetMesh*> object_meshes;
+		std::vector<Texture*> textures;
 		for (uint i = 0; i < scene->mNumMeshes; ++i)
 		{
+			
 			aiMesh* assimp_mesh = scene->mMeshes[i];
-			
-			AssetMesh * asset_mesh = LoadAssimpMesh(assimp_mesh);
-			
+			AssetMesh * asset_mesh = LoadAssimpMesh(assimp_mesh, scene, textures);
+				
 			object_meshes.push_back(asset_mesh);
 			meshes.push_back(asset_mesh);
 		}
-		CreateGameObjectsFromNodes(scene->mRootNode, App->scene->root_gameobject->transform, object_meshes);
+		CreateGameObjectsFromNodes(scene->mRootNode, App->scene->root_gameobject->transform, object_meshes, textures);
 		aiReleaseImport(scene);
 	}
 	else
@@ -67,10 +69,11 @@ bool ModuleImport::LoadMesh(const char * path)
 	return true;
 }
 
-AssetMesh * ModuleImport::LoadAssimpMesh(aiMesh * assimp_mesh)
+AssetMesh * ModuleImport::LoadAssimpMesh(aiMesh * assimp_mesh, const aiScene* scene_fbx, std::vector<Texture*>& textures)
 {
 	AssetMesh * asset_mesh = new AssetMesh();
 	//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
+	asset_mesh->LoadTexture(assimp_mesh, scene_fbx, textures);
 	asset_mesh->LoadVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
 	asset_mesh->LoadVerticesNormals(assimp_mesh);
 	asset_mesh->LoadFaces(assimp_mesh);
@@ -101,9 +104,10 @@ AssetMesh* ModuleImport::LoadParShapeMesh(par_shapes_mesh * mesh)
 	return asset_mesh;
 }
 
-void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<AssetMesh*> loaded_meshes)
+void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<AssetMesh*> loaded_meshes, std::vector<Texture*>& textures)
 {
 	GameObject * new_gameobject = new GameObject(std::string(node->mName.C_Str()), parent);
+	
 
 	//TODO: Search if there is a better way to convert from aiMatrix4x4 to math::float4x4 (both are arrays with 16 positions at the end)
 	//V1
@@ -133,14 +137,20 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 		//Load the meshes of this GameObject
 		for (int i = 0; i < node->mNumMeshes; ++i)
 		{
+			int index = node->mMeshes[i];
 			ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
-			component_mesh->mesh = loaded_meshes[node->mMeshes[i]];
+			component_mesh->mesh = loaded_meshes[index];
+			if (textures[index])
+			{
+				component_mesh->material->SetTexture(textures[index]);
+			}
+			//component_mesh.
 		}
 	}
 
 	for (int i = 0 ; i < node->mNumChildren; ++i)
 	{
-		CreateGameObjectsFromNodes(node->mChildren[i], new_gameobject->transform, loaded_meshes);
+		CreateGameObjectsFromNodes(node->mChildren[i], new_gameobject->transform, loaded_meshes, textures);
 	}
 }
 
@@ -164,12 +174,13 @@ void ModuleImport::EventRequest(const Event & event)
 		{
 			LoadMesh(event.path);
 		}
-		else if (extension == "dds")
+		else if (extension == "dds" || extension == "png" || extension == "jpg")
 		{
 			App->texture->LoadTexture(event.path);
 		}
 		else
 		{
+			LOG("Can't load this type file");
 			return;
 		}
 		LOG("File dropped %s", event.path);
