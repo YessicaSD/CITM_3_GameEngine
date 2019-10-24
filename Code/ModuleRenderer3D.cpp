@@ -119,19 +119,43 @@ bool ModuleRenderer3D::Init()
 	color_material = glIsEnabled(GL_COLOR_MATERIAL) == GL_TRUE;
 	texture_2d = glIsEnabled(GL_TEXTURE_2D) == GL_TRUE;
 
-	GenerateSceneBuffers();
+	GenSceneFramebuffer();
 
 	return ret;
 }
 
-void ModuleRenderer3D::GenerateSceneBuffers()
+void ModuleRenderer3D::GenSceneFramebuffer()
 {
+	//https://learnopengl.com/Advanced-OpenGL/Framebuffers
+	//Generate frame buffer
 	glGenFramebuffers(1, &frame_buffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
 
+	//Generate depth render buffer
 	glGenRenderbuffers(1, &depth_render_buffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, depth_render_buffer);
+	//Attach to frame buffer
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_render_buffer);
+	//Reset depth render buffer
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	//Generate render texture
 	glGenTextures(1, &render_texture);
+	glBindTexture(GL_TEXTURE_2D, render_texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 100, 100, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	//Attach to frame buffer
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, render_texture, 0);
+	//Reset render texture
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//Reset framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 }
 
 // PreUpdate: clear buffer
@@ -143,7 +167,6 @@ update_status ModuleRenderer3D::PreUpdate()
 	PrepareCamera(size);
 	PrepareDepthBuffer(size);
 	PrepareTextureBuffer(size);
-	AttachRenderBuffers();
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
@@ -189,27 +212,12 @@ void ModuleRenderer3D::PrepareDepthBuffer(ImVec2 &size)
 void ModuleRenderer3D::PrepareTextureBuffer(ImVec2 &size)
 {
 	glBindTexture(GL_TEXTURE_2D, render_texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 	
 	//Reset buffer
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-// Attach texture and render buffer to frame buffer
-void ModuleRenderer3D::AttachRenderBuffers()
-{
-	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_render_buffer);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, render_texture, 0);
-
-	//Reset buffer
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate()
 {
