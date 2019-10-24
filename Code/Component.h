@@ -19,7 +19,7 @@
 //****************
 #define CLASS_DECLARATION( classname )                                                      \
 public:                                                                                     \
-    static const std::size_t Type;                                                          \
+    static const std::size_t type;                                                          \
     virtual bool IsClassType( const std::size_t classType ) const override;                 \
 
 //****************
@@ -31,9 +31,9 @@ public:                                                                         
 // incorrect. Only works on single-inheritance RTTI.
 //****************
 #define CLASS_DEFINITION( parentclass, childclass )                                         \
-const std::size_t childclass::Type = std::hash< std::string >()( TO_STRING( childclass ) ); \
+const std::size_t childclass::type = std::hash< std::string >()( TO_STRING( childclass ) ); \
 bool childclass::IsClassType( const std::size_t classType ) const {                         \
-        if ( classType == childclass::Type )                                                \
+        if ( classType == childclass::type )                                                \
             return true;                                                                    \
         return parentclass::IsClassType( classType );                                       \
 }                                                                                           
@@ -43,7 +43,7 @@ class GameObject;
 class Component
 {
 public:
-	static const std::size_t                    Type;
+	static const std::size_t                    type;
 
 public:
 	Component(GameObject * gameobject);
@@ -52,7 +52,7 @@ public:
 	virtual void PropertiesEditor() {};
 	void EnableComponent(bool value);
 	virtual bool                                IsClassType(const std::size_t classType) const {
-		return classType == Type;
+		return classType == type;
 	}
 
 protected:

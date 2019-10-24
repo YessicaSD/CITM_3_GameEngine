@@ -33,7 +33,7 @@ public:
 	{
 		for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
 		{
-			if ((*iter) && (*iter)->IsClassType(ComponentClass::Type))
+			if ((*iter) && (*iter)->IsClassType(ComponentClass::type))
 			{
 				return (ComponentClass*)(*iter);
 
@@ -49,7 +49,7 @@ public:
 
 		for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
 		{
-			if ((*iter)->IsClassType(ComponentType::Type))
+			if ((*iter)->IsClassType(ComponentType::type))
 			{
 				delete (*iter);
 				components.erase(iter);
