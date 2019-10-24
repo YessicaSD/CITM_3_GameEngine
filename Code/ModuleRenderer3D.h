@@ -21,6 +21,7 @@ public:
 	~ModuleRenderer3D();
 
 	bool Init();
+	void GenerateSceneBuffers();
 	update_status PreUpdate() override;
 	void AttachRenderBuffers();
 	void PrepareTextureBuffer(ImVec2 &size);

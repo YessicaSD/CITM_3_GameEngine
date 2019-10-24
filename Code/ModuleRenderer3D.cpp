@@ -119,11 +119,19 @@ bool ModuleRenderer3D::Init()
 	color_material = glIsEnabled(GL_COLOR_MATERIAL) == GL_TRUE;
 	texture_2d = glIsEnabled(GL_TEXTURE_2D) == GL_TRUE;
 
-	glGenRenderbuffers(1, &depth_render_buffer);
-	glGenTextures(1, &render_texture);
-	glGenFramebuffers(1, &frame_buffer);
+	GenerateSceneBuffers();
 
 	return ret;
+}
+
+void ModuleRenderer3D::GenerateSceneBuffers()
+{
+	glGenFramebuffers(1, &frame_buffer);
+
+	glGenRenderbuffers(1, &depth_render_buffer);
+
+	//Generate render texture
+	glGenTextures(1, &render_texture);
 }
 
 // PreUpdate: clear buffer
@@ -214,7 +222,9 @@ bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
 
-	//TODO: Delete buffers
+	glDeleteTextures(1, &render_texture);
+	glDeleteRenderbuffers(1, &depth_render_buffer);
+	glDeleteFramebuffers(1, &frame_buffer);
 
 	SDL_GL_DeleteContext(App->window->gl_context);
 
