@@ -34,7 +34,7 @@ void ComponentMaterial::DisableGLModes()
 
 }
 
-void ComponentMaterial::OnPostUpdate()
+void ComponentMaterial::RenderTexture()
 {
 	if (texture)
 	{

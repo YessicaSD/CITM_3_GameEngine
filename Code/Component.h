@@ -2,6 +2,12 @@
 #define COMPONENT_H_
 
 #include <string>
+#include <functional>
+#include <vector>
+#include <memory>
+#include <algorithm>
+#include <xstring>
+
 
 #define TO_STRING( x ) #x
 
@@ -30,22 +36,23 @@ bool childclass::IsClassType( const std::size_t classType ) const {             
         if ( classType == childclass::Type )                                                \
             return true;                                                                    \
         return parentclass::IsClassType( classType );                                       \
-}    
+}                                                                                           
 
 class GameObject;
 
 class Component
 {
-private:
-	static const std::size_t                    type;
+public:
+	static const std::size_t                    Type;
 
 public:
 	Component(GameObject * gameobject);
+	
 
 	virtual void PropertiesEditor() {};
 	void EnableComponent(bool value);
 	virtual bool                                IsClassType(const std::size_t classType) const {
-		return classType == type;
+		return classType == Type;
 	}
 
 protected:

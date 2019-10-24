@@ -23,6 +23,7 @@ ComponentMesh::ComponentMesh(GameObject * gameobject) : Component(gameobject)
 	line_color[0] = line_color[1] = line_color[2] = line_color[3] = 1.f;
 	point_color[0] = point_color[1] = point_color[2] = point_color[3] = 1.f;
 	material = new ComponentMaterial(gameobject,this);
+	gameobject->components.push_back(material);
 }
 
 ComponentMesh::~ComponentMesh()
@@ -56,7 +57,7 @@ void ComponentMesh::OnPostUpdate()
 	{
 		if (material)
 		{
-			material->OnPostUpdate();
+			material->RenderTexture();
 		}
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glColor4f(fill_color[0], fill_color[1], fill_color[2], fill_color[3]);
@@ -154,11 +155,13 @@ void ComponentMesh::PropertiesEditor()
 
 void ComponentMesh::CleanUp()
 {
-	if (material)
-	{
-		delete material;
-		material = nullptr;
-	}
+	//if (material)
+	//{
+	//	delete material;
+	//	material = nullptr;
+	//}
+	gameobject->RemoveComponent<ComponentMaterial>();
+
 	if (mesh)
 	{
 		delete mesh;
