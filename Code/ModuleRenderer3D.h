@@ -22,7 +22,7 @@ public:
 
 	bool Init();
 	update_status PreUpdate() override;
-	void AttackRenderBuffers();
+	void AttachRenderBuffers();
 	void PrepareTextureBuffer(ImVec2 &size);
 	void PrepareDepthBuffer(ImVec2 &size);
 	void PrepareViewport(ImVec2 &size);
@@ -47,6 +47,7 @@ public:
 
 	float camera_near = 0.125f;
 	float camera_far = 512.f;
+	float fov = 60.f;
 
 	friend class PanelConfiguration;
 };
