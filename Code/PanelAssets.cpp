@@ -18,13 +18,12 @@ void PanelAssets::Draw()
 		++iter)
 	{
 		Texture* texture = (*iter).second;
-		ImGui::Image((void*)(intptr_t)texture->buffer_id, ImVec2(image_size, image_size));
-		bool is_clicked = ImGui::IsItemClicked(0);
-		if (is_clicked)
+		if(ImGui::ImageButton((void*)(intptr_t)texture->buffer_id, ImVec2(image_size, image_size)))
 		{
-			GameObject*  selected_gameobject = App->gui->GetSelecteTransform()->gameobject;
-			if (selected_gameobject)
+			ComponentTransform* selected_tranform = App->gui->GetSelecteTransform();
+			if (selected_tranform)
 			{
+				GameObject*  selected_gameobject = selected_tranform->gameobject;
 				ComponentMaterial* material  = selected_gameobject->GetComponent<ComponentMaterial>();
 				if (material)
 				{
