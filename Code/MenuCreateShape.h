@@ -21,10 +21,12 @@ public:
 	void * value_ptr;
 };
 
+//If you want to create a different layout for your shape, create a derived class from PanelCreateShape
 class PanelCreateShape : public Panel
 {
 public:
 	PanelCreateShape(std::string name, bool active = false, std::vector<SDL_Scancode> shortcut = {});
+	void MenuItem(const float button_height, const float button_space, const ImVec4& button_color, const ImVec2& button_size);
 private:
 	void Draw() override;
 	void CreateMultiple();//Function to create multiple is going to be the same for each one of them
@@ -54,10 +56,6 @@ public:
 	~MenuCreateShape();
 
 	void MenuBarTab();
-
-private:
-	void MenuItem(std::string name, std::function<par_shapes_mesh*()> mesh_function, Panel * panel);
-
 	//TODO: Load variables with a function from ModuleGui
 
 private:
@@ -110,19 +108,7 @@ private:
 	float disk_radius = 12.f;
 
 	//INFO: We create a different panel for each because we might want to customize them individually
-	PanelCreateShape* panel_cube = nullptr;
-	PanelCreateShape* panel_parametric_sphere = nullptr;
-	PanelCreateShape* panel_subdivided_sphere = nullptr;
-	PanelCreateShape* panel_hemisphere = nullptr;
-	PanelCreateShape* panel_plane = nullptr;
-	PanelCreateShape* panel_klein_bottle = nullptr;
-	PanelCreateShape* panel_cylinder = nullptr;
-	PanelCreateShape* panel_cone = nullptr;
-	PanelCreateShape* panel_torus = nullptr;
-	PanelCreateShape* panel_trefoil_knot = nullptr;
-	PanelCreateShape* panel_dodecahedron = nullptr;
-	PanelCreateShape* panel_icosahedron = nullptr;
-	PanelCreateShape* panel_disk = nullptr;
+	std::vector<PanelCreateShape*> panels_create_shape;
 };
 
 #endif
