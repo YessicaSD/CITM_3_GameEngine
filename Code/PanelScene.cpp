@@ -9,6 +9,9 @@ PanelScene::PanelScene(std::string name, bool active, std::vector<SDL_Scancode> 
 
 }
 
+//PanelScene is called by ModuleGui
+//ModuleScene executes draws (fills the framebuffer texture) before ModuleGui
+//By doing it in this order we can get the image of this frame
 void PanelScene::Draw()
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
