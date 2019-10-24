@@ -20,6 +20,7 @@ class PanelInspector;
 class PanelHierarchy;
 class PanelAbout;
 class PanelAssets;
+class PanelScene;
 
 struct ImVec2;
 
@@ -28,6 +29,7 @@ class ModuleGui : public Module
 {
 public:
 	MenuCreateShape * create_menu = nullptr;
+	PanelScene * panel_scene = nullptr;
 
 private:
 	bool showMenuImGui = false;
@@ -68,9 +70,6 @@ private:
 
 	RenderMode render_mode_all;
 
-public:
-	ImVec2 current_viewport_size;
-	
 	friend class Shortcut;
 	friend class Panel;
 	friend class PanelShortcuts;

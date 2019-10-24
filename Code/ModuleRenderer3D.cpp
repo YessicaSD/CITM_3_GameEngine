@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "PanelScene.h"
 
 #include "glew/include/GL/glew.h"
 #include "imgui/imgui_impl_opengl3.h"
@@ -166,7 +167,7 @@ void ModuleRenderer3D::GenSceneFramebuffer()
 update_status ModuleRenderer3D::PreUpdate()
 {
 	//TODO: If this is updated in ModuleInput->PreUpdate we maybe should change the viewport size after
-	ImVec2 size = App->gui->current_viewport_size;
+	ImVec2 size = App->gui->panel_scene->current_viewport_size;
 
 	PrepareCamera(size);
 	PrepareDepthBuffer(size);

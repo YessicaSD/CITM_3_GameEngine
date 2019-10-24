@@ -17,6 +17,7 @@
 #include "PanelAbout.h"
 #include "PanelHierarchy.h"
 #include "PanelAssets.h"
+#include "PanelScene.h"
 
 #define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
 #define IMGUI_GREY ImVec4(0.6f,0.6f,0.6f,1.f)
@@ -73,6 +74,7 @@ bool ModuleGui::Start()
 	panel_configuration	= CreatePanel<PanelConfiguration>("Configuration", true);
 	panel_assets		= CreatePanel<PanelAssets>("Assets", true);
 	panel_about			= CreatePanel<PanelAbout>("About", true);
+	panel_scene			= CreatePanel<PanelScene>("Scene", true);
 
 	create_menu = new MenuCreateShape();
 
@@ -114,15 +116,6 @@ update_status ModuleGui::PostUpdate()
 	{
 		ImGui::ShowDemoWindow();
 	}
-
-	ImGui::Begin("Scene");
-	ImGui::Text("Test text");
-	current_viewport_size = ImGui::GetContentRegionAvail();
-	ImVec2 min = ImGui::GetCursorScreenPos();
-	ImVec2 max = ImVec2(min.x + current_viewport_size.x, min.y + current_viewport_size.y);
-	bool mouse_is_hovering = ImGui::IsMouseHoveringRect(min, max);
-	ImGui::Image((ImTextureID)App->renderer3D->render_texture, ImVec2(current_viewport_size.x, current_viewport_size.y), ImVec2(0, 1), ImVec2(1, 0));
-	ImGui::End();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
