@@ -129,44 +129,17 @@ bool ModuleRenderer3D::Init()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate()
 {
-	//Clear
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-	glLoadIdentity();
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->GetViewMatrix());
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glClearColor(0.1, 0.1, 0.1, 1.f);
 
 	ImVec2 size = App->gui->current_viewport_size;
-	glViewport(0, 0, size.x, size.y);
 
-	glMatrixMode(GL_PROJECTION);
-	ProjectionMatrix = perspective(60.0f, size.x / size.y, 0.125f, 512.0f);
-	glLoadMatrixf(&ProjectionMatrix);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	// Config depth storage -----------------------------------
-	glBindRenderbuffer(GL_RENDERBUFFER, depth_render_buffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.x, size.y);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-	// Config  color texture ------------------------------------------
-	glBindTexture(GL_TEXTURE_2D, render_texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); // automatic mipmap
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	// Attach texture and render buffer to frame buffer -------
-	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_render_buffer);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, render_texture, 0);
+	//TODO: If this is updated in ModuleInput->PreUpdate we maybe should change the viewport size after
+	PrepareViewport(size);
+	PrepareDepthBuffer(size);
+	PrepareTextureBuffer(size);
+	AttackRenderBuffers();
 
 	// If program can generate the texture ----------------------
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -175,9 +148,8 @@ update_status ModuleRenderer3D::PreUpdate()
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
+	//glLoadIdentity();
 
 	//glMatrixMode(GL_MODELVIEW);
 	//glLoadMatrixf(App->camera->GetViewMatrix());
@@ -196,10 +168,47 @@ update_status ModuleRenderer3D::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
+// Attach texture and render buffer to frame buffer
+void ModuleRenderer3D::AttackRenderBuffers()
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_render_buffer);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, render_texture, 0);
+}
+
+void ModuleRenderer3D::PrepareTextureBuffer(ImVec2 &size)
+{
+	glBindTexture(GL_TEXTURE_2D, render_texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); // automatic mipmap
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void ModuleRenderer3D::PrepareDepthBuffer(ImVec2 &size)
+{
+	glBindRenderbuffer(GL_RENDERBUFFER, depth_render_buffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.x, size.y);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+}
+
+void ModuleRenderer3D::PrepareViewport(ImVec2 &size)
+{
+	glViewport(0, 0, size.x, size.y);
+
+	glMatrixMode(GL_PROJECTION);
+	projection_matrix = perspective(60.0f, size.x / size.y, camera_near, camera_far);
+	glLoadMatrixf(&projection_matrix);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}
+
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate()
 {
-	LOG("%i", frame_buffer);
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -221,9 +230,38 @@ void ModuleRenderer3D::OnResize(int width, int height)
 {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf(&ProjectionMatrix);
+	projection_matrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
+	glLoadMatrixf(&projection_matrix);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+void ModuleRenderer3D::StartSceneRender()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glLoadIdentity();
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf(App->camera->GetViewMatrix());
+
+	// Start Buffer Frame ----------------------------------
+	glBindFramebuffer(GL_FRAMEBUFFER, App->renderer3D->frame_buffer);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClearColor(0.1, 0.1, 0.1, 1.f);
+	// Object Draw Stencil Settings ------------------------
+	glStencilFunc(GL_ALWAYS, 1, -1);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+}
+
+void ModuleRenderer3D::EndSceneRender()
+{
+	glStencilFunc(GL_ALWAYS, 1, 0);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+	// Start Buffer Frame ----------------------------------
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, App->renderer3D->render_texture);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
