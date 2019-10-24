@@ -9,6 +9,7 @@
 #include <xstring>
 
 
+typedef unsigned int uint;
 #define TO_STRING( x ) #x
 
 //****************
@@ -19,7 +20,7 @@
 //****************
 #define CLASS_DECLARATION( classname )                                                      \
 public:                                                                                     \
-    static const std::size_t type;                                                          \
+    static const uint type;                                                          \
     virtual bool IsClassType( const std::size_t classType ) const override;                 \
 
 //****************
@@ -31,7 +32,7 @@ public:                                                                         
 // incorrect. Only works on single-inheritance RTTI.
 //****************
 #define CLASS_DEFINITION( parentclass, childclass )                                         \
-const std::size_t childclass::type = std::hash< std::string >()( TO_STRING( childclass ) ); \
+const uint childclass::type = std::hash< std::string >()( TO_STRING( childclass ) ); \
 bool childclass::IsClassType( const std::size_t classType ) const {                         \
         if ( classType == childclass::type )                                                \
             return true;                                                                    \
