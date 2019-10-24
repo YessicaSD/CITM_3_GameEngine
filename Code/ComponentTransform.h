@@ -11,6 +11,7 @@ class GameObject;
 
 class ComponentTransform : public Component
 {
+	CLASS_DECLARATION(ComponentTransform)
 public:
 	ComponentTransform(GameObject * gameobject);
 	//Create 

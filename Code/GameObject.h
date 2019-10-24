@@ -28,6 +28,37 @@ public:
 		return new_component;
 	}
 
+	template< class ComponentClass >
+	ComponentClass*        GetComponent()
+	{
+		for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
+		{
+			if ((*iter) && (*iter)->IsClassType(ComponentClass::type))
+			{
+				return (ComponentClass*)(*iter);
+
+			}
+		}
+		return nullptr;
+	}
+	template< class ComponentType >
+	bool RemoveComponent()
+	{
+		if (components.empty())
+			return false;
+
+		for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
+		{
+			if ((*iter)->IsClassType(ComponentType::type))
+			{
+				delete (*iter);
+				components.erase(iter);
+				return true;
+			}
+		}
+	
+		return false;
+	}
 	//TODO: GetComponent method (in .h)
 	//template <class ComponentClass>
 	//ComponentClass * GetComponent()
@@ -52,6 +83,7 @@ private:
 	friend PanelProperties;
 	friend PanelHierarchy;
 	friend class ModuleScene;
+	friend class ComponentMesh;
 };
 
 #endif // !GAMEOBJECT_H_

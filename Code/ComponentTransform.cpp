@@ -1,6 +1,8 @@
 #include "ComponentTransform.h"
 #include "MathGeoLib/include/Math/float4.h"
 
+CLASS_DEFINITION(Component, ComponentTransform)
+
 ComponentTransform::ComponentTransform(GameObject * gameobject) : Component(gameobject)
 {
 	name = "Transform";//TODO: Every transform comonent (and other components) don't need its own name, they can all have the same
