@@ -152,6 +152,11 @@ void ModuleRenderer3D::GenSceneFramebuffer()
 	//Reset render texture
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		LOG("[Error] creating screen buffer");
+	}
+	
 	//Reset framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -166,11 +171,6 @@ update_status ModuleRenderer3D::PreUpdate()
 	PrepareCamera(size);
 	PrepareDepthBuffer(size);
 	PrepareTextureBuffer(size);
-
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-	{
-		LOG("[Error] creating screen buffer");
-	}
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -253,9 +253,12 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 void ModuleRenderer3D::StartSceneRender()
 {
+	//Set camera
 	glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(App->camera->GetViewMatrix());
+
+	//Set fame buffer object
 	glBindFramebuffer(GL_FRAMEBUFFER, App->renderer3D->frame_buffer);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -271,7 +274,4 @@ void ModuleRenderer3D::EndSceneRender()
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, App->renderer3D->render_texture);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
