@@ -129,9 +129,6 @@ bool ModuleRenderer3D::Init()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-	glClearColor(0.1, 0.1, 0.1, 1.f);
 
 	ImVec2 size = App->gui->current_viewport_size;
 
@@ -148,11 +145,7 @@ update_status ModuleRenderer3D::PreUpdate()
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glLoadIdentity();
-
-	//glMatrixMode(GL_MODELVIEW);
-	//glLoadMatrixf(App->camera->GetViewMatrix());
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
@@ -248,7 +241,6 @@ void ModuleRenderer3D::StartSceneRender()
 	// Start Buffer Frame ----------------------------------
 	glBindFramebuffer(GL_FRAMEBUFFER, App->renderer3D->frame_buffer);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-	glClearColor(0.1, 0.1, 0.1, 1.f);
 	// Object Draw Stencil Settings ------------------------
 	glStencilFunc(GL_ALWAYS, 1, -1);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
