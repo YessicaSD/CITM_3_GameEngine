@@ -61,11 +61,27 @@ bool AssetMesh::LoadVerticesNormals(aiMesh * info)
 	return true;
 }
 
+bool AssetMesh::GeneteVertexNormalsBuffer()
+{
+	if (vertex_normals)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
+		//glGenBuffers(1, &id_vertex);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * this->num_vertices, vertex_normals, GL_STATIC_DRAW);
+	}
+
+	return true;
+}
+
 bool AssetMesh::GenerateVerticesBuffer()
 {
-	glGenBuffers(1, &id_vertex);
-	glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertices * 3, vertices, GL_STATIC_DRAW);
+	if (vertices)
+	{
+		glGenBuffers(1, &id_vertex);
+		glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertices * 3, vertices, GL_STATIC_DRAW);
+	}
+	
 	return true;
 }
 

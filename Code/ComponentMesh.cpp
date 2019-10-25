@@ -59,9 +59,17 @@ void ComponentMesh::OnPostUpdate()
 		{
 			material->RenderTexture();
 		}
+		if (mesh->vertex_normals)
+		{
+			glEnableClientState(GL_NORMAL_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex_normals);
+			glNormalPointer(GL_FLOAT,0, NULL);
+		}
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glColor4f(fill_color[0], fill_color[1], fill_color[2], fill_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
+		glDisable(GL_NORMAL_ARRAY);
+
 	}
 
 	if (render_mode.wireframe)
