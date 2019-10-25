@@ -66,7 +66,7 @@ void ModuleScene::DeleteGameObject(GameObject * gameobject)
 
 update_status ModuleScene::PostUpdate()
 {
-	App->renderer3D->StartSceneRender();
+	App->renderer3D->scene_fbo.StartRenderingToTexture();
 
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;
@@ -75,7 +75,7 @@ update_status ModuleScene::PostUpdate()
 
 	GameObjectPostUpdateRecursive(root_gameobject->transform);
 
-	App->renderer3D->EndSceneRender();
+	App->renderer3D->scene_fbo.EndRenderingToTexture();
 
 	return UPDATE_CONTINUE;
 }

@@ -178,31 +178,31 @@ update_status ModuleRenderer3D::PreUpdate()
 }
 
 
-void ModuleRenderer3D::PrepareCamera(ImVec2 &size)
+void FrameBufferObject::PrepareCamera(ImVec2 &size)
 {
 	glViewport(0, 0, size.x, size.y);
 
 	glMatrixMode(GL_PROJECTION);
-	projection_matrix = perspective(60.0f, size.x / size.y, camera_near, camera_far);
-	glLoadMatrixf(&projection_matrix);
+	App->renderer3D->projection_matrix = perspective(60.0f, size.x / size.y, App->renderer3D->camera_near, App->renderer3D->camera_far);
+	glLoadMatrixf(&App->renderer3D->projection_matrix);
 
 	//Reset camera
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
 
-void ModuleRenderer3D::PrepareDepthBuffer(ImVec2 &size)
+void FrameBufferObject::PrepareDepthBuffer(ImVec2 &size)
 {
-	glBindRenderbuffer(GL_RENDERBUFFER, scene_fbo.depth_render_buffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, depth_render_buffer);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.x, size.y);
 	
 	//Reset buffer
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
-void ModuleRenderer3D::PrepareTextureBuffer(ImVec2 &size)
+void FrameBufferObject::PrepareTextureBuffer(ImVec2 &size)
 {
-	glBindTexture(GL_TEXTURE_2D, scene_fbo.render_texture);
+	glBindTexture(GL_TEXTURE_2D, render_texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 	
 	//Reset buffer
@@ -243,7 +243,7 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glLoadIdentity();
 }
 
-void ModuleRenderer3D::StartSceneRender()
+void FrameBufferObject::StartRenderingToTexture()
 {
 	//TODO: If this is updated in ModuleInput->PreUpdate we maybe should change the viewport size after
 	ImVec2 size = App->gui->panel_scene->current_viewport_size;
@@ -260,7 +260,7 @@ void ModuleRenderer3D::StartSceneRender()
 	glLoadMatrixf(App->camera->GetViewMatrix());
 
 	//Set fame buffer object
-	glBindFramebuffer(GL_FRAMEBUFFER, scene_fbo.frame_buffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	//Stencil
@@ -268,7 +268,7 @@ void ModuleRenderer3D::StartSceneRender()
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 }
 
-void ModuleRenderer3D::EndSceneRender()
+void FrameBufferObject::EndRenderingToTexture()
 {
 	//Stencil
 	glStencilFunc(GL_ALWAYS, 1, 0);

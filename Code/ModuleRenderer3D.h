@@ -11,13 +11,19 @@ struct SDL_Window;
 class FrameBufferObject
 {
 public:
+	void StartRenderingToTexture();
+	void EndRenderingToTexture();
+
+private:
+	void PrepareCamera(ImVec2 & size);
+	void PrepareDepthBuffer(ImVec2 & size);
+	void PrepareTextureBuffer(ImVec2 & size);
+
+public:
 	uint frame_buffer = 0u;
 	uint render_texture = 0u;
 	uint depth_render_buffer = 0u;
 	uint stencil_buffer = 0u;
-
-	//void StartRenderingToTexture();
-	//void EndRenderingToTexture();
 };
 
 class ModuleRenderer3D : public Module
@@ -35,17 +41,10 @@ public:
 	bool Init();
 	void GenSceneFramebuffer();
 	update_status PreUpdate() override;
-	void AttachRenderBuffers();
-	void PrepareTextureBuffer(ImVec2 &size);
-	void PrepareDepthBuffer(ImVec2 &size);
-	void PrepareCamera(ImVec2 &size);
 	update_status PostUpdate() override;
 	bool CleanUp();
 
 	void OnResize(int width, int height);
-
-	void StartSceneRender();
-	void EndSceneRender();
 	
 	void DrawConfigurationUi();
 public:
