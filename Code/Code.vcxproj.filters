@@ -813,7 +813,6 @@
     <ClCompile Include="gpudetect\DeviceId.cpp">
       <Filter>Sources\Tools\gpudetect</Filter>
     </ClCompile>
-    <ClCompile Include="MenuCreateShape.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>Sources\Tools\mmgr</Filter>
     </ClCompile>
@@ -821,6 +820,9 @@
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
     <ClCompile Include="FrameBufferObject.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuCreateShape.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>

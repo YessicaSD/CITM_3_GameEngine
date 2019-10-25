@@ -31,6 +31,8 @@ class ModuleGui : public Module
 public:
 	MenuCreateShape * create_menu = nullptr;
 	PanelScene * panel_scene = nullptr;
+	GameObject* preview_shape_gameobject = nullptr;
+	FrameBufferObject preview_shapes_fbo;
 
 private:
 	bool showMenuImGui = false;
@@ -74,11 +76,7 @@ private:
 	void MainMenuBar(update_status &ret);
 	bool dockspace_active = true;
 
-
-	FrameBufferObject preview_shapes_fbo;
 	RenderMode render_mode_all;
-	GameObject * preview_shape_gameobject = nullptr;
-	ImVec2 current_viewport_size;
 
 	friend class Shortcut;
 	friend class Panel;

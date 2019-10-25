@@ -22,6 +22,8 @@ public:
 	uint render_texture = 0u;
 	uint depth_render_buffer = 0u;
 	uint stencil_buffer = 0u;
+
+	ImVec2* panel_size = nullptr;
 };
 
 #endif

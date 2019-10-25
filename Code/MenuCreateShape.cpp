@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleImport.h"
 #include "Globals.h"
+#include "FrameBufferObject.h"
 
 MenuCreateShape::MenuCreateShape()
 {
@@ -161,6 +162,26 @@ PanelCreateShape::PanelCreateShape(std::string name, bool active, std::vector<SD
 void PanelCreateShape::Draw()
 {
 	ImGui::Begin(name.c_str());
+
+	//FBO TEST-----------------
+	//1. StartFBO
+	preview_shapes_fbo.StartRenderingToTexture(*preview_shapes_fbo.panel_size);
+	//2. DrawTo the FBO
+	App->gui->preview_shape_gameobject->OnPostUpdate();
+	//3. EndFBO
+	preview_shapes_fbo.EndRenderingToTexture();
+	//4. Draw Panel with an image of the FBO texture
+	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
+	ImGui::Begin("Preview Shapes FBO");
+	App->gui->preview_shapes_fbo->current_viewport_size = ImGui::GetContentRegionAvail();
+	ImVec2 min = ImGui::GetCursorScreenPos();
+	ImVec2 max = ImVec2(min.x + current_viewport_size.x, min.y + current_viewport_size.y);
+	bool mouse_is_hovering = ImGui::IsMouseHoveringRect(min, max);
+	ImGui::Image((ImTextureID)preview_shapes_fbo.render_texture, ImVec2(current_viewport_size.x, current_viewport_size.y), ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::End();
+	ImGui::PopStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding);
+	//-------------------------
+
 	for (std::vector<ShapeValue>::iterator iter = shape_values.begin();
 		iter != shape_values.end();
 		++iter)
