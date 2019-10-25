@@ -67,6 +67,7 @@ public:
 
 private:
 	void MainMenuBar(update_status &ret);
+	bool dockspace_active = true;
 
 	RenderMode render_mode_all;
 
