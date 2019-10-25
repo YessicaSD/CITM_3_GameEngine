@@ -80,6 +80,7 @@ AssetMesh * ModuleImport::LoadAssimpMesh(aiMesh * assimp_mesh, const aiScene* sc
 	asset_mesh->CalculateFaceNormals();
 	asset_mesh->LoadUVs(assimp_mesh);
 
+	asset_mesh->GeneteVertexNormalsBuffer();
 	asset_mesh->GenerateVerticesBuffer();
 	asset_mesh->GenerateFacesAndNormalsBuffer();
 	asset_mesh->GenerateUVsBuffer();

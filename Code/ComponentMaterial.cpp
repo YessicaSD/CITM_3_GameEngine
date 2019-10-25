@@ -40,8 +40,9 @@ void ComponentMaterial::RenderTexture()
 {
 	if (texture)
 	{
+		
 		glEnable(GL_TEXTURE_2D);
-		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+		//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
 		AssetMesh * mesh = component_mesh->mesh;
 		glBindTexture(GL_TEXTURE_2D, texture->buffer_id);

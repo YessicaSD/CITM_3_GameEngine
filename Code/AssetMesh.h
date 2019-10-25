@@ -22,6 +22,7 @@ public:
 	bool LoadFaces(const int num_faces, const uint16_t * indices);
 	bool LoadUVs(aiMesh * info);
 
+	bool GeneteVertexNormalsBuffer();
 	bool GenerateVerticesBuffer();
 	bool GenerateFacesAndNormalsBuffer();
 	bool GenerateUVsBuffer();
@@ -41,7 +42,9 @@ public:
 
 	//Normals ===================
 	float3* vertex_normals = nullptr;
+	uint id_vertex_normals = 0u;
 	uint num_faces = 0u;
+
 	//TODO: We don't need float 3 pointer, we can do it with float, as the vertices
 	float3* faces_normals = nullptr;
 	float3* face_middle_point = nullptr;
