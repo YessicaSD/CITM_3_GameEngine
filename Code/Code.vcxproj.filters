@@ -571,6 +571,9 @@
     <ClInclude Include="PanelScene.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="FrameBufferObject.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -816,6 +819,9 @@
     </ClCompile>
     <ClCompile Include="PanelScene.cpp">
       <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameBufferObject.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

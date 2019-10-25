@@ -4,6 +4,7 @@
 #include "Primitive.h"
 #include "ModuleRandom.h"
 #include "glew\include\GL\glew.h"
+#include "PanelScene.h"
 #include <gl\GL.h>
 
 ModuleScene::ModuleScene(bool start_enabled) :
@@ -66,7 +67,7 @@ void ModuleScene::DeleteGameObject(GameObject * gameobject)
 
 update_status ModuleScene::PostUpdate()
 {
-	App->renderer3D->scene_fbo.StartRenderingToTexture();
+	App->renderer3D->scene_fbo.StartRenderingToTexture(App->gui->panel_scene->current_viewport_size);
 
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;

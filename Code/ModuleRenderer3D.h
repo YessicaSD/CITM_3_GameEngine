@@ -3,30 +3,11 @@
 #include "Globals.h"
 #include "glmath.h"
 #include "Light.h"
+#include "FrameBufferObject.h"
 
 #define MAX_LIGHTS 8
 
 struct SDL_Window;
-
-//Used for rendering to a texture
-class FrameBufferObject
-{
-public:
-	void GenFramebuffer();
-	void StartRenderingToTexture();
-	void EndRenderingToTexture();
-
-private:
-	void PrepareCamera(ImVec2 & size);
-	void PrepareDepthBuffer(ImVec2 & size);
-	void PrepareTextureBuffer(ImVec2 & size);
-
-public:
-	uint frame_buffer = 0u;
-	uint render_texture = 0u;
-	uint depth_render_buffer = 0u;
-	uint stencil_buffer = 0u;
-};
 
 class ModuleRenderer3D : public Module
 {

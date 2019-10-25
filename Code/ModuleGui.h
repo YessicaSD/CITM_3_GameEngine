@@ -1,4 +1,4 @@
-
+﻿
 #ifndef MODULEGUI_H_
 #define MODULEGUI_H_
 
@@ -77,9 +77,8 @@ private:
 
 	FrameBufferObject preview_shapes_fbo;
 	RenderMode render_mode_all;
-
-	ImVec2 current_viewport_size;
 	GameObject * preview_shape_gameobject = nullptr;
+	ImVec2 current_viewport_size;
 
 	friend class Shortcut;
 	friend class Panel;
