@@ -65,8 +65,8 @@ bool AssetMesh::GeneteVertexNormalsBuffer()
 {
 	if (vertex_normals)
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
-		//glGenBuffers(1, &id_vertex);
+		glGenBuffers(1, &id_vertex_normals);
+		glBindBuffer(GL_ARRAY_BUFFER, this->id_vertex_normals);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * this->num_vertices, vertex_normals, GL_STATIC_DRAW);
 	}
 
