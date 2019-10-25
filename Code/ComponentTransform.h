@@ -19,9 +19,10 @@ public:
 	void SetParent(ComponentTransform * parent);
 	//void SetChildren(std::vector<Transform*> children);
 	void UpdatePos();
+	void PropertiesEditor() override;
 public:
-	float3 position, scale;
-	Quat rotation;
+	float3 position = {0,0,0}, scale = { 0,0,0 }, rotation = { 0,0,0 };
+	Quat qrotation;
 
 	//You should modify the local matrix, the global matrix is recalculated from it and the parents' local matrix
 	float4x4 local_matrix;
