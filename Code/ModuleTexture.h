@@ -3,7 +3,6 @@
 
 #include "Module.h"
 #include <map>
-
 class Texture;
 
 class ModuleTexture : public Module
@@ -17,6 +16,7 @@ public:
 	Texture* LoadTexture(const char* path);
 	bool CleanUp() override;
 	friend class PanelAssets;
+	void makeCheckTexture();
 };
 
 

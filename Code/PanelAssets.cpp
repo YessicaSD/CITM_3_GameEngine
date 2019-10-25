@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "ModuleTexture.h"
 #include "Texture.h"
+#include "ModuleGui.h"
+#include "ComponentMaterial.h"
 PanelAssets::PanelAssets(std::string name, bool state, std::vector<SDL_Scancode> shortcuts):Panel(name, state, shortcuts)
 {
 }
@@ -15,7 +17,21 @@ void PanelAssets::Draw()
 		iter!= App->texture->textures.end();
 		++iter)
 	{
-		ImGui::Image((void*)(intptr_t)(*iter).second->buffer_id, ImVec2(image_size, image_size));
+		Texture* texture = (*iter).second;
+		if(ImGui::ImageButton((void*)(intptr_t)texture->buffer_id, ImVec2(image_size, image_size)))
+		{
+			ComponentTransform* selected_tranform = App->gui->GetSelecteTransform();
+			if (selected_tranform)
+			{
+				GameObject*  selected_gameobject = selected_tranform->gameobject;
+				ComponentMaterial* material  = selected_gameobject->GetComponent<ComponentMaterial>();
+				if (material)
+				{
+					material->SetTexture(texture);
+				}
+			}
+		}
+		
 		if (i == (uint)num_colum)
 		{
 			i = 1;

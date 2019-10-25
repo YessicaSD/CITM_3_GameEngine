@@ -2,9 +2,12 @@
 #include "imgui/imgui.h"
 #include "Globals.h"
 
+const std::size_t Component::type = std::hash<std::string>()(TO_STRING(Component));
+
 Component::Component(GameObject * gameobject):
 	gameobject(gameobject)
 {
+	
 }
 
 void Component::EnableComponent(bool value)

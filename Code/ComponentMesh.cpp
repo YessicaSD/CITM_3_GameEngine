@@ -11,6 +11,10 @@
 #include "ModuleScene.h"
 #include "ModuleImport.h"
 #include "MathGeoLib/include/Math/float4.h"
+#include "ComponentMaterial.h"
+
+CLASS_DEFINITION(Component, ComponentMesh)
+
 ComponentMesh::ComponentMesh(GameObject * gameobject) : Component(gameobject)
 {
 	name = "Mesh";
@@ -18,6 +22,8 @@ ComponentMesh::ComponentMesh(GameObject * gameobject) : Component(gameobject)
 	fill_color[0] = fill_color[1] = fill_color[2] = fill_color[3] = 1.f;
 	line_color[0] = line_color[1] = line_color[2] = line_color[3] = 1.f;
 	point_color[0] = point_color[1] = point_color[2] = point_color[3] = 1.f;
+	material = new ComponentMaterial(gameobject,this);
+	gameobject->components.push_back(material);
 }
 
 ComponentMesh::~ComponentMesh()
@@ -27,14 +33,12 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::OnPostUpdate()
 {
-	//ACTIVE TEXTURE MODE
-	//glEnable(GL_TEXTURE_2D);
-	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glPushMatrix();
 	glMultMatrixf((const GLfloat *)&gameobject->transform->global_matrix[0]);
 	glEnableClientState(GL_VERTEX_ARRAY);
+
 
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indice);
@@ -51,6 +55,10 @@ void ComponentMesh::OnPostUpdate()
 
 	if (render_mode.fill)
 	{
+		if (material)
+		{
+			material->RenderTexture();
+		}
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glColor4f(fill_color[0], fill_color[1], fill_color[2], fill_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
@@ -72,20 +80,8 @@ void ComponentMesh::OnPostUpdate()
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	}
 	
-
-	//UV
-	//if (mesh->UVCoord != nullptr)
-	//{
-	//	if (App->import->lenna_img_id)
-	//	{
-	//		glBindTexture(GL_TEXTURE_2D, App->import->lenna_img_id->buffer_id);
-
-	//	}
-	//	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
-	//	glTexCoordPointer(mesh->uv_num_components, GL_FLOAT, 0, (void*)0);
-	//}
-
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
+	material->DisableGLModes();
 	glPopMatrix();
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -161,6 +157,13 @@ void ComponentMesh::PropertiesEditor()
 
 void ComponentMesh::CleanUp()
 {
+	//if (material)
+	//{
+	//	delete material;
+	//	material = nullptr;
+	//}
+	gameobject->RemoveComponent<ComponentMaterial>();
+
 	if (mesh)
 	{
 		delete mesh;

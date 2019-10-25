@@ -42,7 +42,7 @@ private:
 	PanelHierarchy * panel_hierarchy = nullptr;
 	PanelAssets* panel_assets = nullptr;
 	std::vector<Shortcut *> shortcuts;
-
+	ComponentTransform* selected_transform = nullptr;
 
 public:
 	ModuleGui(bool start_enabled = true);
@@ -65,7 +65,10 @@ public:
 		panels.push_back(new_panel);
 		return new_panel;
 	}
-
+	ComponentTransform* GetSelecteTransform()
+	{
+		return selected_transform;
+	}
 private:
 	void MainMenuBar(update_status &ret);
 	bool dockspace_active = true;
@@ -77,6 +80,7 @@ private:
 	friend class PanelShortcuts;
 	friend class PanelHierarchy;
 	friend class ModuleCamera3D;
+	friend class PanelProperties;
 
 };
 #endif // !MODULEGUI_H_

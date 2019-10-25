@@ -2,9 +2,11 @@
 #define MESH_H_
 
 #include "Component.h"
-#include "MathGeoLib/include/Math/float3.h"
-class AssetMesh;
 
+#include "MathGeoLib/include/Math/float3.h"
+
+class AssetMesh;
+class ComponentMaterial;
 struct RenderMode
 {
 	bool fill = true;
@@ -16,6 +18,7 @@ struct RenderMode
 
 class ComponentMesh : public Component
 {
+	CLASS_DECLARATION(ComponentMesh)
 public:
 	ComponentMesh(GameObject * gameobject);
 	~ComponentMesh();
@@ -30,7 +33,7 @@ public:
 	AssetMesh * mesh = nullptr;
 
 private:
-
+	ComponentMaterial* material = nullptr;
 	RenderMode render_mode;
 	
 	//Fill
@@ -43,6 +46,7 @@ private:
 	//Point
 	float point_color[4];
 	float point_size = 1.f;
+	friend class ModuleImport;
 };
 
 #endif // !MESH_H_

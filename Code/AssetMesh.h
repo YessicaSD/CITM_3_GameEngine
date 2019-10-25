@@ -3,15 +3,18 @@
 
 #include "MathGeoLib/include/Math/float3.h"
 #include "Assimp/include/vector3.h"
-
-
+#include "Texture.h"
+#include <vector>
 typedef unsigned int uint;
 struct aiMesh;
+struct aiScene;
+
 
 class AssetMesh
 {
 public:
 	~AssetMesh();
+	bool LoadTexture(aiMesh * info,const aiScene* fbx, std::vector<Texture*>& textures);
 	bool LoadVertices(const int num_vertices, const float * vertices);
 	bool LoadVerticesNormals(aiMesh * info);
 	bool LoadFaces(aiMesh* info);
