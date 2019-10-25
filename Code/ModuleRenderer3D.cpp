@@ -129,27 +129,27 @@ void ModuleRenderer3D::GenSceneFramebuffer()
 {
 	//https://learnopengl.com/Advanced-OpenGL/Framebuffers
 	//Generate frame buffer
-	glGenFramebuffers(1, &frame_buffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
+	glGenFramebuffers(1, &scene_fbo.frame_buffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, scene_fbo.frame_buffer);
 
 	//Generate depth render buffer
-	glGenRenderbuffers(1, &depth_render_buffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, depth_render_buffer);
+	glGenRenderbuffers(1, &scene_fbo.depth_render_buffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, scene_fbo.depth_render_buffer);
 	//Attach to frame buffer
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_render_buffer);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, scene_fbo.depth_render_buffer);
 	//Reset depth render buffer
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	//Generate render texture
-	glGenTextures(1, &render_texture);
-	glBindTexture(GL_TEXTURE_2D, render_texture);
+	glGenTextures(1, &scene_fbo.render_texture);
+	glBindTexture(GL_TEXTURE_2D, scene_fbo.render_texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 	//Attach to frame buffer
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, render_texture, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, scene_fbo.render_texture, 0);
 	//Reset render texture
 	glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -166,15 +166,6 @@ void ModuleRenderer3D::GenSceneFramebuffer()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate()
 {
-	//TODO: If this is updated in ModuleInput->PreUpdate we maybe should change the viewport size after
-	ImVec2 size = App->gui->panel_scene->current_viewport_size;
-
-	PrepareCamera(size);
-	PrepareDepthBuffer(size);
-	PrepareTextureBuffer(size);
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 
@@ -202,7 +193,7 @@ void ModuleRenderer3D::PrepareCamera(ImVec2 &size)
 
 void ModuleRenderer3D::PrepareDepthBuffer(ImVec2 &size)
 {
-	glBindRenderbuffer(GL_RENDERBUFFER, depth_render_buffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, scene_fbo.depth_render_buffer);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.x, size.y);
 	
 	//Reset buffer
@@ -211,7 +202,7 @@ void ModuleRenderer3D::PrepareDepthBuffer(ImVec2 &size)
 
 void ModuleRenderer3D::PrepareTextureBuffer(ImVec2 &size)
 {
-	glBindTexture(GL_TEXTURE_2D, render_texture);
+	glBindTexture(GL_TEXTURE_2D, scene_fbo.render_texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 	
 	//Reset buffer
@@ -230,9 +221,9 @@ bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
 
-	glDeleteTextures(1, &render_texture);
-	glDeleteRenderbuffers(1, &depth_render_buffer);
-	glDeleteFramebuffers(1, &frame_buffer);
+	glDeleteTextures(1, &scene_fbo.render_texture);
+	glDeleteRenderbuffers(1, &scene_fbo.depth_render_buffer);
+	glDeleteFramebuffers(1, &scene_fbo.frame_buffer);
 
 	SDL_GL_DeleteContext(App->window->gl_context);
 
@@ -254,13 +245,22 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 void ModuleRenderer3D::StartSceneRender()
 {
+	//TODO: If this is updated in ModuleInput->PreUpdate we maybe should change the viewport size after
+	ImVec2 size = App->gui->panel_scene->current_viewport_size;
+
+	PrepareCamera(size);
+	PrepareDepthBuffer(size);
+	PrepareTextureBuffer(size);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
 	//Set camera
 	glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(App->camera->GetViewMatrix());
 
 	//Set fame buffer object
-	glBindFramebuffer(GL_FRAMEBUFFER, App->renderer3D->frame_buffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, scene_fbo.frame_buffer);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	//Stencil

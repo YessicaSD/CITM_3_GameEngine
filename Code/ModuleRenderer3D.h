@@ -8,6 +8,18 @@
 
 struct SDL_Window;
 
+class FrameBufferObject
+{
+public:
+	uint frame_buffer = 0u;
+	uint render_texture = 0u;
+	uint depth_render_buffer = 0u;
+	uint stencil_buffer = 0u;
+
+	//void StartRenderingToTexture();
+	//void EndRenderingToTexture();
+};
+
 class ModuleRenderer3D : public Module
 {
 private:
@@ -41,10 +53,7 @@ public:
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, projection_matrix;
 
-	uint frame_buffer = 0u;
-	uint render_texture = 0u;
-	uint depth_render_buffer = 0u;
-	uint stencil_buffer = 0u;
+	FrameBufferObject scene_fbo;
 
 	float camera_near = 0.125f;
 	float camera_far = 512.f;
