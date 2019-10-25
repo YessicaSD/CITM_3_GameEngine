@@ -33,17 +33,30 @@ void ComponentTransform::UpdatePos()
 void ComponentTransform::PropertiesEditor()
 {
 	static float3 aux_position = position;
-	ImGui::Text("Position");
-	ImGui::SameLine();
-	ImGui::InputFloat3("", (float*)&aux_position, "%.2f");
+	ImGui::InputFloat3("Position", (float*)&aux_position, "%.2f");
 
 	static float3 aux_rotation = rotation;
-	ImGui::Text("Rotation");
-	ImGui::SameLine();
-	ImGui::InputFloat3("", (float*)&aux_rotation, "%.2f");
+	ImGui::InputFloat3("Rotation", (float*)&aux_rotation, "%.2f");
 	
 	static float3 aux_scale = scale;
-	ImGui::Text("Scale");
-	ImGui::SameLine();
-	ImGui::InputFloat3("", (float*)&aux_scale, "%.2f");
+	ImGui::InputFloat3("Scale", (float*)&aux_scale, "%.2f");
+	if (aux_position != position || aux_rotation != rotation || aux_scale != scale)
+	{
+		CalculGlobalMatrix(aux_position, aux_scale, aux_rotation);
+		aux_position = position; aux_rotation = rotation; aux_scale = scale;
+	}
+}
+
+void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, float3 & rotation)
+{
+	this->position = position; this->rotation = rotation;   this->scale = scale;
+
+	qrotation = Quat::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
+
+	this->local_matrix = float4x4::FromTRS(position, qrotation, scale);
+
+	if (parent)
+	{
+		this->global_matrix = this->parent->global_matrix *  this->local_matrix;
+	}
 }

@@ -20,6 +20,7 @@ public:
 	//void SetChildren(std::vector<Transform*> children);
 	void UpdatePos();
 	void PropertiesEditor() override;
+	void CalculGlobalMatrix(float3& position, float3& scale, float3 & qrotation);
 public:
 	float3 position = {0,0,0}, scale = { 0,0,0 }, rotation = { 0,0,0 };
 	Quat qrotation;
@@ -32,7 +33,7 @@ public:
 private:
 	ComponentTransform * parent = nullptr;
 	std::vector<ComponentTransform*> children;
-
+	
 	friend class PanelHierarchy;
 	friend class ModuleScene;
 };
