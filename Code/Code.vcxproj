@@ -229,6 +229,7 @@
     <ClInclude Include="PanelConsole.h" />
     <ClInclude Include="PanelHierarchy.h" />
     <ClInclude Include="PanelProperties.h" />
+    <ClInclude Include="PanelScene.h" />
     <ClInclude Include="PanelShortcuts.h" />
     <ClInclude Include="parson\parson.h" />
     <ClInclude Include="par\par_bluenoise.h" />
@@ -325,6 +326,7 @@
     <ClCompile Include="PanelConsole.cpp" />
     <ClCompile Include="PanelHierarchy.cpp" />
     <ClCompile Include="PanelProperties.cpp" />
+    <ClCompile Include="PanelScene.cpp" />
     <ClCompile Include="PanelShortcuts.cpp" />
     <ClCompile Include="parson\parson.c" />
     <ClCompile Include="Primitive.cpp" />

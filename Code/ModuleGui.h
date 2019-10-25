@@ -20,13 +20,17 @@ class PanelInspector;
 class PanelHierarchy;
 class PanelAbout;
 class PanelAssets;
+class PanelScene;
+
+struct ImVec2;
 
 
 class ModuleGui : public Module
 {
 public:
 	MenuCreateShape * create_menu = nullptr;
-	
+	PanelScene * panel_scene = nullptr;
+
 private:
 	bool showMenuImGui = false;
 	std::vector<Panel*> panels;
@@ -47,6 +51,7 @@ public:
 	bool Start() override;
 	update_status PreUpdate() override;
 	update_status PostUpdate() override;
+	void CreateDockspace(ImGuiIO& io);
 	bool CleanUp() override;
 	bool Log(const char*);
 
@@ -66,9 +71,10 @@ public:
 	}
 private:
 	void MainMenuBar(update_status &ret);
+	bool dockspace_active = true;
 
 	RenderMode render_mode_all;
-	
+
 	friend class Shortcut;
 	friend class Panel;
 	friend class PanelShortcuts;
