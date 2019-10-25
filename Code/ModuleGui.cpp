@@ -137,7 +137,6 @@ update_status ModuleGui::PostUpdate()
 
 	//FBO TEST-----------------
 	//1. StartFBO
-	ImVec2 current_viewport_size = ImGui::GetContentRegionAvail();
 	preview_shapes_fbo.StartRenderingToTexture(current_viewport_size);
 	//2. DrawTo the FBO
 	preview_shape_gameobject->OnPostUpdate();
