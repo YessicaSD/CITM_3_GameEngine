@@ -120,36 +120,36 @@ bool ModuleRenderer3D::Init()
 	color_material = glIsEnabled(GL_COLOR_MATERIAL) == GL_TRUE;
 	texture_2d = glIsEnabled(GL_TEXTURE_2D) == GL_TRUE;
 
-	GenSceneFramebuffer();
+	scene_fbo.GenFramebuffer();
 
 	return ret;
 }
 
-void ModuleRenderer3D::GenSceneFramebuffer()
+void FrameBufferObject::GenFramebuffer()
 {
 	//https://learnopengl.com/Advanced-OpenGL/Framebuffers
 	//Generate frame buffer
-	glGenFramebuffers(1, &scene_fbo.frame_buffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, scene_fbo.frame_buffer);
+	glGenFramebuffers(1, &frame_buffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
 
 	//Generate depth render buffer
-	glGenRenderbuffers(1, &scene_fbo.depth_render_buffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, scene_fbo.depth_render_buffer);
+	glGenRenderbuffers(1, &depth_render_buffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, depth_render_buffer);
 	//Attach to frame buffer
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, scene_fbo.depth_render_buffer);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_render_buffer);
 	//Reset depth render buffer
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	//Generate render texture
-	glGenTextures(1, &scene_fbo.render_texture);
-	glBindTexture(GL_TEXTURE_2D, scene_fbo.render_texture);
+	glGenTextures(1, &render_texture);
+	glBindTexture(GL_TEXTURE_2D, render_texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 	//Attach to frame buffer
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, scene_fbo.render_texture, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, render_texture, 0);
 	//Reset render texture
 	glBindTexture(GL_TEXTURE_2D, 0);
 

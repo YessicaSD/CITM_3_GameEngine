@@ -8,6 +8,7 @@
 #include <vector>
 #include "MenuCreateShape.h"
 #include "ComponentMesh.h"
+#include "ModuleRenderer3D.h"//Delete when we change FrameBufferObject to anther window
 
 class Timer;
 class Panel;
@@ -73,7 +74,12 @@ private:
 	void MainMenuBar(update_status &ret);
 	bool dockspace_active = true;
 
+
+	FrameBufferObject preview_shapes_fbo;
 	RenderMode render_mode_all;
+
+	ImVec2 current_viewport_size;
+	GameObject * preview_shape_gameobject = nullptr;
 
 	friend class Shortcut;
 	friend class Panel;

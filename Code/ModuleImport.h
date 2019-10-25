@@ -26,7 +26,7 @@ public:
 	void EventRequest(const Event& event) override;
 	AssetMesh* LoadAssimpMesh(aiMesh * assimp_mesh, const aiScene* scene_fbx, std::vector<Texture*>& textures);
 	AssetMesh* LoadParShapeMesh(par_shapes_mesh * mesh);
-	void CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh);
+	GameObject * CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh);
 private:
 	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<AssetMesh*> loaded_meshes, std::vector<Texture*>& textures);
 	

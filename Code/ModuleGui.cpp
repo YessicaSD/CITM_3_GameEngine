@@ -19,6 +19,10 @@
 #include "PanelAssets.h"
 #include "PanelScene.h"
 
+//TODO: Frame Buffer Object remove
+#include "par/par_shapes.h"
+#include "ModuleImport.h"
+
 #define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
 #define IMGUI_GREY ImVec4(0.6f,0.6f,0.6f,1.f)
 #define IMGUI_BLUE ImVec4(0.2f,0.2f,1.f,1.f)
@@ -62,7 +66,6 @@ bool ModuleGui::Init()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
 
-
 	return ret;
 }
 
@@ -79,6 +82,14 @@ bool ModuleGui::Start()
 
 	create_menu = new MenuCreateShape();
 
+	//FBO Test
+	//TODO: Remove
+	preview_shapes_fbo.GenFramebuffer();
+	par_shapes_mesh* mesh = par_shapes_create_cube();
+	AssetMesh* asset_mesh = App->import->LoadParShapeMesh(mesh);
+	par_shapes_free_mesh(mesh);
+	preview_shape_gameobject = App->import->CreateGameObjectWithMesh("Cube Preview Shape", App->scene->root_gameobject->transform, asset_mesh);
+	
 	return true;
 }
 
@@ -123,6 +134,26 @@ update_status ModuleGui::PostUpdate()
 	{
 		ImGui::ShowDemoWindow();
 	}
+
+	//FBO TEST-----------------
+	//1. StartFBO
+	preview_shapes_fbo.StartRenderingToTexture();
+	//2. DrawTo the FBO
+	preview_shape_gameobject->OnPostUpdate();
+	//3. EndFBO
+	preview_shapes_fbo.EndRenderingToTexture();
+	//4. Draw Panel with an image of the FBO texture
+	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
+	ImGui::Begin("Preview Shapes FBO");
+	current_viewport_size = ImGui::GetContentRegionAvail();
+	ImVec2 min = ImGui::GetCursorScreenPos();
+	ImVec2 max = ImVec2(min.x + current_viewport_size.x, min.y + current_viewport_size.y);
+	bool mouse_is_hovering = ImGui::IsMouseHoveringRect(min, max);
+	ImGui::Image((ImTextureID)preview_shapes_fbo.render_texture, ImVec2(current_viewport_size.x, current_viewport_size.y), ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::End();
+	ImGui::PopStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding);
+	//-------------------------
+
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -207,7 +238,6 @@ bool ModuleGui::CleanUp()
 	}
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
-
 
 	ImGui::DestroyContext();
 

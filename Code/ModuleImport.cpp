@@ -187,9 +187,10 @@ void ModuleImport::EventRequest(const Event & event)
 	}
 }
 
-void ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh)
+GameObject* ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh)
 {
 	GameObject * new_gameobject = new GameObject(name, parent);
 	ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 	component_mesh->mesh = asset_mesh;
+	return new_gameobject;
 }

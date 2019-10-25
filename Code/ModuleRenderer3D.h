@@ -8,9 +8,11 @@
 
 struct SDL_Window;
 
+//Used for rendering to a texture
 class FrameBufferObject
 {
 public:
+	void GenFramebuffer();
 	void StartRenderingToTexture();
 	void EndRenderingToTexture();
 
@@ -39,7 +41,6 @@ public:
 	~ModuleRenderer3D();
 
 	bool Init();
-	void GenSceneFramebuffer();
 	update_status PreUpdate() override;
 	update_status PostUpdate() override;
 	bool CleanUp();
