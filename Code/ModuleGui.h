@@ -51,6 +51,7 @@ public:
 	bool Start() override;
 	update_status PreUpdate() override;
 	update_status PostUpdate() override;
+	void CreateDockspace(ImGuiIO& io);
 	bool CleanUp() override;
 	bool Log(const char*);
 
