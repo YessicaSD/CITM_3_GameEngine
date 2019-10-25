@@ -66,44 +66,16 @@ void ModuleScene::DeleteGameObject(GameObject * gameobject)
 
 update_status ModuleScene::PostUpdate()
 {
-	GameObjectPostUpdateRecursive(root_gameobject->transform);
+	App->renderer3D->StartSceneRender();
 
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;
 	p.wire = false;
 	p.Render();
 
+	GameObjectPostUpdateRecursive(root_gameobject->transform);
+
+	App->renderer3D->EndSceneRender();
+
 	return UPDATE_CONTINUE;
 }
-
-//TODO: Remove this, we shouldn't iterate meshes directly
-//We should instead gameobjects
-//And if that gameobject has a mesh component, it should draw its mesh
-//Maybe if it's on debug, it should draw its normals
-//void ModuleScene::DrawFaceNormals()
-//{
-//	for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
-//	{
-//		for (std::vector<ComponentMesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
-//		{
-//			if ((*iter))
-//			{
-//				(*iter)->DrawNormals();
-//			}
-//		}
-//	}
-//}
-
-//void ModuleScene::DrawVertexNormals()
-//{
-//	for (std::vector<AssimpScene*>::iterator scene_iter = App->import->array_scene.begin(); scene_iter != App->import->array_scene.end(); ++scene_iter)
-//	{
-//		for (std::vector<ComponentMesh*>::iterator iter = (*scene_iter)->assimp_meshes.begin(); iter != (*scene_iter)->assimp_meshes.end(); ++iter)
-//		{
-//			if ((*iter))
-//			{
-//				(*iter)->DrawVertexNormal();
-//			}
-//		}
-//	}
-//}
