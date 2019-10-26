@@ -11,25 +11,19 @@
 
 void ModuleWindow::DrawConfigurationUi()
 {
-	static float brightness = 100;
 	if (ImGui::SliderFloat("Brightness", &brightness, 0.2f, 1.0f))
 	{
 		SetBrightness(brightness);
 	}
-	static float max_width, max_height, min_width = 640, min_height = 480;
-	static float width = GetWindowWidth(),
-		height = GetWindowHeight();
+
+	float width = GetWindowWidth();
+	float height = GetWindowHeight();
 	GetMaxWindowSize(max_width, max_height);
 
-
-	if (ImGui::SliderFloat("Width", &width, min_width, max_width))
+	if (ImGui::SliderFloat("Width", &width, min_width, max_width)
+		|| ImGui::SliderFloat("Height", &height, min_height, max_height))
 	{
-		SetWidth(width);
-	}
-	if (ImGui::SliderFloat("Height", &height, min_height, max_height))
-	{
-		
-SetHeight(height);
+		SetWindowSize(width, height);
 	}
 }
 
@@ -142,7 +136,7 @@ void ModuleInput::DrawConfigurationUi()
 
 void ModuleAudio::DrawConfigurationUi()
 {
-	if (ImGui::SliderFloat("General volum", &general_volume, 0.0f, 1.0f))
+	if (ImGui::SliderFloat("General volume", &general_volume, 0.0f, 1.0f))
 	{
 		SetVolum(general_volume);
 	}

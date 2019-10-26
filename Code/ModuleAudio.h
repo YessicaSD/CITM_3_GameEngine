@@ -8,7 +8,7 @@ private:
 	float general_volume = 0.0f;
 public:
 	ModuleAudio(const char* name);
-	bool Init();
+	bool Init(JSON_Object* config);
 	void SetVolum(float value);
 	void DrawConfigurationUi();
 };

@@ -16,27 +16,27 @@ Application::Application()
 
 	// Main Modules
 	AddModule(window = new ModuleWindow("Window"));
-	AddModule(random = new ModuleRandom());
-	AddModule(file_system = new ModuleFileSystem());
+	AddModule(random = new ModuleRandom("Random"));
+	AddModule(file_system = new ModuleFileSystem("File System"));
 	AddModule(hardware = new ModuleHardware("Hardware"));
 	AddModule(input = new ModuleInput("Input"));
-	AddModule(texture = new ModuleTexture());
-	AddModule(scene = new ModuleScene());
-	AddModule(import = new ModuleImport());
-	AddModule(camera = new ModuleCamera3D());
+	AddModule(texture = new ModuleTexture("Textures"));
+	AddModule(scene = new ModuleScene("Scene"));
+	AddModule(import = new ModuleImport("Import"));
+	AddModule(camera = new ModuleCamera3D("Camera 3D"));
 	AddModule(audio = new ModuleAudio("Audio"));
-	AddModule(gui = new ModuleGui());
+	AddModule(gui = new ModuleGui("Gui"));
 
 	// Renderer last!
 	AddModule(renderer3D = new ModuleRenderer3D("Render"));
-	
+
 }
 
 Application::~Application()
 {
 	std::vector<Module*>::reverse_iterator item = list_modules.rbegin();
 
-	while(item != list_modules.rend())
+	while (item != list_modules.rend())
 	{
 		delete (*item);
 		item = ++item;
@@ -49,15 +49,16 @@ bool Application::Init()
 
 	config_path = "config.json";
 
+	//Automatically load the config file if it exists
 	LoadConfig();
-
+	
 	// Call Init() in all modules
 	std::vector<Module*>::iterator item = list_modules.begin();
 
-	while(item != list_modules.end() && ret == true)
+	while (item != list_modules.end() && ret == true)
 	{
 		if ((*item)->IsActive())
-		ret = (*item)->Init();
+			ret = (*item)->Init(config_root);
 		++item;
 	}
 
@@ -65,13 +66,13 @@ bool Application::Init()
 	LOG("Application Start --------------");
 	item = list_modules.begin();
 
-	while(item != list_modules.end() && ret == true )
+	while (item != list_modules.end() && ret == true)
 	{
 		if ((*item)->IsActive())
-		ret = (*item)->Start();
+			ret = (*item)->Start(config_root);
 		++item;
 	}
-	
+
 	CloseConfig();
 
 	ms_timer.Start();
@@ -88,7 +89,9 @@ void Application::PrepareUpdate()
 	{
 		if (gui)
 		{
-			for (auto iter = log_strings.begin(); iter != log_strings.end(); ++iter)
+			for (std::list<std::string>::iterator iter = log_strings.begin();
+				iter != log_strings.end();
+				++iter)
 			{
 				if (!gui->Log((*iter).c_str()))
 				{
@@ -97,20 +100,12 @@ void Application::PrepareUpdate()
 			}
 			log_strings.clear();
 		}
-		
-		
 	}
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
-	if (saveRequest)
-	{
-		SaveModules();
-		saveRequest = false;
-	}
-
 	frame_count++;
 
 	seconds_since_startup = startup_time.ReadSec();
@@ -128,7 +123,7 @@ update_status Application::Update()
 
 	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
-		if((*item)->IsActive())
+		if ((*item)->IsActive())
 			ret = (*item)->PreUpdate();
 		item = ++item;
 	}
@@ -138,7 +133,7 @@ update_status Application::Update()
 	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
 		if ((*item)->IsActive())
-		ret = (*item)->Update(dt);
+			ret = (*item)->Update(dt);
 		item = ++item;
 	}
 
@@ -155,6 +150,53 @@ update_status Application::Update()
 	return ret;
 }
 
+bool Application::SaveModulesConfiguration()
+{
+	bool ret = true;
+
+	//When saving we override the previous file
+	CreateNewConfig(config_path);
+
+	json_object_set_value(config_root, "App", json_value_init_object());
+	JSON_Object * app_obj = json_object_get_object(config_root, "App");
+	
+	for (std::vector<Module*>::iterator item = list_modules.begin();
+		item != list_modules.end() && ret == true;
+		item = ++item)
+	{
+		json_object_set_value(app_obj, (*item)->name, json_value_init_object());
+		JSON_Object * module_obj = json_object_get_object(app_obj, (*item)->name);
+		ret = (*item)->SaveConfiguration(module_obj);
+	}
+	
+	CloseConfig();
+
+	return ret;
+}
+
+bool Application::LoadModulesConfiguration()
+{
+	bool ret = true;
+
+	LoadConfig();
+	JSON_Object * app_obj = json_object_get_object(config_root, "App");
+
+	if(config_root != nullptr)
+	{
+		for (std::vector<Module*>::iterator item = list_modules.begin();
+			item != list_modules.end() && ret == true;
+			++item)
+		{
+			ret = (*item)->LoadConfiguration(config_root);
+			JSON_Object * module_obj = json_object_get_object(app_obj, (*item)->name);
+			ret = (*item)->LoadConfiguration(module_obj);
+		}
+	}
+	CloseConfig();
+
+	return ret;
+}
+
 bool Application::CleanUp()
 {
 	bool ret = true;
@@ -162,7 +204,7 @@ bool Application::CleanUp()
 
 	while (item != list_modules.rend() && ret == true)
 	{
-		
+
 		ret = (*item)->CleanUp();
 
 		item = ++item;
@@ -205,10 +247,8 @@ void Application::DrawModulesConfigUi()
 			if (ImGui::CollapsingHeader((*iter)->name))
 			{
 				(*iter)->DrawConfigurationUi();
-
 			}
 		}
-	
 	}
 }
 
@@ -217,47 +257,31 @@ void Application::AddModule(Module* mod)
 	list_modules.push_back(mod);
 }
 
-void Application::SaveModules()
-{
-	bool ret = true;
-
-	//Create new config file if there isn't one
-	if (config == nullptr)
-	{
-		CreateNewConfig(config_path.c_str());
-	}
-
-	for (std::vector<Module*>::iterator item = list_modules.begin();
-		item != list_modules.end() && ret == true;
-		item = ++item)
-	{
-		ret = (*item)->Save(config);
-	}
-}
-
 //Config
 
 void Application::LoadConfig()
 {
 	configValue = json_parse_file(config_path.c_str());
-	config = json_object(configValue);
+	config_root = json_object(configValue);
 }
 
 void Application::CloseConfig()
 {
-	json_serialize_to_file_pretty(configValue, config_path.c_str());
 	json_value_free(configValue);
-	config = nullptr;
+	config_root = nullptr;
 	configValue = nullptr;
 }
 
 void Application::CreateNewConfig(const std::string& path)
 {
 	configValue = json_value_init_object();
-	config = json_value_get_object(configValue);
-	json_serialize_to_file_pretty(configValue, path.data());
-	if (configValue == nullptr || config == nullptr)
+	config_root = json_value_get_object(configValue);
+	if (configValue == nullptr || config_root == nullptr)
 	{
 		LOG("Error creating JSON with path %s", path.data());
+	}
+	else
+	{
+		json_serialize_to_file_pretty(configValue, path.data());
 	}
 }

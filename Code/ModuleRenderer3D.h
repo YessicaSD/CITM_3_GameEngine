@@ -20,10 +20,9 @@ public:
 	ModuleRenderer3D(const char* name, bool start_enabled = true);
 	~ModuleRenderer3D();
 
-	bool Init();
+	bool Init(JSON_Object* config);
 	void GenSceneFramebuffer();
 	update_status PreUpdate() override;
-	void AttachRenderBuffers();
 	void PrepareTextureBuffer(ImVec2 &size);
 	void PrepareDepthBuffer(ImVec2 &size);
 	void PrepareCamera(ImVec2 &size);

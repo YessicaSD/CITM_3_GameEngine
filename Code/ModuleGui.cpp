@@ -30,7 +30,7 @@
 #define NORMAL_TEXT_COLOR IMGUI_LIGHT_GREY
 #define TITLE_1_TEXT_COLOR IMGUI_GREY
 
-ModuleGui::ModuleGui(bool start_enabled):Module(start_enabled)
+ModuleGui::ModuleGui(const char * name, bool start_enabled):Module(start_enabled, name)
 {
 
 }
@@ -40,7 +40,7 @@ ModuleGui::~ModuleGui()
 	RELEASE(create_menu);
 }
 
-bool ModuleGui::Init()
+bool ModuleGui::Init(JSON_Object* config)
 {
 	bool ret = true;
 
@@ -66,7 +66,7 @@ bool ModuleGui::Init()
 	return ret;
 }
 
-bool ModuleGui::Start()
+bool ModuleGui::Start(JSON_Object* config)
 {
 	panel_console		= CreatePanel<PanelConsole>("Console", true);
 	panel_shortcuts		= CreatePanel<PanelShortcuts>("Shortcuts", true);

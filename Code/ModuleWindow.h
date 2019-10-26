@@ -18,7 +18,7 @@ public:
 	// Destructor
 	virtual ~ModuleWindow();
 
-	bool Init() override;
+	bool Init(JSON_Object* config) override;
 
 	bool CleanUp();
 
@@ -27,22 +27,25 @@ public:
 	bool Save(JSON_Object * config);
 
 	int GetWindowWidth();
-	
 	int GetWindowHeight();
 	
+	void SetWidth(float& width);
+	void SetHeight(float& height);
+	void SetWindowSize(float width, float height);
+
 	bool IsVsync();
 	
 	void SetBrightness(float brightness);
 	
-	void GetMaxWindowSize(float& width, float& hight);
-	
-	void SetWidth(float& width);
+	void GetMaxWindowSize(float& width, float& height);
 
-	void SetHeight(float& height);
 
 	void DrawConfigurationUi();
+	
+	bool SaveConfiguration(JSON_Object * module_obj) override;
+	bool LoadConfiguration(JSON_Object * module_obj) override;
+
 private:
-	void LoadConfigValues(JSON_Object * config);
 	Uint32 GetFlags();
 	void DecideGLAndGLSLVersions();
 	bool SetWindow();
@@ -60,12 +63,15 @@ public:
 
 
 	//TODO: Make them private
-	//This values will be overriden by config.json
+	//This values will be overriden by config_root.json
 	bool fullscreen = false;
 	bool resizable = false;
 	bool borderless = false;
 	bool fullscreen_desktop = false;
 	bool vsync = false;
+
+	float brightness = 100.f;
+	float max_width, max_height, min_width = 640, min_height = 480;
 };
 
 #endif // __ModuleWindow_H__

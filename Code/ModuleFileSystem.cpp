@@ -1,5 +1,8 @@
 #include "ModuleFileSystem.h"
+#include "Module.h"
 
+ModuleFileSystem::ModuleFileSystem(const char * name) : Module (true, name)
+{}
 
 void ModuleFileSystem::GetExtension(const char * full_path, std::string & extension)
 {

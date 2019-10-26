@@ -12,7 +12,7 @@ ModuleAudio::ModuleAudio(const char * name):Module(true, name)
 {
 }
 
-bool ModuleAudio::Init()
+bool ModuleAudio::Init(JSON_Object* config)
 {
 	LOG("Loading Audio Module");
 

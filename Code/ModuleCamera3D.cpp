@@ -21,7 +21,7 @@ ModuleCamera3D::~ModuleCamera3D()
 {}
 
 // -----------------------------------------------------------------
-bool ModuleCamera3D::Start()
+bool ModuleCamera3D::Start(JSON_Object* config)
 {
 	LOG("Setting up the camera");
 	bool ret = true;
