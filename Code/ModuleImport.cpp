@@ -112,15 +112,7 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 	aiVector3D translation, scaling;
 	aiQuaternion rotation;
 	node->mTransformation.Decompose(scaling, rotation, translation);
-
-	new_gameobject->transform->position = { translation.x, translation.y, translation.z };
-	new_gameobject->transform->scale = { scaling.x, scaling.y, scaling.z };
-	new_gameobject->transform->qrotation = { rotation.x, rotation.y, rotation.z, rotation.w };
-	new_gameobject->transform->rotation = new_gameobject->transform->qrotation.ToEulerXYZ();
-
-	new_gameobject->transform->local_matrix = float4x4::FromTRS(new_gameobject->transform->position, new_gameobject->transform->qrotation, new_gameobject->transform->scale);
-
-
+	new_gameobject->transform->CalculGlobalMatrix(float3(translation.x, translation.y, translation.z), float3(scaling.x, scaling.y, scaling.z), Quat(rotation.x, rotation.y, rotation.z, rotation.w));
 	//TODO: Search if there is a better way to convert from aiMatrix4x4 to math::float4x4 (both are arrays with 16 positions at the end)
 	//V1
 	/*new_gameobject->transform->local_matrix.Set(
@@ -138,7 +130,6 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 
 	//TODO: Calculate global matrix after that, don't set it directly to the local matrix of the fbx node
 	//V1
-	new_gameobject->transform->global_matrix = parent->global_matrix * new_gameobject->transform->local_matrix;
 	new_gameobject->transform->UpdatePos();
 
 	//V2

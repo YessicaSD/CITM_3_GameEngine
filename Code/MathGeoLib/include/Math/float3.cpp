@@ -829,7 +829,7 @@ float3 &float3::operator /=(float scalar)
 
 bool float3::operator !=(const float3& v) const
 {
-	return (x != v.x && y != v.y && z != v.z);
+	return (x != v.x || y != v.y || z != v.z);
 
 }
 
