@@ -37,7 +37,7 @@ void ComponentMesh::OnPostUpdate()
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glPushMatrix();
-	//glMultMatrixf((const GLfloat *)&gameobject->transform->global_matrix[0]);
+	glMultMatrixf((const GLfloat *)&gameobject->transform->global_matrix[0]);
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 
