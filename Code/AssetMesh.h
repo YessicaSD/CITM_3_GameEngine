@@ -38,7 +38,7 @@ public:
 	//Vertec ================================
 	uint id_vertex = 0u; // unique vertex in VRAM
 	uint num_vertices = 0u;
-	float* vertices = nullptr;
+	float3* vertices = nullptr;
 
 	//Normals ===================
 	float3* vertex_normals = nullptr;

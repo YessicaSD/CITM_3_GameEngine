@@ -109,16 +109,14 @@ void ComponentMesh::OnPostUpdate()
 void ComponentMesh::DrawVertexNormal()
 {
 	glColor3f(0.2f, 1.f, 0.25f);
-	uint j = 0;
 	float lenght = 2;
 	if (mesh->vertex_normals != nullptr)
 	{
-		for (uint i = 0; i < mesh->num_vertices * 3; i += 3)
+		for (uint i = 0; i < mesh->num_vertices; ++i)
 		{
 			glBegin(GL_LINES);
-			glVertex3f(mesh->vertices[i], mesh->vertices[i + 1], mesh->vertices[i + 2]);
-			glVertex3f(mesh->vertices[i] + mesh->vertex_normals[j].x*lenght, mesh->vertices[i + 1] + mesh->vertex_normals[j].y *lenght, mesh->vertices[i + 2] + mesh->vertex_normals[j].z*lenght);
-			++j;
+			glVertex3f(mesh->vertices[i].x, mesh->vertices[i].y, mesh->vertices[i].z);
+			glVertex3f(mesh->vertices[i].x + mesh->vertex_normals[i].x * lenght, mesh->vertices[i].y + mesh->vertex_normals[i].y * lenght, mesh->vertices[i].z + mesh->vertex_normals[i].z * lenght);
 			glEnd();
 		}
 	}
