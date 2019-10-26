@@ -160,6 +160,11 @@ bool AssetMesh::LoadUVs(aiMesh * info)
 	return true;
 }
 
+void AssetMesh::CreateBoindingBox()
+{
+	default_bonding_box.Enclose(vertices, num_vertices);
+}
+
 bool AssetMesh::GenerateFacesAndNormalsBuffer()
 {
 	if (num_faces > 0)
@@ -179,6 +184,7 @@ bool AssetMesh::GenerateUVsBuffer()
 		glBindBuffer(GL_ARRAY_BUFFER, id_uv);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * uv_num_components * num_vertices, &UVCoord[0], GL_STATIC_DRAW);
 	}
+
 	return true;
 }
 

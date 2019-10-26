@@ -1,6 +1,8 @@
 #include "ComponentTransform.h"
 #include "MathGeoLib/include/Math/float4.h"
 #include "imgui/imgui.h"
+#include "GameObject.h"
+#include "ComponentMesh.h"
 CLASS_DEFINITION(Component, ComponentTransform)
 
 ComponentTransform::ComponentTransform(GameObject * gameobject) : Component(gameobject)
@@ -65,11 +67,20 @@ void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, f
 	}
 
 	aux_position = position; aux_rotation = rotation; aux_scale = scale;
+	ComponentMesh* comp_mesh = gameobject->GetComponent<ComponentMesh>();
+	if (comp_mesh)
+	{
+		comp_mesh->CalculBoindingBox();
+	}
+
 }
 
 void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, Quat & qrotation)
 {
-	this->position = position; this->qrotation = qrotation;   this->scale = scale;
+	this->position = position; 
+	this->qrotation = qrotation;   
+	this->scale = scale;
+
 	this->rotation = qrotation.ToEulerXYZ();
 
 	this->local_matrix = float4x4::FromTRS(position, qrotation, scale);
@@ -83,5 +94,12 @@ void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, Q
 		this->global_matrix = this->local_matrix;
 	}
 
-	aux_position = position; aux_rotation = rotation; aux_scale = scale;
+	aux_position = position;
+	aux_rotation = rotation; 
+	aux_scale = scale;
+	ComponentMesh* comp_mesh = gameobject->GetComponent<ComponentMesh>();
+	if (comp_mesh)
+	{
+		comp_mesh->CalculBoindingBox();
+	}
 }

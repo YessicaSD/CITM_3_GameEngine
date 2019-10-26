@@ -5,6 +5,9 @@
 #include "ModuleGui.h"
 #include "Shortcut.h"
 #include "PanelProperties.h"
+#include "ComponentTransform.h"
+#include "ComponentMesh.h"
+#include "MathGeoLib/include/Geometry/AABB.h"
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
 	CalculateViewMatrix();
@@ -52,7 +55,10 @@ update_status ModuleCamera3D::Update(float dt)
 	{
 		const ComponentTransform* selected_transform = App->gui->panel_properties->GetSelecteTransform();
 		if (selected_transform != nullptr)
-			LookAt(vec3(selected_transform->position.x, selected_transform->position.y, selected_transform->position.z));
+		{
+			FocusToObject((*selected_transform));
+
+		}
 	}
 	vec3 newPos(0,0,0);
 	float speed = 3.0f * dt;
@@ -165,6 +171,32 @@ void ModuleCamera3D::LookAt( const vec3 &Spot)
 	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
 	Y = cross(Z, X);
 
+	
+}
+
+void ModuleCamera3D::FocusToObject(const ComponentTransform & transform)
+{
+	ComponentMesh* mesh = transform.gameobject->GetComponent<ComponentMesh>();
+	float3 pos;
+	float length;
+	if (mesh)
+	{
+		AABB aux_aabb = mesh->boinding_box;
+		pos = mesh->boinding_box.CenterPoint();
+		//pos = { (aux_aabb.minPoint + aux_aabb.maxPoint) / 2 };
+		length = mesh->boinding_box.Diagonal().Length();
+	}
+	else
+	{
+		pos  = transform.position;
+		length = 20;
+	}
+	Reference = vec3(pos.x, pos.y, pos.z);
+	Z = normalize(Position - Reference);
+	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
+	Y = cross(Z, X);
+
+	Position = vec3(pos.x,pos.y, pos.z) + Z * length;
 	CalculateViewMatrix();
 }
 

@@ -4,9 +4,11 @@
 #include "Component.h"
 
 #include "MathGeoLib/include/Math/float3.h"
-
+#include "MathGeoLib/include/Geometry/AABB.h"
 class AssetMesh;
 class ComponentMaterial;
+
+
 struct RenderMode
 {
 	bool fill = true;
@@ -27,11 +29,12 @@ public:
 	void DrawNormals();
 	void PropertiesEditor() override;
 	void CleanUp() override;
+	void CalculBoindingBox();
 
 public:
 	//One mesh can be used by more than one mesh component
 	AssetMesh * mesh = nullptr;
-
+	AABB boinding_box;
 private:
 	ComponentMaterial* material = nullptr;
 	RenderMode render_mode;
