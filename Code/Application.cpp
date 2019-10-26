@@ -34,9 +34,9 @@ Application::Application()
 
 Application::~Application()
 {
-	std::vector<Module*>::reverse_iterator item = list_modules.rbegin();
+	std::vector<Module*>::reverse_iterator item = modules.rbegin();
 
-	while (item != list_modules.rend())
+	while (item != modules.rend())
 	{
 		delete (*item);
 		item = ++item;
@@ -53,9 +53,9 @@ bool Application::Init()
 	LoadConfig();
 	
 	// Call Init() in all modules
-	std::vector<Module*>::iterator item = list_modules.begin();
+	std::vector<Module*>::iterator item = modules.begin();
 
-	while (item != list_modules.end() && ret == true)
+	while (item != modules.end() && ret == true)
 	{
 		if ((*item)->IsActive())
 			ret = (*item)->Init(config_root);
@@ -64,9 +64,9 @@ bool Application::Init()
 
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");
-	item = list_modules.begin();
+	item = modules.begin();
 
-	while (item != list_modules.end() && ret == true)
+	while (item != modules.end() && ret == true)
 	{
 		if ((*item)->IsActive())
 			ret = (*item)->Start(config_root);
@@ -119,27 +119,27 @@ update_status Application::Update()
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 
-	std::vector<Module*>::iterator item = list_modules.begin();
+	std::vector<Module*>::iterator item = modules.begin();
 
-	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
+	while (item != modules.end() && ret == UPDATE_CONTINUE)
 	{
 		if ((*item)->IsActive())
 			ret = (*item)->PreUpdate();
 		item = ++item;
 	}
 
-	item = list_modules.begin();
+	item = modules.begin();
 
-	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
+	while (item != modules.end() && ret == UPDATE_CONTINUE)
 	{
 		if ((*item)->IsActive())
 			ret = (*item)->Update(dt);
 		item = ++item;
 	}
 
-	item = list_modules.begin();
+	item = modules.begin();
 
-	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
+	while (item != modules.end() && ret == UPDATE_CONTINUE)
 	{
 		if ((*item)->IsActive())
 			ret = (*item)->PostUpdate();
@@ -160,14 +160,16 @@ bool Application::SaveModulesConfiguration()
 	json_object_set_value(config_root, "App", json_value_init_object());
 	JSON_Object * app_obj = json_object_get_object(config_root, "App");
 	
-	for (std::vector<Module*>::iterator item = list_modules.begin();
-		item != list_modules.end() && ret == true;
+	for (std::vector<Module*>::iterator item = modules.begin();
+		item != modules.end() && ret == true;
 		item = ++item)
 	{
 		json_object_set_value(app_obj, (*item)->name, json_value_init_object());
 		JSON_Object * module_obj = json_object_get_object(app_obj, (*item)->name);
 		ret = (*item)->SaveConfiguration(module_obj);
 	}
+
+	json_serialize_to_file_pretty(configValue, config_path.data());
 	
 	CloseConfig();
 
@@ -183,8 +185,8 @@ bool Application::LoadModulesConfiguration()
 
 	if(config_root != nullptr)
 	{
-		for (std::vector<Module*>::iterator item = list_modules.begin();
-			item != list_modules.end() && ret == true;
+		for (std::vector<Module*>::iterator item = modules.begin();
+			item != modules.end() && ret == true;
 			++item)
 		{
 			ret = (*item)->LoadConfiguration(config_root);
@@ -200,9 +202,9 @@ bool Application::LoadModulesConfiguration()
 bool Application::CleanUp()
 {
 	bool ret = true;
-	std::vector<Module*>::reverse_iterator item = list_modules.rbegin();
 
-	while (item != list_modules.rend() && ret == true)
+	std::vector<Module*>::reverse_iterator item = modules.rbegin();
+	while (item != modules.rend() && ret == true)
 	{
 
 		ret = (*item)->CleanUp();
@@ -232,7 +234,7 @@ void Application::Log(const char * sentece)
 
 void Application::EventRequest(const Event & event)
 {
-	for (std::vector<Module*>::iterator iter = list_modules.begin(); iter != list_modules.end(); ++iter)
+	for (std::vector<Module*>::iterator iter = modules.begin(); iter != modules.end(); ++iter)
 	{
 		(*iter)->EventRequest(event);
 	}
@@ -240,7 +242,7 @@ void Application::EventRequest(const Event & event)
 
 void Application::DrawModulesConfigUi()
 {
-	for (std::vector<Module*>::iterator iter = list_modules.begin(); iter != list_modules.end(); ++iter)
+	for (std::vector<Module*>::iterator iter = modules.begin(); iter != modules.end(); ++iter)
 	{
 		if ((*iter)->name != "")
 		{
@@ -254,7 +256,7 @@ void Application::DrawModulesConfigUi()
 
 void Application::AddModule(Module* mod)
 {
-	list_modules.push_back(mod);
+	modules.push_back(mod);
 }
 
 //Config
@@ -279,9 +281,5 @@ void Application::CreateNewConfig(const std::string& path)
 	if (configValue == nullptr || config_root == nullptr)
 	{
 		LOG("Error creating JSON with path %s", path.data());
-	}
-	else
-	{
-		json_serialize_to_file_pretty(configValue, path.data());
 	}
 }

@@ -8,7 +8,7 @@
 class ModuleRandom : public Module
 {
 public:
-	ModuleRandom(bool start_enabled = true);
+	ModuleRandom(const char * name, bool start_enabled = true);
 	bool Init(JSON_Object* config) override;
 
 	int RandomInt(int from, int to);

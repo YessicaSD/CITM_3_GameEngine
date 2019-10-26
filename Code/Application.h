@@ -54,7 +54,7 @@ private:
 
 	Timer	ms_timer;
 	float	dt;
-	std::vector<Module*> list_modules;
+	std::vector<Module*> modules;
 
 	JSON_Value * configValue = nullptr;
 

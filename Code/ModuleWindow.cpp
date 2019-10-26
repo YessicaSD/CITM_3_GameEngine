@@ -58,6 +58,7 @@ bool ModuleWindow::LoadConfiguration(JSON_Object * module_obj)
 	if (module_obj != nullptr)
 	{
 		brightness = json_object_get_number(module_obj, "brightness");
+		SetBrightness(brightness);
 		SetWindowSize(
 			json_object_get_number(module_obj, "width"),
 			json_object_get_number(module_obj, "height"));

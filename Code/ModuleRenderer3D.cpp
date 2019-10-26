@@ -5,6 +5,7 @@
 
 #include "glew/include/GL/glew.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "ModuleFileSystem.h"
 
 
 ModuleRenderer3D::ModuleRenderer3D(const char* name, bool start_enabled) : Module(start_enabled, name)
@@ -109,6 +110,10 @@ bool ModuleRenderer3D::Init(JSON_Object* config)
 		glEnable(GL_COLOR_MATERIAL);
 		glEnable(GL_TEXTURE_2D);
 	}
+
+	background_col[0] = 1.0f;
+	background_col[1] = 0.0f;
+	background_col[2] = 0.2f;
 
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -275,4 +280,17 @@ void ModuleRenderer3D::EndSceneRender()
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+bool ModuleRenderer3D::SaveConfiguration(JSON_Object * module_obj)
+{
+	App->file_system->AddFloatArray(module_obj, "Background color", background_col, 3u);
+
+	return true;
+}
+
+bool ModuleRenderer3D::LoadConfiguration()
+{
+	background_col[0] = json_object
+	return true;
 }

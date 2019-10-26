@@ -48,6 +48,7 @@ public:
 	float camera_near = 0.125f;
 	float camera_far = 512.f;
 	float fov = 60.f;
+	float background_col[3];
 
 	friend class PanelConfiguration;
 };
