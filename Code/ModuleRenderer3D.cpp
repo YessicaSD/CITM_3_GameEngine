@@ -124,7 +124,7 @@ bool ModuleRenderer3D::Init(JSON_Object* config)
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	//Render options
-	depth_test = glIsEnabled(GL_DEPTH_BUFFER) == GL_TRUE;
+	depth_test = glIsEnabled(GL_DEPTH_TEST) == GL_TRUE;
 	cull_face = glIsEnabled(GL_CULL_FACE) == GL_TRUE;
 	lighting = glIsEnabled(GL_LIGHTING) == GL_TRUE;
 	color_material = glIsEnabled(GL_COLOR_MATERIAL) == GL_TRUE;

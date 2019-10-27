@@ -88,7 +88,9 @@ bool Application::Init()
 	while (item != modules.end() && ret == true)
 	{
 		if ((*item)->IsActive())
+		{
 			ret = (*item)->Start(app_obj);
+		}
 		++item;
 	}
 
