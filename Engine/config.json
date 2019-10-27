@@ -1,5 +1,7 @@
 {
     "App": {
+        "application name": "",
+        "organization name": "",
         "Window": {
             "brightness": 0,
             "width": 1440,
@@ -22,9 +24,9 @@
         "Gui": {},
         "Render": {
             "background color": [
-                9.9998999303352321e-07,
-                9.9999999747524271e-07,
-                9.9999340363865485e-07
+                0.33514305949211121,
+                0.79396986961364746,
+                0.49156126379966736
             ],
             "depth test": false,
             "cull faces": true,

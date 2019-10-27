@@ -10,6 +10,7 @@
 #include "parson/parson.h"
 
 #define FPS_GRAPH_SAMPLES 101
+#define GRAPH_TITLE_SIZE 100
 
 typedef unsigned __int32 uint32;
 typedef unsigned __int64 uint64;
@@ -27,6 +28,8 @@ class ModuleCamera3D;
 class ModuleScene;
 class ModuleGui;
 class ModuleRandom;
+
+struct ImVec2;
 
 struct Event;
 
@@ -61,34 +64,41 @@ private:
 	//Framerate calculations
 
 	//- dt
-	PerfTimer frame_time;
+	PerfTimer curr_frame_time;
 	float dt = 0.0f;
-
-	//- last frame
-	uint32 last_frame_ms = 0u;
 
 	//- average fps
 	float avg_fps = 0.f;
 	uint64 frame_count = 0u;
 
-	//- cap frames
+	//- cap fps
+	uint32 curr_frame_ms = 0u;
 	uint32 cap_time = 0u;
 	float max_fps = 0.0f;
 	bool cap_fps = false;
 
-	//- frames last second
-	Timer last_sec_frame_time;
-	uint32 last_sec_frame_count = 0u;
+	//- fps last seocond
+	Timer last_second_timer;
+	uint32 last_second_fps = 0u;
 
 	//- startup time
 	Timer startup_time;
 	float seconds_since_startup = 0.0f;
 
 	//grahs
-	Timer updateGraph;
-	float fpsHistory[FPS_GRAPH_SAMPLES];
-	float msHistory[FPS_GRAPH_SAMPLES];
-	float RamHistory[FPS_GRAPH_SAMPLES];
+
+	const uint graph_title_size = 100u;
+
+	//- fps graph
+	int fps_graph_index = 0;
+	float fps_history[FPS_GRAPH_SAMPLES];
+
+	//- ms graph
+	int ms_graph_index = 0;
+	float ms_history[FPS_GRAPH_SAMPLES];
+
+	//- ram graph
+	float ram_history[FPS_GRAPH_SAMPLES];
 
 public:
 
@@ -98,18 +108,18 @@ public:
 	bool Init();
 	update_status Update();
 	bool DrawAppConfigUI();
+
 	bool LoadModulesConfiguration();
 	bool SaveModulesConfiguration();
 	bool CleanUp();
 
 	void RequestBrowser(const char* path);
 
-	float GetAvgFPS() const;
-	uint GetLastFrameMs();
 	void Log(const char* sentece);
 	void EventRequest(const Event& event);
 	void DrawModulesConfigUi();
 private:
+
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
@@ -118,6 +128,14 @@ private:
 	void LoadConfig();
 	void CloseConfig();
 	void CreateNewConfig(const std::string& path);
+
+	void UpdateFPSGraph(uint32 last_second_fps);
+	void DrawFPSGraph(char * titleGraph, const ImVec2 &size);
+
+	void UpateMsGraph(uint32 curr_frame_ms);
+	void DrawMsGraph(char * titleGraph, const ImVec2 &size);
+
+
 	std::string config_path;
 };
 

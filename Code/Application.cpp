@@ -40,9 +40,9 @@ Application::Application()
 	// Renderer last!
 	AddModule(renderer3D = new ModuleRenderer3D("Render"));
 
-	memset(fpsHistory, 0, sizeof(float) * FPS_GRAPH_SAMPLES);
-	memset(msHistory, 0, sizeof(float) * FPS_GRAPH_SAMPLES);
-	memset(RamHistory, 0, sizeof(float) * FPS_GRAPH_SAMPLES);
+	memset(fps_history, 0, sizeof(float) * FPS_GRAPH_SAMPLES);
+	memset(ms_history, 0, sizeof(float) * FPS_GRAPH_SAMPLES);
+	memset(ram_history, 0, sizeof(float) * FPS_GRAPH_SAMPLES);
 }
 
 Application::~Application()
@@ -66,6 +66,10 @@ bool Application::Init()
 	LoadConfig();
 
 	JSON_Object * app_obj = json_object_get_object(config_root, "App");
+
+	//TODO: Load app values
+	//cap frames
+	//max fps
 
 	// Call Init() in all modules
 	std::vector<Module*>::iterator item = modules.begin();
@@ -98,7 +102,10 @@ bool Application::Init()
 
 	CloseConfig();
 
-	frame_time.Start();
+	//Framerate calculations
+	cap_time = 1000 / max_fps;
+	curr_frame_time.Start();
+
 	return ret;
 }
 
@@ -106,8 +113,8 @@ bool Application::Init()
 void Application::PrepareUpdate()
 {
 	//Calculate dt
-	dt = (float)frame_time.ReadMs() / 1000.0f;
-	frame_time.Start();
+	dt = (float)curr_frame_time.ReadMs() / 1000.0f;
+	curr_frame_time.Start();
 
 	if (log_strings.size() > 0)
 	{
@@ -132,15 +139,27 @@ void Application::FinishUpdate()
 {
 	//Framerate calculations
 	frame_count++;
-	last_sec_frame_count++;
-	if (last_sec_frame_time.Read() > 1000)
+	last_second_fps++;
+	if (last_second_timer.Read() > 1000)
 	{
-		last_sec_frame_time.Start();
-		last_sec_frame_count = 0;
+		last_second_fps = 0;
+		UpdateFPSGraph(last_second_fps);
+		last_second_timer.Start();
 	}
 	seconds_since_startup = startup_time.ReadSec();
 	avg_fps = float(frame_count) / seconds_since_startup;
-	last_frame_ms = frame_time.ReadMs();
+	curr_frame_ms = curr_frame_time.ReadMs();
+	UpateMsGraph(curr_frame_ms);
+
+	//Cap fps
+	if (cap_fps)
+	{
+		uint32 delay = MAX(0, (int)cap_time - (int)curr_frame_ms);
+		if (delay > 0)
+		{
+			SDL_Delay(delay);
+		}
+	}
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -199,39 +218,44 @@ bool Application::DrawAppConfigUI()
 		}
 	}
 
-	//FPS GRAPH ==================================
 	ImVec2 size = { 310,100 };
-	static int currFpsArrayIndex = 0;
-	static float currFPS = 0.0f;
-	char titleGraph[100];
-
-	if (updateGraph.ReadSec() > 0.5f)
-	{
-		fpsHistory[currFpsArrayIndex] = currFPS = App->GetAvgFPS();
-
-		++currFpsArrayIndex;
-
-		if (currFpsArrayIndex >= FPS_GRAPH_SAMPLES)
-		{
-			currFpsArrayIndex = 0;
-		}
-		updateGraph.Start();
-	}
-
-	sprintf_s(titleGraph, 100, "Framerate: %.2f", currFPS);
-	ImGui::PlotHistogram("##ASDFASF", fpsHistory, IM_ARRAYSIZE(fpsHistory), currFpsArrayIndex, titleGraph, 0.0f, 100.0f, size);
-
-	//MS GRAPH ================================================
-	static int lastMsArrayIndex = 0;
-	static Uint32 lastFrameMs = 0.0f;
-
-	msHistory[lastMsArrayIndex] = lastFrameMs = App->GetLastFrameMs();
-	lastMsArrayIndex = (lastMsArrayIndex == FPS_GRAPH_SAMPLES) ? 0 : ++lastMsArrayIndex;
-
-	sprintf_s(titleGraph, 100, "Milliseconds: %i", lastFrameMs);
-	ImGui::PlotHistogram("##ASDFASF", msHistory, IM_ARRAYSIZE(msHistory), lastMsArrayIndex, titleGraph, 0.0f, 15.0f, size);
+	char titleGraph[GRAPH_TITLE_SIZE];
+	DrawFPSGraph(titleGraph, size);
+	DrawMsGraph(titleGraph, size);
 
 	return true;
+}
+
+void Application::UpdateFPSGraph(uint32 last_second_fps)
+{
+	fps_history[fps_graph_index] = last_second_fps;
+	++fps_graph_index;
+	if (fps_graph_index == FPS_GRAPH_SAMPLES)
+	{
+		fps_graph_index = 0;
+	}
+}
+
+void Application::DrawFPSGraph(char * titleGraph, const ImVec2 &size)
+{
+	sprintf_s(titleGraph, GRAPH_TITLE_SIZE, "Framerate: %.2f", last_second_fps);
+	ImGui::PlotHistogram("##ASDFASF", fps_history, IM_ARRAYSIZE(fps_history), fps_graph_index, titleGraph, 0.0f, 100.0f, size);
+}
+
+void Application::UpateMsGraph(uint32 curr_frame_ms)
+{
+	ms_history[ms_graph_index] = curr_frame_ms;
+	++ms_graph_index;
+	if (ms_graph_index == FPS_GRAPH_SAMPLES)
+	{
+		ms_graph_index = 0;
+	}
+}
+
+void Application::DrawMsGraph(char * titleGraph, const ImVec2 &size)
+{
+	sprintf_s(titleGraph, GRAPH_TITLE_SIZE, "Milliseconds: %i", curr_frame_ms);
+	ImGui::PlotHistogram("##ASDFASF", ms_history, IM_ARRAYSIZE(ms_history), ms_graph_index, titleGraph, 0.0f, 15.0f, size);
 }
 
 bool Application::SaveModulesConfiguration()
@@ -382,14 +406,4 @@ void Application::CreateNewConfig(const std::string& path)
 	{
 		LOG("Error creating JSON with path %s", path.data());
 	}
-}
-
-uint Application::GetLastFrameMs()
-{
-	return frame_time.ReadMs();
-}
-
-float Application::GetAvgFPS() const
-{
-	return avg_fps;
 }

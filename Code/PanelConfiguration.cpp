@@ -25,19 +25,15 @@ void PanelConfiguration::Draw()
 	ImGui::SetNextWindowSize(ImVec2(550, 680));
 	ImGui::Begin(name.c_str());
 
-	if (ImGui::BeginMenu("File"))
+	if (ImGui::Button("Save"))
 	{
-		if (ImGui::MenuItem("Save"))
-		{
-			App->SaveModulesConfiguration();
-		}
-		if(ImGui::MenuItem("Load"))
-		{
-			App->LoadModulesConfiguration();
-		}
-		ImGui::EndMenu();
+		App->SaveModulesConfiguration();
 	}
-
+	ImGui::SameLine();
+	if (ImGui::Button("Load"))
+	{
+		App->LoadModulesConfiguration();
+	}
 	App->DrawAppConfigUI();
 
 	////MEMORY CONSUMPTION =====================================
