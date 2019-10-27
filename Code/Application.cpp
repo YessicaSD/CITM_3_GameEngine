@@ -228,35 +228,47 @@ bool Application::DrawAppConfigUI()
 
 void Application::UpdateFPSGraph(uint32 last_second_fps)
 {
+	fps_history[fps_graph_index] = last_second_fps;
+
 	++fps_graph_index;
 	if (fps_graph_index == FPS_GRAPH_SAMPLES)
 	{
 		fps_graph_index = 0;
 	}
-
-	fps_history[fps_graph_index] = last_second_fps;
 }
 
 void Application::DrawFPSGraph(char * titleGraph, const ImVec2 &size)
 {
-	sprintf_s(titleGraph, GRAPH_TITLE_SIZE, "Framerate: %.2f", fps_history[fps_graph_index]);
+	uint32 last_index = fps_graph_index - 1;
+	if (last_index == -1)
+	{
+		last_index = FPS_GRAPH_SAMPLES - 1;
+	}
+
+	sprintf_s(titleGraph, GRAPH_TITLE_SIZE, "Framerate: %.2f", fps_history[last_index]);
 	ImGui::PlotHistogram("##ASDFASF", fps_history, IM_ARRAYSIZE(fps_history), fps_graph_index, titleGraph, 0.0f, 100.0f, size);
 }
 
 void Application::UpateMsGraph(uint32 curr_frame_ms)
 {
+	ms_history[ms_graph_index] = curr_frame_ms;
+
 	++ms_graph_index;
 	if (ms_graph_index == FPS_GRAPH_SAMPLES)
 	{
 		ms_graph_index = 0;
 	}
-
-	ms_history[ms_graph_index] = curr_frame_ms;
 }
 
 void Application::DrawMsGraph(char * titleGraph, const ImVec2 &size)
 {
-	sprintf_s(titleGraph, GRAPH_TITLE_SIZE, "Milliseconds: %i", curr_frame_ms);
+	uint32 last_index = ms_graph_index - 1;
+	if (last_index == -1)
+	{
+		last_index = FPS_GRAPH_SAMPLES - 1;
+	}
+
+	sprintf_s(titleGraph, GRAPH_TITLE_SIZE, "Milliseconds: %i", ms_history[last_index]);
 	ImGui::PlotHistogram("##ASDFASF", ms_history, IM_ARRAYSIZE(ms_history), ms_graph_index, titleGraph, 0.0f, 15.0f, size);
 }
 
