@@ -126,3 +126,16 @@ void ComponentTransform::CalculPRSWithMatrix()
 	aux_rotation = rotation;
 	aux_scale = scale;
 }
+
+void ComponentTransform::DeleteChildrens()
+{
+	if (gameobject->transform->children.size() > 0)
+	{
+		for (std::vector<ComponentTransform*>::iterator iter = gameobject->transform->children.begin(); iter != gameobject->transform->children.end(); ++iter)
+		{
+			(*iter)->DeleteChildrens();
+			delete (*iter);
+		}
+		gameobject->transform->children.clear();
+	}
+}
