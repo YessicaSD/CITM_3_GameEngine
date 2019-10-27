@@ -121,7 +121,7 @@ void ModuleAudio::DrawConfigurationUi()
 {
 	if (ImGui::SliderFloat("General volume", &general_volume, 0.0f, 1.0f))
 	{
-		SetVolum(general_volume);
+		SetVolume(general_volume);
 	}
 }
 void ModuleHardware::DrawConfigurationUi()

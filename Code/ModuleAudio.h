@@ -9,7 +9,9 @@ private:
 public:
 	ModuleAudio(const char* name);
 	bool Init(JSON_Object* config);
-	void SetVolum(float value);
-	void DrawConfigurationUi();
+	void SetVolume(float value);
+	bool SaveConfiguration(JSON_Object * module_obj) override;
+	bool LoadConfiguration(JSON_Object * module_obj) override;
+	void DrawConfigurationUi() override;
 };
 #endif // !MODULE_AUDIO_H_

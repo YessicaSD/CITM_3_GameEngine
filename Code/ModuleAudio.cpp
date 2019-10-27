@@ -44,11 +44,23 @@ bool ModuleAudio::Init(JSON_Object* config)
 	return true;
 }
 
-void ModuleAudio::SetVolum(float value)
+void ModuleAudio::SetVolume(float value)
 {
 	value = (value < 0.0f) ? 0.0f : (value > 1.0f) ? 1.0f : value;
 	general_volume = value;
 	BASS_SetVolume(value);
 }
 
+bool ModuleAudio::SaveConfiguration(JSON_Object * module_obj)
+{
+	json_object_set_number(module_obj, "general volume", general_volume);
 
+	return true;
+}
+
+bool ModuleAudio::LoadConfiguration(JSON_Object * module_obj)
+{
+	general_volume = json_object_get_number(module_obj, "general volume");
+	SetVolume(general_volume);
+	return true;
+}

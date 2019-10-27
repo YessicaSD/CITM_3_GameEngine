@@ -51,14 +51,16 @@ bool Application::Init()
 
 	//Automatically load the config file if it exists
 	LoadConfig();
-	
+
+	JSON_Object * app_obj = json_object_get_object(config_root, "App");
+
 	// Call Init() in all modules
 	std::vector<Module*>::iterator item = modules.begin();
 
 	while (item != modules.end() && ret == true)
 	{
 		if ((*item)->IsActive())
-			ret = (*item)->Init(config_root);
+			ret = (*item)->Init(app_obj);
 		++item;
 	}
 
@@ -69,7 +71,15 @@ bool Application::Init()
 	while (item != modules.end() && ret == true)
 	{
 		if ((*item)->IsActive())
-			ret = (*item)->Start(config_root);
+			ret = (*item)->Start(app_obj);
+		++item;
+	}
+
+	item = modules.begin();
+	while (item != modules.end() && ret == true)
+	{
+		JSON_Object * module_obj = json_object_get_object(app_obj, (*item)->name);
+		ret = (*item)->LoadConfiguration(module_obj);
 		++item;
 	}
 
@@ -194,7 +204,6 @@ bool Application::LoadModulesConfiguration()
 			item != modules.end() && ret == true;
 			++item)
 		{
-			ret = (*item)->LoadConfiguration(config_root);
 			JSON_Object * module_obj = json_object_get_object(app_obj, (*item)->name);
 			ret = (*item)->LoadConfiguration(module_obj);
 		}

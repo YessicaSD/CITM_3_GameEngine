@@ -1,7 +1,7 @@
 {
     "App": {
         "Window": {
-            "brightness": 0.90499997138977051,
+            "brightness": 0,
             "width": 1440,
             "height": 810,
             "fullscreen mode": 0,
@@ -16,14 +16,21 @@
         "Textures": {},
         "": {},
         "Import": {},
-        "Audio": {},
+        "Audio": {
+            "general volume": 0.039000000804662704
+        },
         "Gui": {},
         "Render": {
             "background color": [
-                1,
-                0,
-                0.20000000298023224
-            ]
+                9.9998999303352321e-07,
+                9.9999999747524271e-07,
+                9.9999340363865485e-07
+            ],
+            "depth test": false,
+            "cull faces": true,
+            "lightning": true,
+            "color materials": true,
+            "texture 2d": true
         }
     }
 }
