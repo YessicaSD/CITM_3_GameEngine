@@ -125,6 +125,8 @@ private:
 	void FinishUpdate();
 
 	//Config
+	bool LoadAppConfiguration(JSON_Object * app_obj);
+	bool SaveAppConfiguration(JSON_Object * app_obj);
 	void LoadConfig();
 	void CloseConfig();
 	void CreateNewConfig(const std::string& path);

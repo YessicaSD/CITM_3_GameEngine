@@ -13,11 +13,9 @@ PanelProperties::PanelProperties(std::string name, bool state, std::vector<SDL_S
 
 void PanelProperties::SetSelectedTransform(ComponentTransform * transform)
 {
-	if (transform != nullptr)
-	{
 		this->selected_transform = transform;
 		App->gui->selected_transform = selected_transform;
-	}
+
 }
 void PanelProperties::Draw()
 {

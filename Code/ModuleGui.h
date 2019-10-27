@@ -72,6 +72,8 @@ public:
 	{
 		return selected_transform;
 	}
+	void SetSelectedGameObjec(ComponentTransform* gameobject);
+	
 
 private:
 	void MainMenuBar(update_status &ret);

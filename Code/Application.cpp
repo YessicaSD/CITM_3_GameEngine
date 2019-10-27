@@ -92,6 +92,7 @@ bool Application::Init()
 		++item;
 	}
 
+	LoadAppConfiguration(app_obj);
 	item = modules.begin();
 	while (item != modules.end() && ret == true)
 	{
@@ -228,35 +229,47 @@ bool Application::DrawAppConfigUI()
 
 void Application::UpdateFPSGraph(uint32 last_second_fps)
 {
+	fps_history[fps_graph_index] = last_second_fps;
+
 	++fps_graph_index;
 	if (fps_graph_index == FPS_GRAPH_SAMPLES)
 	{
 		fps_graph_index = 0;
 	}
-
-	fps_history[fps_graph_index] = last_second_fps;
 }
 
 void Application::DrawFPSGraph(char * titleGraph, const ImVec2 &size)
 {
-	sprintf_s(titleGraph, GRAPH_TITLE_SIZE, "Framerate: %.2f", fps_history[fps_graph_index]);
+	uint32 last_index = fps_graph_index - 1;
+	if (last_index == -1)
+	{
+		last_index = FPS_GRAPH_SAMPLES - 1;
+	}
+
+	sprintf_s(titleGraph, GRAPH_TITLE_SIZE, "Framerate: %.2f", fps_history[last_index]);
 	ImGui::PlotHistogram("##ASDFASF", fps_history, IM_ARRAYSIZE(fps_history), fps_graph_index, titleGraph, 0.0f, 100.0f, size);
 }
 
 void Application::UpateMsGraph(uint32 curr_frame_ms)
 {
+	ms_history[ms_graph_index] = curr_frame_ms;
+
 	++ms_graph_index;
 	if (ms_graph_index == FPS_GRAPH_SAMPLES)
 	{
 		ms_graph_index = 0;
 	}
-
-	ms_history[ms_graph_index] = curr_frame_ms;
 }
 
 void Application::DrawMsGraph(char * titleGraph, const ImVec2 &size)
 {
-	sprintf_s(titleGraph, GRAPH_TITLE_SIZE, "Milliseconds: %i", curr_frame_ms);
+	uint32 last_index = ms_graph_index - 1;
+	if (last_index == -1)
+	{
+		last_index = FPS_GRAPH_SAMPLES - 1;
+	}
+
+	sprintf_s(titleGraph, GRAPH_TITLE_SIZE, "Milliseconds: %i", ms_history[last_index]);
 	ImGui::PlotHistogram("##ASDFASF", ms_history, IM_ARRAYSIZE(ms_history), ms_graph_index, titleGraph, 0.0f, 15.0f, size);
 }
 
@@ -269,10 +282,8 @@ bool Application::SaveModulesConfiguration()
 
 	json_object_set_value(config_root, "App", json_value_init_object());
 	JSON_Object * app_obj = json_object_get_object(config_root, "App");
-	
-	//App configuration
-	json_object_set_string(app_obj, "application name", application_name.c_str());
-	json_object_set_string(app_obj, "organization name", organization_name.c_str());
+
+	SaveAppConfiguration(app_obj);
 
 	for (std::vector<Module*>::iterator item = modules.begin();
 		item != modules.end() && ret;
@@ -295,6 +306,24 @@ bool Application::SaveModulesConfiguration()
 	return ret;
 }
 
+bool Application::LoadAppConfiguration(JSON_Object * app_obj)
+{
+	application_name = json_object_get_string(app_obj, "application name");
+	organization_name = json_object_get_string(app_obj, "organization name");
+	cap_fps = json_object_get_boolean(app_obj, "cap fps");
+	max_fps = json_object_get_number(app_obj, "max fps");
+	return true;
+}
+
+bool Application::SaveAppConfiguration(JSON_Object * app_obj)
+{
+	json_object_set_string(app_obj, "application name", application_name.c_str());
+	json_object_set_string(app_obj, "organization name", organization_name.c_str());
+	json_object_set_boolean(app_obj, "cap fps", cap_fps);
+	json_object_set_number(app_obj, "max fps", max_fps);
+	return true;
+}
+
 bool Application::LoadModulesConfiguration()
 {
 	bool ret = true;
@@ -302,8 +331,7 @@ bool Application::LoadModulesConfiguration()
 	LoadConfig();
 	JSON_Object * app_obj = json_object_get_object(config_root, "App");
 
-	application_name = json_object_get_string(app_obj, "application name");
-	organization_name = json_object_get_string(app_obj, "organization name");
+	LoadAppConfiguration(app_obj);
 
 	if(config_root != nullptr)
 	{

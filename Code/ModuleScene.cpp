@@ -7,6 +7,8 @@
 #include "ModuleCamera3D.h"
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
+#include "ModuleGui.h"
+#include "ModuleInput.h"
 
 #include "ModuleGui.h"
 #include "ModuleInput.h"
@@ -61,12 +63,19 @@ void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 
 void ModuleScene::DeleteGameObject(GameObject * gameobject)
 {
-	if (gameobject->transform->children.size() > 0)
+	gameobject->transform->DeleteChildrens();
+	if (gameobject->transform->parent)
 	{
-		for (std::vector<ComponentTransform*>::iterator iter = gameobject->transform->children.begin(); iter != gameobject->transform->children.end(); ++iter)
+		for (std::vector<ComponentTransform*>::iterator iter = gameobject->transform->parent->children.begin(); iter != gameobject->transform->parent->children.end(); ++iter)
 		{
-			DeleteGameObject((*iter)->gameobject);
+			if ((*iter) == gameobject->transform)
+			{
+				gameobject->transform->parent->children.erase(iter);
+				break;
+			}
+			
 		}
+		
 	}
 	delete gameobject;
 }
@@ -82,6 +91,14 @@ update_status ModuleScene::PostUpdate()
 
 	GameObjectPostUpdateRecursive(root_gameobject->transform);
 
+	if (App->input->GetKey(SDL_SCANCODE_DELETE))
+	{
+		if (ComponentTransform* selected_object = App->gui->GetSelecteTransform())
+		{
+			DeleteGameObject(selected_object->gameobject);
+			App->gui->SetSelectedGameObjec(nullptr);
+		}
+	}
 	App->renderer3D->EndSceneRender();
 
 	return UPDATE_CONTINUE;
