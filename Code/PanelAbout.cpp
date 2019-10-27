@@ -1,7 +1,10 @@
 #include "PanelAbout.h"
+#include "glew/include/GL/glew.h"
 #include "imgui/imgui.h"
 #include "Globals.h"
 #include "Application.h"
+
+
 PanelAbout::PanelAbout(std::string name, bool active, std::vector<SDL_Scancode> shortcuts):
 	Panel(name, active, shortcuts)
 {
@@ -34,6 +37,24 @@ void PanelAbout::Draw()
 		ImGui::Text("Jaume Montagut i Guix:");
 		if(ImGui::Button("More"))
 			App->RequestBrowser("https://github.com/JaumeMontagut");
+
+		ImGui::Separator();
+	}
+	if (ImGui::CollapsingHeader("Libreries"))
+	{
+		SDL_version sdl_version;
+		SDL_GetVersion(&sdl_version);
+		ImGui::Text("SDL %i.%i.%i", sdl_version.major, sdl_version.minor, sdl_version.patch);
+		ImGui::Text("OpenGL %s", glGetString(GL_VERSION));
+		ImGui::Text("Glew %s", glewGetString(GLEW_VERSION));
+		ImGui::Text("ImGui %s", ImGui::GetVersion());
+		ImGui::Text("DevIL 1.8.0");
+		ImGui::Text("PCG Random Number Generator");
+		ImGui::Text("MathGeoLib");
+		ImGui::Text("Assimp: 3.1.1 ");
+		ImGui::Text("Bass: 2.4");
+		ImGui::Text("Par Shapes");
+		
 	}
 	ImGui::End();
 }
