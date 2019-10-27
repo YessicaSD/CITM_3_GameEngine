@@ -3,7 +3,8 @@
 #include "imgui/imgui.h"
 #include "Globals.h"
 #include "Application.h"
-
+#include "Assimp/include/version.h"
+#include "DevIL/include/il.h"
 
 PanelAbout::PanelAbout(std::string name, bool active, std::vector<SDL_Scancode> shortcuts):
 	Panel(name, active, shortcuts)
@@ -48,10 +49,10 @@ void PanelAbout::Draw()
 		ImGui::Text("OpenGL %s", glGetString(GL_VERSION));
 		ImGui::Text("Glew %s", glewGetString(GLEW_VERSION));
 		ImGui::Text("ImGui %s", ImGui::GetVersion());
-		ImGui::Text("DevIL 1.8.0");
-		ImGui::Text("PCG Random Number Generator");
+		ImGui::Text("DevIL: %i", ilGetInteger(IL_VERSION_NUM));
+		ImGui::Text("PCG Random Number Generator: 0.98");
 		ImGui::Text("MathGeoLib");
-		ImGui::Text("Assimp: 3.1.1 ");
+		ImGui::Text("Assimp: %i.%i.%i ", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
 		ImGui::Text("Bass: 2.4");
 		ImGui::Text("Par Shapes");
 		
