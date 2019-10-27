@@ -3,6 +3,8 @@
 #include "imgui/imgui.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
+#include "Globals.h"
+
 CLASS_DEFINITION(Component, ComponentTransform)
 
 ComponentTransform::ComponentTransform(GameObject * gameobject) : Component(gameobject)
@@ -48,8 +50,7 @@ void ComponentTransform::PropertiesEditor()
 	ImGui::InputFloat3("Scale", (float*)&aux_scale, "%.2f");
 	if (aux_position != position || aux_rotation != rotation || aux_scale != scale)
 	{
-		CalculGlobalMatrix(aux_position, aux_scale, aux_rotation);
-
+		CalculGlobalMatrix(aux_position, aux_scale, float3(DEGTORAD * aux_rotation.x, DEGTORAD * aux_rotation.y, DEGTORAD* aux_rotation.z));
 	}
 }
 
@@ -70,13 +71,19 @@ void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, f
 		this->global_matrix = this->local_matrix;
 	}
 
-	aux_position = position; aux_rotation = rotation; aux_scale = scale;
 	ComponentMesh* comp_mesh = gameobject->GetComponent<ComponentMesh>();
 	if (comp_mesh)
 	{
 		comp_mesh->CalculBoindingBox();
 	}
-
+	if (children.size() > 0)
+	{
+		for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
+		{
+			(*iter)->global_matrix = this->global_matrix * (*iter)->local_matrix;
+			(*iter)->CalculPRSWithMatrix();
+		}
+	}
 }
 
 void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, Quat & qrotation)

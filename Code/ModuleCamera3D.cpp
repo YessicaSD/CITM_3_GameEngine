@@ -178,7 +178,7 @@ void ModuleCamera3D::LookAt( const vec3 &Spot)
 
 void ModuleCamera3D::FocusToObject(const ComponentTransform & transform)
 {
-	ComponentMesh* mesh = transform.gameobject->GetComponent<ComponentMesh>();
+	ComponentMesh* mesh = transform.gameobject->GetComponent<ComponentMesh>();	
 	float3 pos;
 	float length;
 	if (mesh)
@@ -193,11 +193,15 @@ void ModuleCamera3D::FocusToObject(const ComponentTransform & transform)
 		pos  = transform.position;
 		length = 20;
 	}
-	Reference = vec3(pos.x, pos.y, pos.z);
+	if (Reference.x != pos.x && Reference.y != pos.y && Reference.z != pos.z)
+		Reference = vec3(pos.x, pos.y, pos.z);
+	else
+		return;
+
 	Z = normalize(Position - Reference);
 	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
 	Y = cross(Z, X);
-
+	
 	Position = vec3(pos.x,pos.y, pos.z) + Z * length;
 	CalculateViewMatrix();
 }

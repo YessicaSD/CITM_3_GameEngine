@@ -816,9 +816,10 @@
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>Sources\Tools\mmgr</Filter>
     </ClCompile>
-    <ClCompile Include="ModulesDrawConfigUI.cpp" />
     <ClCompile Include="ParserHelper.cpp" />
-    <ClCompile Include="PerfTimer.cpp" />
+    <ClCompile Include="ModulesDrawConfigUI.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
