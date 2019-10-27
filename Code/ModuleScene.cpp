@@ -7,6 +7,8 @@
 #include "ModuleCamera3D.h"
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
+#include "ModuleGui.h"
+#include "ModuleInput.h"
 
 ModuleScene::ModuleScene(bool start_enabled) :
 	Module(start_enabled)
