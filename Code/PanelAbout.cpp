@@ -25,22 +25,23 @@ void PanelAbout::Draw()
 		App->RequestBrowser("https://github.com/YessicaSD/CITM_3_GameEngine/blob/master/LICENSE.md");
 	}
 
-	if(ImGui::CollapsingHeader("Credits"))
-	{
+	ImGui::Text("Credits");
+	
 		ImGui::Text("Hinata Engine Website:");
+
 		if(ImGui::Button("More"))
 			App->RequestBrowser("https://yessicasd.github.io/CITM_3_GameEngine/");
 
-		ImGui::Text("Yessica Servin Dominguez:");
-		if(ImGui::Button("More"))
+		ImGui::Separator();
+
+		if(ImGui::Button("Yessica Servin Dominguez"))
 			App->RequestBrowser("https://github.com/YessicaSD");
 
-		ImGui::Text("Jaume Montagut i Guix:");
-		if(ImGui::Button("More"))
+		if(ImGui::Button("Jaume Montagut i Guix"))
 			App->RequestBrowser("https://github.com/JaumeMontagut");
 
 		ImGui::Separator();
-	}
+	
 	if (ImGui::CollapsingHeader("Libreries"))
 	{
 		SDL_version sdl_version;
