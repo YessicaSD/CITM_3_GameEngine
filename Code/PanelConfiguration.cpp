@@ -89,18 +89,18 @@ void PanelConfiguration::Draw()
 	ImGui::PlotHistogram("##ASDFASF", msHistory, IM_ARRAYSIZE(msHistory), lastMsArrayIndex, titleGraph, 0.0f, 15.0f, size);
 
 	////MEMORY CONSUMPTION =====================================
-	sMStats stats = m_getMemoryStatistics();
-	static int MemoryArrayIndex = 0;
-	static float lastMemoryConsume = 0.0f;
-	static int loops_counter = 0;
+	//sMStats stats = m_getMemoryStatistics();
+	//static int MemoryArrayIndex = 0;
+	//static float lastMemoryConsume = 0.0f;
+	//static int loops_counter = 0;
 
-	if (++loops_counter > 10)
-	{
+	//if (++loops_counter > 10)
+	//{
 
-		loops_counter = 0;
-		RamHistory[MemoryArrayIndex] = lastMemoryConsume = (float)stats.totalReportedMemory;
-		MemoryArrayIndex = (MemoryArrayIndex >= CURRENT_FPS_MAX_VALUE) ? 0 : ++MemoryArrayIndex;
-	}
+	//	loops_counter = 0;
+	//	RamHistory[MemoryArrayIndex] = lastMemoryConsume = (float)stats.totalReportedMemory;
+	//	MemoryArrayIndex = (MemoryArrayIndex >= CURRENT_FPS_MAX_VALUE) ? 0 : ++MemoryArrayIndex;
+	//}
 
 	//sprintf_s(titleGraph, 100, "Ram Consume: %.2f", lastMemoryConsume);
 	//ImGui::PlotHistogram("##ASDFASF", RamHistory, IM_ARRAYSIZE(RamHistory), MemoryArrayIndex, titleGraph, 0.0f, (float)stats.peakReportedMemory * 2.f, size);

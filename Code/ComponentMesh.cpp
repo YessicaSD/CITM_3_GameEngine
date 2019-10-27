@@ -13,6 +13,7 @@
 #include "MathGeoLib/include/Math/float4.h"
 #include "ComponentMaterial.h"
 
+
 CLASS_DEFINITION(Component, ComponentMesh)
 
 ComponentMesh::ComponentMesh(GameObject * gameobject) : Component(gameobject)
@@ -37,7 +38,7 @@ void ComponentMesh::OnPostUpdate()
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glPushMatrix();
-	//glMultMatrixf((const GLfloat *)&gameobject->transform->global_matrix[0]);
+	glMultMatrixf((const GLfloat *)&gameobject->transform->global_matrix[0]);
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 
@@ -96,7 +97,13 @@ void ComponentMesh::OnPostUpdate()
 		glColor4f(point_color[0], point_color[1], point_color[2], point_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	}
-	
+	glBegin(GL_LINES);
+	glLineWidth(5);
+	glColor4f(255, 0, 0, 1);
+	glVertex3f(boinding_box.minPoint.x, boinding_box.minPoint.y, boinding_box.minPoint.z);
+	glVertex3f(boinding_box.maxPoint.x, boinding_box.maxPoint.y, boinding_box.maxPoint.z);
+
+	glEnd();
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
 	material->DisableGLModes();
 	if (mesh->UVCoord)
@@ -109,16 +116,14 @@ void ComponentMesh::OnPostUpdate()
 void ComponentMesh::DrawVertexNormal()
 {
 	glColor3f(0.2f, 1.f, 0.25f);
-	uint j = 0;
 	float lenght = 2;
 	if (mesh->vertex_normals != nullptr)
 	{
-		for (uint i = 0; i < mesh->num_vertices * 3; i += 3)
+		for (uint i = 0; i < mesh->num_vertices; ++i)
 		{
 			glBegin(GL_LINES);
-			glVertex3f(mesh->vertices[i], mesh->vertices[i + 1], mesh->vertices[i + 2]);
-			glVertex3f(mesh->vertices[i] + mesh->vertex_normals[j].x*lenght, mesh->vertices[i + 1] + mesh->vertex_normals[j].y *lenght, mesh->vertices[i + 2] + mesh->vertex_normals[j].z*lenght);
-			++j;
+			glVertex3f(mesh->vertices[i].x, mesh->vertices[i].y, mesh->vertices[i].z);
+			glVertex3f(mesh->vertices[i].x + mesh->vertex_normals[i].x * lenght, mesh->vertices[i].y + mesh->vertex_normals[i].y * lenght, mesh->vertices[i].z + mesh->vertex_normals[i].z * lenght);
 			glEnd();
 		}
 	}
@@ -191,3 +196,18 @@ void ComponentMesh::CleanUp()
 
 }
 
+void ComponentMesh::CalculBoindingBox()
+{
+	AABB aux = mesh->GetBondingBox();
+	float4 aux_pos = { aux.minPoint.x,aux.minPoint.y, aux.minPoint.z,1 };
+	aux_pos = gameobject->transform->global_matrix.Mul(aux_pos);
+	this->boinding_box.minPoint = { aux_pos.x, aux_pos.y, aux_pos.z };
+
+	float4 aux_pos2 = { aux.maxPoint.x,aux.maxPoint.y, aux.maxPoint.z,1 };
+	aux_pos2 = gameobject->transform->global_matrix.Mul(aux_pos2);
+	this->boinding_box.maxPoint = { aux_pos2.x, aux_pos2.y, aux_pos2.z };
+	float3 diagonal = float3(aux_pos.x, aux_pos.y, aux_pos.z) - float3(aux_pos2.x, aux_pos2.y, aux_pos2.z);
+
+	LOG("%f", diagonal.Length());
+
+}

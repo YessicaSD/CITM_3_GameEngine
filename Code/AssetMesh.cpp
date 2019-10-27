@@ -45,8 +45,13 @@ bool AssetMesh::LoadTexture(aiMesh * info,const  aiScene* fbx, std::vector<Textu
 bool AssetMesh::LoadVertices(const int num_vertices, const float * vertices)
 {
 	this->num_vertices = num_vertices;
-	this->vertices = new float[num_vertices * 3];
-	memcpy(this->vertices, vertices, sizeof(float) * num_vertices * 3);
+	this->vertices = new float3[num_vertices];
+	//TODO change to memcopy
+	for (uint i = 0; i < num_vertices * 3; i += 3)
+	{
+		this->vertices[i/3] = { vertices[i],vertices[i + 1],vertices[i + 2] };
+	}
+	//memcpy(this->vertices, vertices, sizeof(float) * num_vertices * 3);
 	return true;
 }
 
@@ -121,19 +126,16 @@ bool AssetMesh::CalculateFaceNormals()
 	faces_normals = new float3[num_faces];
 	face_middle_point = new float3[num_faces];
 	uint curr_vertex = 0u;
-	for (uint i = 0u; i < num_indices; i += 3u)
+	for (uint i = 0u; i < num_indices; ++i)
 	{
 		uint index = indices[i];
-		curr_vertex = index * 3;
-		float3 vertex1 = { vertices[curr_vertex], vertices[curr_vertex + 1] , vertices[curr_vertex + 2] };
+		float3 vertex1 = vertices[curr_vertex];
 
 		index = indices[i + 1];
-		curr_vertex = index * 3;
-		float3 vertex2 = { vertices[curr_vertex], vertices[curr_vertex + 1] , vertices[curr_vertex + 2] };
+		float3 vertex2 = vertices[curr_vertex];
 
 		index = indices[i + 2];
-		curr_vertex = index * 3;
-		float3 vertex3 = { vertices[curr_vertex], vertices[curr_vertex + 1] , vertices[curr_vertex + 2] };
+		float3 vertex3 = vertices[curr_vertex];
 
 		float3 vector1 = vertex2 - vertex1;
 		float3 vector2 = vertex3 - vertex1;
@@ -167,6 +169,11 @@ bool AssetMesh::LoadUVs(aiMesh * info)
 	return true;
 }
 
+void AssetMesh::CreateBoindingBox()
+{
+	default_bonding_box.Enclose(vertices, num_vertices);
+}
+
 bool AssetMesh::GenerateFacesAndNormalsBuffer()
 {
 	if (num_faces > 0)
@@ -186,6 +193,7 @@ bool AssetMesh::GenerateUVsBuffer()
 		glBindBuffer(GL_ARRAY_BUFFER, id_uv);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * uv_num_components * num_vertices, &UVCoord[0], GL_STATIC_DRAW);
 	}
+
 	return true;
 }
 
@@ -193,32 +201,32 @@ void AssetMesh::CleanUp()
 {
 	if (indices)
 	{
-		delete indices;
+		delete[] indices;
 		indices = nullptr;
 	}
 	if (vertices)
 	{
-		delete vertices;
+		delete[] vertices;
 		vertices = nullptr;
 	}
 	if (vertex_normals)
 	{
-		delete vertex_normals;
+		delete[] vertex_normals;
 		vertex_normals = nullptr;
 	}
 	if (faces_normals)
 	{
-		delete faces_normals;
+		delete[] faces_normals;
 		faces_normals = nullptr;
 	}
 	if (face_middle_point)
 	{
-		delete face_middle_point;
+		delete[] face_middle_point;
 		face_middle_point = nullptr;
 	}
 	if (UVCoord)
 	{
-		delete UVCoord;
+		delete[] UVCoord;
 		UVCoord = nullptr;
 	}
 }
