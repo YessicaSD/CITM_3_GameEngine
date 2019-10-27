@@ -191,7 +191,12 @@ bool ModuleGui::CleanUp()
 	for (std::vector<Panel*>::reverse_iterator iter = panels.rbegin(); iter != panels.rend(); ++iter)
 	{
 		if ((*iter))
+		{
+			
+			LOG("%s", (*iter)->GetName());
 			delete (*iter);
+
+		}
 	}
 	panels.clear();
 	panel_console = nullptr;
