@@ -1,13 +1,16 @@
+#include "PanelConfiguration.h"
+
 #include "imgui/imgui.h"
 #include "Application.h"
+#include "glew\include\GL\glew.h"
+#include <gl\GL.h>
+
+#include "ModuleAudio.h"
+#include "ModuleHardware.h"
 #include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleInput.h"
-#include "PanelConfiguration.h"
-#include "ModuleAudio.h"
-#include "ModuleHardware.h"
-#include "glew\include\GL\glew.h"
-#include <gl\GL.h>
+#include "ModuleCamera3D.h"
 
 //RULES: Every variable you add here should also be added in the Save and Load method of the corresponding module
 
@@ -81,6 +84,12 @@ void ModuleRenderer3D::DrawConfigurationUi()
 	PanelConfiguration::RenderOption("Lighting", &lighting, GL_LIGHTING);
 	PanelConfiguration::RenderOption("Color materials", &color_material, GL_COLOR_MATERIAL);
 	PanelConfiguration::RenderOption("Texture 2D", &texture_2d, GL_TEXTURE_2D);
+}
+
+void ModuleCamera3D::DrawConfigurationUi()
+{
+	ImGui::InputFloat("Camera speed", &camera_move_speed);
+	ImGui::InputFloat("Roate speed", &camera_rotate_speed);
 }
 
 void ModuleInput::DrawConfigurationUi()

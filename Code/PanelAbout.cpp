@@ -27,33 +27,37 @@ void PanelAbout::Draw()
 
 	ImGui::Text("Credits");
 	
-		ImGui::Text("Hinata Engine Website:");
+	ImGui::Text("Hinata Engine Website:");
 
-		if(ImGui::Button("More"))
-			App->RequestBrowser("https://yessicasd.github.io/CITM_3_GameEngine/");
+	if(ImGui::Button("More"))
+		App->RequestBrowser("https://yessicasd.github.io/CITM_3_GameEngine/");
 
-		ImGui::Separator();
+	ImGui::Separator();
 
-		if(ImGui::Button("Yessica Servin Dominguez"))
-			App->RequestBrowser("https://github.com/YessicaSD");
+	if(ImGui::Button("Yessica Servin Dominguez"))
+		App->RequestBrowser("https://github.com/YessicaSD");
 
-		if(ImGui::Button("Jaume Montagut i Guix"))
-			App->RequestBrowser("https://github.com/JaumeMontagut");
+	if(ImGui::Button("Jaume Montagut i Guix"))
+		App->RequestBrowser("https://github.com/JaumeMontagut");
 
-		ImGui::Separator();
+	ImGui::Separator();
 	
-	if (ImGui::CollapsingHeader("Libreries"))
+	if (ImGui::CollapsingHeader("Libraries"))
 	{
 		SDL_version sdl_version;
 		SDL_GetVersion(&sdl_version);
-		if(ImGui::Button("SDL"))
+		if (ImGui::Button("SDL"))
+		{
 			App->RequestBrowser("https://www.libsdl.org/");
+		}
 		ImGui::SameLine();
 		ImGui::Text("%i.%i.%i", sdl_version.major, sdl_version.minor, sdl_version.patch);
 		
 		
 		if (ImGui::Button("OpenGL"))
+		{
 			App->RequestBrowser("https://www.opengl.org/");
+		}
 		ImGui::SameLine();
 		ImGui::Text("%s", glGetString(GL_VERSION));
 

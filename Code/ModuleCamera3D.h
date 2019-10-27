@@ -8,7 +8,7 @@ class ComponentTransform;
 class ModuleCamera3D : public Module
 {
 public:
-	ModuleCamera3D(bool start_enabled = true);
+	ModuleCamera3D(const char * name, bool start_enabled = true);
 	~ModuleCamera3D();
 
 	bool Start(JSON_Object* config);
@@ -21,14 +21,21 @@ public:
 	void Move(const vec3 &Movement);
 	float* GetViewMatrix();
 
+	void DrawConfigurationUi() override;
+	bool SaveConfiguration(JSON_Object * module_obj) override;
+	bool LoadConfiguration(JSON_Object * module_obj) override;
+
 private:
 	void CalculateViewMatrix();
 
 public:
 	
-	vec3 X, Y, Z, Position, Reference;
+	vec3 x, y, z, position, reference;
 
 private:
+	float camera_move_speed = 150.f;
+	float camera_rotate_speed = 20.f;
+
 	Shortcut * navigate_forward = nullptr;
 	Shortcut * navigate_backward = nullptr;
 	Shortcut * navigate_left = nullptr;
