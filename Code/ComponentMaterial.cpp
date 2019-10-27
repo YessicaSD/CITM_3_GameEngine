@@ -4,6 +4,7 @@
 #include <gl\GL.h>
 
 #include "imgui/imgui.h"
+#include "Globals.h"
 
 CLASS_DEFINITION(Component, ComponentMaterial)
 
@@ -16,13 +17,20 @@ ComponentMaterial::ComponentMaterial(GameObject * gameobject, ComponentMesh* mes
 
 void ComponentMaterial::SetTexture(Texture * texture)
 {
+	bool set = false;
 	if (component_mesh->mesh && component_mesh->mesh->UVCoord)
 	{
 		if (texture)
 		{
 			this->texture = texture;
+			set = true;
 		}
 	}
+	if (!set)
+	{
+		LOG("Can't set the texture to this object");
+	}
+	
 }
 
 void ComponentMaterial::DisableGLModes()

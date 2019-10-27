@@ -79,7 +79,7 @@ AssetMesh * ModuleImport::LoadAssimpMesh(aiMesh * assimp_mesh, const aiScene* sc
 	//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
 	asset_mesh->LoadTexture(assimp_mesh, scene_fbx, textures);
 	asset_mesh->LoadVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
-	asset_mesh->CreateBoindingBox();
+	asset_mesh->CreateBoundingBox();
 	asset_mesh->LoadVerticesNormals(assimp_mesh);
 	asset_mesh->LoadFaces(assimp_mesh);
 	asset_mesh->CalculateFaceNormals();
@@ -97,14 +97,12 @@ AssetMesh* ModuleImport::LoadParShapeMesh(par_shapes_mesh * mesh)
 	AssetMesh * asset_mesh = new AssetMesh();
 
 	asset_mesh->LoadVertices(mesh->npoints, mesh->points);
-	asset_mesh->CreateBoindingBox();
+	asset_mesh->CreateBoundingBox();
 	
 	//TODO: Get vertices normals
-	
 	asset_mesh->LoadFaces(mesh->ntriangles, mesh->triangles);
 	asset_mesh->CalculateFaceNormals();
-	if(mesh->tcoords)
-		asset_mesh->LoadUVs(mesh->tcoords);
+	asset_mesh->LoadUVs(mesh->tcoords);
 
 	asset_mesh->GenerateVerticesBuffer();
 	asset_mesh->GenerateFacesAndNormalsBuffer();

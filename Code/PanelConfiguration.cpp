@@ -121,11 +121,11 @@ void PanelConfiguration::Draw()
 		ImGuiStyle& style = ImGui::GetStyle();
 		static ImGuiStyle ref_saved_style;
 		if (ImGui::ShowStyleSelector("Colors##Selector"))
+		{
 			ref_saved_style = style;
+		}
 	}
 
-		
-	
 	App->DrawModulesConfigUi();
 	
 	//if (ImGui::CollapsingHeader("Render Mode"))

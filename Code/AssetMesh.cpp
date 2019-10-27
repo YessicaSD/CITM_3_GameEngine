@@ -182,7 +182,7 @@ bool AssetMesh::LoadUVs(float * coords)
 	return true;
 }
 
-void AssetMesh::CreateBoindingBox()
+void AssetMesh::CreateBoundingBox()
 {
 	default_bonding_box.Enclose(vertices, num_vertices);
 }

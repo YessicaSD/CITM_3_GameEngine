@@ -24,7 +24,7 @@ public:
 	bool LoadUVs(aiMesh * info);
 	bool LoadUVs(float* coods);
 	bool GenerateVertexNormalsBuffer();
-	void CreateBoindingBox();
+	void CreateBoundingBox();
 	bool GenerateVerticesBuffer();
 	bool GenerateFacesAndNormalsBuffer();
 	bool GenerateUVsBuffer();
