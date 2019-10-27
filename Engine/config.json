@@ -20,16 +20,19 @@
         "Textures": {},
         "": {},
         "Import": {},
-        "Camera 3D": {},
+        "Camera 3D": {
+            "move speed": 100,
+            "rotate speed": 50
+        },
         "Audio": {
             "general volume": 0.077357076108455658
         },
         "Gui": {},
         "Render": {
             "background color": [
-                1,
-                0,
-                0.20000000298023224
+                0.11676472425460815,
+                0.13905617594718933,
+                0.17085427045822144
             ],
             "depth test": true,
             "cull faces": true,

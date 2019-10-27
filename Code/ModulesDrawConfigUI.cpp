@@ -88,7 +88,7 @@ void ModuleRenderer3D::DrawConfigurationUi()
 
 void ModuleCamera3D::DrawConfigurationUi()
 {
-	ImGui::InputFloat("Camera speed", &camera_move_speed);
+	ImGui::InputFloat("Move speed", &camera_move_speed);
 	ImGui::InputFloat("Roate speed", &camera_rotate_speed);
 }
 

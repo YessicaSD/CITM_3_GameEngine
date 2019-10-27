@@ -228,11 +228,15 @@ float* ModuleCamera3D::GetViewMatrix()
 
 bool ModuleCamera3D::SaveConfiguration(JSON_Object * module_obj)
 {
+	json_object_set_number(module_obj, "move speed", camera_move_speed);
+	json_object_set_number(module_obj, "rotate speed", camera_rotate_speed);
 	return true;
 }
 
 bool ModuleCamera3D::LoadConfiguration(JSON_Object * module_obj)
 {
+	camera_move_speed = json_object_get_number(module_obj, "move speed");
+	camera_rotate_speed = json_object_get_number(module_obj, "rotate speed");
 	return true;
 }
 
