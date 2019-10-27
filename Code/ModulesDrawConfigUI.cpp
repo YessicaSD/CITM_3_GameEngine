@@ -150,22 +150,22 @@ void ModuleHardware::DrawConfigurationUi()
 	ImGui::Separator();
 	ImGui::Text("VRAM Budget: ");
 	ImGui::SameLine();
-	int temp = 0;
-	glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &temp);
-	ImGui::TextColored({ 255, 255, 0, 255 }, "%i Mb", temp / 1024);
+	int aux_memory = 0;
+	glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &aux_memory);
+	ImGui::Text( "%i Mb", aux_memory / 1024);
 
 	ImGui::Text("VRAM Usage: ");
 	ImGui::SameLine();
-	glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &temp);
-	ImGui::TextColored({ 255, 255, 0, 255 }, "%i Mb", temp / 1024);
+	glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &aux_memory);
+	ImGui::Text( "%i Mb", aux_memory / 1024);
 
 	ImGui::Text("VRAM Available: ");
 	ImGui::SameLine();
-	glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &temp);
-	ImGui::TextColored({ 255, 255, 0, 255 }, "%i Mb", temp / 1024);
+	glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &aux_memory);
+	ImGui::Text( "%i Mb", aux_memory / 1024);
 
 	ImGui::Text("VRAM Reserved: ");
 	ImGui::SameLine();
-	glGetIntegerv(GL_GPU_MEMORY_INFO_EVICTED_MEMORY_NVX, &temp);
-	ImGui::TextColored({ 255, 255, 0, 255 }, "%i Mb", temp / 1024);
+	glGetIntegerv(GL_GPU_MEMORY_INFO_EVICTED_MEMORY_NVX, &aux_memory);
+	ImGui::Text( "%i Mb", aux_memory / 1024);
 }
