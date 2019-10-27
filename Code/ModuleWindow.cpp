@@ -15,12 +15,10 @@ ModuleWindow::~ModuleWindow()
 }
 
 // Called before render is available
-bool ModuleWindow::Init(JSON_Object* config)
+bool ModuleWindow::Init(JSON_Object* module_obj)
 {
 	LOG("Init SDL window & surface");
 	bool ret = true;
-
-	LoadConfiguration(config);
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
