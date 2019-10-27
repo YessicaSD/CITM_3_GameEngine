@@ -155,6 +155,7 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 			{
 				component_mesh->material->SetTexture(textures[index]);
 			}
+			component_mesh->CalculBoindingBox();
 			
 		}
 	}
@@ -204,4 +205,5 @@ void ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTransform
 	ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 	component_mesh->mesh = asset_mesh;
 	new_gameobject->transform->CalculPRSWithMatrix();
+	component_mesh->CalculBoindingBox();
 }
