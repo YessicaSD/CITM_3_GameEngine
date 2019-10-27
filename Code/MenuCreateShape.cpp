@@ -2,6 +2,7 @@
 #include "par\par_shapes.h"
 #include "imgui/imgui.h"
 #include "Application.h"
+#include "ModuleGui.h"
 #include "ModuleImport.h"
 #include "Globals.h"
 

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULE_WINDOW_H__
+#define __MODULE_WINDOW_H__
+
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
@@ -7,6 +9,7 @@
 #define MAX_LIGHTS 8
 
 struct SDL_Window;
+struct ImVec2;
 
 class ModuleRenderer3D : public Module
 {
@@ -55,3 +58,5 @@ public:
 
 	friend class PanelConfiguration;
 };
+
+#endif

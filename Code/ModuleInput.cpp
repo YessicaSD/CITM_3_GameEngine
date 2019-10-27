@@ -1,5 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
+#include "ModuleGui.h"
+#include "ModuleRenderer3D.h"
 #include "ModuleInput.h"
 #include "imgui\imgui_impl_sdl.h"
 #include "ModuleImport.h"
@@ -129,8 +131,10 @@ update_status ModuleInput::PreUpdate()
 
 			case SDL_WINDOWEVENT:
 			{
-				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
+				if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+				{
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
+				}
 			}
 			break;
 

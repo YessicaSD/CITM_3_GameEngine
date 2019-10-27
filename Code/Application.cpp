@@ -6,6 +6,12 @@
 #include "ModuleFileSystem.h"
 #include "ModuleAudio.h"
 #include "ModuleHardware.h"
+#include "ModuleWindow.h"
+#include "ModuleRandom.h"
+#include "ModuleInput.h"
+#include "ModuleCamera3D.h"
+#include "ModuleGui.h"
+#include "ModuleRenderer3D.h"
 #include "imgui/imgui.h"
 #include "Event.h"
 Application::Application()
@@ -92,7 +98,7 @@ bool Application::Init()
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
-	dt = (float)ms_timer.Read() / 1000.0f;
+	dt = (float)ms_timer.ReadMs() / 1000.0f;
 	ms_timer.Start();
 
 	if (log_strings.size() > 0)
@@ -170,6 +176,9 @@ bool Application::SaveModulesConfiguration()
 	json_object_set_value(config_root, "App", json_value_init_object());
 	JSON_Object * app_obj = json_object_get_object(config_root, "App");
 	
+	//App configuration
+	//json_object_set_value();
+
 	for (std::vector<Module*>::iterator item = modules.begin();
 		item != modules.end() && ret;
 		item = ++item)

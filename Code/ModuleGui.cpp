@@ -1,4 +1,5 @@
 ﻿#include "Application.h"
+#include "ModuleWindow.h"
 #include "ModuleGui.h"
 
 #include <stdio.h>

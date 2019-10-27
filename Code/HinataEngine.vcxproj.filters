@@ -572,6 +572,7 @@
       <Filter>Sources\Tools\mmgr</Filter>
     </ClInclude>
     <ClInclude Include="ParserHelper.h" />
+    <ClInclude Include="PerfTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -817,6 +818,7 @@
     </ClCompile>
     <ClCompile Include="ModulesDrawConfigUI.cpp" />
     <ClCompile Include="ParserHelper.cpp" />
+    <ClCompile Include="PerfTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">

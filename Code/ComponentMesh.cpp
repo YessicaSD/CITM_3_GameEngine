@@ -12,6 +12,7 @@
 #include "ModuleImport.h"
 #include "MathGeoLib/include/Math/float4.h"
 #include "ComponentMaterial.h"
+#include "imgui/imgui.h"
 
 
 CLASS_DEFINITION(Component, ComponentMesh)

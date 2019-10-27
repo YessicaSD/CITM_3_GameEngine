@@ -1,31 +1,33 @@
 #ifndef __APLICATION_H__
 #define __APLICATION_H__
 
-#include "Globals.h"
-#include "Timer.h"
-
-#include "Module.h"
-#include "ModuleWindow.h"
-#include "ModuleInput.h"
-#include "ModuleRenderer3D.h"
-#include "ModuleCamera3D.h"
-#include "ModuleScene.h"
-#include "ModuleGui.h"
-#include "ModuleRandom.h"
-
 #include <vector>
 #include <list>
-#include "MathGeoLib\include\Time\Clock.h"
+
+#include "Globals.h"
+#include "Timer.h"
+#include "PerfTimer.h"
+#include "parson/parson.h"
 
 typedef unsigned __int32 uint32;
 typedef unsigned __int64 uint64;
 
+class Module;
 class ModuleImport;
 class ModuleTexture;
 class ModuleFileSystem;
 class ModuleAudio;
 class ModuleHardware;
+class ModuleWindow;
+class ModuleInput;
+class ModuleRenderer3D;
+class ModuleCamera3D;
+class ModuleScene;
+class ModuleGui;
+class ModuleRandom;
+
 struct Event;
+
 class Application
 {
 public:
@@ -52,7 +54,7 @@ private:
 	float seconds_since_startup = 0.0f;
 
 
-	Timer	ms_timer;
+	PerfTimer ms_timer;
 	float	dt;
 	std::vector<Module*> modules;
 
@@ -79,7 +81,7 @@ public:
 	}
 	uint GetLastFrameMs()
 	{
-		return ms_timer.Read();
+		return ms_timer.ReadMs();
 	}
 	void Log(const char* sentece);
 	void EventRequest(const Event& event);
