@@ -142,8 +142,8 @@ void Application::FinishUpdate()
 	last_second_fps++;
 	if (last_second_timer.Read() > 1000)
 	{
-		last_second_fps = 0;
 		UpdateFPSGraph(last_second_fps);
+		last_second_fps = 0;
 		last_second_timer.Start();
 	}
 	seconds_since_startup = startup_time.ReadSec();
