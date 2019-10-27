@@ -45,16 +45,50 @@ void PanelAbout::Draw()
 	{
 		SDL_version sdl_version;
 		SDL_GetVersion(&sdl_version);
-		ImGui::Text("SDL %i.%i.%i", sdl_version.major, sdl_version.minor, sdl_version.patch);
-		ImGui::Text("OpenGL %s", glGetString(GL_VERSION));
-		ImGui::Text("Glew %s", glewGetString(GLEW_VERSION));
-		ImGui::Text("ImGui %s", ImGui::GetVersion());
-		ImGui::Text("DevIL: %i", ilGetInteger(IL_VERSION_NUM));
-		ImGui::Text("PCG Random Number Generator: 0.98");
-		ImGui::Text("MathGeoLib");
-		ImGui::Text("Assimp: %i.%i.%i ", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
-		ImGui::Text("Bass: 2.4");
-		ImGui::Text("Par Shapes");
+		if(ImGui::Button("SDL"))
+			App->RequestBrowser("https://www.libsdl.org/");
+		ImGui::SameLine();
+		ImGui::Text("%i.%i.%i", sdl_version.major, sdl_version.minor, sdl_version.patch);
+		
+		
+		if (ImGui::Button("OpenGL"))
+			App->RequestBrowser("https://www.opengl.org/");
+		ImGui::SameLine();
+		ImGui::Text("%s", glGetString(GL_VERSION));
+
+		if (ImGui::Button("Glew"))
+			App->RequestBrowser("http://glew.sourceforge.net/");
+		ImGui::SameLine();
+		ImGui::Text("%s", glewGetString(GLEW_VERSION));
+
+		if (ImGui::Button("ImGui"))
+			App->RequestBrowser("https://github.com/ocornut/imgui");
+		ImGui::SameLine();
+		ImGui::Text("%s", ImGui::GetVersion());
+
+		if (ImGui::Button("DevIL"))
+			App->RequestBrowser("http://openil.sourceforge.net/");
+		ImGui::SameLine();
+		ImGui::Text("%i", ilGetInteger(IL_VERSION_NUM));
+		
+		if (ImGui::Button("PCG Random Number Generator"))
+			App->RequestBrowser("http://www.pcg-random.org/");
+		ImGui::SameLine();
+		ImGui::Text("0.98");
+
+		if (ImGui::Button("MathGeoLib"))
+			App->RequestBrowser("https://github.com/juj/MathGeoLib");
+	
+		if (ImGui::Button("Assimp"))
+			App->RequestBrowser("");
+		ImGui::SameLine();
+		ImGui::Text("%i.%i.%i ", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
+		
+		if (ImGui::Button("Bass"))
+			App->RequestBrowser("https://www.un4seen.com/");
+		ImGui::SameLine();
+		ImGui::Text("2.4");
+
 		
 	}
 	ImGui::End();
