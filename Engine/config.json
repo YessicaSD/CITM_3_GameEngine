@@ -6,7 +6,7 @@
             "height": 810,
             "fullscreen mode": 0,
             "resizable": true,
-            "borderless": true,
+            "borderless": false,
             "vsync": true
         },
         "Random": {},

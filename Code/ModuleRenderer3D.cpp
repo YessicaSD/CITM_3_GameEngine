@@ -1,6 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleCamera3D.h"
+#include "ModuleGui.h"
 #include "PanelScene.h"
 
 #include "glew/include/GL/glew.h"
@@ -8,6 +10,7 @@
 #include "ModuleFileSystem.h"
 #include "ParserHelper.h"
 #include "PanelConfiguration.h"
+#include "ModuleWindow.h"
 
 
 ModuleRenderer3D::ModuleRenderer3D(const char* name, bool start_enabled) : Module(start_enabled, name)

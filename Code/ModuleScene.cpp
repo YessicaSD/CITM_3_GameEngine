@@ -3,6 +3,8 @@
 #include "ModuleScene.h"
 #include "Primitive.h"
 #include "ModuleRandom.h"
+#include "ModuleRenderer3D.h"
+#include "ModuleCamera3D.h"
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
 

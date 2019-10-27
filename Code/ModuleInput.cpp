@@ -1,9 +1,12 @@
 #include "Globals.h"
 #include "Application.h"
+#include "ModuleGui.h"
+#include "ModuleRenderer3D.h"
 #include "ModuleInput.h"
 #include "imgui\imgui_impl_sdl.h"
 #include "ModuleImport.h"
 #include "Event.h"
+
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput(const char* name, bool start_enabled) : Module(start_enabled, name)
@@ -129,8 +132,10 @@ update_status ModuleInput::PreUpdate()
 
 			case SDL_WINDOWEVENT:
 			{
-				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
+				if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+				{
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
+				}
 			}
 			break;
 

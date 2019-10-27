@@ -5,9 +5,11 @@
 #include "ModuleGui.h"
 #include "Shortcut.h"
 #include "PanelProperties.h"
+#include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
+
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
 	CalculateViewMatrix();

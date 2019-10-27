@@ -20,6 +20,9 @@ class PanelHierarchy;
 class PanelAbout;
 class PanelAssets;
 class PanelScene;
+class ComponentTransform;
+
+enum KEY_STATE;
 
 struct ImVec2;
 
@@ -64,12 +67,14 @@ public:
 		panels.push_back(new_panel);
 		return new_panel;
 	}
+
 	ComponentTransform* GetSelecteTransform()
 	{
 		return selected_transform;
 	}
 	void SetSelectedGameObjec(ComponentTransform* gameobject);
 	
+
 private:
 	void MainMenuBar(update_status &ret);
 	bool dockspace_active = true;

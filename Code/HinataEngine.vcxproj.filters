@@ -572,6 +572,7 @@
       <Filter>Sources\Tools\mmgr</Filter>
     </ClInclude>
     <ClInclude Include="ParserHelper.h" />
+    <ClInclude Include="PerfTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">

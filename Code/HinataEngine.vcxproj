@@ -246,6 +246,7 @@
     <ClInclude Include="pcg-cpp-0.98\include\pcg_extras.hpp" />
     <ClInclude Include="pcg-cpp-0.98\include\pcg_random.hpp" />
     <ClInclude Include="pcg-cpp-0.98\include\pcg_uint128.hpp" />
+    <ClInclude Include="PerfTimer.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="ModuleRandom.h" />
     <ClInclude Include="Shortcut.h" />
@@ -331,6 +332,7 @@
     <ClCompile Include="PanelShortcuts.cpp" />
     <ClCompile Include="ParserHelper.cpp" />
     <ClCompile Include="parson\parson.c" />
+    <ClCompile Include="PerfTimer.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="ModuleRandom.cpp" />
     <ClCompile Include="Shortcut.cpp" />

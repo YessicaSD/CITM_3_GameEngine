@@ -5,8 +5,6 @@
 #include "Timer.h"
 #include "imgui/imgui.h"
 
-#define CURRENT_FPS_MAX_VALUE 101
-
 enum KEY_STATE;
 
 class PanelConfiguration : public Panel
@@ -15,17 +13,9 @@ public:
 	PanelConfiguration(std::string name, bool active = false, std::vector<SDL_Scancode> shortcut = {});
 	void Draw() override;
 
-	void AddInputLog(SDL_Scancode key, KEY_STATE state);
 	static void RenderOption(const char * checkbox_string, bool *value, int gl_option);
 
 private:
-
-private:
-	
-	Timer updateGraph;
-	float fpsHistory[CURRENT_FPS_MAX_VALUE];
-	float msHistory[CURRENT_FPS_MAX_VALUE];
-	float RamHistory[CURRENT_FPS_MAX_VALUE];
 	
 	friend class ModuleGui;
 };
