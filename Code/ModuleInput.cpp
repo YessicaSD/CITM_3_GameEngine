@@ -6,6 +6,7 @@
 #include "imgui\imgui_impl_sdl.h"
 #include "ModuleImport.h"
 #include "Event.h"
+
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput(const char* name, bool start_enabled) : Module(start_enabled, name)

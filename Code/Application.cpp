@@ -1,6 +1,11 @@
 #include "Application.h"
+
 #include <Windows.h>
 #include "parson/parson.h"
+#include "Event.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_stdlib.h"
+
 #include "ModuleImport.h"
 #include "ModuleTexture.h"
 #include "ModuleFileSystem.h"
@@ -12,8 +17,7 @@
 #include "ModuleCamera3D.h"
 #include "ModuleGui.h"
 #include "ModuleRenderer3D.h"
-#include "imgui/imgui.h"
-#include "Event.h"
+
 Application::Application()
 {
 	// The order of calls is very important!
@@ -36,6 +40,9 @@ Application::Application()
 	// Renderer last!
 	AddModule(renderer3D = new ModuleRenderer3D("Render"));
 
+	memset(fpsHistory, 0, sizeof(float) * FPS_GRAPH_SAMPLES);
+	memset(msHistory, 0, sizeof(float) * FPS_GRAPH_SAMPLES);
+	memset(RamHistory, 0, sizeof(float) * FPS_GRAPH_SAMPLES);
 }
 
 Application::~Application()
@@ -91,15 +98,16 @@ bool Application::Init()
 
 	CloseConfig();
 
-	ms_timer.Start();
+	frame_time.Start();
 	return ret;
 }
 
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
-	dt = (float)ms_timer.ReadMs() / 1000.0f;
-	ms_timer.Start();
+	//Calculate dt
+	dt = (float)frame_time.ReadMs() / 1000.0f;
+	frame_time.Start();
 
 	if (log_strings.size() > 0)
 	{
@@ -122,11 +130,17 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	//Framerate calculations
 	frame_count++;
-
+	last_sec_frame_count++;
+	if (last_sec_frame_time.Read() > 1000)
+	{
+		last_sec_frame_time.Start();
+		last_sec_frame_count = 0;
+	}
 	seconds_since_startup = startup_time.ReadSec();
 	avg_fps = float(frame_count) / seconds_since_startup;
-
+	last_frame_ms = frame_time.ReadMs();
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -166,6 +180,60 @@ update_status Application::Update()
 	return ret;
 }
 
+bool Application::DrawAppConfigUI()
+{
+	//Project name
+	if (ImGui::InputText("Application Name:", &application_name))
+	{
+		App->window->SetTitle(App->application_name.c_str());
+	}
+	ImGui::InputText("Organization:", &organization_name);
+
+	//FPS
+	ImGui::Checkbox("Cap FPS", &cap_fps);
+	if (cap_fps)
+	{
+		if (ImGui::SliderFloat("Max FPS", &max_fps, 0.0f, 60.0f, "%.0f"))
+		{
+			cap_time = 1000 / max_fps;
+		}
+	}
+
+	//FPS GRAPH ==================================
+	ImVec2 size = { 310,100 };
+	static int currFpsArrayIndex = 0;
+	static float currFPS = 0.0f;
+	char titleGraph[100];
+
+	if (updateGraph.ReadSec() > 0.5f)
+	{
+		fpsHistory[currFpsArrayIndex] = currFPS = App->GetAvgFPS();
+
+		++currFpsArrayIndex;
+
+		if (currFpsArrayIndex >= FPS_GRAPH_SAMPLES)
+		{
+			currFpsArrayIndex = 0;
+		}
+		updateGraph.Start();
+	}
+
+	sprintf_s(titleGraph, 100, "Framerate: %.2f", currFPS);
+	ImGui::PlotHistogram("##ASDFASF", fpsHistory, IM_ARRAYSIZE(fpsHistory), currFpsArrayIndex, titleGraph, 0.0f, 100.0f, size);
+
+	//MS GRAPH ================================================
+	static int lastMsArrayIndex = 0;
+	static Uint32 lastFrameMs = 0.0f;
+
+	msHistory[lastMsArrayIndex] = lastFrameMs = App->GetLastFrameMs();
+	lastMsArrayIndex = (lastMsArrayIndex == FPS_GRAPH_SAMPLES) ? 0 : ++lastMsArrayIndex;
+
+	sprintf_s(titleGraph, 100, "Milliseconds: %i", lastFrameMs);
+	ImGui::PlotHistogram("##ASDFASF", msHistory, IM_ARRAYSIZE(msHistory), lastMsArrayIndex, titleGraph, 0.0f, 15.0f, size);
+
+	return true;
+}
+
 bool Application::SaveModulesConfiguration()
 {
 	bool ret = true;
@@ -177,7 +245,8 @@ bool Application::SaveModulesConfiguration()
 	JSON_Object * app_obj = json_object_get_object(config_root, "App");
 	
 	//App configuration
-	//json_object_set_value();
+	json_object_set_string(app_obj, "application name", application_name.c_str());
+	json_object_set_string(app_obj, "organization name", organization_name.c_str());
 
 	for (std::vector<Module*>::iterator item = modules.begin();
 		item != modules.end() && ret;
@@ -206,6 +275,9 @@ bool Application::LoadModulesConfiguration()
 
 	LoadConfig();
 	JSON_Object * app_obj = json_object_get_object(config_root, "App");
+
+	application_name = json_object_get_string(app_obj, "application name");
+	organization_name = json_object_get_string(app_obj, "organization name");
 
 	if(config_root != nullptr)
 	{
@@ -310,4 +382,14 @@ void Application::CreateNewConfig(const std::string& path)
 	{
 		LOG("Error creating JSON with path %s", path.data());
 	}
+}
+
+uint Application::GetLastFrameMs()
+{
+	return frame_time.ReadMs();
+}
+
+float Application::GetAvgFPS() const
+{
+	return avg_fps;
 }

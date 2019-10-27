@@ -1,6 +1,7 @@
 #include "PanelConfiguration.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ModuleWindow.h"
 #include "ModuleGui.h"
 
 
@@ -8,6 +9,7 @@
 #include "imgui\imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "imgui/imgui_stdlib.h"
 
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
@@ -16,9 +18,6 @@
 PanelConfiguration::PanelConfiguration(std::string name, bool active, std::vector<SDL_Scancode> shortcut) :
 	Panel(name, active, shortcut)
 {
-	memset(fpsHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
-	memset(msHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
-	memset(RamHistory, 0, sizeof(float) * CURRENT_FPS_MAX_VALUE);
 }
 
 void PanelConfiguration::Draw()
@@ -38,55 +37,8 @@ void PanelConfiguration::Draw()
 		}
 		ImGui::EndMenu();
 	}
-	
-	//Project name
-	static char projectName[128] = "Project name";
-	ImGui::InputText("Project Name:", projectName, IM_ARRAYSIZE(projectName));
-	static char projectOrganization[128] = "Early Birds";
-	ImGui::InputText("Organization:", projectOrganization, IM_ARRAYSIZE(projectName));
 
-	//FPS
-	static float fpsMax = 0;
-	if (ImGui::SliderFloat("Max FPS", &fpsMax, 0.0f, 60.0f, "%.0f"))
-	{
-
-	}
-	ImGui::Text("Limit fps:");
-	ImVec4 textColor_fpsmas = { 1.f,1.0f,0.3f,1.0f };
-	ImGui::SameLine();
-	//ImGui::TextColored(textColor_fpsmas, std::to_string(fpsMax).c_str());
-
-
-	//FPS GRAPH ==================================
-	ImVec2 size = { 310,100 };
-	static int currFpsArrayIndex = 0;
-	static float currFPS = 0.0f;
-	char titleGraph[100];
-
-	if (updateGraph.ReadSec() > 0.5f)
-	{
-		fpsHistory[currFpsArrayIndex] = currFPS = App->GetAvgFPS();
-
-		++currFpsArrayIndex;
-
-		if (currFpsArrayIndex >= CURRENT_FPS_MAX_VALUE)
-			currFpsArrayIndex = 0;
-
-		updateGraph.Start();
-	}
-
-	sprintf_s(titleGraph, 100, "Framerate: %.2f", currFPS);
-	ImGui::PlotHistogram("##ASDFASF", fpsHistory, IM_ARRAYSIZE(fpsHistory), currFpsArrayIndex, titleGraph, 0.0f, 100.0f, size);
-
-	//MS GRAPH ================================================
-	static int lastMsArrayIndex = 0;
-	static Uint32 lastFrameMs = 0.0f;
-
-	msHistory[lastMsArrayIndex] = lastFrameMs = App->GetLastFrameMs();
-	lastMsArrayIndex = (lastMsArrayIndex == CURRENT_FPS_MAX_VALUE) ? 0 : ++lastMsArrayIndex;
-
-	sprintf_s(titleGraph, 100, "Milliseconds: %i", lastFrameMs);
-	ImGui::PlotHistogram("##ASDFASF", msHistory, IM_ARRAYSIZE(msHistory), lastMsArrayIndex, titleGraph, 0.0f, 15.0f, size);
+	App->DrawAppConfigUI();
 
 	////MEMORY CONSUMPTION =====================================
 	//sMStats stats = m_getMemoryStatistics();

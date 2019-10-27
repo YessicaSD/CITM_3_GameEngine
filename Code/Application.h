@@ -9,6 +9,8 @@
 #include "PerfTimer.h"
 #include "parson/parson.h"
 
+#define FPS_GRAPH_SAMPLES 101
+
 typedef unsigned __int32 uint32;
 typedef unsigned __int64 uint64;
 
@@ -46,22 +48,48 @@ public:
 	
 	JSON_Object * config_root = nullptr;
 
+	std::string application_name;
+	std::string organization_name;
+
 private:
-	//fps and timers variables 
-	Timer				startup_time;
-	uint64				frame_count = 0;
-	float avg_fps		= 0.0f;
-	float seconds_since_startup = 0.0f;
-
-
-	PerfTimer ms_timer;
-	float	dt;
 	std::vector<Module*> modules;
 
 	JSON_Value * configValue = nullptr;
 
 	std::list<std::string> log_strings;
-	
+
+	//Framerate calculations
+
+	//- dt
+	PerfTimer frame_time;
+	float dt = 0.0f;
+
+	//- last frame
+	uint32 last_frame_ms = 0u;
+
+	//- average fps
+	float avg_fps = 0.f;
+	uint64 frame_count = 0u;
+
+	//- cap frames
+	uint32 cap_time = 0u;
+	float max_fps = 0.0f;
+	bool cap_fps = false;
+
+	//- frames last second
+	Timer last_sec_frame_time;
+	uint32 last_sec_frame_count = 0u;
+
+	//- startup time
+	Timer startup_time;
+	float seconds_since_startup = 0.0f;
+
+	//grahs
+	Timer updateGraph;
+	float fpsHistory[FPS_GRAPH_SAMPLES];
+	float msHistory[FPS_GRAPH_SAMPLES];
+	float RamHistory[FPS_GRAPH_SAMPLES];
+
 public:
 
 	Application();
@@ -69,20 +97,15 @@ public:
 
 	bool Init();
 	update_status Update();
+	bool DrawAppConfigUI();
 	bool LoadModulesConfiguration();
 	bool SaveModulesConfiguration();
 	bool CleanUp();
 
 	void RequestBrowser(const char* path);
 
-	float GetAvgFPS() const
-	{
-		return avg_fps;
-	}
-	uint GetLastFrameMs()
-	{
-		return ms_timer.ReadMs();
-	}
+	float GetAvgFPS() const;
+	uint GetLastFrameMs();
 	void Log(const char* sentece);
 	void EventRequest(const Event& event);
 	void DrawModulesConfigUi();
