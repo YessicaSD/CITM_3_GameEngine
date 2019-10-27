@@ -3,6 +3,7 @@
 
 #include "MathGeoLib/include/Math/float3.h"
 #include "Assimp/include/vector3.h"
+#include "MathGeoLib/include/Geometry/AABB.h"
 #include "Texture.h"
 #include <vector>
 typedef unsigned int uint;
@@ -21,12 +22,18 @@ public:
 	bool CalculateFaceNormals();
 	bool LoadFaces(const int num_faces, const uint16_t * indices);
 	bool LoadUVs(aiMesh * info);
-
+	void CreateBoindingBox();
 	bool GeneteVertexNormalsBuffer();
 	bool GenerateVerticesBuffer();
 	bool GenerateFacesAndNormalsBuffer();
 	bool GenerateUVsBuffer();
 	void CleanUp();
+	AABB GetBondingBox()
+	{
+		return default_bonding_box;
+	}
+private:
+	AABB default_bonding_box;
 public:
 	//Data ========================
 	uint id_indice = 0u; // index in VRAM
@@ -54,6 +61,8 @@ public:
 	uint id_uv = 0u;
 	uint uv_num_components = 0u;
 	uint id_texture = 0u;
+
+	
 };
 
 
