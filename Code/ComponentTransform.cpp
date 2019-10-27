@@ -12,6 +12,10 @@ ComponentTransform::ComponentTransform(GameObject * gameobject) : Component(game
 	//TODO: This is for testing purposes, remove when done
 	global_matrix = local_matrix = local_matrix.identity;
 	UpdatePos();
+
+	aux_position = position;
+	aux_rotation = { 0,0,0 };
+	aux_scale = { 1,1,1 };
 }
 
 void ComponentTransform::SetParent(ComponentTransform * parent)
@@ -97,9 +101,21 @@ void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, Q
 	aux_position = position;
 	aux_rotation = rotation; 
 	aux_scale = scale;
+
 	ComponentMesh* comp_mesh = gameobject->GetComponent<ComponentMesh>();
 	if (comp_mesh)
 	{
 		comp_mesh->CalculBoindingBox();
 	}
+
+}
+
+void ComponentTransform::CalculPRSWithMatrix()
+{
+	global_matrix.Decompose(position, qrotation, scale);
+	rotation = qrotation.ToEulerXYZ();
+
+	aux_position = position;
+	aux_rotation = rotation;
+	aux_scale = scale;
 }

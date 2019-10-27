@@ -169,6 +169,19 @@ bool AssetMesh::LoadUVs(aiMesh * info)
 	return true;
 }
 
+bool AssetMesh::LoadUVs(float * coords)
+{
+	if (coords)
+	{
+		this->uv_num_components = 2;
+		this->UVCoord = new float[uv_num_components * this->num_vertices];
+		memcpy(this->UVCoord, coords, sizeof(float) * uv_num_components * this->num_vertices);
+
+	}
+
+	return true;
+}
+
 void AssetMesh::CreateBoindingBox()
 {
 	default_bonding_box.Enclose(vertices, num_vertices);

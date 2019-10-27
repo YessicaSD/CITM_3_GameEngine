@@ -22,6 +22,7 @@ public:
 	bool CalculateFaceNormals();
 	bool LoadFaces(const int num_faces, const uint * indices);
 	bool LoadUVs(aiMesh * info);
+	bool LoadUVs(float* coods);
 	bool GenerateVertexNormalsBuffer();
 	void CreateBoindingBox();
 	bool GenerateVerticesBuffer();

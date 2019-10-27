@@ -98,14 +98,17 @@ AssetMesh* ModuleImport::LoadParShapeMesh(par_shapes_mesh * mesh)
 
 	asset_mesh->LoadVertices(mesh->npoints, mesh->points);
 	asset_mesh->CreateBoindingBox();
+	
 	//TODO: Get vertices normals
+	
 	asset_mesh->LoadFaces(mesh->ntriangles, mesh->triangles);
 	asset_mesh->CalculateFaceNormals();
-	//asset_mesh->LoadUV();
+	if(mesh->tcoords)
+		asset_mesh->LoadUVs(mesh->tcoords);
 
 	asset_mesh->GenerateVerticesBuffer();
 	asset_mesh->GenerateFacesAndNormalsBuffer();
-	//asset_mesh->GenerateUVBuffer();
+	asset_mesh->GenerateUVsBuffer();
 
 	App->import->meshes.push_back(asset_mesh);
 	return asset_mesh;
@@ -201,4 +204,5 @@ void ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTransform
 	GameObject * new_gameobject = new GameObject(name, parent);
 	ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 	component_mesh->mesh = asset_mesh;
+	new_gameobject->transform->CalculPRSWithMatrix();
 }

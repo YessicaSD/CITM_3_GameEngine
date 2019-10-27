@@ -22,6 +22,8 @@ public:
 	void PropertiesEditor() override;
 	void CalculGlobalMatrix(float3& position, float3& scale, float3 & rotation);
 	void CalculGlobalMatrix(float3& position, float3& scale, Quat & qrotation);
+	void CalculPRSWithMatrix();
+
 public:
 	float3 position = {0,0,0}, scale = { 0,0,0 }, rotation = { 0,0,0 };
 	Quat qrotation;

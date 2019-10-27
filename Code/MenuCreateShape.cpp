@@ -283,6 +283,7 @@ void PanelCreateShape::MenuItem(const float button_height, const float button_sp
 		AssetMesh* asset_mesh = App->import->LoadParShapeMesh(mesh);
 		par_shapes_free_mesh(mesh);
 		App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
+
 	}
 	if (button_clicked)
 	{
