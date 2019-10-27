@@ -3,6 +3,10 @@ A 3D game engine created in the third year of our Videogame Design and Developme
 
 # Test
 
+
+# Especial Intruction
+- If you load an fbx and it's set on the hierarchy but you can't see it maybe it's too big that you can't see it so please set the scale to 1,1,1;
+
 # Credits:
 
 - Yessica Servin Dominguez

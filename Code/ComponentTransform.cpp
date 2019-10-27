@@ -76,7 +76,14 @@ void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, f
 	{
 		comp_mesh->CalculBoindingBox();
 	}
-
+	if (children.size() > 0)
+	{
+		for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
+		{
+			(*iter)->global_matrix = this->global_matrix * (*iter)->local_matrix;
+			(*iter)->CalculPRSWithMatrix();
+		}
+	}
 }
 
 void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, Quat & qrotation)
