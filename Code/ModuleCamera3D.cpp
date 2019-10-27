@@ -33,8 +33,8 @@ bool ModuleCamera3D::Start()
 	navigate_backward	= new Shortcut("Move camera backward",	{ SDL_SCANCODE_S });
 	navigate_left		= new Shortcut("Move camera left",		{ SDL_SCANCODE_A });
 	navigate_right		= new Shortcut("Move camera right",		{ SDL_SCANCODE_D });
-	navigate_up			= new Shortcut("Move camera up",		{ SDL_SCANCODE_R });
-	navigate_down		= new Shortcut("Move camera right",		{ SDL_SCANCODE_F });
+	navigate_up			= new Shortcut("Move camera up",		{ SDL_SCANCODE_Q });
+	navigate_down		= new Shortcut("Move camera right",		{ SDL_SCANCODE_E });
 	navigate_fast		= new Shortcut("Move camera faster",	{ SDL_SCANCODE_LSHIFT });
 	focus_object		= new Shortcut("Focus to object", { SDL_SCANCODE_F });
 	return ret;
