@@ -93,6 +93,7 @@ void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, Q
 	this->scale = scale;
 
 	this->rotation = qrotation.ToEulerXYZ();
+	this->rotation  *= RADTODEG;
 
 	this->local_matrix = float4x4::FromTRS(position, qrotation, scale);
 

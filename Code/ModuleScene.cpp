@@ -8,6 +8,11 @@
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
 
+#include "ModuleGui.h"
+#include "ModuleInput.h"
+#include "ModuleImport.h"
+
+
 ModuleScene::ModuleScene(bool start_enabled) :
 	Module(start_enabled)
 {
@@ -25,7 +30,7 @@ bool ModuleScene::Start(JSON_Object* config)
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));	
-
+	App->import->LoadMesh("Assets/BakerHouse.fbx");
 	return ret;
 }
 
