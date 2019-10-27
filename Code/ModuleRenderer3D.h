@@ -29,6 +29,9 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp();
 
+	bool SaveConfiguration(JSON_Object * module_obj);
+	bool LoadConfiguration(JSON_Object * module_obj);
+
 	void OnResize(int width, int height);
 
 	void StartSceneRender();

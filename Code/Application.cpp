@@ -161,7 +161,7 @@ bool Application::SaveModulesConfiguration()
 	JSON_Object * app_obj = json_object_get_object(config_root, "App");
 	
 	for (std::vector<Module*>::iterator item = modules.begin();
-		item != modules.end() && ret == true;
+		item != modules.end() && ret;
 		item = ++item)
 	{
 		json_object_set_value(app_obj, (*item)->name, json_value_init_object());
@@ -172,6 +172,11 @@ bool Application::SaveModulesConfiguration()
 	json_serialize_to_file_pretty(configValue, config_path.data());
 	
 	CloseConfig();
+
+	if (ret)
+	{
+		LOG("Saved configuration successfully.");
+	}
 
 	return ret;
 }
@@ -195,6 +200,11 @@ bool Application::LoadModulesConfiguration()
 		}
 	}
 	CloseConfig();
+
+	if (ret)
+	{
+		LOG("Load configuration successfully.");
+	}
 
 	return ret;
 }

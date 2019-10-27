@@ -573,6 +573,9 @@
     <ClInclude Include="MenuCreateShape.h">
       <Filter>Sources\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="ParserHelper.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -820,6 +823,9 @@
     </ClCompile>
     <ClCompile Include="ModulesDrawConfigUI.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ParserHelper.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

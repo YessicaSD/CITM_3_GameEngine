@@ -24,8 +24,6 @@ public:
 
 	void SetTitle(const char* title);
 
-	bool Save(JSON_Object * config);
-
 	int GetWindowWidth();
 	int GetWindowHeight();
 	
@@ -41,6 +39,8 @@ public:
 
 
 	void DrawConfigurationUi();
+
+	void SetFullscreenMode();
 	
 	bool SaveConfiguration(JSON_Object * module_obj) override;
 	bool LoadConfiguration(JSON_Object * module_obj) override;
@@ -49,8 +49,6 @@ private:
 	Uint32 GetFlags();
 	void DecideGLAndGLSLVersions();
 	bool SetWindow();
-	
-	
 
 public:
 	//The window we'll be rendering to
@@ -64,14 +62,14 @@ public:
 
 	//TODO: Make them private
 	//This values will be overriden by config_root.json
-	bool fullscreen = false;
 	bool resizable = false;
 	bool borderless = false;
-	bool fullscreen_desktop = false;
 	bool vsync = false;
+	int current_window_mode = 0;
 
 	float brightness = 100.f;
 	float max_width, max_height, min_width = 640, min_height = 480;
+
 };
 
 #endif // __ModuleWindow_H__

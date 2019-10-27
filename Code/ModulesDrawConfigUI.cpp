@@ -27,45 +27,16 @@ void ModuleWindow::DrawConfigurationUi()
 	{
 		SetWindowSize(width, height);
 	}
-}
-
-void ModuleRenderer3D::DrawConfigurationUi()
-{
-	ImGui::Text("Change background color:");
-
-	static float default_color_background[3] = { 3 / 255.F,19 / 255.F,29 / 255.F };
-	if (ImGui::ColorPicker3("MyColor##4", background_col))
-	{
-		glClearColor(background_col[0], background_col[1], background_col[2], 1);
-	}
-	if (ImGui::Button("Reset"))
-	{
-		glClearColor(default_color_background[0], default_color_background[1], default_color_background[2], 1);
-	}
 
 	ImGui::Text("Window options");
 	const char * window_modes[] = {
 		"No fullscreen",
 		"Fullscreen",
-		"Fullscreen desktop" };
+		"Fullscreen des<ktop" };
 
-	static int current_window_mode = 0;
 	if (ImGui::Combo("Window mode", &current_window_mode, window_modes, IM_ARRAYSIZE(window_modes)))
 	{
-		Uint32 change_mode = 0;
-		if (current_window_mode == 0)
-		{
-			change_mode = 0;
-		}
-		else if (current_window_mode == 1)
-		{
-			change_mode = SDL_WINDOW_FULLSCREEN;
-		}
-		else if (current_window_mode == 2)
-		{
-			change_mode = SDL_WINDOW_FULLSCREEN_DESKTOP;
-		}
-		SDL_SetWindowFullscreen(App->window->window, change_mode);
+		SetFullscreenMode();
 	}
 
 	if (ImGui::Checkbox("Resizable", &App->window->resizable))
@@ -85,6 +56,21 @@ void ModuleRenderer3D::DrawConfigurationUi()
 			LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 		}
 	}
+}
+
+void ModuleRenderer3D::DrawConfigurationUi()
+{
+	ImGui::Text("Change background color:");
+
+	static float default_color_background[3] = { 3 / 255.F,19 / 255.F,29 / 255.F };
+	if (ImGui::ColorPicker3("MyColor##4", background_col))
+	{
+		glClearColor(background_col[0], background_col[1], background_col[2], 1);
+	}
+	if (ImGui::Button("Reset"))
+	{
+		glClearColor(default_color_background[0], default_color_background[1], default_color_background[2], 1);
+	}
 
 	ImGui::Text("Render options");
 
@@ -99,37 +85,36 @@ void ModuleRenderer3D::DrawConfigurationUi()
 
 void ModuleInput::DrawConfigurationUi()
 {
+	int mouse_x = App->input->GetMouseX();
+	int mouse_y = App->input->GetMouseY();
+	ImGui::Text("Mouse Position:");
+	ImGui::SameLine();
+	ImGui::Text("%i,%i", mouse_x, mouse_y);
+
+	int mouse_motion_x = App->input->GetMouseMotionX();
+	int mouse_motion_y = App->input->GetMouseMotionY();
+	ImGui::Text("Mouse Motion:");
+	ImGui::SameLine();
+	ImGui::Text("%i,%i", mouse_x, mouse_y);
+
+	int mouse_wheel = App->input->GetMouseWheel();
+	ImGui::Text("Mouse Wheel:");
+	ImGui::SameLine();
+	ImGui::Text("%i", mouse_wheel);
+
+	ImGui::Separator();
+
+	ImGui::BeginChild("Input Log");
 	
-		int mouse_x = App->input->GetMouseX();
-		int mouse_y = App->input->GetMouseY();
-		ImGui::Text("Mouse Position:");
-		ImGui::SameLine();
-		ImGui::Text("%i,%i", mouse_x, mouse_y);
-
-		int mouse_motion_x = App->input->GetMouseMotionX();
-		int mouse_motion_y = App->input->GetMouseMotionY();
-		ImGui::Text("Mouse Motion:");
-		ImGui::SameLine();
-		ImGui::Text("%i,%i", mouse_x, mouse_y);
-
-		int mouse_wheel = App->input->GetMouseWheel();
-		ImGui::Text("Mouse Wheel:");
-		ImGui::SameLine();
-		ImGui::Text("%i", mouse_wheel);
-
-		ImGui::Separator();
-
-		ImGui::BeginChild("Input Log");
-		
-		ImGui::TextUnformatted(input_log_buffer.begin());
-		static bool scroll_input_log = false;
-		if (scroll_input_log)
-		{
-			ImGui::SetScrollHere(1.0f);
-		}
-		scroll_input_log = false;
-		
-		ImGui::EndChild();
+	ImGui::TextUnformatted(input_log_buffer.begin());
+	static bool scroll_input_log = false;
+	if (scroll_input_log)
+	{
+		ImGui::SetScrollHere(1.0f);
+	}
+	scroll_input_log = false;
+	
+	ImGui::EndChild();
 }
 
 void ModuleAudio::DrawConfigurationUi()

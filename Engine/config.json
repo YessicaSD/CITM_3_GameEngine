@@ -1,18 +1,29 @@
 {
     "App": {
         "Window": {
-            "brightness": 1,
+            "brightness": 0.90499997138977051,
             "width": 1440,
-            "height": 810
+            "height": 810,
+            "fullscreen mode": 0,
+            "resizable": true,
+            "borderless": true,
+            "vsync": true
         },
-        "": {},
+        "Random": {},
         "File System": {},
         "Hardware": {},
         "Input": {},
         "Textures": {},
+        "": {},
         "Import": {},
         "Audio": {},
         "Gui": {},
-        "Render": {}
+        "Render": {
+            "background color": [
+                1,
+                0,
+                0.20000000298023224
+            ]
+        }
     }
 }

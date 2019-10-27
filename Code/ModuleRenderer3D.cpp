@@ -6,6 +6,8 @@
 #include "glew/include/GL/glew.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "ModuleFileSystem.h"
+#include "ParserHelper.h"
+#include "PanelConfiguration.h"
 
 
 ModuleRenderer3D::ModuleRenderer3D(const char* name, bool start_enabled) : Module(start_enabled, name)
@@ -284,13 +286,70 @@ void ModuleRenderer3D::EndSceneRender()
 
 bool ModuleRenderer3D::SaveConfiguration(JSON_Object * module_obj)
 {
-	App->file_system->AddFloatArray(module_obj, "Background color", background_col, 3u);
+	SaveFloatArray(module_obj, "background color", background_col, 3u);
+	json_object_set_boolean(module_obj, "depth test", depth_test);
+	json_object_set_boolean(module_obj, "cull faces", cull_face);
+	json_object_set_boolean(module_obj, "lightning", lighting);
+	json_object_set_boolean(module_obj, "color materials", color_material);
+	json_object_set_boolean(module_obj, "texture 2d", texture_2d);
 
 	return true;
 }
 
-bool ModuleRenderer3D::LoadConfiguration()
+bool ModuleRenderer3D::LoadConfiguration(JSON_Object * module_obj)
 {
-	background_col[0] = json_object
+	LoadFloatArray(module_obj, "background color", background_col, 3u);
+	glClearColor(background_col[0], background_col[1], background_col[2], 1);
+
+	depth_test = json_object_get_boolean(module_obj, "depth test");
+	if (depth_test)
+	{
+		glEnable(GL_DEPTH_TEST);
+	}
+	else
+	{
+		glDisable(GL_DEPTH_TEST);
+	}
+
+	cull_face = json_object_get_boolean(module_obj, "cull faces");
+	if (depth_test)
+	{
+		glEnable(GL_CULL_FACE);
+	}
+	else
+	{
+		glDisable(GL_CULL_FACE);
+	}
+
+	lighting = json_object_get_boolean(module_obj, "lightning");
+	if (depth_test)
+	{
+		glEnable(GL_LIGHTING);
+	}
+	else
+	{
+		glDisable(GL_LIGHTING);
+	}
+
+	color_material = json_object_get_boolean(module_obj, "color material");
+	if (depth_test)
+	{
+		glEnable(GL_COLOR_MATERIAL);
+	}
+	else
+	{
+		glDisable(GL_COLOR_MATERIAL);
+	}
+
+	texture_2d = json_object_get_boolean(module_obj, "texture 2d");
+	if (depth_test)
+	{
+		glEnable(GL_TEXTURE_2D);
+	}
+	else
+	{
+		glDisable(GL_TEXTURE_2D);
+	}
+
 	return true;
 }
