@@ -92,6 +92,7 @@ bool Application::Init()
 		++item;
 	}
 
+	LoadAppConfiguration(app_obj);
 	item = modules.begin();
 	while (item != modules.end() && ret == true)
 	{
@@ -281,10 +282,8 @@ bool Application::SaveModulesConfiguration()
 
 	json_object_set_value(config_root, "App", json_value_init_object());
 	JSON_Object * app_obj = json_object_get_object(config_root, "App");
-	
-	//App configuration
-	json_object_set_string(app_obj, "application name", application_name.c_str());
-	json_object_set_string(app_obj, "organization name", organization_name.c_str());
+
+	SaveAppConfiguration(app_obj);
 
 	for (std::vector<Module*>::iterator item = modules.begin();
 		item != modules.end() && ret;
@@ -307,6 +306,24 @@ bool Application::SaveModulesConfiguration()
 	return ret;
 }
 
+bool Application::LoadAppConfiguration(JSON_Object * app_obj)
+{
+	application_name = json_object_get_string(app_obj, "application name");
+	organization_name = json_object_get_string(app_obj, "organization name");
+	cap_fps = json_object_get_boolean(app_obj, "cap fps");
+	max_fps = json_object_get_number(app_obj, "max fps");
+	return true;
+}
+
+bool Application::SaveAppConfiguration(JSON_Object * app_obj)
+{
+	json_object_set_string(app_obj, "application name", application_name.c_str());
+	json_object_set_string(app_obj, "organization name", organization_name.c_str());
+	json_object_set_boolean(app_obj, "cap fps", cap_fps);
+	json_object_set_number(app_obj, "max fps", max_fps);
+	return true;
+}
+
 bool Application::LoadModulesConfiguration()
 {
 	bool ret = true;
@@ -314,8 +331,7 @@ bool Application::LoadModulesConfiguration()
 	LoadConfig();
 	JSON_Object * app_obj = json_object_get_object(config_root, "App");
 
-	application_name = json_object_get_string(app_obj, "application name");
-	organization_name = json_object_get_string(app_obj, "organization name");
+	LoadAppConfiguration(app_obj);
 
 	if(config_root != nullptr)
 	{
