@@ -28,8 +28,11 @@ void PanelAbout::Draw()
 	ImGui::Text("Credits");
 	
 		ImGui::Text("Hinata Engine Website:");
+
 		if(ImGui::Button("More"))
 			App->RequestBrowser("https://yessicasd.github.io/CITM_3_GameEngine/");
+
+		ImGui::Separator();
 
 		if(ImGui::Button("Yessica Servin Dominguez"))
 			App->RequestBrowser("https://github.com/YessicaSD");
