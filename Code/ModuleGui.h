@@ -1,4 +1,3 @@
-
 #ifndef MODULEGUI_H_
 #define MODULEGUI_H_
 
@@ -45,10 +44,10 @@ private:
 	ComponentTransform* selected_transform = nullptr;
 
 public:
-	ModuleGui(bool start_enabled = true);
+	ModuleGui(const char * name, bool start_enabled = true);
 	~ModuleGui();
-	bool Init() override;
-	bool Start() override;
+	bool Init(JSON_Object* config) override;
+	bool Start(JSON_Object* config) override;
 	update_status PreUpdate() override;
 	update_status PostUpdate() override;
 	void CreateDockspace(ImGuiIO& io);
@@ -81,7 +80,7 @@ private:
 	friend class PanelHierarchy;
 	friend class ModuleCamera3D;
 	friend class PanelProperties;
-
 };
+
 #endif // !MODULEGUI_H_
 

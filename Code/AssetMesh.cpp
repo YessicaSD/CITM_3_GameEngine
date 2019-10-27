@@ -12,7 +12,6 @@
 #include "Texture.h"
 
 
-
 AssetMesh::~AssetMesh()
 {
 	CleanUp();
@@ -66,7 +65,7 @@ bool AssetMesh::LoadVerticesNormals(aiMesh * info)
 	return true;
 }
 
-bool AssetMesh::GeneteVertexNormalsBuffer()
+bool AssetMesh::GenerateVertexNormalsBuffer()
 {
 	if (vertex_normals)
 	{
@@ -109,6 +108,16 @@ bool AssetMesh::LoadFaces(aiMesh * info)
 			}
 		}
 	}
+	return true;
+}
+
+bool AssetMesh::LoadFaces(const int num_faces, const uint * indices)
+{
+	this->num_faces = num_faces;
+	num_indices = num_faces * 3;
+	this->indices = new uint[num_indices];
+	memcpy(this->indices, indices, sizeof(uint) * num_indices);
+	
 	return true;
 }
 
@@ -220,25 +229,4 @@ void AssetMesh::CleanUp()
 		delete[] UVCoord;
 		UVCoord = nullptr;
 	}
-}
-
-
-//INFO: We could save some memory by keeping index as uint16_t values instead of uint
-//But we would need to create another class for AssetMesh with uint16_t or use templates with specialization
-//We should change:
-//- The indices type
-//- In ComponentMesh::OnPostUpdate() the parameter type in DrawElements() from GL_UNSIGNED_INT to GL_UNSIGNED_SHORT
-bool AssetMesh::LoadFaces(const int num_faces, const uint16_t * indices)
-{
-	this->num_faces = num_faces;
-	this->num_indices = num_faces * 3;
-	this->indices = new uint[num_indices];
-
-	for (int i = 0; i < num_indices; ++i)
-	{
-		this->indices[i] = (uint)indices[i];
-	}
-	//TODO: Generate normals for par_shapes.h shapes
-
-	return true;
 }

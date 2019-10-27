@@ -32,7 +32,11 @@ void AssimpWrite(const char * text, char * data)
 	tmp_txt.erase(index, tmp_txt.end());
 	LOG(tmp_txt.c_str());
 }
-bool ModuleImport::Start()
+
+ModuleImport::ModuleImport(const char * name) : Module(true, name)
+{}
+
+bool ModuleImport::Start(JSON_Object* config)
 {
 	LOG("Creating assimp LOG stream");
 	aiLogStream stream;
@@ -81,7 +85,7 @@ AssetMesh * ModuleImport::LoadAssimpMesh(aiMesh * assimp_mesh, const aiScene* sc
 	asset_mesh->CalculateFaceNormals();
 	asset_mesh->LoadUVs(assimp_mesh);
 
-	asset_mesh->GeneteVertexNormalsBuffer();
+	asset_mesh->GenerateVertexNormalsBuffer();
 	asset_mesh->GenerateVerticesBuffer();
 	asset_mesh->GenerateFacesAndNormalsBuffer();
 	asset_mesh->GenerateUVsBuffer();

@@ -10,9 +10,9 @@ class ModuleTexture : public Module
 private:
 	std::map<std::string, Texture*> textures;
 
-public:  
-	ModuleTexture() {};
-	bool Init() override;
+public:
+	ModuleTexture(const char * name);
+	bool Init(JSON_Object* config) override;
 	Texture* LoadTexture(const char* path);
 	bool CleanUp() override;
 	friend class PanelAssets;

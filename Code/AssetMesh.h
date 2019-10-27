@@ -20,10 +20,10 @@ public:
 	bool LoadVerticesNormals(aiMesh * info);
 	bool LoadFaces(aiMesh* info);
 	bool CalculateFaceNormals();
-	bool LoadFaces(const int num_faces, const uint16_t * indices);
+	bool LoadFaces(const int num_faces, const uint * indices);
 	bool LoadUVs(aiMesh * info);
+	bool GenerateVertexNormalsBuffer();
 	void CreateBoindingBox();
-	bool GeneteVertexNormalsBuffer();
 	bool GenerateVerticesBuffer();
 	bool GenerateFacesAndNormalsBuffer();
 	bool GenerateUVsBuffer();

@@ -795,9 +795,6 @@
     <ClCompile Include="PanelAssets.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="ModulesDrawConfigUIFuntions.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleAudio.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
@@ -861,5 +858,6 @@
     <None Include="assimp\include\vector3.inl">
       <Filter>Sources\Tools\assimp</Filter>
     </None>
+    <None Include="..\Engine\config.json" />
   </ItemGroup>
 </Project>

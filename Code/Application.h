@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef __APLICATION_H__
+#define __APLICATION_H__
 
 #include "Globals.h"
 #include "Timer.h"
@@ -41,8 +41,8 @@ public:
 	ModuleFileSystem* file_system = nullptr;
 	ModuleAudio* audio = nullptr;
 	ModuleHardware* hardware = nullptr;
-	bool saveRequest = false;
-	JSON_Object * config = nullptr;
+	
+	JSON_Object * config_root = nullptr;
 
 private:
 	//fps and timers variables 
@@ -54,7 +54,7 @@ private:
 
 	Timer	ms_timer;
 	float	dt;
-	std::vector<Module*> list_modules;
+	std::vector<Module*> modules;
 
 	JSON_Value * configValue = nullptr;
 
@@ -67,6 +67,8 @@ public:
 
 	bool Init();
 	update_status Update();
+	bool LoadModulesConfiguration();
+	bool SaveModulesConfiguration();
 	bool CleanUp();
 
 	void RequestBrowser(const char* path);
@@ -86,7 +88,6 @@ private:
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
-	void SaveModules();
 
 	//Config
 	void LoadConfig();
@@ -96,3 +97,5 @@ private:
 };
 
 extern Application * App;
+
+#endif

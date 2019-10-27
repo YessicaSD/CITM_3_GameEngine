@@ -15,12 +15,12 @@ ModuleWindow::~ModuleWindow()
 }
 
 // Called before render is available
-bool ModuleWindow::Init()
+bool ModuleWindow::Init(JSON_Object* config)
 {
 	LOG("Init SDL window & surface");
 	bool ret = true;
 
-	LoadConfigValues(App->config);
+	LoadConfiguration(config);
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -37,16 +37,44 @@ bool ModuleWindow::Init()
 	return ret;
 }
 
-void ModuleWindow::LoadConfigValues(JSON_Object * config)
+bool ModuleWindow::SaveConfiguration(JSON_Object * module_obj)
 {
-	if (config != nullptr)
+	json_object_set_number(module_obj, "brightness", brightness);
+	json_object_set_number(module_obj, "width", GetWindowWidth());
+	json_object_set_number(module_obj, "height", GetWindowHeight());
+	json_object_set_number(module_obj, "fullscreen mode", current_window_mode);
+	json_object_set_boolean(module_obj, "resizable", resizable);
+	json_object_set_boolean(module_obj, "borderless", borderless);
+	json_object_set_boolean(module_obj, "vsync", vsync);
+	return true;
+}
+
+bool ModuleWindow::LoadConfiguration(JSON_Object * module_obj)
+{
+	brightness = json_object_get_number(module_obj, "brightness");
+
+	//INFO: Loading the brightness makes the screen go completely dark, only showing your cursor
+	//SetBrightness(brightness);
+
+	SetWindowSize(
+		json_object_get_number(module_obj, "width"),
+		json_object_get_number(module_obj, "height"));
+
+	current_window_mode = json_object_get_number(module_obj, "fullscreen mode");
+	SetFullscreenMode();
+
+	resizable = json_object_get_boolean(module_obj, "resizable");
+	SDL_SetWindowResizable(App->window->window, App->window->resizable ? SDL_TRUE : SDL_FALSE);
+
+	borderless = json_object_get_boolean(module_obj, "borderless");
+	SDL_SetWindowBordered(App->window->window, App->window->borderless ? SDL_FALSE : SDL_TRUE);
+
+	vsync = json_object_get_boolean(module_obj, "vsync");
+	if (SDL_GL_SetSwapInterval(App->window->vsync ? 1 : 0) == -1)
 	{
-		fullscreen = json_object_get_boolean(config, "fullscreen");
-		resizable = json_object_get_boolean(config, "resizable");
-		borderless = json_object_get_boolean(config, "borderless");
-		fullscreen_desktop = json_object_get_boolean(config, "fullscreen_desktop");
-		vsync = json_object_get_boolean(config, "vsync");
+		LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 	}
+	return true;
 }
 
 // Create window with graphics context
@@ -101,9 +129,13 @@ Uint32 ModuleWindow::GetFlags()
 {
 	Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI;
 
-	if (fullscreen)
+	if (current_window_mode == 1)
 	{
 		flags |= SDL_WINDOW_FULLSCREEN;
+	}
+	else if (current_window_mode == 2)
+	{
+		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	}
 
 	if (resizable)
@@ -116,14 +148,10 @@ Uint32 ModuleWindow::GetFlags()
 		flags |= SDL_WINDOW_BORDERLESS;
 	}
 
-	if (fullscreen_desktop)
-	{
-		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-	}
+
 	return flags;
 }
 
-//Change when we get iPoint / Vector2
 int ModuleWindow::GetWindowWidth()
 {
 	int w, h;
@@ -148,7 +176,7 @@ void ModuleWindow::SetBrightness(float brightness)
 	SDL_SetWindowBrightness(window,brightness);
 }
 
-void ModuleWindow::GetMaxWindowSize(float & width, float & hight)
+void ModuleWindow::GetMaxWindowSize(float & width, float & height)
 {
 	SDL_DisplayMode display_mode;
 	if (SDL_GetDesktopDisplayMode(0, &display_mode) != 0)
@@ -158,7 +186,7 @@ void ModuleWindow::GetMaxWindowSize(float & width, float & hight)
 	else
 	{
 		width = display_mode.w;
-		hight = display_mode.h;
+		height = display_mode.h;
 	}
 }
 
@@ -170,7 +198,11 @@ void ModuleWindow::SetWidth(float & width)
 void ModuleWindow::SetHeight(float & height)
 {
 	SDL_SetWindowSize(window, this->GetWindowWidth(), height);
+}
 
+void ModuleWindow::SetWindowSize(float width, float height)
+{
+	SDL_SetWindowSize(window, width, height);
 }
 
 // Called before quitting
@@ -194,13 +226,21 @@ void ModuleWindow::SetTitle(const char* title)
 	SDL_SetWindowTitle(window, title);
 }
 
-bool ModuleWindow::Save(JSON_Object * config)
-{
-	json_object_set_boolean(config, "fullscreen", fullscreen);
-	json_object_set_boolean(config, "resizable", resizable);
-	json_object_set_boolean(config, "borderless", borderless);
-	json_object_set_boolean(config, "fullscreen_desktop", fullscreen_desktop);
-	json_object_set_boolean(config, "vsync", vsync);
 
-	return true;
+void ModuleWindow::SetFullscreenMode()
+{
+	Uint32 change_mode = 0u;
+	if (current_window_mode == 0)
+	{
+		change_mode = 0;
+	}
+	else if (current_window_mode == 1)
+	{
+		change_mode = SDL_WINDOW_FULLSCREEN;
+	}
+	else if (current_window_mode == 2)
+	{
+		change_mode = SDL_WINDOW_FULLSCREEN_DESKTOP;
+	}
+	SDL_SetWindowFullscreen(App->window->window, change_mode);
 }

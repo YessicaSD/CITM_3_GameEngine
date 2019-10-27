@@ -16,7 +16,7 @@ ModuleScene::~ModuleScene()
 {}
 
 // Load assets
-bool ModuleScene::Start()
+bool ModuleScene::Start(JSON_Object* config)
 {
 	//LOG("Loading Intro assets");
 	bool ret = true;

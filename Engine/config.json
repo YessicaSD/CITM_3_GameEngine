@@ -1,7 +1,36 @@
 {
-    "fullscreen": false,
-    "resizable": true,
-    "borderless": false,
-    "fullscreen_desktop": false,
-    "vsync": false
+    "App": {
+        "Window": {
+            "brightness": 0,
+            "width": 1440,
+            "height": 810,
+            "fullscreen mode": 0,
+            "resizable": true,
+            "borderless": true,
+            "vsync": true
+        },
+        "Random": {},
+        "File System": {},
+        "Hardware": {},
+        "Input": {},
+        "Textures": {},
+        "": {},
+        "Import": {},
+        "Audio": {
+            "general volume": 0.039000000804662704
+        },
+        "Gui": {},
+        "Render": {
+            "background color": [
+                9.9998999303352321e-07,
+                9.9999999747524271e-07,
+                9.9999340363865485e-07
+            ],
+            "depth test": false,
+            "cull faces": true,
+            "lightning": true,
+            "color materials": true,
+            "texture 2d": true
+        }
+    }
 }
