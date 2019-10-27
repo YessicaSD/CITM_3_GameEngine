@@ -48,7 +48,7 @@ update_status ModuleInput::PreUpdate()
 			if (keyboard[i] == KEY_IDLE)
 			{
 				keyboard[i] = KEY_DOWN;
-				AddInputLog((SDL_Scancode)i, KEY_DOWN);
+				AddInputLog((SDL_Scancode)i, "key down");
 				App->gui->ModifyShortcut((SDL_Scancode)i);
 			}
 			else
@@ -61,6 +61,7 @@ update_status ModuleInput::PreUpdate()
 			if (keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
 			{
 				keyboard[i] = KEY_UP;
+				AddInputLog((SDL_Scancode)i, "key up");
 			}
 			else
 			{
@@ -164,9 +165,9 @@ bool ModuleInput::CleanUp()
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }
-void ModuleInput::AddInputLog(SDL_Scancode key, KEY_STATE state)
+void ModuleInput::AddInputLog(SDL_Scancode key, std::string state)
 {
 	std::string scancode_name = SDL_GetScancodeName(key);
-	std::string new_entry = "Key: " + scancode_name + ". \n";
+	std::string new_entry = "Key: " + scancode_name + " State: " + state +  ". \n";
 	input_log_buffer.appendf(new_entry.c_str());
 }

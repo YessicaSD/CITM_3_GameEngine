@@ -48,8 +48,8 @@ public:
 	uint depth_render_buffer = 0u;
 	uint stencil_buffer = 0u;
 
-	float camera_near = 0.125f;
-	float camera_far = 512.f;
+	float camera_near = 1.f;
+	float camera_far = 1000.f;
 	float fov = 60.f;
 	float background_col[3];
 

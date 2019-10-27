@@ -72,5 +72,5 @@ public:
 
 	void DrawConfigurationUi();
 
-	void AddInputLog(SDL_Scancode key, KEY_STATE state);
+	void AddInputLog(SDL_Scancode key, std::string state);
 };
