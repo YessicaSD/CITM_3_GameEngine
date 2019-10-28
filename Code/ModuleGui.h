@@ -31,8 +31,6 @@ class ModuleGui : public Module
 public:
 	MenuCreateShape * create_menu = nullptr;
 	PanelScene * panel_scene = nullptr;
-	GameObject* preview_shape_gameobject = nullptr;
-	FrameBufferObject preview_shapes_fbo;
 
 private:
 	bool showMenuImGui = false;
@@ -58,7 +56,6 @@ public:
 	bool CleanUp() override;
 	bool Log(const char*);
 
-	void AddInputLog(SDL_Scancode key, KEY_STATE state);
 	void ModifyShortcut(SDL_Scancode key);
 
 	template <class PanelClass>

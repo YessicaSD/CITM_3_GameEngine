@@ -5,10 +5,12 @@
 #include <functional>
 #include "Panel.h"
 #include <vector>
+#include "FrameBufferObject.h"
 
 typedef unsigned int uint;
 typedef struct par_shapes_mesh_s par_shapes_mesh;
 class MenuCreateShape;
+class GameObject;
 
 class ShapeValue
 {
@@ -58,7 +60,12 @@ public:
 	void MenuBarTab();
 	//TODO: Load variables with a function from ModuleGui
 
+public:
+	FrameBufferObject preview_shapes_fbo;
+	GameObject* preview_shape_gameobject = nullptr;
+
 private:
+
 	const float button_height = 7.5f;
 	const float button_space = 150.f;
 	ImVec4 button_color;

@@ -6,6 +6,16 @@
 #include "ModuleGui.h"
 #include "PanelScene.h"
 
+FrameBufferObject::FrameBufferObject()
+{
+	panel_size = new ImVec2();
+}
+
+FrameBufferObject::~FrameBufferObject()
+{
+	delete panel_size;
+}
+
 void FrameBufferObject::GenFramebuffer()
 {
 	//https://learnopengl.com/Advanced-OpenGL/Framebuffers

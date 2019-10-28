@@ -8,6 +8,9 @@ struct ImVec2;
 class FrameBufferObject
 {
 public:
+	FrameBufferObject();
+	~FrameBufferObject();
+
 	void GenFramebuffer();
 	void StartRenderingToTexture(ImVec2 size);
 	void EndRenderingToTexture();

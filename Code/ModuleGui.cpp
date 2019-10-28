@@ -82,14 +82,6 @@ bool ModuleGui::Start()
 
 	create_menu = new MenuCreateShape();
 
-	//FBO Test
-	//TODO: Remove
-	preview_shapes_fbo.GenFramebuffer();
-	par_shapes_mesh* mesh = par_shapes_create_cube();
-	AssetMesh* asset_mesh = App->import->LoadParShapeMesh(mesh);
-	par_shapes_free_mesh(mesh);
-	preview_shape_gameobject = App->import->CreateGameObjectWithMesh("Cube Preview Shape", App->scene->root_gameobject->transform, asset_mesh);
-	
 	return true;
 }
 
