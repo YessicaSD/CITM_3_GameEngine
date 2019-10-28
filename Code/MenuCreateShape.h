@@ -62,6 +62,7 @@ public:
 
 public:
 	RenderTexture preview_shapes_fbo;
+	//A dummy gameobject not connected to any parents
 	GameObject* preview_shape_gameobject = nullptr;
 
 private:

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULE_RENDER_3D_H__
+#define __MODULE_RENDER_3D_H__
+
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
@@ -42,3 +44,5 @@ public:
 
 	friend class PanelConfiguration;
 };
+
+#endif

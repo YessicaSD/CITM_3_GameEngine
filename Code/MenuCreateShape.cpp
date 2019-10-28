@@ -170,14 +170,14 @@ PanelCreateShape::PanelCreateShape(std::string name, bool active, std::vector<SD
 
 void PanelCreateShape::Draw()
 {
-	//FBO TEST-----------------
-	//1. StartFBO
+	if (App->gui->create_menu->preview_shape_gameobject == nullptr)
+	{
+		App->gui->create_menu->preview_shape_gameobject = new GameObject("Preview shape", nullptr);
+	}
+
 	App->gui->create_menu->preview_shapes_fbo.StartRender(*App->gui->create_menu->preview_shapes_fbo.panel_size);
-	//2. DrawTo the FBO
-	App->gui->create_menu->preview_shape_gameobject->OnPostUpdate();
-	//3. EndFBO
+	App->scene->GameObjectPostUpdateRecursive(App->gui->create_menu->preview_shape_gameobject->transform);
 	App->gui->create_menu->preview_shapes_fbo.EndRender();
-	//4. Draw Panel with an image of the FBO texture
 
 
 	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
@@ -193,12 +193,24 @@ void PanelCreateShape::Draw()
 	ImGui::Image((ImTextureID)App->gui->create_menu->preview_shapes_fbo.render_texture, ImVec2(App->gui->create_menu->preview_shapes_fbo.panel_size->x, App->gui->create_menu->preview_shapes_fbo.panel_size->y), ImVec2(0, 1), ImVec2(1, 0));
 	//-------------------------
 
+	bool changed_values = false;
 	for (std::vector<ShapeValue>::iterator iter = shape_values.begin();
 		iter != shape_values.end();
 		++iter)
 	{
-		ImGui::InputScalar((*iter).name.c_str(), (*iter).data_type, (*iter).value_ptr);
+		
+		if (ImGui::InputScalar((*iter).name.c_str(), (*iter).data_type, (*iter).value_ptr)
+			&& !changed_values)
+		{
+			changed_values = true;
+		}
 	}
+
+	if (changed_values)
+	{
+		//Generate new preview shape
+	}
+
 	CreateMultiple();
 	if (ImGui::Button("Cancel"))
 	{
