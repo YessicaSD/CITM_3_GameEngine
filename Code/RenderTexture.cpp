@@ -74,14 +74,12 @@ void RenderTexture::GenerateRenderTexture()
 //TODO: If this is updated in ModuleInput->PreUpdate we maybe should change the viewport size
 void RenderTexture::StartRender(ImVec2 size)
 {
+	//TODO: Separate this function betwee what needs to be done when rescaled and what not
 	PrepareCamera(size);
+
+	//TODO: Only if the image is rescaled
 	PrepareDepthBuffer(size);
 	PrepareTextureBuffer(size);
-
-	//Set camera
-	glLoadIdentity();
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->GetViewMatrix());
 
 	//Set fame buffer object
 	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
@@ -96,14 +94,12 @@ void RenderTexture::StartRender(ImVec2 size)
 void RenderTexture::PrepareCamera(ImVec2& size)
 {
 	glViewport(0, 0, size.x, size.y);
-
 	glMatrixMode(GL_PROJECTION);
 	App->renderer3D->projection_matrix = perspective(60.0f, size.x / size.y, App->renderer3D->camera_near, App->renderer3D->camera_far);
 	glLoadMatrixf(&App->renderer3D->projection_matrix);
-
-	//Reset camera
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	glLoadMatrixf(App->camera->GetViewMatrix());
 }
 
 void RenderTexture::PrepareDepthBuffer(ImVec2& size)
@@ -130,7 +126,6 @@ void RenderTexture::EndRender()
 	//Stencil
 	glStencilFunc(GL_ALWAYS, 1, 0);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-
 	
 	//TODO: Reset to default clear color
 	//glClearColor(clear_color[0], clear_color[1], clear_color[2], clear_color[3]);
