@@ -1,4 +1,4 @@
-﻿#include"FrameBufferObject.h"
+﻿#include"RenderTexture.h"
 #include "glew/include/GL/glew.h"
 #include "Globals.h"
 #include "imgui/imgui.h"
@@ -6,17 +6,17 @@
 #include "ModuleGui.h"
 #include "PanelScene.h"
 
-FrameBufferObject::FrameBufferObject()
+RenderTexture::RenderTexture()
 {
 	panel_size = new ImVec2();
 }
 
-FrameBufferObject::~FrameBufferObject()
+RenderTexture::~RenderTexture()
 {
 	delete panel_size;
 }
 
-void FrameBufferObject::GenFramebuffer()
+void RenderTexture::GenFramebuffer()
 {
 	//https://learnopengl.com/Advanced-OpenGL/Framebuffers
 	//Generate frame buffer
@@ -56,7 +56,7 @@ void FrameBufferObject::GenFramebuffer()
 
 
 //TODO: If this is updated in ModuleInput->PreUpdate we maybe should change the viewport size after◘
-void FrameBufferObject::StartRenderingToTexture(ImVec2 size)
+void RenderTexture::StartRenderingToTexture(ImVec2 size)
 {
 	PrepareCamera(size);
 	PrepareDepthBuffer(size);
@@ -78,7 +78,7 @@ void FrameBufferObject::StartRenderingToTexture(ImVec2 size)
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 }
 
-void FrameBufferObject::PrepareCamera(ImVec2& size)
+void RenderTexture::PrepareCamera(ImVec2& size)
 {
 	glViewport(0, 0, size.x, size.y);
 
@@ -91,7 +91,7 @@ void FrameBufferObject::PrepareCamera(ImVec2& size)
 	glLoadIdentity();
 }
 
-void FrameBufferObject::PrepareDepthBuffer(ImVec2& size)
+void RenderTexture::PrepareDepthBuffer(ImVec2& size)
 {
 	glBindRenderbuffer(GL_RENDERBUFFER, depth_render_buffer);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.x, size.y);
@@ -100,7 +100,7 @@ void FrameBufferObject::PrepareDepthBuffer(ImVec2& size)
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
-void FrameBufferObject::PrepareTextureBuffer(ImVec2& size)
+void RenderTexture::PrepareTextureBuffer(ImVec2& size)
 {
 	glBindTexture(GL_TEXTURE_2D, render_texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
@@ -110,7 +110,7 @@ void FrameBufferObject::PrepareTextureBuffer(ImVec2& size)
 }
 
 
-void FrameBufferObject::EndRenderingToTexture()
+void RenderTexture::EndRenderingToTexture()
 {
 	//Stencil
 	glStencilFunc(GL_ALWAYS, 1, 0);

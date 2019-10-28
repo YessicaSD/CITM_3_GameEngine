@@ -1,15 +1,15 @@
-#ifndef __FRAME_BUFFER_OBJECT_H__
-#define __FRAME_BUFFER_OBJECT_H__
+#ifndef __RENDER_TEXTURE_H__
+#define __RENDER_TEXTURE_H__
 
 typedef unsigned int uint;
 struct ImVec2;
 
-//Used for rendering to a texture
-class FrameBufferObject
+//A classe which uses frame buffer objects for rendering to a texture
+class RenderTexture
 {
 public:
-	FrameBufferObject();
-	~FrameBufferObject();
+	RenderTexture();
+	~RenderTexture();
 
 	void GenFramebuffer();
 	void StartRenderingToTexture(ImVec2 size);

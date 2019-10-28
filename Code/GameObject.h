@@ -29,7 +29,7 @@ public:
 	}
 
 	template< class ComponentClass >
-	ComponentClass*        GetComponent()
+	ComponentClass* GetComponent()
 	{
 		for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
 		{

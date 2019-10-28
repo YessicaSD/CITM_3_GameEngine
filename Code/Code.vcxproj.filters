@@ -571,7 +571,7 @@
     <ClInclude Include="PanelScene.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="FrameBufferObject.h">
+    <ClInclude Include="RenderTexture.h">
       <Filter>Sources</Filter>
     </ClInclude>
   </ItemGroup>
@@ -819,10 +819,10 @@
     <ClCompile Include="PanelScene.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="FrameBufferObject.cpp">
+    <ClCompile Include="MenuCreateShape.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="MenuCreateShape.cpp">
+    <ClCompile Include="RenderTexture.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>

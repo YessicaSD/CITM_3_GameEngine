@@ -5,7 +5,7 @@
 #include <functional>
 #include "Panel.h"
 #include <vector>
-#include "FrameBufferObject.h"
+#include "RenderTexture.h"
 
 typedef unsigned int uint;
 typedef struct par_shapes_mesh_s par_shapes_mesh;
@@ -61,7 +61,7 @@ public:
 	//TODO: Load variables with a function from ModuleGui
 
 public:
-	FrameBufferObject preview_shapes_fbo;
+	RenderTexture preview_shapes_fbo;
 	GameObject* preview_shape_gameobject = nullptr;
 
 private:

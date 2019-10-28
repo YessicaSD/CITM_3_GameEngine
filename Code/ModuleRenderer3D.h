@@ -3,7 +3,7 @@
 #include "Globals.h"
 #include "glmath.h"
 #include "Light.h"
-#include "FrameBufferObject.h"
+#include "RenderTexture.h"
 
 #define MAX_LIGHTS 8
 
@@ -34,7 +34,7 @@ public:
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, projection_matrix;
 
-	FrameBufferObject scene_fbo;
+	RenderTexture scene_fbo;
 
 	float camera_near = 0.125f;
 	float camera_far = 512.f;
