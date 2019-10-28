@@ -110,7 +110,7 @@ MenuCreateShape::MenuCreateShape()
 
 	//FBO Test
 	//TODO: Remove
-	preview_shapes_fbo.GenFramebuffer();
+	preview_shapes_fbo.GenerateFrameBuffer();
 	par_shapes_mesh* mesh = par_shapes_create_cube();
 	AssetMesh* asset_mesh = App->import->LoadParShapeMesh(mesh);
 	par_shapes_free_mesh(mesh);
@@ -172,11 +172,11 @@ void PanelCreateShape::Draw()
 {
 	//FBO TEST-----------------
 	//1. StartFBO
-	App->gui->create_menu->preview_shapes_fbo.StartRenderingToTexture(*App->gui->create_menu->preview_shapes_fbo.panel_size);
+	App->gui->create_menu->preview_shapes_fbo.StartRender(*App->gui->create_menu->preview_shapes_fbo.panel_size);
 	//2. DrawTo the FBO
 	App->gui->create_menu->preview_shape_gameobject->OnPostUpdate();
 	//3. EndFBO
-	App->gui->create_menu->preview_shapes_fbo.EndRenderingToTexture();
+	App->gui->create_menu->preview_shapes_fbo.EndRender();
 	//4. Draw Panel with an image of the FBO texture
 
 

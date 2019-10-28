@@ -4,18 +4,25 @@
 typedef unsigned int uint;
 struct ImVec2;
 
-//A classe which uses frame buffer objects for rendering to a texture
+//A class which uses a frame buffer object to render to a texture
+//https://learnopengl.com/Advanced-OpenGL/Framebuffers
 class RenderTexture
 {
 public:
 	RenderTexture();
 	~RenderTexture();
 
-	void GenFramebuffer();
-	void StartRenderingToTexture(ImVec2 size);
-	void EndRenderingToTexture();
+	void GenerateFrameBuffer();
+
+	void StartRender(ImVec2 size);
+	void EndRender();
+	//TODO: Delete buffers
 
 private:
+	//GenerateFrameBuffer
+	void GenerateDepthBuffer();
+	void GenerateRenderTexture();
+	//StartRender
 	void PrepareCamera(ImVec2& size);
 	void PrepareDepthBuffer(ImVec2& size);
 	void PrepareTextureBuffer(ImVec2& size);
@@ -27,6 +34,7 @@ public:
 	uint stencil_buffer = 0u;
 
 	ImVec2* panel_size = nullptr;
+	float clear_color[4];
 };
 
 #endif

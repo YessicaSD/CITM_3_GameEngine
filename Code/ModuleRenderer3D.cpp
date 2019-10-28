@@ -120,7 +120,7 @@ bool ModuleRenderer3D::Init()
 	color_material = glIsEnabled(GL_COLOR_MATERIAL) == GL_TRUE;
 	texture_2d = glIsEnabled(GL_TEXTURE_2D) == GL_TRUE;
 
-	scene_fbo.GenFramebuffer();
+	scene_fbo.GenerateFrameBuffer();
 
 	return ret;
 }
