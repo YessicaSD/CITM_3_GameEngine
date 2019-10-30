@@ -56,7 +56,13 @@ void ComponentTransform::PropertiesEditor()
 
 void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, float3 & rotation)
 {
-	this->position = position; this->rotation = rotation;   this->scale = scale;
+	this->position = position; 
+	this->rotation = rotation; 
+	this->scale = scale;
+
+	aux_position = position;
+	aux_rotation = rotation;
+	aux_scale = scale;
 
 	qrotation = Quat::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
 
