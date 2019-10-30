@@ -99,8 +99,6 @@ AssetMesh* ModuleImport::LoadParShapeMesh(par_shapes_mesh * mesh)
 	asset_mesh->GenerateVerticesBuffer();
 	asset_mesh->GenerateFacesAndNormalsBuffer();
 	//asset_mesh->GenerateUVBuffer();
-
-	App->import->meshes.push_back(asset_mesh);
 	return asset_mesh;
 }
 
@@ -193,4 +191,10 @@ GameObject* ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTr
 	ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 	component_mesh->mesh = asset_mesh;
 	return new_gameobject;
+}
+
+bool ModuleImport::AddMesh(AssetMesh * mesh)
+{
+	meshes.push_back(mesh);
+	return true;
 }

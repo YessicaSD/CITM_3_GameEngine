@@ -11,6 +11,7 @@ typedef unsigned int uint;
 typedef struct par_shapes_mesh_s par_shapes_mesh;
 class MenuCreateShape;
 class GameObject;
+class AssetMesh;
 
 class ShapeValue
 {
@@ -64,6 +65,7 @@ public:
 	RenderTexture preview_shapes_fbo;
 	//A dummy gameobject not connected to any parents
 	GameObject* preview_shape_gameobject = nullptr;
+	AssetMesh* preview_shape_mesh = nullptr;
 
 private:
 
