@@ -32,7 +32,11 @@ void AssimpWrite(const char * text, char * data)
 	tmp_txt.erase(index, tmp_txt.end());
 	LOG(tmp_txt.c_str());
 }
-bool ModuleImport::Start()
+
+ModuleImport::ModuleImport(const char * name) : Module(true, name)
+{}
+
+bool ModuleImport::Start(JSON_Object* config)
 {
 	LOG("Creating assimp LOG stream");
 	aiLogStream stream;
@@ -75,11 +79,13 @@ AssetMesh * ModuleImport::LoadAssimpMesh(aiMesh * assimp_mesh, const aiScene* sc
 	//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
 	asset_mesh->LoadTexture(assimp_mesh, scene_fbx, textures);
 	asset_mesh->LoadVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
+	asset_mesh->CreateBoundingBox();
 	asset_mesh->LoadVerticesNormals(assimp_mesh);
 	asset_mesh->LoadFaces(assimp_mesh);
 	asset_mesh->CalculateFaceNormals();
 	asset_mesh->LoadUVs(assimp_mesh);
 
+	asset_mesh->GenerateVertexNormalsBuffer();
 	asset_mesh->GenerateVerticesBuffer();
 	asset_mesh->GenerateFacesAndNormalsBuffer();
 	asset_mesh->GenerateUVsBuffer();
@@ -91,14 +97,17 @@ AssetMesh* ModuleImport::LoadParShapeMesh(par_shapes_mesh * mesh)
 	AssetMesh * asset_mesh = new AssetMesh();
 
 	asset_mesh->LoadVertices(mesh->npoints, mesh->points);
+	asset_mesh->CreateBoundingBox();
+	
 	//TODO: Get vertices normals
 	asset_mesh->LoadFaces(mesh->ntriangles, mesh->triangles);
 	asset_mesh->CalculateFaceNormals();
-	//asset_mesh->LoadUV();
+	asset_mesh->LoadUVs(mesh->tcoords);
 
 	asset_mesh->GenerateVerticesBuffer();
 	asset_mesh->GenerateFacesAndNormalsBuffer();
-	//asset_mesh->GenerateUVBuffer();
+	asset_mesh->GenerateUVsBuffer();
+	
 	return asset_mesh;
 }
 
@@ -106,14 +115,18 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 {
 	GameObject * new_gameobject = new GameObject(std::string(node->mName.C_Str()), parent);
 	
-
+	aiVector3D translation, scaling;
+	aiQuaternion rotation;
+	node->mTransformation.Decompose(scaling, rotation, translation);
+	new_gameobject->transform->CalculGlobalMatrix(float3(translation.x, translation.y, translation.z), float3(scaling.x, scaling.y, scaling.z), Quat(rotation.x, rotation.y, rotation.z, rotation.w));
+	new_gameobject->transform->CalculGlobalMatrix(float3(0, 0, 0), float3(1, 1, 1), float3(0, 0, 0));
 	//TODO: Search if there is a better way to convert from aiMatrix4x4 to math::float4x4 (both are arrays with 16 positions at the end)
 	//V1
-	new_gameobject->transform->local_matrix.Set(
+	/*new_gameobject->transform->local_matrix.Set(
 		node->mTransformation.a1, node->mTransformation.b1, node->mTransformation.c1, node->mTransformation.d1,
 		node->mTransformation.a2, node->mTransformation.b2, node->mTransformation.c2, node->mTransformation.d2,
 		node->mTransformation.a3, node->mTransformation.b3, node->mTransformation.c3, node->mTransformation.d3,
-		node->mTransformation.a4, node->mTransformation.b4, node->mTransformation.c4, node->mTransformation.d4);
+		node->mTransformation.a4, node->mTransformation.b4, node->mTransformation.c4, node->mTransformation.d4);*/
 	//memcpy(&new_gameobject->transform.local_matrix, &node->mTransformation, sizeof(float) * 16);
 	//V2
 	//new_gameobject->transform.local_matrix.Set(
@@ -124,8 +137,7 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 
 	//TODO: Calculate global matrix after that, don't set it directly to the local matrix of the fbx node
 	//V1
-	new_gameobject->transform->global_matrix = new_gameobject->transform->local_matrix * parent->global_matrix;
-	new_gameobject->transform->UpdatePos();
+	//new_gameobject->transform->UpdatePos();
 
 	//V2
 	//new_gameobject->transform.global_matrix = parent->global_matrix * new_gameobject->transform.local_matrix;
@@ -142,7 +154,8 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 			{
 				component_mesh->material->SetTexture(textures[index]);
 			}
-			//component_mesh.
+			component_mesh->CalculBoindingBox();
+			
 		}
 	}
 
@@ -190,6 +203,8 @@ GameObject* ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTr
 	GameObject * new_gameobject = new GameObject(name, parent);
 	ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 	component_mesh->mesh = asset_mesh;
+	new_gameobject->transform->CalculPRSWithMatrix();
+	component_mesh->CalculBoindingBox();
 	return new_gameobject;
 }
 

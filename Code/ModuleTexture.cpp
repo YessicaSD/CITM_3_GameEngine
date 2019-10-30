@@ -16,7 +16,10 @@
 #define checkImageHeight 512
 static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
 
-bool ModuleTexture::Init()
+ModuleTexture::ModuleTexture(const char * name) : Module(true, name)
+{}
+
+bool ModuleTexture::Init(JSON_Object* config)
 {
 	//Initialize DevIL libraries
 	LOG("Initializing DevIl libraries");

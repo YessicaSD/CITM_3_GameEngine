@@ -2,11 +2,11 @@
 #include "Module.h"
 #include "Application.h"
 
-ModuleRandom::ModuleRandom(bool start_enabled) : Module(start_enabled)
+ModuleRandom::ModuleRandom(const char * name, bool start_enabled) : Module(start_enabled, name)
 {
 }
 
-bool ModuleRandom::Init()
+bool ModuleRandom::Init(JSON_Object* config)
 {
 	LOG("Initializing random seed source from Module Random");
 	// Seed with a real random value, if available

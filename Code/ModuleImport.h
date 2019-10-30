@@ -17,9 +17,9 @@ typedef struct par_shapes_mesh_s par_shapes_mesh;
 //Module responsible for importing assets into the engine
 class ModuleImport : public Module
 {
-
 public:
-	bool Start() override;
+	ModuleImport(const char * name);
+	bool Start(JSON_Object* config) override;
 	bool LoadMesh(const char* path);
 	bool CleanUp() override;
 

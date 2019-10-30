@@ -1,7 +1,44 @@
 {
-    "fullscreen": false,
-    "resizable": true,
-    "borderless": false,
-    "fullscreen_desktop": false,
-    "vsync": false
+    "App": {
+        "application name": "",
+        "organization name": "",
+        "cap fps": false,
+        "max fps": 0,
+        "Window": {
+            "brightness": 100,
+            "width": 1440,
+            "height": 810,
+            "fullscreen mode": 0,
+            "resizable": false,
+            "borderless": false,
+            "vsync": false
+        },
+        "Random": {},
+        "File System": {},
+        "Hardware": {},
+        "Input": {},
+        "Textures": {},
+        "": {},
+        "Import": {},
+        "Camera 3D": {
+            "move speed": 100,
+            "rotate speed": 50
+        },
+        "Audio": {
+            "general volume": 0.077357076108455658
+        },
+        "Gui": {},
+        "Render": {
+            "background color": [
+                0.11676472425460815,
+                0.13905617594718933,
+                0.17085427045822144
+            ],
+            "depth test": true,
+            "cull faces": true,
+            "lightning": true,
+            "color materials": true,
+            "texture 2d": true
+        }
+    }
 }

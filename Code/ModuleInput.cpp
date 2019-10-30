@@ -1,9 +1,12 @@
 #include "Globals.h"
 #include "Application.h"
+#include "ModuleGui.h"
+#include "ModuleRenderer3D.h"
 #include "ModuleInput.h"
 #include "imgui\imgui_impl_sdl.h"
 #include "ModuleImport.h"
 #include "Event.h"
+
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput(const char* name, bool start_enabled) : Module(start_enabled, name)
@@ -19,7 +22,7 @@ ModuleInput::~ModuleInput()
 }
 
 // Called before render is available
-bool ModuleInput::Init()
+bool ModuleInput::Init(JSON_Object* config)
 {
 	LOG("Init SDL input event system");
 	bool ret = true;
@@ -48,7 +51,7 @@ update_status ModuleInput::PreUpdate()
 			if (keyboard[i] == KEY_IDLE)
 			{
 				keyboard[i] = KEY_DOWN;
-				AddInputLog((SDL_Scancode)i, KEY_DOWN);
+				AddInputLog((SDL_Scancode)i, "key down");
 				App->gui->ModifyShortcut((SDL_Scancode)i);
 			}
 			else
@@ -61,6 +64,7 @@ update_status ModuleInput::PreUpdate()
 			if (keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
 			{
 				keyboard[i] = KEY_UP;
+				AddInputLog((SDL_Scancode)i, "key up");
 			}
 			else
 			{
@@ -128,8 +132,10 @@ update_status ModuleInput::PreUpdate()
 
 			case SDL_WINDOWEVENT:
 			{
-				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
+				if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+				{
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
+				}
 			}
 			break;
 
@@ -164,9 +170,9 @@ bool ModuleInput::CleanUp()
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }
-void ModuleInput::AddInputLog(SDL_Scancode key, KEY_STATE state)
+void ModuleInput::AddInputLog(SDL_Scancode key, std::string state)
 {
 	std::string scancode_name = SDL_GetScancodeName(key);
-	std::string new_entry = "Key: " + scancode_name + ". \n";
+	std::string new_entry = "Key: " + scancode_name + " State: " + state +  ". \n";
 	input_log_buffer.appendf(new_entry.c_str());
 }

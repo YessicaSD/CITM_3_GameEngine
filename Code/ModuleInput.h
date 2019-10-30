@@ -31,7 +31,7 @@ public:
 	ModuleInput(const char* name, bool start_enabled = true);
 	~ModuleInput();
 
-	bool Init() override;
+	bool Init(JSON_Object* config) override;
 	update_status PreUpdate() override;
 	bool CleanUp();
 
@@ -72,5 +72,5 @@ public:
 
 	void DrawConfigurationUi();
 
-	void AddInputLog(SDL_Scancode key, KEY_STATE state);
+	void AddInputLog(SDL_Scancode key, std::string state);
 };

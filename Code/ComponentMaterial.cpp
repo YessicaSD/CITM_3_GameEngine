@@ -4,6 +4,7 @@
 #include <gl\GL.h>
 
 #include "imgui/imgui.h"
+#include "Globals.h"
 
 CLASS_DEFINITION(Component, ComponentMaterial)
 
@@ -16,13 +17,20 @@ ComponentMaterial::ComponentMaterial(GameObject * gameobject, ComponentMesh* mes
 
 void ComponentMaterial::SetTexture(Texture * texture)
 {
+	bool set = false;
 	if (component_mesh->mesh && component_mesh->mesh->UVCoord)
 	{
 		if (texture)
 		{
 			this->texture = texture;
+			set = true;
 		}
 	}
+	if (!set)
+	{
+		LOG("Can't set the texture to this object");
+	}
+	
 }
 
 void ComponentMaterial::DisableGLModes()
@@ -40,8 +48,9 @@ void ComponentMaterial::RenderTexture()
 {
 	if (texture)
 	{
+		
 		glEnable(GL_TEXTURE_2D);
-		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+		//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
 		AssetMesh * mesh = component_mesh->mesh;
 		glBindTexture(GL_TEXTURE_2D, texture->buffer_id);
@@ -56,16 +65,17 @@ void ComponentMaterial::PropertiesEditor()
 	ImGuiStyle& style = ImGui::GetStyle();
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
-		if (texture)
+		if (this->texture)
 		{
 			
-			ImGui::Image((void*)(intptr_t)texture->buffer_id, ImVec2(100, 100));
+			ImGui::Image((void*)(intptr_t)this->texture->buffer_id, ImVec2(100, 100));
 			
 			float child_height = ImGui::GetTextLineHeight() + style.ScrollbarSize + style.WindowPadding.y * 2.0f;
 			int i = 0;
 			ImGuiWindowFlags child_flags = ImGuiWindowFlags_HorizontalScrollbar;
 			ImGui::BeginChild(ImGui::GetID((void*)(intptr_t)i), ImVec2(-100, child_height), true, child_flags);
-			ImGui::Text("Path: %s", texture->path);
+		
+			ImGui::Text("Path: %s", texture->path.c_str());
 			ImGui::EndChild();
 			
 		}

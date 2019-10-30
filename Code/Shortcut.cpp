@@ -1,6 +1,7 @@
 #include "Shortcut.h"
 #include "ModuleInput.h"
 #include "Application.h"
+#include "ModuleGui.h"
 
 Shortcut::Shortcut()
 {

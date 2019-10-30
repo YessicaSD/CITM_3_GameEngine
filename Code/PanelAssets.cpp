@@ -4,7 +4,10 @@
 #include "ModuleTexture.h"
 #include "Texture.h"
 #include "ModuleGui.h"
+#include "GameObject.h"
+#include "ComponentTransform.h"
 #include "ComponentMaterial.h"
+
 PanelAssets::PanelAssets(std::string name, bool state, std::vector<SDL_Scancode> shortcuts):Panel(name, state, shortcuts)
 {
 }

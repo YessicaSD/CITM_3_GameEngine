@@ -16,7 +16,7 @@ public:
 	ModuleScene(bool start_enabled = true);
 	~ModuleScene();
 
-	bool Start();
+	bool Start(JSON_Object* config);
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;
 	//void DrawFaceNormals();

@@ -1,13 +1,23 @@
 #include "Application.h"
+
 #include <Windows.h>
 #include "parson/parson.h"
+#include "Event.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_stdlib.h"
+
 #include "ModuleImport.h"
 #include "ModuleTexture.h"
 #include "ModuleFileSystem.h"
 #include "ModuleAudio.h"
 #include "ModuleHardware.h"
-#include "imgui/imgui.h"
-#include "Event.h"
+#include "ModuleWindow.h"
+#include "ModuleRandom.h"
+#include "ModuleInput.h"
+#include "ModuleCamera3D.h"
+#include "ModuleGui.h"
+#include "ModuleRenderer3D.h"
+
 Application::Application()
 {
 	// The order of calls is very important!
@@ -16,27 +26,30 @@ Application::Application()
 
 	// Main Modules
 	AddModule(window = new ModuleWindow("Window"));
-	AddModule(random = new ModuleRandom());
-	AddModule(file_system = new ModuleFileSystem());
+	AddModule(random = new ModuleRandom("Random"));
+	AddModule(file_system = new ModuleFileSystem("File System"));
 	AddModule(hardware = new ModuleHardware("Hardware"));
 	AddModule(input = new ModuleInput("Input"));
-	AddModule(texture = new ModuleTexture());
-	AddModule(scene = new ModuleScene());
-	AddModule(import = new ModuleImport());
-	AddModule(camera = new ModuleCamera3D());
+	AddModule(texture = new ModuleTexture("Textures"));
+	AddModule(scene = new ModuleScene("Scene"));
+	AddModule(import = new ModuleImport("Import"));
+	AddModule(camera = new ModuleCamera3D("Camera 3D"));
 	AddModule(audio = new ModuleAudio("Audio"));
-	AddModule(gui = new ModuleGui());
+	AddModule(gui = new ModuleGui("Gui"));
 
 	// Renderer last!
 	AddModule(renderer3D = new ModuleRenderer3D("Render"));
-	
+
+	memset(fps_history, 0, sizeof(float) * FPS_GRAPH_SAMPLES);
+	memset(ms_history, 0, sizeof(float) * FPS_GRAPH_SAMPLES);
+	memset(ram_history, 0, sizeof(float) * FPS_GRAPH_SAMPLES);
 }
 
 Application::~Application()
 {
-	std::vector<Module*>::reverse_iterator item = list_modules.rbegin();
+	std::vector<Module*>::reverse_iterator item = modules.rbegin();
 
-	while(item != list_modules.rend())
+	while (item != modules.rend())
 	{
 		delete (*item);
 		item = ++item;
@@ -49,46 +62,73 @@ bool Application::Init()
 
 	config_path = "config.json";
 
+	//Automatically load the config file if it exists
 	LoadConfig();
 
-	// Call Init() in all modules
-	std::vector<Module*>::iterator item = list_modules.begin();
+	JSON_Object * app_obj = json_object_get_object(config_root, "App");
 
-	while(item != list_modules.end() && ret == true)
+	//TODO: Load app values
+	//cap frames
+	//max fps
+
+	// Call Init() in all modules
+	std::vector<Module*>::iterator item = modules.begin();
+
+	while (item != modules.end() && ret == true)
 	{
 		if ((*item)->IsActive())
-		ret = (*item)->Init();
+			ret = (*item)->Init(app_obj);
 		++item;
 	}
 
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");
-	item = list_modules.begin();
+	item = modules.begin();
 
-	while(item != list_modules.end() && ret == true )
+	while (item != modules.end() && ret == true)
 	{
 		if ((*item)->IsActive())
-		ret = (*item)->Start();
+		{
+			ret = (*item)->Start(app_obj);
+		}
 		++item;
 	}
-	
+
+	LoadAppConfiguration(app_obj);
+	item = modules.begin();
+	while (item != modules.end() && ret == true)
+	{
+		JSON_Object * module_obj = json_object_get_object(app_obj, (*item)->name);
+		if (app_obj != nullptr)
+		{
+			ret = (*item)->LoadConfiguration(module_obj);
+		}
+		++item;
+	}
+
 	CloseConfig();
 
-	ms_timer.Start();
+	//Framerate calculations
+	cap_time = 1000 / max_fps;
+	curr_frame_time.Start();
+
 	return ret;
 }
 
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
-	dt = (float)ms_timer.Read() / 1000.0f;
-	ms_timer.Start();
+	//Calculate dt
+	dt = (float)curr_frame_time.ReadMs() / 1000.0f;
+	curr_frame_time.Start();
 
 	if (log_strings.size() > 0)
 	{
 		if (gui)
 		{
-			for (auto iter = log_strings.begin(); iter != log_strings.end(); ++iter)
+			for (std::list<std::string>::iterator iter = log_strings.begin();
+				iter != log_strings.end();
+				++iter)
 			{
 				if (!gui->Log((*iter).c_str()))
 				{
@@ -97,25 +137,35 @@ void Application::PrepareUpdate()
 			}
 			log_strings.clear();
 		}
-		
-		
 	}
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
-	if (saveRequest)
-	{
-		SaveModules();
-		saveRequest = false;
-	}
-
+	//Framerate calculations
 	frame_count++;
-
+	last_second_fps++;
+	if (last_second_timer.Read() > 1000)
+	{
+		UpdateFPSGraph(last_second_fps);
+		last_second_fps = 0;
+		last_second_timer.Start();
+	}
 	seconds_since_startup = startup_time.ReadSec();
 	avg_fps = float(frame_count) / seconds_since_startup;
+	curr_frame_ms = curr_frame_time.ReadMs();
+	UpateMsGraph(curr_frame_ms);
 
+	//Cap fps
+	if (cap_fps)
+	{
+		uint32 delay = MAX(0, (int)cap_time - (int)curr_frame_ms);
+		if (delay > 0)
+		{
+			SDL_Delay(delay);
+		}
+	}
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -124,27 +174,27 @@ update_status Application::Update()
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 
-	std::vector<Module*>::iterator item = list_modules.begin();
+	std::vector<Module*>::iterator item = modules.begin();
 
-	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
+	while (item != modules.end() && ret == UPDATE_CONTINUE)
 	{
-		if((*item)->IsActive())
+		if ((*item)->IsActive())
 			ret = (*item)->PreUpdate();
 		item = ++item;
 	}
 
-	item = list_modules.begin();
+	item = modules.begin();
 
-	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
+	while (item != modules.end() && ret == UPDATE_CONTINUE)
 	{
 		if ((*item)->IsActive())
-		ret = (*item)->Update(dt);
+			ret = (*item)->Update(dt);
 		item = ++item;
 	}
 
-	item = list_modules.begin();
+	item = modules.begin();
 
-	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
+	while (item != modules.end() && ret == UPDATE_CONTINUE)
 	{
 		if ((*item)->IsActive())
 			ret = (*item)->PostUpdate();
@@ -155,14 +205,176 @@ update_status Application::Update()
 	return ret;
 }
 
+bool Application::DrawAppConfigUI()
+{
+	//Project name
+	if (ImGui::InputText("Application Name:", &application_name))
+	{
+		App->window->SetTitle(App->application_name.c_str());
+	}
+	ImGui::InputText("Organization:", &organization_name);
+
+	//FPS
+	ImGui::Checkbox("Cap FPS", &cap_fps);
+	if (cap_fps)
+	{
+		if (ImGui::SliderFloat("Max FPS", &max_fps, 0.0f, 60.0f, "%.0f"))
+		{
+			cap_time = 1000 / max_fps;
+		}
+	}
+
+	ImVec2 size = { 310,100 };
+	char titleGraph[GRAPH_TITLE_SIZE];
+	DrawFPSGraph(titleGraph, size);
+	DrawMsGraph(titleGraph, size);
+
+	return true;
+}
+
+void Application::UpdateFPSGraph(uint32 last_second_fps)
+{
+	fps_history[fps_graph_index] = last_second_fps;
+
+	++fps_graph_index;
+	if (fps_graph_index == FPS_GRAPH_SAMPLES)
+	{
+		fps_graph_index = 0;
+	}
+}
+
+void Application::DrawFPSGraph(char * titleGraph, const ImVec2 &size)
+{
+	uint32 last_index = fps_graph_index - 1;
+	if (last_index == -1)
+	{
+		last_index = FPS_GRAPH_SAMPLES - 1;
+	}
+
+	sprintf_s(titleGraph, GRAPH_TITLE_SIZE, "Framerate: %.2f", fps_history[last_index]);
+	ImGui::PlotHistogram("##ASDFASF", fps_history, IM_ARRAYSIZE(fps_history), fps_graph_index, titleGraph, 0.0f, 100.0f, size);
+}
+
+void Application::UpateMsGraph(uint32 curr_frame_ms)
+{
+	ms_history[ms_graph_index] = curr_frame_ms;
+
+	++ms_graph_index;
+	if (ms_graph_index == FPS_GRAPH_SAMPLES)
+	{
+		ms_graph_index = 0;
+	}
+}
+
+void Application::DrawMsGraph(char * titleGraph, const ImVec2 &size)
+{
+	uint32 last_index = ms_graph_index - 1;
+	if (last_index == -1)
+	{
+		last_index = FPS_GRAPH_SAMPLES - 1;
+	}
+
+	sprintf_s(titleGraph, GRAPH_TITLE_SIZE, "Milliseconds: %i", ms_history[last_index]);
+	ImGui::PlotHistogram("##ASDFASF", ms_history, IM_ARRAYSIZE(ms_history), ms_graph_index, titleGraph, 0.0f, 15.0f, size);
+}
+
+bool Application::SaveModulesConfiguration()
+{
+	bool ret = true;
+
+	//When saving we override the previous file
+	CreateNewConfig(config_path);
+
+	json_object_set_value(config_root, "App", json_value_init_object());
+	JSON_Object * app_obj = json_object_get_object(config_root, "App");
+
+	SaveAppConfiguration(app_obj);
+
+	for (std::vector<Module*>::iterator item = modules.begin();
+		item != modules.end() && ret;
+		item = ++item)
+	{
+		json_object_set_value(app_obj, (*item)->name, json_value_init_object());
+		JSON_Object * module_obj = json_object_get_object(app_obj, (*item)->name);
+		ret = (*item)->SaveConfiguration(module_obj);
+	}
+
+	json_serialize_to_file_pretty(configValue, config_path.data());
+	
+	CloseConfig();
+
+	if (ret)
+	{
+		LOG("Saved configuration successfully.");
+	}
+
+	return ret;
+}
+
+bool Application::LoadAppConfiguration(JSON_Object * app_obj)
+{
+	if (app_obj != nullptr)
+	{
+		application_name = json_object_get_string(app_obj, "application name");
+		organization_name = json_object_get_string(app_obj, "organization name");
+		cap_fps = json_object_get_boolean(app_obj, "cap fps");
+		max_fps = json_object_get_number(app_obj, "max fps");
+	}
+	return true;
+}
+
+bool Application::SaveAppConfiguration(JSON_Object * app_obj)
+{
+	if (app_obj != nullptr)
+	{
+		json_object_set_string(app_obj, "application name", application_name.c_str());
+		json_object_set_string(app_obj, "organization name", organization_name.c_str());
+		json_object_set_boolean(app_obj, "cap fps", cap_fps);
+		json_object_set_number(app_obj, "max fps", max_fps);
+	}
+	return true;
+}
+
+bool Application::LoadModulesConfiguration()
+{
+	bool ret = true;
+
+	LoadConfig();
+	JSON_Object * app_obj = json_object_get_object(config_root, "App");
+
+	LoadAppConfiguration(app_obj);
+
+	if(app_obj != nullptr)
+	{
+		for (std::vector<Module*>::iterator item = modules.begin();
+			item != modules.end() && ret == true;
+			++item)
+		{
+			JSON_Object * module_obj = json_object_get_object(app_obj, (*item)->name);
+			if (module_obj != nullptr)
+			{
+				ret = (*item)->LoadConfiguration(module_obj);
+			}
+		}
+	}
+	CloseConfig();
+
+	if (ret)
+	{
+		LOG("Load configuration successfully.");
+	}
+
+	return ret;
+}
+
 bool Application::CleanUp()
 {
 	bool ret = true;
-	std::vector<Module*>::reverse_iterator item = list_modules.rbegin();
 
-	while (item != list_modules.rend() && ret == true)
+	std::vector<Module*>::reverse_iterator item = modules.rbegin();
+	while (item != modules.rend() && ret == true)
 	{
-		
+
 		ret = (*item)->CleanUp();
 
 		item = ++item;
@@ -190,7 +402,7 @@ void Application::Log(const char * sentece)
 
 void Application::EventRequest(const Event & event)
 {
-	for (std::vector<Module*>::iterator iter = list_modules.begin(); iter != list_modules.end(); ++iter)
+	for (std::vector<Module*>::iterator iter = modules.begin(); iter != modules.end(); ++iter)
 	{
 		(*iter)->EventRequest(event);
 	}
@@ -198,41 +410,21 @@ void Application::EventRequest(const Event & event)
 
 void Application::DrawModulesConfigUi()
 {
-	for (std::vector<Module*>::iterator iter = list_modules.begin(); iter != list_modules.end(); ++iter)
+	for (std::vector<Module*>::iterator iter = modules.begin(); iter != modules.end(); ++iter)
 	{
 		if ((*iter)->name != "")
 		{
 			if (ImGui::CollapsingHeader((*iter)->name))
 			{
 				(*iter)->DrawConfigurationUi();
-
 			}
 		}
-	
 	}
 }
 
 void Application::AddModule(Module* mod)
 {
-	list_modules.push_back(mod);
-}
-
-void Application::SaveModules()
-{
-	bool ret = true;
-
-	//Create new config file if there isn't one
-	if (config == nullptr)
-	{
-		CreateNewConfig(config_path.c_str());
-	}
-
-	for (std::vector<Module*>::iterator item = list_modules.begin();
-		item != list_modules.end() && ret == true;
-		item = ++item)
-	{
-		ret = (*item)->Save(config);
-	}
+	modules.push_back(mod);
 }
 
 //Config
@@ -240,23 +432,21 @@ void Application::SaveModules()
 void Application::LoadConfig()
 {
 	configValue = json_parse_file(config_path.c_str());
-	config = json_object(configValue);
+	config_root = json_object(configValue);
 }
 
 void Application::CloseConfig()
 {
-	json_serialize_to_file_pretty(configValue, config_path.c_str());
 	json_value_free(configValue);
-	config = nullptr;
+	config_root = nullptr;
 	configValue = nullptr;
 }
 
 void Application::CreateNewConfig(const std::string& path)
 {
 	configValue = json_value_init_object();
-	config = json_value_get_object(configValue);
-	json_serialize_to_file_pretty(configValue, path.data());
-	if (configValue == nullptr || config == nullptr)
+	config_root = json_value_get_object(configValue);
+	if (configValue == nullptr || config_root == nullptr)
 	{
 		LOG("Error creating JSON with path %s", path.data());
 	}

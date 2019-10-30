@@ -5,7 +5,7 @@
 class ModuleFileSystem : public Module
 {
 public:
-	ModuleFileSystem() {};
+	ModuleFileSystem(const char * name);
 	void GetExtension(const char* full_path, std::string& extension);
 };
 

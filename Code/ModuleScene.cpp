@@ -3,9 +3,18 @@
 #include "ModuleScene.h"
 #include "Primitive.h"
 #include "ModuleRandom.h"
+#include "ModuleRenderer3D.h"
+#include "ModuleCamera3D.h"
 #include "glew\include\GL\glew.h"
 #include "PanelScene.h"
 #include <gl\GL.h>
+#include "ModuleGui.h"
+#include "ModuleInput.h"
+
+#include "ModuleGui.h"
+#include "ModuleInput.h"
+#include "ModuleImport.h"
+
 
 ModuleScene::ModuleScene(bool start_enabled) :
 	Module(start_enabled)
@@ -17,14 +26,14 @@ ModuleScene::~ModuleScene()
 {}
 
 // Load assets
-bool ModuleScene::Start()
+bool ModuleScene::Start(JSON_Object* config)
 {
 	//LOG("Loading Intro assets");
 	bool ret = true;
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));	
-
+	App->import->LoadMesh("Assets/BakerHouse.fbx");
 	return ret;
 }
 
@@ -51,16 +60,33 @@ void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 	{
 		GameObjectPostUpdateRecursive((*iter));
 	}
+
+	//TODO: Turn into a shortcut
+	if (App->input->GetKey(SDL_SCANCODE_DELETE))
+	{
+		if (ComponentTransform* selected_object = App->gui->GetSelecteTransform())
+		{
+			DeleteGameObject(selected_object->gameobject);
+			App->gui->SetSelectedGameObjec(nullptr);
+		}
+	}
 }
 
 void ModuleScene::DeleteGameObject(GameObject * gameobject)
 {
-	if (gameobject->transform->children.size() > 0)
+	gameobject->transform->DeleteChildrens();
+	if (gameobject->transform->parent)
 	{
-		for (std::vector<ComponentTransform*>::iterator iter = gameobject->transform->children.begin(); iter != gameobject->transform->children.end(); ++iter)
+		for (std::vector<ComponentTransform*>::iterator iter = gameobject->transform->parent->children.begin(); iter != gameobject->transform->parent->children.end(); ++iter)
 		{
-			DeleteGameObject((*iter)->gameobject);
+			if ((*iter) == gameobject->transform)
+			{
+				gameobject->transform->parent->children.erase(iter);
+				break;
+			}
+			
 		}
+		
 	}
 	delete gameobject;
 }

@@ -10,6 +10,7 @@
 #define MAX_LIGHTS 8
 
 struct SDL_Window;
+struct ImVec2;
 
 class ModuleRenderer3D : public Module
 {
@@ -23,10 +24,17 @@ public:
 	ModuleRenderer3D(const char* name, bool start_enabled = true);
 	~ModuleRenderer3D();
 
-	bool Init();
+	bool Init(JSON_Object* config);
+	void GenSceneFramebuffer();
 	update_status PreUpdate() override;
+	void PrepareTextureBuffer(ImVec2 &size);
+	void PrepareDepthBuffer(ImVec2 &size);
+	void PrepareCamera(ImVec2 &size);
 	update_status PostUpdate() override;
 	bool CleanUp();
+
+	bool SaveConfiguration(JSON_Object * module_obj);
+	bool LoadConfiguration(JSON_Object * module_obj);
 
 	void OnResize(int width, int height);
 	
@@ -38,9 +46,10 @@ public:
 
 	RenderTexture scene_fbo;
 
-	float camera_near = 0.125f;
-	float camera_far = 512.f;
+	float camera_near = 1.f;
+	float camera_far = 1000.f;
 	float fov = 60.f;
+	float background_col[3];
 
 	friend class PanelConfiguration;
 };

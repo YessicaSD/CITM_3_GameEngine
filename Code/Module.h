@@ -5,6 +5,8 @@
 
 class Application;
 struct Event;
+struct JSON_OBJECT;
+
 #include <string>
 class Module
 {
@@ -13,18 +15,18 @@ private :
 
 public:
 	const char* name = "";
-	Module( bool start_enabled = true, const char* name = ""):name(name),enabled(start_enabled)
+	Module( bool start_enabled = true, const char* name = ""): name(name),enabled(start_enabled)
 	{}
 
 	virtual ~Module()
 	{}
 
-	virtual bool Init() 
+	virtual bool Init(JSON_Object* config) 
 	{
 		return true; 
 	}
 
-	virtual bool Start()
+	virtual bool Start(JSON_Object* config)
 	{
 		return true;
 	}
@@ -48,16 +50,25 @@ public:
 	{ 
 		return true; 
 	}
-
-	virtual bool Save(JSON_Object * config)
+	
+	virtual bool LoadConfiguration(JSON_Object * config)
 	{
 		return true;
 	}
+	
+	virtual bool SaveConfiguration(JSON_Object * config)
+	{
+		return true;
+	}
+	
 	virtual void EventRequest(const Event& event) {};
+	
 	virtual void DrawConfigurationUi() {};
+	
 	bool IsActive() {
 		return enabled;
 	}
+	
 	void Disable()
 	{
 		enabled = false;

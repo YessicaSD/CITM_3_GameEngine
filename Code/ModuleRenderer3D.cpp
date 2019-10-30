@@ -1,10 +1,16 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleCamera3D.h"
+#include "ModuleGui.h"
 #include "PanelScene.h"
 
 #include "glew/include/GL/glew.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "ModuleFileSystem.h"
+#include "ParserHelper.h"
+#include "PanelConfiguration.h"
+#include "ModuleWindow.h"
 
 
 ModuleRenderer3D::ModuleRenderer3D(const char* name, bool start_enabled) : Module(start_enabled, name)
@@ -17,7 +23,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 }
 
 // Called before render is available
-bool ModuleRenderer3D::Init()
+bool ModuleRenderer3D::Init(JSON_Object* config)
 {
 	bool ret = true;
 
@@ -110,11 +116,15 @@ bool ModuleRenderer3D::Init()
 		glEnable(GL_TEXTURE_2D);
 	}
 
+	background_col[0] = 1.0f;
+	background_col[1] = 0.0f;
+	background_col[2] = 0.2f;
+
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	//Render options
-	depth_test = glIsEnabled(GL_DEPTH_BUFFER) == GL_TRUE;
+	depth_test = glIsEnabled(GL_DEPTH_TEST) == GL_TRUE;
 	cull_face = glIsEnabled(GL_CULL_FACE) == GL_TRUE;
 	lighting = glIsEnabled(GL_LIGHTING) == GL_TRUE;
 	color_material = glIsEnabled(GL_COLOR_MATERIAL) == GL_TRUE;
@@ -129,7 +139,7 @@ bool ModuleRenderer3D::Init()
 update_status ModuleRenderer3D::PreUpdate()
 {
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	lights[0].SetPos(App->camera->position.x, App->camera->position.y, App->camera->position.z);
 
 	for (uint i = 0; i < MAX_LIGHTS; ++i)
 	{
@@ -170,4 +180,74 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+bool ModuleRenderer3D::SaveConfiguration(JSON_Object * module_obj)
+{
+	SaveFloatArray(module_obj, "background color", background_col, 3u);
+	json_object_set_boolean(module_obj, "depth test", depth_test);
+	json_object_set_boolean(module_obj, "cull faces", cull_face);
+	json_object_set_boolean(module_obj, "lightning", lighting);
+	json_object_set_boolean(module_obj, "color materials", color_material);
+	json_object_set_boolean(module_obj, "texture 2d", texture_2d);
+
+	return true;
+}
+
+bool ModuleRenderer3D::LoadConfiguration(JSON_Object * module_obj)
+{
+	LoadFloatArray(module_obj, "background color", background_col, 3u);
+	glClearColor(background_col[0], background_col[1], background_col[2], 1);
+
+	depth_test = json_object_get_boolean(module_obj, "depth test");
+	if (depth_test)
+	{
+		glEnable(GL_DEPTH_TEST);
+	}
+	else
+	{
+		glDisable(GL_DEPTH_TEST);
+	}
+
+	cull_face = json_object_get_boolean(module_obj, "cull faces");
+	if (depth_test)
+	{
+		glEnable(GL_CULL_FACE);
+	}
+	else
+	{
+		glDisable(GL_CULL_FACE);
+	}
+
+	lighting = json_object_get_boolean(module_obj, "lightning");
+	if (depth_test)
+	{
+		glEnable(GL_LIGHTING);
+	}
+	else
+	{
+		glDisable(GL_LIGHTING);
+	}
+
+	color_material = json_object_get_boolean(module_obj, "color material");
+	if (depth_test)
+	{
+		glEnable(GL_COLOR_MATERIAL);
+	}
+	else
+	{
+		glDisable(GL_COLOR_MATERIAL);
+	}
+
+	texture_2d = json_object_get_boolean(module_obj, "texture 2d");
+	if (depth_test)
+	{
+		glEnable(GL_TEXTURE_2D);
+	}
+	else
+	{
+		glDisable(GL_TEXTURE_2D);
+	}
+
+	return true;
 }

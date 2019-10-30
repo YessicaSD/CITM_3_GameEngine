@@ -19,9 +19,15 @@ public:
 	void SetParent(ComponentTransform * parent);
 	//void SetChildren(std::vector<Transform*> children);
 	void UpdatePos();
+	void PropertiesEditor() override;
+	void CalculGlobalMatrix(float3& position, float3& scale, float3 & rotation);
+	void CalculGlobalMatrix(float3& position, float3& scale, Quat & qrotation);
+	void CalculPRSWithMatrix();
+	void DeleteChildrens();
+
 public:
-	float3 position, scale;
-	Quat rotation;
+	float3 position = {0,0,0}, scale = { 0,0,0 }, rotation = { 0,0,0 };
+	Quat qrotation;
 
 	//You should modify the local matrix, the global matrix is recalculated from it and the parents' local matrix
 	float4x4 local_matrix;
@@ -31,6 +37,10 @@ public:
 private:
 	ComponentTransform * parent = nullptr;
 	std::vector<ComponentTransform*> children;
+
+	float3 aux_position;
+	float3 aux_rotation;
+	float3 aux_scale;
 
 	friend class PanelHierarchy;
 	friend class ModuleScene;
