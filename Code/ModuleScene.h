@@ -24,9 +24,9 @@ public:
 	bool CleanUp();
 	void ChangeRenderMode(std::string variable);
 	bool GetRenderMode(std::string variable);
+	void GameObjectPostUpdateRecursive(ComponentTransform * object);
 
 private:
-	void GameObjectPostUpdateRecursive(ComponentTransform * object);
 	void DeleteGameObject(GameObject* gameobject);
 
 public:

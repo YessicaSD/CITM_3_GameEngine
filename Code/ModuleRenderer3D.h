@@ -1,10 +1,11 @@
-#ifndef __MODULE_WINDOW_H__
-#define __MODULE_WINDOW_H__
+#ifndef __MODULE_RENDER_3D_H__
+#define __MODULE_RENDER_3D_H__
 
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
 #include "Light.h"
+#include "RenderTexture.h"
 
 #define MAX_LIGHTS 8
 
@@ -36,9 +37,6 @@ public:
 	bool LoadConfiguration(JSON_Object * module_obj);
 
 	void OnResize(int width, int height);
-
-	void StartSceneRender();
-	void EndSceneRender();
 	
 	void DrawConfigurationUi();
 public:
@@ -46,10 +44,7 @@ public:
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, projection_matrix;
 
-	uint frame_buffer = 0u;
-	uint render_texture = 0u;
-	uint depth_render_buffer = 0u;
-	uint stencil_buffer = 0u;
+	RenderTexture scene_fbo;
 
 	float camera_near = 1.f;
 	float camera_far = 1000.f;

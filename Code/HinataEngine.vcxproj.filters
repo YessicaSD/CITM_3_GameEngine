@@ -573,6 +573,7 @@
     </ClInclude>
     <ClInclude Include="ParserHelper.h" />
     <ClInclude Include="PerfTimer.h" />
+    <ClInclude Include="RenderTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -820,6 +821,13 @@
     <ClCompile Include="ModulesDrawConfigUI.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="MenuCreateShape.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTexture.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="PerfTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">

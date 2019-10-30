@@ -1,10 +1,11 @@
-#include "MenuCreateShape.h"
+﻿#include "MenuCreateShape.h"
 #include "par\par_shapes.h"
 #include "imgui/imgui.h"
 #include "Application.h"
 #include "ModuleGui.h"
 #include "ModuleImport.h"
 #include "Globals.h"
+#include "AssetMesh.h"
 
 MenuCreateShape::MenuCreateShape()
 {
@@ -108,6 +109,7 @@ MenuCreateShape::MenuCreateShape()
 	//par_shapes_create_lsystem();
 	//par_shapes_create_rock();
 
+	preview_shapes_fbo.GenerateFrameBuffer();
 }
 MenuCreateShape::~MenuCreateShape()
 {
@@ -161,24 +163,68 @@ PanelCreateShape::PanelCreateShape(std::string name, bool active, std::vector<SD
 
 void PanelCreateShape::Draw()
 {
+	if (App->gui->create_menu->preview_shape_gameobject == nullptr)
+	{
+		par_shapes_mesh* mesh = mesh_function();
+		App->gui->create_menu->preview_shape_mesh = App->import->LoadParShapeMesh(mesh);
+		par_shapes_free_mesh(mesh);
+		App->gui->create_menu->preview_shape_gameobject = App->import->CreateGameObjectWithMesh("Preview Shape", nullptr, App->gui->create_menu->preview_shape_mesh);
+	}
+
+	App->gui->create_menu->preview_shapes_fbo.StartRender(*App->gui->create_menu->preview_shapes_fbo.panel_size);
+	App->scene->GameObjectPostUpdateRecursive(App->gui->create_menu->preview_shape_gameobject->transform);
+	App->gui->create_menu->preview_shapes_fbo.EndRender();
+
+
+	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
 	ImGui::Begin(name.c_str());
+	ImGui::PopStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding);
+
+	//Determine panel size
+	//*App->gui->create_menu->preview_shapes_fbo.panel_size = ImGui::GetContentRegionAvail();
+	*App->gui->create_menu->preview_shapes_fbo.panel_size = ImVec2(200, 200);
+	ImVec2 min = ImGui::GetCursorScreenPos();
+	ImVec2 max = ImVec2(min.x + App->gui->create_menu->preview_shapes_fbo.panel_size->x, min.y + App->gui->create_menu->preview_shapes_fbo.panel_size->y);
+
+	ImGui::Image((ImTextureID)App->gui->create_menu->preview_shapes_fbo.render_texture, ImVec2(App->gui->create_menu->preview_shapes_fbo.panel_size->x, App->gui->create_menu->preview_shapes_fbo.panel_size->y), ImVec2(0, 1), ImVec2(1, 0));
+	//-------------------------
+
+	bool changed_values = false;
 	for (std::vector<ShapeValue>::iterator iter = shape_values.begin();
 		iter != shape_values.end();
 		++iter)
 	{
-		ImGui::InputScalar((*iter).name.c_str(), (*iter).data_type, (*iter).value_ptr);
+		
+		if (ImGui::InputScalar((*iter).name.c_str(), (*iter).data_type, (*iter).value_ptr)
+			&& !changed_values)
+		{
+			changed_values = true;
+		}
 	}
+
+	if (changed_values)
+	{
+		//Delete shape
+		RELEASE(App->gui->create_menu->preview_shape_gameobject);
+		RELEASE(App->gui->create_menu->preview_shape_mesh);
+		//Create new shape with the new values
+		par_shapes_mesh* mesh = mesh_function();
+		App->gui->create_menu->preview_shape_mesh = App->import->LoadParShapeMesh(mesh);
+		par_shapes_free_mesh(mesh);
+		App->gui->create_menu->preview_shape_gameobject = App->import->CreateGameObjectWithMesh("Preview Shape", nullptr, App->gui->create_menu->preview_shape_mesh);
+	}
+
 	CreateMultiple();
 	if (ImGui::Button("Cancel"))
 	{
+		RELEASE(App->gui->create_menu->preview_shape_gameobject);
+		RELEASE(App->gui->create_menu->preview_shape_mesh);
 		SetActive(false);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Create"))
 	{
-		par_shapes_mesh* mesh = mesh_function();
-		AssetMesh * asset_mesh = App->import->LoadParShapeMesh(mesh);
-		par_shapes_free_mesh(mesh);
+		App->import->AddMesh(App->gui->create_menu->preview_shape_mesh);
 		if (copies[0] > 0 && copies[1] > 0 && copies[2] > 0)
 		{
 			for (int x = 0; x < copies[0]; ++x)
@@ -187,7 +233,7 @@ void PanelCreateShape::Draw()
 				{
 					for (int z = 0; z < copies[2]; ++z)
 					{
-						App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
+						App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
 						//TODO: Move gameobjects
 					}
 				}
@@ -199,7 +245,7 @@ void PanelCreateShape::Draw()
 			{
 				for (int y = 0; y < copies[1]; ++y)
 				{
-					App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
+					App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
 					//TODO: Move gameobjects
 				}
 			}
@@ -210,7 +256,7 @@ void PanelCreateShape::Draw()
 			{
 				for (int z = 0; z < copies[2]; ++z)
 				{
-					App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
+					App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
 					//TODO: Move gameobjects
 				}
 			}
@@ -221,7 +267,7 @@ void PanelCreateShape::Draw()
 			{
 				for (int z = 0; z < copies[2]; ++z)
 				{
-					App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
+					App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
 					//TODO: Move gameobjects
 				}
 			}
@@ -230,7 +276,7 @@ void PanelCreateShape::Draw()
 		{
 			for (int x = 0; x < copies[0]; ++x)
 			{
-				App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
+				App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
 				//TODO: Move gameobjects
 			}
 		}
@@ -238,7 +284,7 @@ void PanelCreateShape::Draw()
 		{
 			for (int y = 0; y < copies[1]; ++y)
 			{
-				App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
+				App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
 				//TODO: Move gameobjects
 			}
 		}
@@ -246,7 +292,7 @@ void PanelCreateShape::Draw()
 		{
 			for (int z = 0; z < copies[2]; ++z)
 			{
-				App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
+				App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
 				//TODO: Move gameobjects
 			}
 		}
@@ -283,6 +329,7 @@ void PanelCreateShape::MenuItem(const float button_height, const float button_sp
 		par_shapes_mesh* mesh = mesh_function();
 		AssetMesh* asset_mesh = App->import->LoadParShapeMesh(mesh);
 		par_shapes_free_mesh(mesh);
+		App->import->AddMesh(asset_mesh);
 		App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
 
 	}

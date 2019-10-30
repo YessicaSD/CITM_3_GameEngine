@@ -107,8 +107,7 @@ AssetMesh* ModuleImport::LoadParShapeMesh(par_shapes_mesh * mesh)
 	asset_mesh->GenerateVerticesBuffer();
 	asset_mesh->GenerateFacesAndNormalsBuffer();
 	asset_mesh->GenerateUVsBuffer();
-
-	App->import->meshes.push_back(asset_mesh);
+	
 	return asset_mesh;
 }
 
@@ -199,11 +198,18 @@ void ModuleImport::EventRequest(const Event & event)
 	}
 }
 
-void ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh)
+GameObject* ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh)
 {
 	GameObject * new_gameobject = new GameObject(name, parent);
 	ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 	component_mesh->mesh = asset_mesh;
 	new_gameobject->transform->CalculPRSWithMatrix();
 	component_mesh->CalculBoindingBox();
+	return new_gameobject;
+}
+
+bool ModuleImport::AddMesh(AssetMesh * mesh)
+{
+	meshes.push_back(mesh);
+	return true;
 }

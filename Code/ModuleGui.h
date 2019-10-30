@@ -7,6 +7,7 @@
 #include <vector>
 #include "MenuCreateShape.h"
 #include "ComponentMesh.h"
+#include "ModuleRenderer3D.h"//Delete when we change FrameBufferObject to anther window
 
 class Timer;
 class Panel;
@@ -57,7 +58,6 @@ public:
 	bool CleanUp() override;
 	bool Log(const char*);
 
-	void AddInputLog(SDL_Scancode key, KEY_STATE state);
 	void ModifyShortcut(SDL_Scancode key);
 
 	template <class PanelClass>

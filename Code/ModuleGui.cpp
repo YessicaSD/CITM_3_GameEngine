@@ -20,6 +20,10 @@
 #include "PanelAssets.h"
 #include "PanelScene.h"
 
+//TODO: Frame Buffer Object remove
+#include "par/par_shapes.h"
+#include "ModuleImport.h"
+
 #define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
 #define IMGUI_GREY ImVec4(0.6f,0.6f,0.6f,1.f)
 #define IMGUI_BLUE ImVec4(0.2f,0.2f,1.f,1.f)
@@ -62,7 +66,6 @@ bool ModuleGui::Init(JSON_Object* config)
 	// Setup Platform/Renderer bindings
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
-
 
 	return ret;
 }
@@ -213,7 +216,6 @@ bool ModuleGui::CleanUp()
 	}
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
-
 
 	ImGui::DestroyContext();
 
