@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "ModuleGui.h"
 #include "PanelScene.h"
+#include "ModuleCamera3D.h"
 
 RenderTexture::RenderTexture()
 {
