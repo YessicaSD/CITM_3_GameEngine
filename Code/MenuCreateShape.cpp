@@ -114,7 +114,7 @@ MenuCreateShape::MenuCreateShape()
 	par_shapes_mesh* mesh = par_shapes_create_cube();
 	AssetMesh* asset_mesh = App->import->LoadParShapeMesh(mesh);
 	par_shapes_free_mesh(mesh);
-	preview_shape_gameobject = App->import->CreateGameObjectWithMesh("Cube Preview Shape", App->scene->root_gameobject->transform, asset_mesh);
+	preview_shape_gameobject = App->import->CreateGameObjectWithMesh("Cube Preview Shape", nullptr, asset_mesh);
 
 
 }
