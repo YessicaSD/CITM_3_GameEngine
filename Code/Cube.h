@@ -17,12 +17,25 @@ typedef unsigned int uint;
 
 class Cube
 {
+	
 	float vertices[NUM_VERTICES * 3];
 	uint vetex_buf_id, indices_buf_id;
+
+
+
 public:
 
 	Cube(float width, float height, float depth, float3	position);
+	Cube();
+
+
 	void Draw_DirectMode();
 	void Draw();
+	void Set(float width, float height, float depth, float3 position);
+
+	//Only call ones
+	void OpenBuffers();
+
+
 };
 #endif // !_CUBE_H_
