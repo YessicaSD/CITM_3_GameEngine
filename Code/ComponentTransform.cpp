@@ -50,11 +50,11 @@ void ComponentTransform::PropertiesEditor()
 	ImGui::InputFloat3("Scale", (float*)&aux_scale, "%.2f");
 	if (aux_position != position || aux_rotation != rotation || aux_scale != scale)
 	{
-		CalculGlobalMatrix(aux_position, aux_scale, float3(DEGTORAD * aux_rotation.x, DEGTORAD * aux_rotation.y, DEGTORAD* aux_rotation.z));
+		CalculateGlobalMatrix(aux_position, aux_scale, float3(DEGTORAD * aux_rotation.x, DEGTORAD * aux_rotation.y, DEGTORAD* aux_rotation.z));
 	}
 }
 
-void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, float3 & rotation)
+void ComponentTransform::CalculateGlobalMatrix(float3 & position, float3 & scale, float3 & rotation)
 {
 	this->position = position; 
 	this->rotation = rotation; 
@@ -92,7 +92,7 @@ void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, f
 	}
 }
 
-void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, Quat & qrotation)
+void ComponentTransform::CalculateGlobalMatrix(float3 & position, float3 & scale, Quat & qrotation)
 {
 	this->position = position; 
 	this->qrotation = qrotation;   
@@ -122,6 +122,11 @@ void ComponentTransform::CalculGlobalMatrix(float3 & position, float3 & scale, Q
 		comp_mesh->CalculBoindingBox();
 	}
 
+}
+
+void ComponentTransform::Reset()
+{
+	CalculateGlobalMatrix(float3(0, 0, 0), float3(1, 1, 1), float3(0, 0, 0));
 }
 
 void ComponentTransform::CalculPRSWithMatrix()

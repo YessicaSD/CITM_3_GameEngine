@@ -20,8 +20,9 @@ public:
 	//void SetChildren(std::vector<Transform*> children);
 	void UpdatePos();
 	void PropertiesEditor() override;
-	void CalculGlobalMatrix(float3& position, float3& scale, float3 & rotation);
-	void CalculGlobalMatrix(float3& position, float3& scale, Quat & qrotation);
+	void CalculateGlobalMatrix(float3& position, float3& scale, float3 & rotation);
+	void CalculateGlobalMatrix(float3& position, float3& scale, Quat & qrotation);
+	void Reset();
 	void CalculPRSWithMatrix();
 	void DeleteChildrens();
 
