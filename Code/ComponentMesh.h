@@ -29,12 +29,12 @@ public:
 	void DrawNormals();
 	void PropertiesEditor() override;
 	void CleanUp() override;
-	void CalculBoindingBox();
+	void CalculateBoundingBox();
 
 public:
 	//One mesh can be used by more than one mesh component
 	AssetMesh * mesh = nullptr;
-	AABB boinding_box;
+	AABB bounding_box;
 private:
 	ComponentMaterial* material = nullptr;
 	RenderMode render_mode;

@@ -118,7 +118,7 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 	aiVector3D translation, scaling;
 	aiQuaternion rotation;
 	node->mTransformation.Decompose(scaling, rotation, translation);
-	new_gameobject->transform->CalculateGlobalMatrix(float3(translation.x, translation.y, translation.z), float3(scaling.x, scaling.y, scaling.z), Quat(rotation.x, rotation.y, rotation.z, rotation.w));
+	new_gameobject->transform->SetTransform(float3(translation.x, translation.y, translation.z), float3(scaling.x, scaling.y, scaling.z), Quat(rotation.x, rotation.y, rotation.z, rotation.w));
 	new_gameobject->transform->Reset();
 	//TODO: Search if there is a better way to convert from aiMatrix4x4 to math::float4x4 (both are arrays with 16 positions at the end)
 	//V1
@@ -154,7 +154,7 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 			{
 				component_mesh->material->SetTexture(textures[index]);
 			}
-			component_mesh->CalculBoindingBox();
+			component_mesh->CalculateBoundingBox();
 			
 		}
 	}
@@ -203,8 +203,8 @@ GameObject* ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTr
 	GameObject * new_gameobject = new GameObject(name, parent);
 	ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 	component_mesh->mesh = asset_mesh;
-	new_gameobject->transform->CalculPRSWithMatrix();
-	component_mesh->CalculBoindingBox();
+	new_gameobject->transform->UpdateDisplayValues();
+	component_mesh->CalculateBoundingBox();
 	return new_gameobject;
 }
 

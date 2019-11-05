@@ -29,7 +29,7 @@ public:
 	bool GenerateFacesAndNormalsBuffer();
 	bool GenerateUVsBuffer();
 	void CleanUp();
-	AABB GetBondingBox()
+	AABB GetBoundingBox()
 	{
 		return default_bonding_box;
 	}

@@ -187,14 +187,14 @@ void ModuleCamera3D::FocusToObject(const ComponentTransform & transform)
 	float length;
 	if (mesh)
 	{
-		AABB aux_aabb = mesh->boinding_box;
-		pos = mesh->boinding_box.CenterPoint();
+		AABB aux_aabb = mesh->bounding_box;
+		pos = mesh->bounding_box.CenterPoint();
 		//pos = { (aux_aabb.minPoint + aux_aabb.maxPoint) / 2 };
-		length = mesh->boinding_box.Diagonal().Length();
+		length = mesh->bounding_box.Diagonal().Length();
 	}
 	else
 	{
-		pos  = transform.position;
+		pos  = transform.GetPosition();
 		length = 20;
 	}
 	if (reference.x != pos.x && reference.y != pos.y && reference.z != pos.z)

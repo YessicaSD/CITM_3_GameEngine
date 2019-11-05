@@ -14,10 +14,6 @@ ComponentTransform::ComponentTransform(GameObject * gameobject) : Component(game
 	//TODO: This is for testing purposes, remove when done
 	global_matrix = local_matrix = local_matrix.identity;
 	UpdatePos();
-
-	aux_position = position;
-	aux_rotation = { 0,0,0 };
-	aux_scale = { 1,1,1 };
 }
 
 void ComponentTransform::SetParent(ComponentTransform * parent)
@@ -40,112 +36,172 @@ void ComponentTransform::UpdatePos()
 
 void ComponentTransform::PropertiesEditor()
 {
-
-	ImGui::InputFloat3("Position", (float*)&aux_position, "%.2f");
-
-
-	ImGui::InputFloat3("Rotation", (float*)&aux_rotation, "%.2f");
-
-
-	ImGui::InputFloat3("Scale", (float*)&aux_scale, "%.2f");
-	if (aux_position != position || aux_rotation != rotation || aux_scale != scale)
+	bool position_changed = false,
+		rotation_changed = false,
+		scale_changed = false;
+	if (ImGui::InputFloat3("Position", (float*)&position, "%.2f"))
 	{
-		CalculateGlobalMatrix(aux_position, aux_scale, float3(DEGTORAD * aux_rotation.x, DEGTORAD * aux_rotation.y, DEGTORAD* aux_rotation.z));
+		position_changed = true;
+	}
+	if (ImGui::InputFloat3("Rotation", (float*)&euler_rotation, "%.2f"))
+	{
+		rotation_changed = true;
+	}
+	if (ImGui::InputFloat3("Scale", (float*)&scale, "%.2f"))
+	{
+		scale_changed = true;
+	}
+	if (position_changed || rotation_changed|| scale_changed)
+	{
+		SetTransform(position, scale, euler_rotation * DEGTORAD);
 	}
 }
 
-void ComponentTransform::CalculateGlobalMatrix(float3 & position, float3 & scale, float3 & rotation)
+void ComponentTransform::SetTransform(float3 & position, float3 & scale, float3 & rotation)
 {
 	this->position = position; 
-	this->rotation = rotation; 
+	this->euler_rotation = rotation; 
 	this->scale = scale;
-
-	aux_position = position;
-	aux_rotation = rotation;
-	aux_scale = scale;
 
 	qrotation = Quat::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
 
 	this->local_matrix = float4x4::FromTRS(position, qrotation, scale);
 
-	if (parent)
+	if (parent != nullptr)
 	{
-		this->global_matrix = this->parent->global_matrix *  this->local_matrix;
+		global_matrix = parent->global_matrix *  local_matrix;
 	}
 	else
 	{
-		this->global_matrix = this->local_matrix;
+		global_matrix = local_matrix;
 	}
 
 	ComponentMesh* comp_mesh = gameobject->GetComponent<ComponentMesh>();
-	if (comp_mesh)
+	if (comp_mesh != nullptr)
 	{
-		comp_mesh->CalculBoindingBox();
+		comp_mesh->CalculateBoundingBox();
 	}
+
 	if (children.size() > 0)
 	{
 		for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
 		{
-			(*iter)->global_matrix = this->global_matrix * (*iter)->local_matrix;
-			(*iter)->CalculPRSWithMatrix();
+			(*iter)->global_matrix = global_matrix * (*iter)->local_matrix;
+			(*iter)->UpdateDisplayValues();
 		}
 	}
 }
 
-void ComponentTransform::CalculateGlobalMatrix(float3 & position, float3 & scale, Quat & qrotation)
+void ComponentTransform::SetTransform(float3 & position, float3 & scale, Quat & qrotation)
 {
 	this->position = position; 
 	this->qrotation = qrotation;   
 	this->scale = scale;
 
-	this->rotation = qrotation.ToEulerXYZ();
-	this->rotation  *= RADTODEG;
+	this->euler_rotation = qrotation.ToEulerXYZ();
+	this->euler_rotation *= RADTODEG;
 
 	this->local_matrix = float4x4::FromTRS(position, qrotation, scale);
 
-	if (parent)
+	if (parent != nullptr)
 	{
-		this->global_matrix = this->parent->global_matrix *  this->local_matrix;
+		global_matrix = parent->global_matrix *  local_matrix;
 	}
 	else
 	{
-		this->global_matrix = this->local_matrix;
+		global_matrix = local_matrix;
 	}
-
-	aux_position = position;
-	aux_rotation = rotation; 
-	aux_scale = scale;
 
 	ComponentMesh* comp_mesh = gameobject->GetComponent<ComponentMesh>();
-	if (comp_mesh)
+	if (comp_mesh != nullptr)
 	{
-		comp_mesh->CalculBoindingBox();
+		comp_mesh->CalculateBoundingBox();
 	}
 
+	if (children.size() > 0)
+	{
+		for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
+		{
+			(*iter)->global_matrix = global_matrix * (*iter)->local_matrix;
+			(*iter)->UpdateDisplayValues();
+		}
+	}
+}
+
+void ComponentTransform::SetPosition(float3 &position)
+{
+	this->position = position;
+
+	local_matrix = float4x4::FromTRS(position, qrotation, scale);
+
+	if (parent != nullptr)
+	{
+		global_matrix = parent->global_matrix *  local_matrix;
+	}
+	else
+	{
+		global_matrix = local_matrix;
+	}
+
+	ComponentMesh* comp_mesh = gameobject->GetComponent<ComponentMesh>();
+	if (comp_mesh != nullptr)
+	{
+		comp_mesh->CalculateBoundingBox();
+	}
+
+	if (children.size() > 0)
+	{
+		for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
+		{
+			(*iter)->global_matrix = global_matrix * (*iter)->local_matrix;
+			(*iter)->UpdateDisplayValues();
+		}
+	}
+}
+
+float3 ComponentTransform::GetPosition() const
+{
+	return position;
+}
+
+Quat ComponentTransform::GetRotation() const
+{
+	return qrotation;
+}
+
+float3 ComponentTransform::GetRotationEuler() const
+{
+	return euler_rotation;
+}
+
+float3 ComponentTransform::GetScale() const
+{
+	return scale;
+}
+
+float4x4 ComponentTransform::GetGlobalMatrix() const
+{
+	return global_matrix;
 }
 
 void ComponentTransform::Reset()
 {
-	CalculateGlobalMatrix(float3(0, 0, 0), float3(1, 1, 1), float3(0, 0, 0));
+	SetTransform(float3(0, 0, 0), float3(1, 1, 1), float3(0, 0, 0));
 }
 
-void ComponentTransform::CalculPRSWithMatrix()
+void ComponentTransform::UpdateDisplayValues()
 {
 	global_matrix.Decompose(position, qrotation, scale);
-	rotation = qrotation.ToEulerXYZ();
-
-	aux_position = position;
-	aux_rotation = rotation;
-	aux_scale = scale;
+	euler_rotation = qrotation.ToEulerXYZ();
 }
 
-void ComponentTransform::DeleteChildrens()
+void ComponentTransform::DeleteChildren()
 {
 	if (gameobject->transform->children.size() > 0)
 	{
 		for (std::vector<ComponentTransform*>::iterator iter = gameobject->transform->children.begin(); iter != gameobject->transform->children.end(); ++iter)
 		{
-			(*iter)->DeleteChildrens();
+			(*iter)->DeleteChildren();
 			delete (*iter);
 		}
 		gameobject->transform->children.clear();

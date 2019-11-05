@@ -267,7 +267,8 @@ void PanelCreateShape::Draw()
 			{
 				for (int z = 0; z < copies[2]; ++z)
 				{
-					App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
+					GameObject * obj = App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
+					//obj->transform 
 					//TODO: Move gameobjects
 				}
 			}

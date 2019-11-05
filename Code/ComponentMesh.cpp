@@ -35,11 +35,13 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::OnPostUpdate()
 {
-	if(mesh->UVCoord)
+	if (mesh->UVCoord)
+	{
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	}
 
 	glPushMatrix();
-	glMultMatrixf((const GLfloat *)&gameobject->transform->global_matrix.Transposed());
+	glMultMatrixf((const GLfloat *)&gameobject->transform->GetGlobalMatrix().Transposed());
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 
@@ -101,8 +103,8 @@ void ComponentMesh::OnPostUpdate()
 	glBegin(GL_LINES);
 	glLineWidth(5);
 	glColor4f(255, 0, 0, 1);
-	glVertex3f(boinding_box.minPoint.x, boinding_box.minPoint.y, boinding_box.minPoint.z);
-	glVertex3f(boinding_box.maxPoint.x, boinding_box.maxPoint.y, boinding_box.maxPoint.z);
+	glVertex3f(bounding_box.minPoint.x, bounding_box.minPoint.y, bounding_box.minPoint.z);
+	glVertex3f(bounding_box.maxPoint.x, bounding_box.maxPoint.y, bounding_box.maxPoint.z);
 
 	glEnd();
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
@@ -197,18 +199,17 @@ void ComponentMesh::CleanUp()
 
 }
 
-void ComponentMesh::CalculBoindingBox()
+void ComponentMesh::CalculateBoundingBox()
 {
-	AABB aux = mesh->GetBondingBox();
+	AABB aux = mesh->GetBoundingBox();
 	float4 aux_pos = { aux.minPoint.x,aux.minPoint.y, aux.minPoint.z,1 };
-	aux_pos = gameobject->transform->global_matrix.Mul(aux_pos);
-	this->boinding_box.minPoint = { aux_pos.x, aux_pos.y, aux_pos.z };
+	aux_pos = gameobject->transform->GetGlobalMatrix().Mul(aux_pos);
+	this->bounding_box.minPoint = { aux_pos.x, aux_pos.y, aux_pos.z };
 
 	float4 aux_pos2 = { aux.maxPoint.x,aux.maxPoint.y, aux.maxPoint.z,1 };
-	aux_pos2 = gameobject->transform->global_matrix.Mul(aux_pos2);
-	this->boinding_box.maxPoint = { aux_pos2.x, aux_pos2.y, aux_pos2.z };
+	aux_pos2 = gameobject->transform->GetGlobalMatrix().Mul(aux_pos2);
+	this->bounding_box.maxPoint = { aux_pos2.x, aux_pos2.y, aux_pos2.z };
 	float3 diagonal = float3(aux_pos.x, aux_pos.y, aux_pos.z) - float3(aux_pos2.x, aux_pos2.y, aux_pos2.z);
 
 	LOG("%f", diagonal.Length());
-
 }
