@@ -22,15 +22,25 @@ public:
 	void PropertiesEditor() override;
 	void SetTransform(float3& position, float3& scale, float3 & rotation);
 	void SetTransform(float3& position, float3& scale, Quat & qrotation);
-	void SetPosition(float3 & position);
+	void SetPosition(const float3 & position);
+	void SetRotation(const float3 & euler_rotation);
+	void SetRotation(const Quat & qrotation);
+	void SetScale(const float3 & scale);
+
+
 	float3 GetPosition() const;
 	Quat GetRotation() const;
 	float3 GetRotationEuler() const;
 	float3 GetScale() const;
 	float4x4 GetGlobalMatrix() const;
+
 	void Reset();
 	void UpdateDisplayValues();
 	void DeleteChildren();
+
+private:
+	void RecalculateMatrices();
+	void UpdateChildrenMatrices();
 
 private:
 	float3 position = {0.f, 0.f, 0.f },
