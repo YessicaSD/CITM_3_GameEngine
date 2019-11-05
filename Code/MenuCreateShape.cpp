@@ -228,10 +228,10 @@ void PanelCreateShape::Draw()
 		float3 position = {0.f, 0.f, 0.f};
 		for (int x = 0; x < copies[0]; ++x)
 		{
-			position.y = 0;
+			position.y = 0.f;
 			for (int y = 0; y < copies[1]; ++y)
 			{
-				position.z = 0;
+				position.z = 0.f;
 				for (int z = 0; z < copies[2]; ++z)
 				{
 					GameObject * obj = App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
@@ -254,6 +254,75 @@ void PanelCreateShape::Draw()
 		SetActive(false);
 	}
 	ImGui::End();
+}
+
+void PanelCreateShape::CreateCopiesXYZ(float3 & position)
+{
+	int x = 0, y = 1, z = 2;
+	if (copies[x] != 0)
+	{
+		position.x = 0.f;
+		for (int i = 0; i < copies[x]; ++i)
+		{
+			if (copies[y] !=  0)
+			{
+				CreateCopiesYZ(position);
+			}
+			else if (copies[z] != 0)
+			{
+				CreateCopiesZ(position);
+			}
+			else
+			{
+				CreateCopyAtPosition(position);
+			}
+			position.x += separation[x];
+		}
+	}
+	else if (copies[y] != 0)
+	{
+		CreateCopiesYZ(position);
+	}
+	else if (copies[z] != 0)
+	{
+		CreateCopiesZ(position);
+	}
+}
+
+void PanelCreateShape::CreateCopiesYZ(float3 & position)
+{
+	int y = 1, z = 2;
+	position.y = 0.f;
+	for (int j = 0; j < copies[y]; ++j)
+	{
+		if (copies[z] != 0)
+		{
+			CreateCopiesZ(position);
+		}
+		else
+		{
+			GameObject * obj = App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
+			obj->transform->SetPosition(position);
+		}
+		position.y += separation[y];
+	}
+}
+
+void PanelCreateShape::CreateCopiesZ(float3 & position)
+{
+	int z = 2;
+	position.z = 0.f;
+	for (int k = 0; k < copies[z]; ++k)
+	{
+		CreateCopyAtPosition(position);
+		position.z += separation[z];
+	}
+}
+
+void PanelCreateShape::CreateCopyAtPosition(float3 position)
+{
+	GameObject * obj = App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
+	obj->transform->SetPosition(position);
 }
 
 void PanelCreateShape::MenuItem(const float button_height, const float button_space, const ImVec4 &button_color, const ImVec2 &button_size)

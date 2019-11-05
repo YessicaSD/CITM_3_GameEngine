@@ -6,13 +6,13 @@
 #include "Panel.h"
 #include <vector>
 #include "RenderTexture.h"
+#include "MathGeoLib/include/Math/float3.h"
 
 typedef unsigned int uint;
 typedef struct par_shapes_mesh_s par_shapes_mesh;
 class MenuCreateShape;
 class GameObject;
 class AssetMesh;
-
 class ShapeValue
 {
 public:
@@ -32,6 +32,10 @@ public:
 	void MenuItem(const float button_height, const float button_space, const ImVec4& button_color, const ImVec2& button_size);
 private:
 	void Draw() override;
+	void CreateCopiesXYZ(float3 & position);
+	void CreateCopiesYZ(float3 & position);
+	void CreateCopiesZ(float3 & position);
+	void CreateCopyAtPosition(float3 position);
 	void CreateMultiple();//Function to create multiple is going to be the same for each one of them
 
 	//Function to call(may be the same that the MenuCreateShape::MenuItem() calls)
