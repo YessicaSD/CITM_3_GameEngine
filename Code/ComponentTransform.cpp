@@ -118,10 +118,12 @@ void ComponentTransform::SetTransform(float3 & position, float3 & scale, Quat & 
 		comp_mesh->CalculateBoundingBox();
 	}
 
+	//TODO: Update recursively (right now it's only updating the first generation)
 	if (children.size() > 0)
 	{
 		for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
 		{
+			//TODO: Update the bounding box
 			(*iter)->global_matrix = global_matrix * (*iter)->local_matrix;
 			(*iter)->UpdateDisplayValues();
 		}

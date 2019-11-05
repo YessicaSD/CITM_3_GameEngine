@@ -204,11 +204,11 @@ void ComponentMesh::CalculateBoundingBox()
 	AABB aux = mesh->GetBoundingBox();
 	float4 aux_pos = { aux.minPoint.x,aux.minPoint.y, aux.minPoint.z,1 };
 	aux_pos = gameobject->transform->GetGlobalMatrix().Mul(aux_pos);
-	this->bounding_box.minPoint = { aux_pos.x, aux_pos.y, aux_pos.z };
+	bounding_box.minPoint = { aux_pos.x, aux_pos.y, aux_pos.z };
 
 	float4 aux_pos2 = { aux.maxPoint.x,aux.maxPoint.y, aux.maxPoint.z,1 };
 	aux_pos2 = gameobject->transform->GetGlobalMatrix().Mul(aux_pos2);
-	this->bounding_box.maxPoint = { aux_pos2.x, aux_pos2.y, aux_pos2.z };
+	bounding_box.maxPoint = { aux_pos2.x, aux_pos2.y, aux_pos2.z };
 	float3 diagonal = float3(aux_pos.x, aux_pos.y, aux_pos.z) - float3(aux_pos2.x, aux_pos2.y, aux_pos2.z);
 
 	LOG("%f", diagonal.Length());
