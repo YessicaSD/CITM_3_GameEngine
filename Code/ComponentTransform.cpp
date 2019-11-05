@@ -125,7 +125,7 @@ void ComponentTransform::SetPosition(const float3 &position)
 void ComponentTransform::SetRotation(const float3 &euler_rotation)
 {
 	this->euler_rotation = euler_rotation;
-	qrotation = Quat::FromEulerXYZ(euler_rotation.x, euler_rotation.y, euler_rotation.z);
+	qrotation = Quat::FromEulerXYZ(euler_rotation.x * DEGTORAD, euler_rotation.y * DEGTORAD, euler_rotation.z * DEGTORAD);
 
 	RecalculateMatrices();
 }
