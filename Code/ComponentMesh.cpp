@@ -98,20 +98,29 @@ void ComponentMesh::OnPostUpdate()
 		glColor4f(point_color[0], point_color[1], point_color[2], point_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	}
-	glBegin(GL_LINES);
 	glLineWidth(5);
 	glColor4f(255, 0, 0, 1);
-	glVertex3f(boinding_box.minPoint.x, boinding_box.minPoint.y, boinding_box.minPoint.z);
-	glVertex3f(boinding_box.maxPoint.x, boinding_box.maxPoint.y, boinding_box.maxPoint.z);
 
+	
+
+	glBegin(GL_LINES);
+	
 	glEnd();
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
 	material->DisableGLModes();
 	if (mesh->UVCoord)
 		glDisable(GL_TEXTURE_COORD_ARRAY);
 	glPopMatrix();
+
+	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	bounding_box.Draw(nullptr);
+	
+
+
+
 }
 
 void ComponentMesh::DrawVertexNormal()
@@ -182,11 +191,6 @@ void ComponentMesh::PropertiesEditor()
 
 void ComponentMesh::CleanUp()
 {
-	//if (material)
-	//{
-	//	delete material;
-	//	material = nullptr;
-	//}
 	gameobject->RemoveComponent<ComponentMaterial>();
 
 	if (mesh)
@@ -197,18 +201,8 @@ void ComponentMesh::CleanUp()
 
 }
 
-void ComponentMesh::CalculBoindingBox()
+void ComponentMesh::UpdateBoundingBox(float4x4 matrix)
 {
-	AABB aux = mesh->GetBondingBox();
-	float4 aux_pos = { aux.minPoint.x,aux.minPoint.y, aux.minPoint.z,1 };
-	aux_pos = gameobject->transform->global_matrix.Mul(aux_pos);
-	this->boinding_box.minPoint = { aux_pos.x, aux_pos.y, aux_pos.z };
-
-	float4 aux_pos2 = { aux.maxPoint.x,aux.maxPoint.y, aux.maxPoint.z,1 };
-	aux_pos2 = gameobject->transform->global_matrix.Mul(aux_pos2);
-	this->boinding_box.maxPoint = { aux_pos2.x, aux_pos2.y, aux_pos2.z };
-	float3 diagonal = float3(aux_pos.x, aux_pos.y, aux_pos.z) - float3(aux_pos2.x, aux_pos2.y, aux_pos2.z);
-
-	LOG("%f", diagonal.Length());
-
+	bounding_box = mesh->GetBoundingBox();
+	bounding_box.MultiplyByMatrix(matrix);
 }

@@ -10,7 +10,7 @@
 #include "ModuleImport.h"
 #include "ModuleTexture.h"
 #include "Texture.h"
-
+#include "BoundingBox.h"
 
 AssetMesh::~AssetMesh()
 {
@@ -46,11 +46,15 @@ bool AssetMesh::LoadVertices(const int num_vertices, const float * vertices)
 {
 	this->num_vertices = num_vertices;
 	this->vertices = new float3[num_vertices];
+
 	//TODO change to memcopy
 	for (uint i = 0; i < num_vertices * 3; i += 3)
 	{
 		this->vertices[i/3] = { vertices[i],vertices[i + 1],vertices[i + 2] };
 	}
+
+	
+
 	//memcpy(this->vertices, vertices, sizeof(float) * num_vertices * 3);
 	return true;
 }
@@ -184,7 +188,7 @@ bool AssetMesh::LoadUVs(float * coords)
 
 void AssetMesh::CreateBoundingBox()
 {
-	default_bonding_box.Enclose(vertices, num_vertices);
+	bounding_box.CalculateBoundingBoxFromVertex(this->vertices, num_vertices);
 }
 
 bool AssetMesh::GenerateFacesAndNormalsBuffer()
@@ -242,4 +246,9 @@ void AssetMesh::CleanUp()
 		delete[] UVCoord;
 		UVCoord = nullptr;
 	}
+}
+
+BoundingBox AssetMesh::GetBoundingBox()
+{
+	return bounding_box;
 }

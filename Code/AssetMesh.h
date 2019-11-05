@@ -5,7 +5,11 @@
 #include "Assimp/include/vector3.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
 #include "Texture.h"
+#include "BoundingBox.h"
+
 #include <vector>
+
+
 typedef unsigned int uint;
 struct aiMesh;
 struct aiScene;
@@ -29,12 +33,11 @@ public:
 	bool GenerateFacesAndNormalsBuffer();
 	bool GenerateUVsBuffer();
 	void CleanUp();
-	AABB GetBondingBox()
-	{
-		return default_bonding_box;
-	}
+	BoundingBox GetBoundingBox();
+
 private:
-	AABB default_bonding_box;
+	BoundingBox bounding_box;
+
 public:
 	//Data ========================
 	uint id_indice = 0u; // index in VRAM
@@ -63,6 +66,7 @@ public:
 	uint uv_num_components = 0u;
 	uint id_texture = 0u;
 
+	
 	
 };
 

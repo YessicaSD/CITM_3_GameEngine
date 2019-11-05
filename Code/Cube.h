@@ -20,8 +20,7 @@ class Cube
 	
 	float vertices[NUM_VERTICES * 3];
 	uint vetex_buf_id, indices_buf_id;
-
-
+	
 
 public:
 
@@ -29,8 +28,8 @@ public:
 	Cube();
 
 
-	void Draw_DirectMode();
-	void Draw();
+	//void Draw_DirectMode();
+	void Draw(const float * matrix);
 	void Set(float width, float height, float depth, float3 position);
 
 	//Only call ones

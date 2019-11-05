@@ -187,10 +187,10 @@ void ModuleCamera3D::FocusToObject(const ComponentTransform & transform)
 	float length;
 	if (mesh)
 	{
-		AABB aux_aabb = mesh->boinding_box;
-		pos = mesh->boinding_box.CenterPoint();
+		AABB aux_aabb = mesh->bounding_box.GetAABB();
+		pos = aux_aabb.CenterPoint();
 		//pos = { (aux_aabb.minPoint + aux_aabb.maxPoint) / 2 };
-		length = mesh->boinding_box.Diagonal().Length();
+		length = aux_aabb.Diagonal().Length();
 	}
 	else
 	{

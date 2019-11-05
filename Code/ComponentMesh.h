@@ -5,6 +5,8 @@
 
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
+#include "BoundingBox.h"
+
 class AssetMesh;
 class ComponentMaterial;
 
@@ -29,12 +31,13 @@ public:
 	void DrawNormals();
 	void PropertiesEditor() override;
 	void CleanUp() override;
-	void CalculBoindingBox();
+	void UpdateBoundingBox(float4x4 matrix);
 
 public:
 	//One mesh can be used by more than one mesh component
 	AssetMesh * mesh = nullptr;
-	AABB boinding_box;
+	BoundingBox bounding_box;
+
 private:
 	ComponentMaterial* material = nullptr;
 	RenderMode render_mode;

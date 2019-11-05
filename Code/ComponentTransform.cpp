@@ -80,7 +80,7 @@ void ComponentTransform::CalculateGlobalMatrix(float3 & position, float3 & scale
 	ComponentMesh* comp_mesh = gameobject->GetComponent<ComponentMesh>();
 	if (comp_mesh)
 	{
-		comp_mesh->CalculBoindingBox();
+		comp_mesh->UpdateBoundingBox(global_matrix);
 	}
 	if (children.size() > 0)
 	{
@@ -90,6 +90,7 @@ void ComponentTransform::CalculateGlobalMatrix(float3 & position, float3 & scale
 			(*iter)->CalculPRSWithMatrix();
 		}
 	}
+
 }
 
 void ComponentTransform::CalculateGlobalMatrix(float3 & position, float3 & scale, Quat & qrotation)
@@ -119,7 +120,7 @@ void ComponentTransform::CalculateGlobalMatrix(float3 & position, float3 & scale
 	ComponentMesh* comp_mesh = gameobject->GetComponent<ComponentMesh>();
 	if (comp_mesh)
 	{
-		comp_mesh->CalculBoindingBox();
+		comp_mesh->UpdateBoundingBox(global_matrix);
 	}
 
 }
