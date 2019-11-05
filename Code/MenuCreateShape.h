@@ -8,6 +8,10 @@
 #include "RenderTexture.h"
 #include "MathGeoLib/include/Math/float3.h"
 
+#define X_COORD 0
+#define Y_COORD 1
+#define Z_COORD 2
+
 typedef unsigned int uint;
 typedef struct par_shapes_mesh_s par_shapes_mesh;
 class MenuCreateShape;

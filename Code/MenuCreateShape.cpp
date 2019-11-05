@@ -226,30 +226,17 @@ void PanelCreateShape::Draw()
 	{
 		App->import->AddMesh(App->gui->create_menu->preview_shape_mesh);
 		float3 position = {0.f, 0.f, 0.f};
-		for (int x = 0; x < copies[0]; ++x)
+		if (copies[X_COORD] != 0)
 		{
-			position.y = 0.f;
-			for (int y = 0; y < copies[1]; ++y)
-			{
-				position.z = 0.f;
-				for (int z = 0; z < copies[2]; ++z)
-				{
-					GameObject * obj = App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
-					obj->transform->SetPosition(position);
-					if (copies[2] != 0)
-					{
-						position.z += separation[2];
-					}
-				}
-				if (copies[1] != 0)
-				{
-					position.y += separation[1];
-				}
-			}
-			if (copies[0] != 0)
-			{
-				position.x += separation[0];
-			}
+			CreateCopiesXYZ(position);
+		}
+		else if (copies[Y_COORD] != 0)
+		{
+			CreateCopiesYZ(position);
+		}
+		else if (copies[Z_COORD] != 0)
+		{
+			CreateCopiesZ(position);
 		}
 		SetActive(false);
 	}
@@ -258,64 +245,49 @@ void PanelCreateShape::Draw()
 
 void PanelCreateShape::CreateCopiesXYZ(float3 & position)
 {
-	int x = 0, y = 1, z = 2;
-	if (copies[x] != 0)
+	position.x = 0.f;
+	for (int i = 0; i < copies[X_COORD]; ++i)
 	{
-		position.x = 0.f;
-		for (int i = 0; i < copies[x]; ++i)
+		if (copies[Y_COORD] != 0)
 		{
-			if (copies[y] !=  0)
-			{
-				CreateCopiesYZ(position);
-			}
-			else if (copies[z] != 0)
-			{
-				CreateCopiesZ(position);
-			}
-			else
-			{
-				CreateCopyAtPosition(position);
-			}
-			position.x += separation[x];
+			CreateCopiesYZ(position);
 		}
-	}
-	else if (copies[y] != 0)
-	{
-		CreateCopiesYZ(position);
-	}
-	else if (copies[z] != 0)
-	{
-		CreateCopiesZ(position);
-	}
-}
-
-void PanelCreateShape::CreateCopiesYZ(float3 & position)
-{
-	int y = 1, z = 2;
-	position.y = 0.f;
-	for (int j = 0; j < copies[y]; ++j)
-	{
-		if (copies[z] != 0)
+		else if (copies[Z_COORD] != 0)
 		{
 			CreateCopiesZ(position);
 		}
 		else
 		{
-			GameObject * obj = App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
-			obj->transform->SetPosition(position);
+			CreateCopyAtPosition(position);
 		}
-		position.y += separation[y];
+		position.x += separation[X_COORD];
+	}
+}
+
+void PanelCreateShape::CreateCopiesYZ(float3 & position)
+{
+	position.y = 0.f;
+	for (int j = 0; j < copies[Y_COORD]; ++j)
+	{
+		if (copies[Z_COORD] != 0)
+		{
+			CreateCopiesZ(position);
+		}
+		else
+		{
+			CreateCopyAtPosition(position);
+		}
+		position.y += separation[Y_COORD];
 	}
 }
 
 void PanelCreateShape::CreateCopiesZ(float3 & position)
 {
-	int z = 2;
 	position.z = 0.f;
-	for (int k = 0; k < copies[z]; ++k)
+	for (int k = 0; k < copies[Z_COORD]; ++k)
 	{
 		CreateCopyAtPosition(position);
-		position.z += separation[z];
+		position.z += separation[Z_COORD];
 	}
 }
 
