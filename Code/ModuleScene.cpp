@@ -74,7 +74,7 @@ void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 
 void ModuleScene::DeleteGameObject(GameObject * gameobject)
 {
-	gameobject->transform->DeleteChildrens();
+	gameobject->transform->DeleteChildren();
 	if (gameobject->transform->parent)
 	{
 		for (std::vector<ComponentTransform*>::iterator iter = gameobject->transform->parent->children.begin(); iter != gameobject->transform->parent->children.end(); ++iter)

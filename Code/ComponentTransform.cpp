@@ -7,20 +7,16 @@
 
 CLASS_DEFINITION(Component, ComponentTransform)
 
-ComponentTransform::ComponentTransform(GameObject * gameobject) : Component(gameobject)
+ComponentTransform::ComponentTransform(GameObject *gameobject) : Component(gameobject)
 {
-	name = "Transform";//TODO: Every transform component (and other components) don't need its own name, they can all have the same
+	name = "Transform"; //TODO: Every transform component (and other components) don't need its own name, they can all have the same
 
 	//TODO: This is for testing purposes, remove when done
 	global_matrix = local_matrix = local_matrix.identity;
 	UpdatePos();
-
-	aux_position = position;
-	aux_rotation = { 0,0,0 };
-	aux_scale = { 1,1,1 };
 }
 
-void ComponentTransform::SetParent(ComponentTransform * parent)
+void ComponentTransform::SetParent(ComponentTransform *parent)
 {
 	if (parent != nullptr)
 	{
@@ -31,122 +27,168 @@ void ComponentTransform::SetParent(ComponentTransform * parent)
 
 void ComponentTransform::UpdatePos()
 {
-	float4 homogeneous_vec_pos = { 0,0,0,1 };
+	float4 homogeneous_vec_pos = {0, 0, 0, 1};
 	homogeneous_vec_pos = homogeneous_vec_pos * global_matrix;
-	position = { homogeneous_vec_pos.x, homogeneous_vec_pos.y,homogeneous_vec_pos.z };
+	position = {homogeneous_vec_pos.x, homogeneous_vec_pos.y, homogeneous_vec_pos.z};
 	global_matrix.Decompose(position, qrotation, scale);
-
 }
 
 void ComponentTransform::PropertiesEditor()
 {
-
-	ImGui::InputFloat3("Position", (float*)&aux_position, "%.2f");
-
-
-	ImGui::InputFloat3("Rotation", (float*)&aux_rotation, "%.2f");
-
-
-	ImGui::InputFloat3("Scale", (float*)&aux_scale, "%.2f");
-	if (aux_position != position || aux_rotation != rotation || aux_scale != scale)
+	bool position_changed = false,
+		 rotation_changed = false,
+		 scale_changed = false;
+	if (ImGui::InputFloat3("Position", (float *)&position, "%.2f"))
 	{
-		CalculateGlobalMatrix(aux_position, aux_scale, float3(DEGTORAD * aux_rotation.x, DEGTORAD * aux_rotation.y, DEGTORAD* aux_rotation.z));
+		position_changed = true;
+	}
+	if (ImGui::InputFloat3("Rotation", (float *)&euler_rotation, "%.2f"))
+	{
+		rotation_changed = true;
+	}
+	if (ImGui::InputFloat3("Scale", (float *)&scale, "%.2f"))
+	{
+		scale_changed = true;
+	}
+	if (position_changed || rotation_changed || scale_changed)
+	{
+		SetTransform(position, scale, euler_rotation);
 	}
 }
 
-void ComponentTransform::CalculateGlobalMatrix(float3 & position, float3 & scale, float3 & rotation)
+void ComponentTransform::SetTransform(float3 &position, float3 &scale, float3 &euler_rotation)
 {
-	this->position = position; 
-	this->rotation = rotation; 
+	this->position = position;
+	this->euler_rotation = euler_rotation;
 	this->scale = scale;
 
-	aux_position = position;
-	aux_rotation = rotation;
-	aux_scale = scale;
+	qrotation = Quat::FromEulerXYZ(euler_rotation.x * DEGTORAD, euler_rotation.y * DEGTORAD, euler_rotation.z * DEGTORAD);
 
-	qrotation = Quat::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
+	RecalculateMatrices();
+}
 
+void ComponentTransform::SetTransform(float3 &position, float3 &scale, Quat &qrotation)
+{
+	this->position = position;
+	this->qrotation = qrotation;
+	this->euler_rotation = qrotation.ToEulerXYZ() * RADTODEG;
+	this->scale = scale;
+
+	RecalculateMatrices();
+}
+
+void ComponentTransform::RecalculateMatrices()
+{
 	this->local_matrix = float4x4::FromTRS(position, qrotation, scale);
 
-	if (parent)
+	if (parent != nullptr)
 	{
-		this->global_matrix = this->parent->global_matrix *  this->local_matrix;
+		global_matrix = parent->global_matrix * local_matrix;
 	}
 	else
 	{
-		this->global_matrix = this->local_matrix;
+		global_matrix = local_matrix;
 	}
 
-	ComponentMesh* comp_mesh = gameobject->GetComponent<ComponentMesh>();
-	if (comp_mesh)
+	ComponentMesh *comp_mesh = gameobject->GetComponent<ComponentMesh>();
+
+
+	if (comp_mesh != nullptr)
 	{
 		comp_mesh->UpdateBoundingBox(global_matrix);
 	}
-	if (children.size() > 0)
+
+	UpdateChildrenMatrices();
+}
+
+void ComponentTransform::UpdateChildrenMatrices()
+{
+	for (std::vector<ComponentTransform *>::iterator iter = children.begin(); iter != children.end(); ++iter)
 	{
-		for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
+		(*iter)->global_matrix = global_matrix * (*iter)->local_matrix;
+		ComponentMesh *comp_mesh = gameobject->GetComponent<ComponentMesh>();
+		if (comp_mesh != nullptr)
 		{
-			(*iter)->global_matrix = this->global_matrix * (*iter)->local_matrix;
-			(*iter)->CalculPRSWithMatrix();
+			comp_mesh->UpdateBoundingBox((*iter)->global_matrix);
 		}
-	}
 
+		(*iter)->UpdateChildrenMatrices();
+	}
 }
 
-void ComponentTransform::CalculateGlobalMatrix(float3 & position, float3 & scale, Quat & qrotation)
+void ComponentTransform::SetPosition(const float3 &position)
 {
-	this->position = position; 
-	this->qrotation = qrotation;   
+	this->position = position;
+
+	RecalculateMatrices();
+}
+
+void ComponentTransform::SetRotation(const float3 &euler_rotation)
+{
+	this->euler_rotation = euler_rotation;
+	qrotation = Quat::FromEulerXYZ(euler_rotation.x * DEGTORAD, euler_rotation.y * DEGTORAD, euler_rotation.z * DEGTORAD);
+
+	RecalculateMatrices();
+}
+
+void ComponentTransform::SetRotation(const Quat &qrotation)
+{
+	this->qrotation = qrotation;
+	euler_rotation = qrotation.ToEulerXYZ() * RADTODEG;
+
+	RecalculateMatrices();
+}
+
+void ComponentTransform::SetScale(const float3 &scale)
+{
 	this->scale = scale;
 
-	this->rotation = qrotation.ToEulerXYZ();
-	this->rotation  *= RADTODEG;
+	RecalculateMatrices();
+}
 
-	this->local_matrix = float4x4::FromTRS(position, qrotation, scale);
+float3 ComponentTransform::GetPosition() const
+{
+	return position;
+}
 
-	if (parent)
-	{
-		this->global_matrix = this->parent->global_matrix *  this->local_matrix;
-	}
-	else
-	{
-		this->global_matrix = this->local_matrix;
-	}
+Quat ComponentTransform::GetRotation() const
+{
+	return qrotation;
+}
 
-	aux_position = position;
-	aux_rotation = rotation; 
-	aux_scale = scale;
+float3 ComponentTransform::GetRotationEuler() const
+{
+	return euler_rotation;
+}
 
-	ComponentMesh* comp_mesh = gameobject->GetComponent<ComponentMesh>();
-	if (comp_mesh)
-	{
-		comp_mesh->UpdateBoundingBox(global_matrix);
-	}
+float3 ComponentTransform::GetScale() const
+{
+	return scale;
+}
 
+float4x4 ComponentTransform::GetGlobalMatrix() const
+{
+	return global_matrix;
 }
 
 void ComponentTransform::Reset()
 {
-	CalculateGlobalMatrix(float3(0, 0, 0), float3(1, 1, 1), float3(0, 0, 0));
+	SetTransform(float3(0, 0, 0), float3(1, 1, 1), float3(0, 0, 0));
 }
 
-void ComponentTransform::CalculPRSWithMatrix()
+void ComponentTransform::UpdateDisplayValues()
 {
 	global_matrix.Decompose(position, qrotation, scale);
-	rotation = qrotation.ToEulerXYZ();
-
-	aux_position = position;
-	aux_rotation = rotation;
-	aux_scale = scale;
+	euler_rotation = qrotation.ToEulerXYZ();
 }
 
-void ComponentTransform::DeleteChildrens()
+void ComponentTransform::DeleteChildren()
 {
 	if (gameobject->transform->children.size() > 0)
 	{
-		for (std::vector<ComponentTransform*>::iterator iter = gameobject->transform->children.begin(); iter != gameobject->transform->children.end(); ++iter)
+		for (std::vector<ComponentTransform *>::iterator iter = gameobject->transform->children.begin(); iter != gameobject->transform->children.end(); ++iter)
 		{
-			(*iter)->DeleteChildrens();
+			(*iter)->DeleteChildren();
 			delete (*iter);
 		}
 		gameobject->transform->children.clear();

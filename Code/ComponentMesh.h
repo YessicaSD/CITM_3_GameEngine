@@ -10,7 +10,6 @@
 class AssetMesh;
 class ComponentMaterial;
 
-
 struct RenderMode
 {
 	bool fill = true;
@@ -24,7 +23,7 @@ class ComponentMesh : public Component
 {
 	CLASS_DECLARATION(ComponentMesh)
 public:
-	ComponentMesh(GameObject * gameobject);
+	ComponentMesh(GameObject *gameobject);
 	~ComponentMesh();
 	void OnPostUpdate() override;
 	void DrawVertexNormal();
@@ -32,16 +31,16 @@ public:
 	void PropertiesEditor() override;
 	void CleanUp() override;
 	void UpdateBoundingBox(float4x4 matrix);
-
-public:
-	//One mesh can be used by more than one mesh component
-	AssetMesh * mesh = nullptr;
-	BoundingBox* bounding_box;
+	AABB GetAABB();
+	
+	
 
 private:
-	ComponentMaterial* material = nullptr;
+	AssetMesh *mesh = nullptr;
+	BoundingBox *bounding_box;
+	ComponentMaterial *material = nullptr;
 	RenderMode render_mode;
-	
+
 	//Fill
 	float fill_color[4];
 
@@ -53,7 +52,7 @@ private:
 	float point_color[4];
 	float point_size = 1.f;
 	friend class ModuleImport;
+	friend class ComponentMaterial;
 };
 
 #endif // !MESH_H_
-

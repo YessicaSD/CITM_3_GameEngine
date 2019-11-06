@@ -14,17 +14,16 @@
 #include "ComponentMaterial.h"
 #include "imgui/imgui.h"
 
-
 CLASS_DEFINITION(Component, ComponentMesh)
 
-ComponentMesh::ComponentMesh(GameObject * gameobject) : Component(gameobject)
+ComponentMesh::ComponentMesh(GameObject *gameobject) : Component(gameobject)
 {
 	name = "Mesh";
 
 	fill_color[0] = fill_color[1] = fill_color[2] = fill_color[3] = 1.f;
 	line_color[0] = line_color[1] = line_color[2] = line_color[3] = 1.f;
 	point_color[0] = point_color[1] = point_color[2] = point_color[3] = 1.f;
-	material = new ComponentMaterial(gameobject,this);
+	material = new ComponentMaterial(gameobject, this);
 	gameobject->components.push_back(material);
 	bounding_box = new BoundingBox();
 }
@@ -36,13 +35,14 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::OnPostUpdate()
 {
-	if(mesh->UVCoord)
+	if (mesh->UVCoord)
+	{
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	}
 
 	glPushMatrix();
-	glMultMatrixf((const GLfloat *)&gameobject->transform->global_matrix.Transposed());
+	glMultMatrixf((const GLfloat *)&gameobject->transform->GetGlobalMatrix().Transposed());
 	glEnableClientState(GL_VERTEX_ARRAY);
-
 
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indice);
@@ -66,12 +66,12 @@ void ComponentMesh::OnPostUpdate()
 
 	if (render_mode.fill)
 	{
-		
+
 		if (mesh->vertex_normals)
 		{
 			glEnableClientState(GL_NORMAL_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex_normals);
-			glNormalPointer(GL_FLOAT,0, NULL);
+			glNormalPointer(GL_FLOAT, 0, NULL);
 		}
 		if (material)
 		{
@@ -80,8 +80,6 @@ void ComponentMesh::OnPostUpdate()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glColor4f(fill_color[0], fill_color[1], fill_color[2], fill_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
-		
-
 	}
 
 	if (render_mode.wireframe)
@@ -102,10 +100,8 @@ void ComponentMesh::OnPostUpdate()
 	glLineWidth(5);
 	glColor4f(255, 0, 0, 1);
 
-	
-
 	glBegin(GL_LINES);
-	
+
 	glEnd();
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
 	material->DisableGLModes();
@@ -113,15 +109,10 @@ void ComponentMesh::OnPostUpdate()
 		glDisable(GL_TEXTURE_COORD_ARRAY);
 	glPopMatrix();
 
-	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	bounding_box->Draw();
-	
-
-
-
 }
 
 void ComponentMesh::DrawVertexNormal()
@@ -150,7 +141,7 @@ void ComponentMesh::DrawNormals()
 	{
 		glBegin(GL_LINES);
 		glVertex3f(mesh->face_middle_point[i].x, mesh->face_middle_point[i].y, mesh->face_middle_point[i].z);
-		glVertex3f(mesh->face_middle_point[i].x + mesh->faces_normals[i].x*lenght, mesh->face_middle_point[i].y + mesh->faces_normals[i].y *lenght, mesh->face_middle_point[i].z + mesh->faces_normals[i].z*lenght);
+		glVertex3f(mesh->face_middle_point[i].x + mesh->faces_normals[i].x * lenght, mesh->face_middle_point[i].y + mesh->faces_normals[i].y * lenght, mesh->face_middle_point[i].z + mesh->faces_normals[i].z * lenght);
 		glEnd();
 	}
 	glColor3f(1, 1, 1);
@@ -163,7 +154,7 @@ void ComponentMesh::PropertiesEditor()
 		ImGui::Text("Render options");
 
 		ImGui::Checkbox("View fill", &render_mode.fill);
-		if(render_mode.fill)
+		if (render_mode.fill)
 		{
 			ImGui::ColorPicker4("Fill color", fill_color);
 		}
@@ -185,8 +176,6 @@ void ComponentMesh::PropertiesEditor()
 		ImGui::Text("View normals");
 		ImGui::Checkbox("View points normals", &render_mode.vertex_normals);
 		ImGui::Checkbox("View faces normals", &render_mode.face_normals);
-
-
 	}
 }
 
@@ -199,7 +188,7 @@ void ComponentMesh::CleanUp()
 		delete mesh;
 		mesh = nullptr;
 	}
-	if(bounding_box!=nullptr)
+	if (bounding_box != nullptr)
 	{
 		delete bounding_box;
 		bounding_box = nullptr;
@@ -209,4 +198,9 @@ void ComponentMesh::CleanUp()
 void ComponentMesh::UpdateBoundingBox(float4x4 matrix)
 {
 	bounding_box->MultiplyByMatrix(matrix, mesh->GetAABB());
+}
+
+AABB ComponentMesh::GetAABB()
+{
+	return bounding_box->GetAABB();
 }

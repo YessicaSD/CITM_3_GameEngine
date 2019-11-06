@@ -24,6 +24,8 @@ private:
 	void GenerateRenderTexture();
 	//StartRender
 	void PrepareCamera(ImVec2& size);
+	void PrepareCameraPosition();
+	void PrepareCameraFrustum(ImVec2& size);
 	void PrepareDepthBuffer(ImVec2& size);
 	void PrepareTextureBuffer(ImVec2& size);
 

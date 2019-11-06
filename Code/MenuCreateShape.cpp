@@ -225,81 +225,76 @@ void PanelCreateShape::Draw()
 	if (ImGui::Button("Create"))
 	{
 		App->import->AddMesh(App->gui->create_menu->preview_shape_mesh);
-		if (copies[0] > 0 && copies[1] > 0 && copies[2] > 0)
+		float3 position = {0.f, 0.f, 0.f};
+		if (copies[X_COORD] != 0)
 		{
-			for (int x = 0; x < copies[0]; ++x)
-			{
-				for (int y = 0; y < copies[1]; ++y)
-				{
-					for (int z = 0; z < copies[2]; ++z)
-					{
-						App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
-						//TODO: Move gameobjects
-					}
-				}
-			}
+			CreateCopiesXYZ(position);
 		}
-		else if (copies[0] > 0 && copies[1] > 0)
+		else if (copies[Y_COORD] != 0)
 		{
-			for (int x = 0; x < copies[0]; ++x)
-			{
-				for (int y = 0; y < copies[1]; ++y)
-				{
-					App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
-					//TODO: Move gameobjects
-				}
-			}
+			CreateCopiesYZ(position);
 		}
-		else if (copies[0] > 0 && copies[2] > 0)
+		else if (copies[Z_COORD] != 0)
 		{
-			for (int x = 0; x < copies[0]; ++x)
-			{
-				for (int z = 0; z < copies[2]; ++z)
-				{
-					App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
-					//TODO: Move gameobjects
-				}
-			}
+			CreateCopiesZ(position);
 		}
-		else if (copies[1] > 0 && copies[2] > 0)
-		{
-			for (int y = 0; y < copies[1]; ++y)
-			{
-				for (int z = 0; z < copies[2]; ++z)
-				{
-					App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
-					//TODO: Move gameobjects
-				}
-			}
-		}
-		else if (copies[0] > 0)
-		{
-			for (int x = 0; x < copies[0]; ++x)
-			{
-				App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
-				//TODO: Move gameobjects
-			}
-		}
-		else if (copies[1] > 0)
-		{
-			for (int y = 0; y < copies[1]; ++y)
-			{
-				App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
-				//TODO: Move gameobjects
-			}
-		}
-		else if (copies[2] > 0)
-		{
-			for (int z = 0; z < copies[2]; ++z)
-			{
-				App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
-				//TODO: Move gameobjects
-			}
-		}
-		//TODO: Create a vector with the offset and use it
 		SetActive(false);
 	}
 	ImGui::End();
+}
+
+void PanelCreateShape::CreateCopiesXYZ(float3 & position)
+{
+	position.x = 0.f;
+	for (int i = 0; i < copies[X_COORD]; ++i)
+	{
+		if (copies[Y_COORD] != 0)
+		{
+			CreateCopiesYZ(position);
+		}
+		else if (copies[Z_COORD] != 0)
+		{
+			CreateCopiesZ(position);
+		}
+		else
+		{
+			CreateCopyAtPosition(position);
+		}
+		position.x += separation[X_COORD];
+	}
+}
+
+void PanelCreateShape::CreateCopiesYZ(float3 & position)
+{
+	position.y = 0.f;
+	for (int j = 0; j < copies[Y_COORD]; ++j)
+	{
+		if (copies[Z_COORD] != 0)
+		{
+			CreateCopiesZ(position);
+		}
+		else
+		{
+			CreateCopyAtPosition(position);
+		}
+		position.y += separation[Y_COORD];
+	}
+}
+
+void PanelCreateShape::CreateCopiesZ(float3 & position)
+{
+	position.z = 0.f;
+	for (int k = 0; k < copies[Z_COORD]; ++k)
+	{
+		CreateCopyAtPosition(position);
+		position.z += separation[Z_COORD];
+	}
+}
+
+void PanelCreateShape::CreateCopyAtPosition(float3 position)
+{
+	GameObject * obj = App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
+	obj->transform->SetPosition(position);
 }
 
 void PanelCreateShape::MenuItem(const float button_height, const float button_space, const ImVec4 &button_color, const ImVec2 &button_size)
