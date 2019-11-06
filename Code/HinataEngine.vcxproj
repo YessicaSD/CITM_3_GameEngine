@@ -265,6 +265,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeQuad.cpp" />
+    <ClCompile Include="JSONFile.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glmath.cpp" />

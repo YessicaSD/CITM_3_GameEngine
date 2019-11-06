@@ -579,6 +579,7 @@
     <ClInclude Include="CubeQuad.h">
       <Filter>Sources\3DPrimitive</Filter>
     </ClInclude>
+    <ClInclude Include="JSONFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -838,6 +839,7 @@
     <ClCompile Include="CubeQuad.cpp">
       <Filter>Sources\3DPrimitive</Filter>
     </ClCompile>
+    <ClCompile Include="JSONFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
