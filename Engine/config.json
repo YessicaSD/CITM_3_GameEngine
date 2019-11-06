@@ -3,42 +3,42 @@
         "application name": "",
         "organization name": "",
         "cap fps": false,
-        "max fps": 0,
-        "Window": {
-            "brightness": 100,
-            "width": 1440,
-            "height": 810,
-            "fullscreen mode": 0,
-            "resizable": false,
-            "borderless": false,
-            "vsync": false
-        },
-        "Random": {},
-        "File System": {},
-        "Hardware": {},
-        "Input": {},
-        "Textures": {},
-        "": {},
-        "Import": {},
-        "Camera 3D": {
-            "move speed": 100,
-            "rotate speed": 50
-        },
-        "Audio": {
-            "general volume": 0.077357076108455658
-        },
-        "Gui": {},
-        "Render": {
-            "background color": [
-                0.11676472425460815,
-                0.13905617594718933,
-                0.17085427045822144
-            ],
-            "depth test": true,
-            "cull faces": true,
-            "lightning": true,
-            "color materials": true,
-            "texture 2d": true
-        }
+        "max fps": 0
+    },
+    "Window": {
+        "brightness": 0,
+        "width": 1440,
+        "height": 810,
+        "fullscreen mode": 0,
+        "resizable": false,
+        "borderless": false,
+        "vsync": false
+    },
+    "Random": {},
+    "File System": {},
+    "Hardware": {},
+    "Input": {},
+    "Textures": {},
+    "": {},
+    "Import": {},
+    "Camera 3D": {
+        "move speed": 25,
+        "rotate speed": 125
+    },
+    "Audio": {
+        "general volume": 0
+    },
+    "Gui": {},
+    "Render": {
+        "background color": [
+            0,
+            0,
+            0
+        ],
+        "depth test": true,
+        "cull faces": false,
+        "lightning": false,
+        "color materials": false,
+        "texture 2d": false
     }
 }

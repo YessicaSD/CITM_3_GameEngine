@@ -276,8 +276,8 @@ bool Application::SaveModulesConfiguration()
 
 	//When saving we override the previous file
 	config.CreateJSONFile(config_path);
-	config.AddSection("App");
-	SaveAppConfiguration(&config);
+	JSONFile * app_file = &config.AddSection("App");
+	SaveAppConfiguration(app_file);
 
 	for (std::vector<Module*>::iterator item = modules.begin();
 		item != modules.end() && ret;
@@ -308,19 +308,17 @@ bool Application::LoadModulesConfigurationWithOpenFile()
 
 	LoadAppConfiguration(&config);
 
-	//if (config != nullptr)
-	//{
-		for (std::vector<Module*>::iterator item = modules.begin();
-			item != modules.end() && ret == true;
-			++item)
+	for (std::vector<Module*>::iterator item = modules.begin();
+		item != modules.end() && ret == true;
+		++item)
+	{
+		JSONFile * module_file = &config.GetSection((*item)->name);
+		if (module_file != nullptr)
 		{
-			JSONFile * module_file = &config.AddSection((*item)->name);
-			if (module_file != nullptr)
-			{
-				ret = (*item)->LoadConfiguration(module_file);
-			}
+			ret = (*item)->LoadConfiguration(module_file);
 		}
-	//}
+	}
+
 	return ret;
 }
 

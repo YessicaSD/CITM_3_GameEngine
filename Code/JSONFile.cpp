@@ -37,6 +37,11 @@ void JSONFile::CreateJSONFile(const std::string & path)
 	}
 }
 
+JSONFile JSONFile::GetSection(const char * section_name)
+{
+	return JSONFile(json_object_get_object(object, section_name));
+}
+
 JSONFile JSONFile::AddSection(const char * section_name)
 {
 	json_object_set_value(object, section_name, json_value_init_object());

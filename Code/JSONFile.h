@@ -13,6 +13,7 @@ public:
 	JSONFile();
 	JSONFile(JSON_Object * object);
 	void CreateJSONFile(const std::string& path);
+	JSONFile GetSection(const char * section_name);
 	JSONFile AddSection(const char * section_name);
 	void LoadFile(const std::string & path);
 	void SaveFile(const std::string& path);
