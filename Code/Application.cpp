@@ -63,7 +63,7 @@ bool Application::Init()
 	config_path = "config.json";
 
 	//Automatically load the config file if it exists
-	LoadConfig();
+	config.LoadFile(config_path);
 
 	JSON_Object * app_obj = json_object_get_object(config_root, "App");
 
@@ -106,7 +106,7 @@ bool Application::Init()
 		++item;
 	}
 
-	CloseConfig();
+	config.CloseFile();
 
 	//Framerate calculations
 	cap_time = 1000 / max_fps;
@@ -283,7 +283,7 @@ bool Application::SaveModulesConfiguration()
 	bool ret = true;
 
 	//When saving we override the previous file
-	CreateNewConfig(config_path);
+	config.CreateNewFile(config_path);
 
 	json_object_set_value(config_root, "App", json_value_init_object());
 	JSON_Object * app_obj = json_object_get_object(config_root, "App");
@@ -299,9 +299,8 @@ bool Application::SaveModulesConfiguration()
 		ret = (*item)->SaveConfiguration(module_obj);
 	}
 
-	json_serialize_to_file_pretty(configValue, config_path.data());
-	
-	CloseConfig();
+	config.SaveFile(config_path);
+	config.CloseFile();
 
 	if (ret)
 	{
@@ -339,7 +338,7 @@ bool Application::LoadModulesConfiguration()
 {
 	bool ret = true;
 
-	LoadConfig();
+	config.LoadFile(config_path);
 	JSON_Object * app_obj = json_object_get_object(config_root, "App");
 
 	LoadAppConfiguration(app_obj);
@@ -357,7 +356,7 @@ bool Application::LoadModulesConfiguration()
 			}
 		}
 	}
-	CloseConfig();
+	config.CloseFile();
 
 	if (ret)
 	{
@@ -425,29 +424,4 @@ void Application::DrawModulesConfigUi()
 void Application::AddModule(Module* mod)
 {
 	modules.push_back(mod);
-}
-
-//Config
-
-void Application::LoadConfig()
-{
-	configValue = json_parse_file(config_path.c_str());
-	config_root = json_object(configValue);
-}
-
-void Application::CloseConfig()
-{
-	json_value_free(configValue);
-	config_root = nullptr;
-	configValue = nullptr;
-}
-
-void Application::CreateNewConfig(const std::string& path)
-{
-	configValue = json_value_init_object();
-	config_root = json_value_get_object(configValue);
-	if (configValue == nullptr || config_root == nullptr)
-	{
-		LOG("Error creating JSON with path %s", path.data());
-	}
 }
