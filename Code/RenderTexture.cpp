@@ -94,13 +94,25 @@ void RenderTexture::StartRender(ImVec2 size)
 
 void RenderTexture::PrepareCamera(ImVec2& size)
 {
+	//Set viewport size
 	glViewport(0, 0, size.x, size.y);
-	glMatrixMode(GL_PROJECTION);
-	App->renderer3D->projection_matrix = perspective(60.0f, size.x / size.y, App->renderer3D->camera_near, App->renderer3D->camera_far);
-	glLoadMatrixf(&App->renderer3D->projection_matrix);
+
+	PrepareCameraFrustum(size);
+	PrepareCameraPosition();
+}
+
+void RenderTexture::PrepareCameraPosition()
+{
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glLoadMatrixf(App->camera->GetViewMatrix());
+}
+
+void RenderTexture::PrepareCameraFrustum(ImVec2& size)
+{
+	glMatrixMode(GL_PROJECTION);
+	App->renderer3D->projection_matrix = perspective(60.0f, size.x / size.y, App->renderer3D->camera_near, App->renderer3D->camera_far);
+	glLoadMatrixf(&App->renderer3D->projection_matrix);
 }
 
 void RenderTexture::PrepareDepthBuffer(ImVec2& size)
