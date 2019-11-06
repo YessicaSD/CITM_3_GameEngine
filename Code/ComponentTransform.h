@@ -50,7 +50,6 @@ private:
 
 	//You should modify the local matrix, the global matrix is recalculated from it and the parents' local matrix
 	float4x4 local_matrix;
-
 	float4x4 global_matrix;
 
 	ComponentTransform * parent = nullptr;
