@@ -101,7 +101,7 @@ bool Application::Init()
 	config.CloseFile();
 
 	//Framerate calculations
-	cap_time = 1000 / max_fps;
+	cap_time = (uint32)(1000 / max_fps);
 	curr_frame_time.Start();
 
 	return ret;
@@ -146,7 +146,7 @@ void Application::FinishUpdate()
 	}
 	seconds_since_startup = startup_time.ReadSec();
 	avg_fps = float(frame_count) / seconds_since_startup;
-	curr_frame_ms = curr_frame_time.ReadMs();
+	curr_frame_ms = (uint32)curr_frame_time.ReadMs();
 	UpateMsGraph(curr_frame_ms);
 
 	//Cap fps

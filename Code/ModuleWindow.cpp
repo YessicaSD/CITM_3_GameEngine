@@ -31,7 +31,9 @@ bool ModuleWindow::Init(JSONFile * module_file)
 		ret = SetWindow();
 	}
 	
-
+	
+	SDL_SetWindowIcon(window,
+		SDL_LoadBMP("Assets/HinataIcon.bmp"));
 	return ret;
 }
 

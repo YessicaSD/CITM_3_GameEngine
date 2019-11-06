@@ -122,9 +122,11 @@
     <ClInclude Include="assimp\include\vector2.h" />
     <ClInclude Include="assimp\include\vector3.h" />
     <ClInclude Include="assimp\include\version.h" />
+    <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="CubeQuad.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="JSONFile.h" />
     <ClInclude Include="RenderTexture.h" />
@@ -258,10 +260,11 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AssetMesh.cpp" />
+    <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="JSONFile.cpp" />
+    <ClCompile Include="CubeQuad.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glmath.cpp" />
