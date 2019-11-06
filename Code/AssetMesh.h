@@ -4,9 +4,7 @@
 #include "MathGeoLib/include/Math/float3.h"
 #include "Assimp/include/vector3.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
-#include "Texture.h"
-#include "BoundingBox.h"
-
+#include "Texture.h" 
 #include <vector>
 
 
@@ -33,11 +31,10 @@ public:
 	bool GenerateFacesAndNormalsBuffer();
 	bool GenerateUVsBuffer();
 	void CleanUp();
-	BoundingBox GetBoundingBox();
+	AABB GetAABB();
 
 private:
-	BoundingBox bounding_box;
-
+	AABB aabb;
 public:
 	//Data ========================
 	uint id_indice = 0u; // index in VRAM

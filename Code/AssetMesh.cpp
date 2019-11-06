@@ -188,7 +188,7 @@ bool AssetMesh::LoadUVs(float * coords)
 
 void AssetMesh::CreateBoundingBox()
 {
-	bounding_box.CalculateBoundingBoxFromVertex(this->vertices, num_vertices);
+	aabb.Enclose(this->vertices, num_vertices);
 }
 
 bool AssetMesh::GenerateFacesAndNormalsBuffer()
@@ -248,7 +248,9 @@ void AssetMesh::CleanUp()
 	}
 }
 
-BoundingBox AssetMesh::GetBoundingBox()
+AABB AssetMesh::GetAABB()
 {
-	return bounding_box;
+	return aabb;
 }
+
+

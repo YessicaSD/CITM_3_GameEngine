@@ -36,7 +36,7 @@ public:
 public:
 	//One mesh can be used by more than one mesh component
 	AssetMesh * mesh = nullptr;
-	BoundingBox bounding_box;
+	BoundingBox* bounding_box;
 
 private:
 	ComponentMaterial* material = nullptr;

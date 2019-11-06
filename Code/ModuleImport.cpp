@@ -120,27 +120,6 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 	node->mTransformation.Decompose(scaling, rotation, translation);
 	new_gameobject->transform->CalculateGlobalMatrix(float3(translation.x, translation.y, translation.z), float3(scaling.x, scaling.y, scaling.z), Quat(rotation.x, rotation.y, rotation.z, rotation.w));
 	new_gameobject->transform->Reset();
-	//TODO: Search if there is a better way to convert from aiMatrix4x4 to math::float4x4 (both are arrays with 16 positions at the end)
-	//V1
-	/*new_gameobject->transform->local_matrix.Set(
-		node->mTransformation.a1, node->mTransformation.b1, node->mTransformation.c1, node->mTransformation.d1,
-		node->mTransformation.a2, node->mTransformation.b2, node->mTransformation.c2, node->mTransformation.d2,
-		node->mTransformation.a3, node->mTransformation.b3, node->mTransformation.c3, node->mTransformation.d3,
-		node->mTransformation.a4, node->mTransformation.b4, node->mTransformation.c4, node->mTransformation.d4);*/
-	//memcpy(&new_gameobject->transform.local_matrix, &node->mTransformation, sizeof(float) * 16);
-	//V2
-	//new_gameobject->transform.local_matrix.Set(
-	//	node->mTransformation.a1, node->mTransformation.a2, node->mTransformation.a3, node->mTransformation.a4,
-	//	node->mTransformation.b1, node->mTransformation.b2, node->mTransformation.b3, node->mTransformation.b4,
-	//	node->mTransformation.c1, node->mTransformation.c2, node->mTransformation.c3, node->mTransformation.c4,
-	//	node->mTransformation.d1, node->mTransformation.d2, node->mTransformation.d3, node->mTransformation.d4);
-
-	//TODO: Calculate global matrix after that, don't set it directly to the local matrix of the fbx node
-	//V1
-	//new_gameobject->transform->UpdatePos();
-
-	//V2
-	//new_gameobject->transform.global_matrix = parent->global_matrix * new_gameobject->transform.local_matrix;
 
 	if (node->mNumMeshes > 0u)
 	{
@@ -150,12 +129,11 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode * node, ComponentTransform 
 			int index = node->mMeshes[i];
 			ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 			component_mesh->mesh = loaded_meshes[index];
+			component_mesh->bounding_box->MultiplyByMatrix(new_gameobject->transform->global_matrix, component_mesh->mesh->GetAABB());
 			if (textures[index])
 			{
 				component_mesh->material->SetTexture(textures[index]);
 			}
-			component_mesh->bounding_box = loaded_meshes[index]->GetBoundingBox();
-			
 		}
 	}
 
@@ -203,7 +181,6 @@ GameObject* ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTr
 	GameObject * new_gameobject = new GameObject(name, parent);
 	ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 	component_mesh->mesh = asset_mesh;
-	component_mesh->bounding_box = asset_mesh->GetBoundingBox();
 	new_gameobject->transform->CalculPRSWithMatrix();
 	
 	return new_gameobject;

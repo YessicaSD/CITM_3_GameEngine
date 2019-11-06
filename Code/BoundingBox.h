@@ -4,17 +4,20 @@
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
-
+#include "MathGeoLib/include/Geometry/OBB.h"
 class BoundingBox
 {
 private:
-	Cube cube;
+	int vertex_buff = -1, indices_buff = -1;
+	Cube obb_cube;
+	Cube aabb_cube;
 	AABB aabb;
-	void UpdateCube();
+	OBB	 obb;
+	void UpdateCube(float* vertices);
 public:
-	void CalculateBoundingBoxFromVertex(float3* vertices, int num_vertices);
-	void MultiplyByMatrix(float4x4 matrix);
-	void Draw(const float *);
+	BoundingBox();
+	void MultiplyByMatrix(float4x4 matrix, AABB aabb);
+	void Draw();
 	AABB GetAABB();
 
 };

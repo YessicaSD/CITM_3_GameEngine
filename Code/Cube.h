@@ -17,11 +17,9 @@ typedef unsigned int uint;
 
 class Cube
 {
-	
 	float vertices[NUM_VERTICES * 3];
 	uint vetex_buf_id, indices_buf_id;
 	
-
 public:
 
 	Cube(float width, float height, float depth, float3	position);
@@ -29,9 +27,11 @@ public:
 
 
 	//void Draw_DirectMode();
-	void Draw(const float * matrix);
+	void Draw();
+	void DrawQuads();
 	void Set(float width, float height, float depth, float3 position);
-
+	void SetVetices(float* vertices);
+	void SetIndeces(uint* indices,const int& num_indices);
 	//Only call ones
 	void OpenBuffers();
 
