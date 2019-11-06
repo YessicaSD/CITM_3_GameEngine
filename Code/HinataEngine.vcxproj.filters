@@ -577,6 +577,9 @@
     <ClInclude Include="BoundingBox.h">
       <Filter>Sources\3DPrimitive</Filter>
     </ClInclude>
+    <ClInclude Include="CubeQuad.h">
+      <Filter>Sources\3DPrimitive</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -832,6 +835,9 @@
     </ClCompile>
     <ClCompile Include="PerfTimer.cpp" />
     <ClCompile Include="BoundingBox.cpp">
+      <Filter>Sources\3DPrimitive</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeQuad.cpp">
       <Filter>Sources\3DPrimitive</Filter>
     </ClCompile>
   </ItemGroup>
