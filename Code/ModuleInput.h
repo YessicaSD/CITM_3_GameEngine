@@ -31,7 +31,7 @@ public:
 	ModuleInput(const char* name, bool start_enabled = true);
 	~ModuleInput();
 
-	bool Init(JSON_Object* config) override;
+	bool Init(JSONFile * module_file) override;
 	update_status PreUpdate() override;
 	bool CleanUp();
 

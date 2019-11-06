@@ -110,6 +110,7 @@ public:
 
 	bool LoadModulesConfiguration();
 	bool SaveModulesConfiguration();
+	bool LoadModulesConfigurationWithOpenFile();
 	bool CleanUp();
 
 	void RequestBrowser(const char* path);
@@ -124,8 +125,8 @@ private:
 	void FinishUpdate();
 
 	//Config
-	bool LoadAppConfiguration(JSON_Object * app_obj);
-	bool SaveAppConfiguration(JSON_Object * app_obj);
+	bool LoadAppConfiguration(JSONFile * app_file);
+	bool SaveAppConfiguration(JSONFile * app_file);
 
 	void UpdateFPSGraph(uint32 last_second_fps);
 	void DrawFPSGraph(char * titleGraph, const ImVec2 &size);

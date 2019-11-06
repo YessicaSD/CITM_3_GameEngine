@@ -6,7 +6,7 @@ ModuleRandom::ModuleRandom(const char * name, bool start_enabled) : Module(start
 {
 }
 
-bool ModuleRandom::Init(JSON_Object* config)
+bool ModuleRandom::Init(JSONFile * module_file)
 {
 	LOG("Initializing random seed source from Module Random");
 	// Seed with a real random value, if available

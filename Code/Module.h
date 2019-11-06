@@ -6,6 +6,7 @@
 class Application;
 struct Event;
 struct JSON_OBJECT;
+class JSONFile;
 
 #include <string>
 class Module
@@ -21,12 +22,12 @@ public:
 	virtual ~Module()
 	{}
 
-	virtual bool Init(JSON_Object* config) 
+	virtual bool Init(JSONFile * module_file) 
 	{
 		return true; 
 	}
 
-	virtual bool Start(JSON_Object* config)
+	virtual bool Start(JSONFile * module_file)
 	{
 		return true;
 	}
@@ -51,12 +52,12 @@ public:
 		return true; 
 	}
 	
-	virtual bool LoadConfiguration(JSON_Object * config)
+	virtual bool LoadConfiguration(JSONFile * module_file)
 	{
 		return true;
 	}
 	
-	virtual bool SaveConfiguration(JSON_Object * config)
+	virtual bool SaveConfiguration(JSONFile * module_file)
 	{
 		return true;
 	}

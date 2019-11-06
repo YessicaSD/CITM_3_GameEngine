@@ -15,7 +15,7 @@ ModuleWindow::~ModuleWindow()
 }
 
 // Called before render is available
-bool ModuleWindow::Init(JSON_Object* module_obj)
+bool ModuleWindow::Init(JSONFile * module_file)
 {
 	LOG("Init SDL window & surface");
 	bool ret = true;
@@ -35,39 +35,39 @@ bool ModuleWindow::Init(JSON_Object* module_obj)
 	return ret;
 }
 
-bool ModuleWindow::SaveConfiguration(JSON_Object * module_obj)
+bool ModuleWindow::SaveConfiguration(JSONFile * module_file)
 {
-	json_object_set_number(module_obj, "brightness", brightness);
-	json_object_set_number(module_obj, "width", GetWindowWidth());
-	json_object_set_number(module_obj, "height", GetWindowHeight());
-	json_object_set_number(module_obj, "fullscreen mode", current_window_mode);
-	json_object_set_boolean(module_obj, "resizable", resizable);
-	json_object_set_boolean(module_obj, "borderless", borderless);
-	json_object_set_boolean(module_obj, "vsync", vsync);
+	module_file->SaveNumber("brightness", brightness);
+	module_file->SaveNumber("width", GetWindowWidth());
+	module_file->SaveNumber("height", GetWindowHeight());
+	module_file->SaveNumber("fullscreen mode", current_window_mode);
+	module_file->SaveBool("resizable", resizable);
+	module_file->SaveBool("borderless", borderless);
+	module_file->SaveBool("vsync", vsync);
 	return true;
 }
 
-bool ModuleWindow::LoadConfiguration(JSON_Object * module_obj)
+bool ModuleWindow::LoadConfiguration(JSONFile * module_file)
 {
-	brightness = json_object_get_number(module_obj, "brightness");
+	brightness = module_file->LoadNumber("brightness");
 
 	//INFO: Loading the brightness makes the screen go completely dark, only showing your cursor
 	//SetBrightness(brightness);
 
 	SetWindowSize(
-		json_object_get_number(module_obj, "width"),
-		json_object_get_number(module_obj, "height"));
+		module_file->LoadNumber("width"),
+		module_file->LoadNumber("height"));
 
-	current_window_mode = json_object_get_number(module_obj, "fullscreen mode");
+	current_window_mode = module_file->LoadNumber("fullscreen mode");
 	SetFullscreenMode();
 
-	resizable = json_object_get_boolean(module_obj, "resizable");
+	resizable = module_file->LoadBool("resizable");
 	SDL_SetWindowResizable(App->window->window, App->window->resizable ? SDL_TRUE : SDL_FALSE);
 
-	borderless = json_object_get_boolean(module_obj, "borderless");
+	borderless = module_file->LoadBool("borderless");
 	SDL_SetWindowBordered(App->window->window, App->window->borderless ? SDL_FALSE : SDL_TRUE);
 
-	vsync = json_object_get_boolean(module_obj, "vsync");
+	vsync = module_file->LoadBool("vsync");
 	if (SDL_GL_SetSwapInterval(App->window->vsync ? 1 : 0) == -1)
 	{
 		LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());

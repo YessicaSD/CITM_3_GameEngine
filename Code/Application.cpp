@@ -17,6 +17,7 @@
 #include "ModuleCamera3D.h"
 #include "ModuleGui.h"
 #include "ModuleRenderer3D.h"
+#include "JSONFile.h"
 
 Application::Application()
 {
@@ -64,8 +65,7 @@ bool Application::Init()
 
 	//Automatically load the config file if it exists
 	config.LoadFile(config_path);
-
-	JSON_Object * app_obj = json_object_get_object(config_root, "App");
+	config.AddSection("App");
 
 	//TODO: Load app values
 	//cap frames
@@ -77,7 +77,9 @@ bool Application::Init()
 	while (item != modules.end() && ret == true)
 	{
 		if ((*item)->IsActive())
-			ret = (*item)->Init(app_obj);
+		{
+			ret = (*item)->Init(&config);
+		}
 		++item;
 	}
 
@@ -89,22 +91,12 @@ bool Application::Init()
 	{
 		if ((*item)->IsActive())
 		{
-			ret = (*item)->Start(app_obj);
+			ret = (*item)->Start(&config);
 		}
 		++item;
 	}
 
-	LoadAppConfiguration(app_obj);
-	item = modules.begin();
-	while (item != modules.end() && ret == true)
-	{
-		JSON_Object * module_obj = json_object_get_object(app_obj, (*item)->name);
-		if (app_obj != nullptr)
-		{
-			ret = (*item)->LoadConfiguration(module_obj);
-		}
-		++item;
-	}
+	ret = LoadModulesConfigurationWithOpenFile();
 
 	config.CloseFile();
 
@@ -283,20 +275,19 @@ bool Application::SaveModulesConfiguration()
 	bool ret = true;
 
 	//When saving we override the previous file
-	config.CreateNewFile(config_path);
-
-	json_object_set_value(config_root, "App", json_value_init_object());
-	JSON_Object * app_obj = json_object_get_object(config_root, "App");
-
-	SaveAppConfiguration(app_obj);
+	config.CreateJSONFile(config_path);
+	config.AddSection("App");
+	SaveAppConfiguration(&config);
 
 	for (std::vector<Module*>::iterator item = modules.begin();
 		item != modules.end() && ret;
 		item = ++item)
 	{
-		json_object_set_value(app_obj, (*item)->name, json_value_init_object());
-		JSON_Object * module_obj = json_object_get_object(app_obj, (*item)->name);
-		ret = (*item)->SaveConfiguration(module_obj);
+		JSONFile * module_file = &config.AddSection((*item)->name);
+		if (module_file != nullptr)
+		{
+			ret = (*item)->SaveConfiguration(module_file);
+		}
 	}
 
 	config.SaveFile(config_path);
@@ -310,26 +301,49 @@ bool Application::SaveModulesConfiguration()
 	return ret;
 }
 
-bool Application::LoadAppConfiguration(JSON_Object * app_obj)
+bool Application::LoadModulesConfigurationWithOpenFile()
 {
-	if (app_obj != nullptr)
+	bool ret = true;
+	config.AddSection("App");
+
+	LoadAppConfiguration(&config);
+
+	//if (config != nullptr)
+	//{
+		for (std::vector<Module*>::iterator item = modules.begin();
+			item != modules.end() && ret == true;
+			++item)
+		{
+			JSONFile * module_file = &config.AddSection((*item)->name);
+			if (module_file != nullptr)
+			{
+				ret = (*item)->LoadConfiguration(module_file);
+			}
+		}
+	//}
+	return ret;
+}
+
+bool Application::LoadAppConfiguration(JSONFile * app_file)
+{
+	if (app_file != nullptr)
 	{
-		application_name = json_object_get_string(app_obj, "application name");
-		organization_name = json_object_get_string(app_obj, "organization name");
-		cap_fps = json_object_get_boolean(app_obj, "cap fps");
-		max_fps = json_object_get_number(app_obj, "max fps");
+		application_name = app_file->LoadText("application name");
+		organization_name = app_file->LoadText("organization name");
+		cap_fps = app_file->LoadBool("cap fps");
+		max_fps = app_file->LoadNumber("max fps");
 	}
 	return true;
 }
 
-bool Application::SaveAppConfiguration(JSON_Object * app_obj)
+bool Application::SaveAppConfiguration(JSONFile * app_file)
 {
-	if (app_obj != nullptr)
+	if (app_file != nullptr)
 	{
-		json_object_set_string(app_obj, "application name", application_name.c_str());
-		json_object_set_string(app_obj, "organization name", organization_name.c_str());
-		json_object_set_boolean(app_obj, "cap fps", cap_fps);
-		json_object_set_number(app_obj, "max fps", max_fps);
+		app_file->SaveText("application name", application_name.c_str());
+		app_file->SaveText("organization name", organization_name.c_str());
+		app_file->SaveBool("cap fps", cap_fps);
+		app_file->SaveNumber("max fps", max_fps);
 	}
 	return true;
 }
@@ -339,23 +353,7 @@ bool Application::LoadModulesConfiguration()
 	bool ret = true;
 
 	config.LoadFile(config_path);
-	JSON_Object * app_obj = json_object_get_object(config_root, "App");
-
-	LoadAppConfiguration(app_obj);
-
-	if(app_obj != nullptr)
-	{
-		for (std::vector<Module*>::iterator item = modules.begin();
-			item != modules.end() && ret == true;
-			++item)
-		{
-			JSON_Object * module_obj = json_object_get_object(app_obj, (*item)->name);
-			if (module_obj != nullptr)
-			{
-				ret = (*item)->LoadConfiguration(module_obj);
-			}
-		}
-	}
+	ret = LoadModulesConfigurationWithOpenFile();
 	config.CloseFile();
 
 	if (ret)

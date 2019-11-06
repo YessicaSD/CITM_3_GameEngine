@@ -36,7 +36,7 @@ void AssimpWrite(const char * text, char * data)
 ModuleImport::ModuleImport(const char * name) : Module(true, name)
 {}
 
-bool ModuleImport::Start(JSON_Object* config)
+bool ModuleImport::Start(JSONFile * config)
 {
 	LOG("Creating assimp LOG stream");
 	aiLogStream stream;

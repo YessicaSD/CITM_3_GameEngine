@@ -18,7 +18,7 @@ public:
 	// Destructor
 	virtual ~ModuleWindow();
 
-	bool Init(JSON_Object* config) override;
+	bool Init(JSONFile * module_file) override;
 
 	bool CleanUp();
 
@@ -42,8 +42,8 @@ public:
 
 	void SetFullscreenMode();
 	
-	bool SaveConfiguration(JSON_Object * module_obj) override;
-	bool LoadConfiguration(JSON_Object * module_obj) override;
+	bool SaveConfiguration(JSONFile * module_file) override;
+	bool LoadConfiguration(JSONFile * module_file) override;
 
 private:
 	Uint32 GetFlags();

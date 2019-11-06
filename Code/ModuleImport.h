@@ -19,7 +19,7 @@ class ModuleImport : public Module
 {
 public:
 	ModuleImport(const char * name);
-	bool Start(JSON_Object* config) override;
+	bool Start(JSONFile * module_file) override;
 	bool LoadMesh(const char* path);
 	bool CleanUp() override;
 

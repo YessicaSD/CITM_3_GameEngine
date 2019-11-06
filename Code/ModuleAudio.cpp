@@ -3,6 +3,7 @@
 #include "Bass/include/bass.h"
 #include "Bass/include/bassenc.h"
 #include "Bass/include/bassenc_ogg.h"
+#include "JSONFile.h"
 
 #pragma comment( lib, "Bass/libx86/bass.lib" )
 #pragma comment( lib, "Bass/libx86/bassenc.lib" )
@@ -12,7 +13,7 @@ ModuleAudio::ModuleAudio(const char * name):Module(true, name)
 {
 }
 
-bool ModuleAudio::Init(JSON_Object* config)
+bool ModuleAudio::Init(JSONFile * module_file)
 {
 	LOG("Loading Audio Module");
 
@@ -51,16 +52,16 @@ void ModuleAudio::SetVolume(float value)
 	BASS_SetVolume(value);
 }
 
-bool ModuleAudio::SaveConfiguration(JSON_Object * module_obj)
+bool ModuleAudio::SaveConfiguration(JSONFile * module_file)
 {
-	json_object_set_number(module_obj, "general volume", general_volume);
+	module_file->SaveNumber("general volume", general_volume);
 
 	return true;
 }
 
-bool ModuleAudio::LoadConfiguration(JSON_Object * module_obj)
+bool ModuleAudio::LoadConfiguration(JSONFile * module_file)
 {
-	general_volume = json_object_get_number(module_obj, "general volume");
+	general_volume = module_file->LoadNumber("general volume");
 	SetVolume(general_volume);
 	return true;
 }

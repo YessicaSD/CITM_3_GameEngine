@@ -9,7 +9,7 @@ class ModuleRandom : public Module
 {
 public:
 	ModuleRandom(const char * name, bool start_enabled = true);
-	bool Init(JSON_Object* config) override;
+	bool Init(JSONFile * module_file) override;
 
 	int RandomInt(int from, int to);
 	float RandomFloat0to1();

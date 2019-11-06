@@ -22,8 +22,8 @@ public:
 	float* GetViewMatrix();
 
 	void DrawConfigurationUi() override;
-	bool SaveConfiguration(JSON_Object * module_obj) override;
-	bool LoadConfiguration(JSON_Object * module_obj) override;
+	bool SaveConfiguration(JSONFile* module_file) override;
+	bool LoadConfiguration(JSONFile* module_file) override;
 
 private:
 	void CalculateViewMatrix();

@@ -45,7 +45,7 @@ ModuleGui::~ModuleGui()
 	RELEASE(create_menu);
 }
 
-bool ModuleGui::Init(JSON_Object* config)
+bool ModuleGui::Init(JSONFile * module_file)
 {
 	bool ret = true;
 
@@ -70,7 +70,7 @@ bool ModuleGui::Init(JSON_Object* config)
 	return ret;
 }
 
-bool ModuleGui::Start(JSON_Object* config)
+bool ModuleGui::Start(JSONFile * module_file)
 {
 	panel_console		= CreatePanel<PanelConsole>("Console", true);
 	panel_shortcuts		= CreatePanel<PanelShortcuts>("Shortcuts", true);

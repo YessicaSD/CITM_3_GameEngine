@@ -19,7 +19,7 @@ static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
 ModuleTexture::ModuleTexture(const char * name) : Module(true, name)
 {}
 
-bool ModuleTexture::Init(JSON_Object* config)
+bool ModuleTexture::Init(JSONFile * module_file)
 {
 	//Initialize DevIL libraries
 	LOG("Initializing DevIl libraries");
