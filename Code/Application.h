@@ -8,6 +8,7 @@
 #include "Timer.h"
 #include "PerfTimer.h"
 #include "parson/parson.h"
+#include "JSONFile.h"
 
 #define FPS_GRAPH_SAMPLES 101
 #define GRAPH_TITLE_SIZE 100
@@ -48,8 +49,6 @@ public:
 	ModuleFileSystem* file_system = nullptr;
 	ModuleAudio* audio = nullptr;
 	ModuleHardware* hardware = nullptr;
-	
-	JSON_Object * config_root = nullptr;
 
 	std::string application_name;
 	std::string organization_name;
@@ -57,7 +56,7 @@ public:
 private:
 	std::vector<Module*> modules;
 
-	JSON_Value * configValue = nullptr;
+	JSONFile config;
 
 	std::list<std::string> log_strings;
 
@@ -111,6 +110,7 @@ public:
 
 	bool LoadModulesConfiguration();
 	bool SaveModulesConfiguration();
+	bool LoadModulesConfigurationWithOpenFile();
 	bool CleanUp();
 
 	void RequestBrowser(const char* path);
@@ -125,11 +125,8 @@ private:
 	void FinishUpdate();
 
 	//Config
-	bool LoadAppConfiguration(JSON_Object * app_obj);
-	bool SaveAppConfiguration(JSON_Object * app_obj);
-	void LoadConfig();
-	void CloseConfig();
-	void CreateNewConfig(const std::string& path);
+	bool LoadAppConfiguration(JSONFile * app_file);
+	bool SaveAppConfiguration(JSONFile * app_file);
 
 	void UpdateFPSGraph(uint32 last_second_fps);
 	void DrawFPSGraph(char * titleGraph, const ImVec2 &size);

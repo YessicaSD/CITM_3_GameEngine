@@ -128,6 +128,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeQuad.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="JSONFile.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="glew\include\GL\eglew.h" />
@@ -234,7 +235,6 @@
     <ClInclude Include="PanelProperties.h" />
     <ClInclude Include="PanelScene.h" />
     <ClInclude Include="PanelShortcuts.h" />
-    <ClInclude Include="ParserHelper.h" />
     <ClInclude Include="parson\parson.h" />
     <ClInclude Include="par\par_bluenoise.h" />
     <ClInclude Include="par\par_bubbles.h" />
@@ -336,7 +336,6 @@
     <ClCompile Include="PanelProperties.cpp" />
     <ClCompile Include="PanelScene.cpp" />
     <ClCompile Include="PanelShortcuts.cpp" />
-    <ClCompile Include="ParserHelper.cpp" />
     <ClCompile Include="parson\parson.c" />
     <ClCompile Include="PerfTimer.cpp" />
     <ClCompile Include="Primitive.cpp" />

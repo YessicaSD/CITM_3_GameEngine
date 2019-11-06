@@ -50,8 +50,8 @@ private:
 public:
 	ModuleGui(const char * name, bool start_enabled = true);
 	~ModuleGui();
-	bool Init(JSON_Object* config) override;
-	bool Start(JSON_Object* config) override;
+	bool Init(JSONFile * module_file) override;
+	bool Start(JSONFile * module_file) override;
 	update_status PreUpdate() override;
 	update_status PostUpdate() override;
 	void CreateDockspace(ImGuiIO& io);

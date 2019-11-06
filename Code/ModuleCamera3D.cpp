@@ -27,7 +27,7 @@ ModuleCamera3D::~ModuleCamera3D()
 }
 
 // -----------------------------------------------------------------
-bool ModuleCamera3D::Start(JSON_Object *config)
+bool ModuleCamera3D::Start(JSONFile* config)
 {
 	LOG("Setting up the camera");
 	bool ret = true;
@@ -223,17 +223,17 @@ float *ModuleCamera3D::GetViewMatrix()
 	return &ViewMatrix;
 }
 
-bool ModuleCamera3D::SaveConfiguration(JSON_Object *module_obj)
+bool ModuleCamera3D::SaveConfiguration(JSONFile * module_file)
 {
-	json_object_set_number(module_obj, "move speed", camera_move_speed);
-	json_object_set_number(module_obj, "rotate speed", camera_rotate_speed);
+	module_file->SaveNumber("move speed", camera_move_speed);
+	module_file->SaveNumber("rotate speed", camera_rotate_speed);
 	return true;
 }
 
-bool ModuleCamera3D::LoadConfiguration(JSON_Object *module_obj)
+bool ModuleCamera3D::LoadConfiguration(JSONFile * module_file)
 {
-	camera_move_speed = json_object_get_number(module_obj, "move speed");
-	camera_rotate_speed = json_object_get_number(module_obj, "rotate speed");
+	camera_move_speed = module_file->LoadNumber("move speed");
+	camera_rotate_speed = module_file->LoadNumber("rotate speed");
 	return true;
 }
 

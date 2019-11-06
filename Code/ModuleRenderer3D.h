@@ -24,17 +24,13 @@ public:
 	ModuleRenderer3D(const char* name, bool start_enabled = true);
 	~ModuleRenderer3D();
 
-	bool Init(JSON_Object* config);
-	void GenSceneFramebuffer();
+	bool Init(JSONFile * module_file);
 	update_status PreUpdate() override;
-	void PrepareTextureBuffer(ImVec2 &size);
-	void PrepareDepthBuffer(ImVec2 &size);
-	void PrepareCamera(ImVec2 &size);
 	update_status PostUpdate() override;
 	bool CleanUp();
 
-	bool SaveConfiguration(JSON_Object * module_obj);
-	bool LoadConfiguration(JSON_Object * module_obj);
+	bool SaveConfiguration(JSONFile * module_file);
+	bool LoadConfiguration(JSONFile * module_file);
 
 	void OnResize(int width, int height);
 	

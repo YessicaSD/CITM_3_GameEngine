@@ -8,10 +8,10 @@ private:
 	float general_volume = 0.0f;
 public:
 	ModuleAudio(const char* name);
-	bool Init(JSON_Object* config);
+	bool Init(JSONFile * module_file);
 	void SetVolume(float value);
-	bool SaveConfiguration(JSON_Object * module_obj) override;
-	bool LoadConfiguration(JSON_Object * module_obj) override;
+	bool SaveConfiguration(JSONFile * module_file) override;
+	bool LoadConfiguration(JSONFile * module_file) override;
 	void DrawConfigurationUi() override;
 };
 #endif // !MODULE_AUDIO_H_

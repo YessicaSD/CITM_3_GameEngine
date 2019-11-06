@@ -11,9 +11,9 @@ public:
 	ModuleCamera3D(const char * name, bool start_enabled = true);
 	~ModuleCamera3D();
 
-	bool Start(JSON_Object* config);
-	update_status Update(float dt);
-	bool CleanUp();
+	bool Start(JSONFile * config) override;
+	update_status Update(float dt) override;
+	bool CleanUp() override;
 
 	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const vec3 &Spot);
@@ -22,8 +22,8 @@ public:
 	float* GetViewMatrix();
 
 	void DrawConfigurationUi() override;
-	bool SaveConfiguration(JSON_Object * module_obj) override;
-	bool LoadConfiguration(JSON_Object * module_obj) override;
+	bool SaveConfiguration(JSONFile* module_file) override;
+	bool LoadConfiguration(JSONFile* module_file) override;
 
 private:
 	void CalculateViewMatrix();

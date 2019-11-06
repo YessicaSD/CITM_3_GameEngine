@@ -571,7 +571,6 @@
     <ClInclude Include="mmgr\nommgr.h">
       <Filter>Sources\Tools\mmgr</Filter>
     </ClInclude>
-    <ClInclude Include="ParserHelper.h" />
     <ClInclude Include="PerfTimer.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="BoundingBox.h">
@@ -823,7 +822,6 @@
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>Sources\Tools\mmgr</Filter>
     </ClCompile>
-    <ClCompile Include="ParserHelper.cpp" />
     <ClCompile Include="ModulesDrawConfigUI.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>

@@ -12,7 +12,7 @@ private:
 
 public:
 	ModuleTexture(const char * name);
-	bool Init(JSON_Object* config) override;
+	bool Init(JSONFile * module_file) override;
 	Texture* LoadTexture(const char* path);
 	bool CleanUp() override;
 	friend class PanelAssets;
