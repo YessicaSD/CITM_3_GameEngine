@@ -22,7 +22,9 @@ void BoundingBox::MultiplyByMatrix(float4x4 matrix, AABB aabb)
 void BoundingBox::Draw()
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glColor3f(0, 0, 1);
 	obb_cube.Draw();
+	glColor3f(0, 1, 0);
 	aabb_cube.Draw();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glLineWidth(1);
