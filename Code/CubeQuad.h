@@ -10,7 +10,7 @@
 //A cube has 6 faces
 //Each face has 2 triangles
 //Each triangle is form by 3 vetices
-#define NUM_INDICES 6*4
+#define NUM_INDICES 8*4
 
 typedef unsigned int uint;
 
