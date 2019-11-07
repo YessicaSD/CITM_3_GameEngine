@@ -5,6 +5,7 @@
 #include "ModuleRandom.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
+#include "ComponentCamera.h"
 #include "glew\include\GL\glew.h"
 #include "PanelScene.h"
 #include <gl\GL.h>
@@ -14,14 +15,13 @@
 #include "ModuleGui.h"
 #include "ModuleInput.h"
 #include "ModuleImport.h"
-#include "ComponentCamera.h"
+
 
 ModuleScene::ModuleScene(bool start_enabled) :
 	Module(start_enabled)
 {
 	root_gameobject = new GameObject("Root", nullptr);
-	camera = new GameObject("Camera", root_gameobject->transform);
-	camera->CreateComponent<ComponentCamera>();
+	
 
 }
 
@@ -33,6 +33,8 @@ bool ModuleScene::Start(JSONFile * config)
 {
 	//LOG("Loading Intro assets");
 	bool ret = true;
+	camera = new GameObject("Camera", root_gameobject->transform);
+	camera->CreateComponent<ComponentCamera>();
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));	
