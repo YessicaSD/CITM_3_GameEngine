@@ -35,7 +35,7 @@ Application::Application()
 	AddModule(scene = new ModuleScene("Scene"));
 	AddModule(import = new ModuleImport("Import"));
 	AddModule(camera = new ModuleCamera3D("Camera 3D"));
-	AddModule(audio = new ModuleAudio("Audio"));
+	//AddModule(audio = new ModuleAudio("Audio"));
 	AddModule(gui = new ModuleGui("Gui"));
 
 	// Renderer last!

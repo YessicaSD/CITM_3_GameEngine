@@ -1,6 +1,6 @@
 #ifndef  BOUNDING_BOX_H_
 #define  BOUNDING_BOX_H_
-#include "CubeQuad.h"
+#include "CubeLine.h"
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "MathGeoLib/include/Math/float4.h"
@@ -11,7 +11,7 @@ class BoundingBox
 {
 
 private:
-	CubeQuad obb_cube, aabb_cube;
+	CubeLine obb_cube, aabb_cube;
 	AABB aabb;
 	OBB	 obb;
 	

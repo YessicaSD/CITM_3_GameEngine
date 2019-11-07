@@ -14,12 +14,15 @@
 #include "ModuleGui.h"
 #include "ModuleInput.h"
 #include "ModuleImport.h"
-
+#include "ComponentCamera.h"
 
 ModuleScene::ModuleScene(bool start_enabled) :
 	Module(start_enabled)
 {
 	root_gameobject = new GameObject("Root", nullptr);
+	camera = new GameObject("Camera", root_gameobject->transform);
+	camera->CreateComponent<ComponentCamera>();
+
 }
 
 ModuleScene::~ModuleScene()
@@ -96,7 +99,7 @@ update_status ModuleScene::PostUpdate()
 	App->renderer3D->scene_fbo.StartRender(App->gui->panel_scene->current_viewport_size);
 
 	PPlane p(0, 1, 0, 0);
-	p.axis = true;
+	//p.axis = true;
 	p.wire = false;
 	p.Render();
 

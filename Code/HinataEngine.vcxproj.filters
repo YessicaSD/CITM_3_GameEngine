@@ -576,10 +576,13 @@
     <ClInclude Include="BoundingBox.h">
       <Filter>Sources\3DPrimitive</Filter>
     </ClInclude>
-    <ClInclude Include="CubeQuad.h">
+    <ClInclude Include="JSONFile.h" />
+    <ClInclude Include="ComponentCamera.h">
+      <Filter>Sources\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeLine.h">
       <Filter>Sources\3DPrimitive</Filter>
     </ClInclude>
-    <ClInclude Include="JSONFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -836,10 +839,13 @@
     <ClCompile Include="BoundingBox.cpp">
       <Filter>Sources\3DPrimitive</Filter>
     </ClCompile>
-    <ClCompile Include="CubeQuad.cpp">
+    <ClCompile Include="JSONFile.cpp" />
+    <ClCompile Include="ComponentCamera.cpp">
+      <Filter>Sources\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeLine.cpp">
       <Filter>Sources\3DPrimitive</Filter>
     </ClCompile>
-    <ClCompile Include="JSONFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">

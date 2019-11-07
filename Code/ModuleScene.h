@@ -32,6 +32,7 @@ private:
 public:
 	//All gameobjects are children of the root gameobject
 	GameObject* root_gameobject;
+	GameObject* camera;
 };
 
 #endif // !MODULESCENE_H_
