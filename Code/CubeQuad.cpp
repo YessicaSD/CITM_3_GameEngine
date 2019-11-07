@@ -13,7 +13,11 @@ void CubeQuad::OpenBuffers()
 
 void CubeQuad::SetIndices()
 {
-	uint indices[NUM_INDICES] = { 1,5,7,3, 5,4,6,7, 0,2,6,4, 1,3,2,0, 3,7,6,2, 0,4,5,1 };
+	uint indices[NUM_INDICES] = {
+	0,1, 0,4, 4,5, 5,1,	//Front
+	3,2, 2,0, 0,1, 1,3,
+	7,6, 6,2, 2,3, 3,7,
+	6,4, 2,0, 7,5, 3,1 };
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_buf_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * NUM_INDICES, indices, GL_STATIC_DRAW);
 }
@@ -39,7 +43,7 @@ void CubeQuad::Draw()
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_buf_id);
-	glDrawElements(GL_QUADS, NUM_INDICES, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_LINES, NUM_INDICES, GL_UNSIGNED_INT, NULL);
 }
 
 void CubeQuad::Set(float width, float height, float depth, float3 position)
