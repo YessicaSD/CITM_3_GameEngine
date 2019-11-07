@@ -18,7 +18,8 @@ public:
 
 	void SetParent(ComponentTransform * parent);
 	//void SetChildren(std::vector<Transform*> children);
-	void UpdatePos();
+	
+	void OnPostUpdate() override;
 	void PropertiesEditor() override;
 	void SetTransform(float3& position, float3& scale, float3 & rotation);
 	void SetTransform(float3& position, float3& scale, Quat & qrotation);
@@ -26,7 +27,7 @@ public:
 	void SetRotation(const float3 & euler_rotation);
 	void SetRotation(const Quat & qrotation);
 	void SetScale(const float3 & scale);
-
+	float3 GetZAxis();
 
 	float3 GetPosition() const;
 	Quat GetRotation() const;
@@ -37,16 +38,20 @@ public:
 	void Reset();
 	void UpdateDisplayValues();
 	void DeleteChildren();
+	void DrawAxis();
 
 private:
 	void RecalculateMatrices();
 	void UpdateChildrenMatrices();
+	void UpdateVector();
 
 private:
 	float3 position = {0.f, 0.f, 0.f },
 		scale = { 0.f, 0.f, 0.f },
 		euler_rotation = { 0.f, 0.f, 0.f };
 	Quat qrotation;
+
+	float3 x, y, z;
 
 	//You should modify the local matrix, the global matrix is recalculated from it and the parents' local matrix
 	float4x4 local_matrix;

@@ -113,6 +113,7 @@ void ComponentMesh::OnPostUpdate()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	bounding_box->Draw();
+	
 }
 
 void ComponentMesh::DrawVertexNormal()

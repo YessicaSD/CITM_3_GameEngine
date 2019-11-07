@@ -5,6 +5,9 @@
 #include "ComponentMesh.h"
 #include "Globals.h"
 
+#include "glew/include/GL/glew.h"
+
+
 CLASS_DEFINITION(Component, ComponentTransform)
 
 ComponentTransform::ComponentTransform(GameObject *gameobject) : Component(gameobject)
@@ -13,7 +16,9 @@ ComponentTransform::ComponentTransform(GameObject *gameobject) : Component(gameo
 
 	//TODO: This is for testing purposes, remove when done
 	global_matrix = local_matrix = local_matrix.identity;
-	UpdatePos();
+	UpdateVector();
+	
+
 }
 
 void ComponentTransform::SetParent(ComponentTransform *parent)
@@ -25,12 +30,9 @@ void ComponentTransform::SetParent(ComponentTransform *parent)
 	}
 }
 
-void ComponentTransform::UpdatePos()
+void ComponentTransform::OnPostUpdate()
 {
-	float4 homogeneous_vec_pos = {0, 0, 0, 1};
-	homogeneous_vec_pos = homogeneous_vec_pos * global_matrix;
-	position = {homogeneous_vec_pos.x, homogeneous_vec_pos.y, homogeneous_vec_pos.z};
-	global_matrix.Decompose(position, qrotation, scale);
+	DrawAxis();
 }
 
 void ComponentTransform::PropertiesEditor()
@@ -97,7 +99,7 @@ void ComponentTransform::RecalculateMatrices()
 	{
 		comp_mesh->UpdateBoundingBox(global_matrix);
 	}
-
+	UpdateVector();
 	UpdateChildrenMatrices();
 }
 
@@ -106,6 +108,7 @@ void ComponentTransform::UpdateChildrenMatrices()
 	for (std::vector<ComponentTransform *>::iterator iter = children.begin(); iter != children.end(); ++iter)
 	{
 		(*iter)->global_matrix = global_matrix * (*iter)->local_matrix;
+		(*iter)->UpdateVector();
 		ComponentMesh *comp_mesh = gameobject->GetComponent<ComponentMesh>();
 		if (comp_mesh != nullptr)
 		{
@@ -114,6 +117,18 @@ void ComponentTransform::UpdateChildrenMatrices()
 
 		(*iter)->UpdateChildrenMatrices();
 	}
+}
+
+void ComponentTransform::UpdateVector()
+{
+	float3x3 matrix = global_matrix.Float3x3Part();
+	x = { 1,0,0 };
+	x =  matrix * x;
+	y = { 0,1,0 };
+	y = matrix * y;
+	z = { 0,0,1 };
+	z = matrix * z;
+
 }
 
 void ComponentTransform::SetPosition(const float3 &position)
@@ -144,6 +159,11 @@ void ComponentTransform::SetScale(const float3 &scale)
 	this->scale = scale;
 
 	RecalculateMatrices();
+}
+
+float3 ComponentTransform::GetZAxis()
+{
+	return z;
 }
 
 float3 ComponentTransform::GetPosition() const
@@ -193,4 +213,25 @@ void ComponentTransform::DeleteChildren()
 		}
 		gameobject->transform->children.clear();
 	}
+}
+
+void ComponentTransform::DrawAxis()
+{
+	float length = 2;
+	glLineWidth(5);
+	glBegin(GL_LINES);
+	glColor3f(0.0f, 0.0f, 1.0f);  // Blue
+	glVertex3f(position.x, position.y, position.z);
+	glVertex3f(position.x + z.x * length, position.y + z.y * length, position.z + z.z * length);
+
+	glColor3f(1.0f, 0.0f, 0.0f);  // Red
+	glVertex3f(position.x, position.y, position.z);
+	glVertex3f(position.x + x.x * length, position.y + x.y * length, position.z + x.z * length);
+
+	glColor3f(0.0f, 1.0f, 0.0f);  // Green
+	glVertex3f(position.x, position.y, position.z);
+	glVertex3f(position.x + y.x * length, position.y + y.y * length, position.z + y.z * length);
+
+	glEnd();
+	
 }
