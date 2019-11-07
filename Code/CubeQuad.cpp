@@ -14,8 +14,8 @@ void CubeQuad::OpenBuffers()
 void CubeQuad::SetIndices()
 {
 	uint indices[NUM_INDICES] = {
-	0,1, 0,4, 4,5, 5,1,	//Front
-	3,2, 2,0, 0,1, 1,3,
+	0,1, 0,1,  4,5,	0,4,//Front
+	3,2, 2,0, 5,1, 1,3,
 	7,6, 6,2, 2,3, 3,7,
 	6,4, 2,0, 7,5, 3,1 };
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_buf_id);
