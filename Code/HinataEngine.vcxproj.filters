@@ -70,6 +70,9 @@
     <Filter Include="Sources\Tools\gpudetect">
       <UniqueIdentifier>{3a1c84d6-c8c1-4cc2-aa19-aebbb537a881}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\imGuizmo">
+      <UniqueIdentifier>{105bdc44-c4a5-4547-a5d8-3470ff648d94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -580,6 +583,18 @@
       <Filter>Sources\3DPrimitive</Filter>
     </ClInclude>
     <ClInclude Include="JSONFile.h" />
+    <ClInclude Include="imGuizmo\ImCurveEdit.h">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="imGuizmo\ImGradient.h">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="imGuizmo\ImGuizmo.h">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="imGuizmo\ImSequencer.h">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -840,6 +855,18 @@
       <Filter>Sources\3DPrimitive</Filter>
     </ClCompile>
     <ClCompile Include="JSONFile.cpp" />
+    <ClCompile Include="imGuizmo\ImCurveEdit.cpp">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="imGuizmo\ImGradient.cpp">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="imGuizmo\ImGuizmo.cpp">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="imGuizmo\ImSequencer.cpp">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
