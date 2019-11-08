@@ -99,8 +99,16 @@ void ComponentTransform::RecalculateMatrices()
 	{
 		comp_mesh->UpdateBoundingBox(global_matrix);
 	}
+
+
 	UpdateVector();
+
+	for (auto i = gameobject->components.begin(); i != gameobject->components.end(); ++i)
+	{
+		(*i)->TransformHaveChanged();
+	}
 	UpdateChildrenMatrices();
+	
 }
 
 void ComponentTransform::UpdateChildrenMatrices()
@@ -165,6 +173,11 @@ float3 ComponentTransform::GetZAxis()
 {
 	return z;
 }
+float3 ComponentTransform::GetYAxis()
+{
+	return y;
+}
+
 
 float3 ComponentTransform::GetPosition() const
 {

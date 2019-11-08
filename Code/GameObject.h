@@ -80,6 +80,7 @@ private:
 	std::string name;
 	std::vector<Component*> components;
 
+	friend class ComponentTransform;
 	friend PanelProperties;
 	friend PanelHierarchy;
 	friend class ModuleScene;

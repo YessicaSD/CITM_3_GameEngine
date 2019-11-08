@@ -12,7 +12,7 @@ public:
 	ComponentCamera(GameObject* gameobject);
 	void OnPostUpdate() override;
 	void PropertiesEditor() override;
-	
+	void TransformHaveChanged() override;
 
 
 private:

@@ -25,18 +25,7 @@ ComponentCamera::ComponentCamera(GameObject* gameobject):Component(gameobject)
 
 void ComponentCamera::OnPostUpdate()
 {
-	float3 z = gameobject->transform->GetZAxis();
-	float3 position = gameobject->transform->GetPosition();
-
-	//float length = far_;
-	//glLineWidth(5);
-	//glBegin(GL_LINES);
-	//glColor3f(1.0f, 1.0f, 1.0f);  // Blue
-	//glVertex3f(position.x, position.y, position.z);
-	//glVertex3f(position.x + z.x * length, position.y + z.y * length, position.z + z.z * length);
-	//glEnd();
 	frustum_render.Draw();
-
 }
 
 void ComponentCamera::PropertiesEditor()
@@ -45,5 +34,16 @@ void ComponentCamera::PropertiesEditor()
 	{
 
 	}
+}
+
+void ComponentCamera::TransformHaveChanged()
+{
+	frustum.pos = gameobject->transform->GetPosition();
+	frustum.front = gameobject->transform->GetZAxis();
+	frustum.up = gameobject->transform->GetYAxis();
+
+	float3 corners[8];
+	frustum.GetCornerPoints(corners);
+	frustum_render.SetVetices((float*)&corners);
 }
 

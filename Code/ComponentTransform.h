@@ -29,6 +29,8 @@ public:
 	void SetScale(const float3 & scale);
 	float3 GetZAxis();
 
+	float3 GetYAxis();
+
 	float3 GetPosition() const;
 	Quat GetRotation() const;
 	float3 GetRotationEuler() const;
