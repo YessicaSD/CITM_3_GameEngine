@@ -13,6 +13,7 @@ private:
 public:
 	ModuleTexture(const char * name);
 	bool Init(JSONFile * module_file) override;
+	bool ImportTexture(const char * path);
 	Texture* LoadTexture(const char* path);
 	bool CleanUp() override;
 	friend class PanelAssets;

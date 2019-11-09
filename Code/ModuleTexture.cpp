@@ -31,6 +31,24 @@ bool ModuleTexture::Init(JSONFile * module_file)
 	return true;
 }
 
+//Saves the texture as DDS in the Library folder (faster to use)
+bool ModuleTexture::ImportTexture(const char * path)
+{
+	ILuint size;
+	ILubyte * data;
+	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
+	size = ilSaveL(IL_DDS, NULL, 0);
+	if (size > 0)
+	{
+		data = new ILubyte[size];
+		if (ilSaveL(IL_DDS, data, size) > 0)
+		{
+			//TODO: Finish this function
+		}
+	}
+	return true;
+}
+
 Texture* ModuleTexture::LoadTexture(const char* path)
 {
 	Texture* new_texture = nullptr;

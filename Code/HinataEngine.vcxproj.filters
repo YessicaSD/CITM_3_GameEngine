@@ -73,6 +73,9 @@
     <Filter Include="Sources\Tools\imGuizmo">
       <UniqueIdentifier>{105bdc44-c4a5-4547-a5d8-3470ff648d94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\PhysFS">
+      <UniqueIdentifier>{30e39cc2-dfd4-448e-b46d-1c2e274bddbd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
