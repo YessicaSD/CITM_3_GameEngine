@@ -99,8 +99,6 @@ void ComponentTransform::RecalculateMatrices()
 		global_matrix = local_matrix;
 	}
 
-	ComponentMesh *comp_mesh = gameobject->GetComponent<ComponentMesh>();
-
 	bounding_box.MultiplyByMatrix(global_matrix);
 
 	UpdateVector();
@@ -119,7 +117,7 @@ void ComponentTransform::UpdateChildrenMatrices()
 	{
 		(*iter)->global_matrix = global_matrix * (*iter)->local_matrix;
 		(*iter)->UpdateVector();
-		(*iter)->bounding_box.MultiplyByMatrix(global_matrix);
+		(*iter)->bounding_box.MultiplyByMatrix((*iter)->global_matrix);
 		(*iter)->UpdateChildrenMatrices();
 	}
 }
