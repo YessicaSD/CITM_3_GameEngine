@@ -129,6 +129,10 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeLine.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="imGuizmo\ImCurveEdit.h" />
+    <ClInclude Include="imGuizmo\ImGradient.h" />
+    <ClInclude Include="imGuizmo\ImGuizmo.h" />
+    <ClInclude Include="imGuizmo\ImSequencer.h" />
     <ClInclude Include="JSONFile.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="GameObject.h" />
@@ -267,6 +271,10 @@
     <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeLine.cpp" />
+    <ClCompile Include="imGuizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="imGuizmo\ImGradient.cpp" />
+    <ClCompile Include="imGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="imGuizmo\ImSequencer.cpp" />
     <ClCompile Include="JSONFile.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="GameObject.cpp" />

@@ -17,6 +17,7 @@ ComponentTransform::ComponentTransform(GameObject *gameobject) : Component(gameo
 
 	//TODO: This is for testing purposes, remove when done
 	global_matrix = local_matrix = local_matrix.identity;
+	SetTransform(float3(0,0,0), float3(1,1,1), float3(0,0,0));
 	UpdateVector();
 	
 }
