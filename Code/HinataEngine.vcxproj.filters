@@ -598,6 +598,9 @@
     <ClInclude Include="imGuizmo\ImSequencer.h">
       <Filter>Sources\Tools\imGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="PhysFS\include\physfs.h">
+      <Filter>Sources\Tools\PhysFS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
