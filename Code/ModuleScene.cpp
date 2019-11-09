@@ -59,12 +59,13 @@ update_status ModuleScene::Update(float dt)
 
 void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 {
+	object->OnPostUpdate();
+	if (component_camera->IsInfrustrum(object->bounding_box.GetAABB()))
 		object->gameobject->OnPostUpdate();
-	for(std::vector<ComponentTransform *>::iterator iter = object->children.begin();
+	for (std::vector<ComponentTransform *>::iterator iter = object->children.begin();
 		iter != object->children.end();
 		++iter)
 	{
-	
 		GameObjectPostUpdateRecursive((*iter));
 	}
 
@@ -107,6 +108,7 @@ update_status ModuleScene::PostUpdate()
 	//p.wire = false;
 	p.Render();
 
+	camera->OnPostUpdate();
 	GameObjectPostUpdateRecursive(root_gameobject->transform);
 
 	App->renderer3D->scene_fbo.EndRender();
