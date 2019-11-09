@@ -35,7 +35,7 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::OnPostUpdate()
 {
-	if (mesh->UVCoord)
+	if (mesh->uv_coord)
 	{
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	}
@@ -57,7 +57,7 @@ void ComponentMesh::OnPostUpdate()
 		DrawNormals();
 	}
 
-	if (mesh->UVCoord)
+	if (mesh->uv_coord)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
@@ -105,7 +105,7 @@ void ComponentMesh::OnPostUpdate()
 	glEnd();
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
 	material->DisableGLModes();
-	if (mesh->UVCoord)
+	if (mesh->uv_coord)
 		glDisable(GL_TEXTURE_COORD_ARRAY);
 	glPopMatrix();
 

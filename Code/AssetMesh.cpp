@@ -164,10 +164,10 @@ bool AssetMesh::LoadUVs(aiMesh * info)
 		uv_num_components = info->mNumUVComponents[0];
 		if (uv_num_components == 2u)
 		{
-			UVCoord = new float[num_vertices*uv_num_components];
+			uv_coord = new float[num_vertices*uv_num_components];
 			for (uint i = 0u; i < num_vertices; ++i)
 			{
-				memcpy(&UVCoord[i*uv_num_components], &info->mTextureCoords[0][i], sizeof(float)* uv_num_components);
+				memcpy(&uv_coord[i*uv_num_components], &info->mTextureCoords[0][i], sizeof(float)* uv_num_components);
 			}
 		}
 	}
@@ -180,8 +180,8 @@ bool AssetMesh::LoadUVs(float * coords)
 	if (coords)
 	{
 		this->uv_num_components = 2;
-		this->UVCoord = new float[uv_num_components * this->num_vertices];
-		memcpy(this->UVCoord, coords, sizeof(float) * uv_num_components * this->num_vertices);
+		this->uv_coord = new float[uv_num_components * this->num_vertices];
+		memcpy(this->uv_coord, coords, sizeof(float) * uv_num_components * this->num_vertices);
 
 	}
 
@@ -206,11 +206,11 @@ bool AssetMesh::GenerateFacesAndNormalsBuffer()
 
 bool AssetMesh::GenerateUVsBuffer()
 {
-	if (UVCoord > 0)
+	if (uv_coord > 0)
 	{
 		glGenBuffers(1, &id_uv);
 		glBindBuffer(GL_ARRAY_BUFFER, id_uv);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * uv_num_components * num_vertices, &UVCoord[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * uv_num_components * num_vertices, &uv_coord[0], GL_STATIC_DRAW);
 	}
 
 	return true;
@@ -243,10 +243,10 @@ void AssetMesh::CleanUp()
 		delete[] face_middle_point;
 		face_middle_point = nullptr;
 	}
-	if (UVCoord)
+	if (uv_coord)
 	{
-		delete[] UVCoord;
-		UVCoord = nullptr;
+		delete[] uv_coord;
+		uv_coord = nullptr;
 	}
 }
 

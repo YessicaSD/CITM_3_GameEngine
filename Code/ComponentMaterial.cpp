@@ -18,7 +18,7 @@ ComponentMaterial::ComponentMaterial(GameObject * gameobject, ComponentMesh* mes
 void ComponentMaterial::SetTexture(Texture * texture)
 {
 	bool set = false;
-	if (component_mesh->mesh && component_mesh->mesh->UVCoord)
+	if (component_mesh->mesh && component_mesh->mesh->uv_coord)
 	{
 		if (texture)
 		{

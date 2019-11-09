@@ -57,7 +57,7 @@ public:
 	float3 *face_middle_point = nullptr;
 
 	// UV ==================
-	float *UVCoord = nullptr;
+	float *uv_coord = nullptr;
 	uint id_uv = 0u;
 	uint uv_num_components = 0u;
 	uint id_texture = 0u;
