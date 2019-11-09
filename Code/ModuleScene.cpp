@@ -34,7 +34,7 @@ bool ModuleScene::Start(JSONFile * config)
 	//LOG("Loading Intro assets");
 	bool ret = true;
 	camera = new GameObject("Camera", root_gameobject->transform);
-	camera->CreateComponent<ComponentCamera>();
+	component_camera = camera->CreateComponent<ComponentCamera>();
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));	
@@ -58,11 +58,12 @@ update_status ModuleScene::Update(float dt)
 
 void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 {
-	object->gameobject->OnPostUpdate();
+		object->gameobject->OnPostUpdate();
 	for(std::vector<ComponentTransform *>::iterator iter = object->children.begin();
 		iter != object->children.end();
 		++iter)
 	{
+	
 		GameObjectPostUpdateRecursive((*iter));
 	}
 

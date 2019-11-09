@@ -9,6 +9,7 @@
 #include "GameObject.h"
 
 struct ImVec4;
+class ComponentCamera;
 
 class ModuleScene : public Module
 {	
@@ -33,6 +34,7 @@ public:
 	//All gameobjects are children of the root gameobject
 	GameObject* root_gameobject;
 	GameObject* camera;
+	ComponentCamera* component_camera;
 };
 
 #endif // !MODULESCENE_H_

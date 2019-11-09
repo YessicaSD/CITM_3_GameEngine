@@ -3,6 +3,7 @@
 #include "imgui/imgui.h"
 #include "GameObject.h"
 #include "Globals.h"
+#include "MathGeoLib/include/Geometry/Plane.h"
 
 
 ComponentCamera::ComponentCamera(GameObject* gameobject):Component(gameobject)
@@ -46,4 +47,28 @@ void ComponentCamera::TransformHaveChanged()
 	frustum.GetCornerPoints(corners);
 	frustum_render.SetVetices((float*)&corners);
 }
+
+bool ComponentCamera::IsInfrustrum(const AABB & bounding_box)
+{
+	float3 corners[8];
+	bounding_box.GetCornerPoints((float3*)&corners);
+
+	for (uint index_plane = 0u; index_plane < 6; ++index_plane)
+	{
+		Plane plane = frustum.GetPlane(index_plane);
+		int iInCount = 8;
+		for (uint i = 0u; i < 8; i++)
+		{
+			if (!plane.IsOnPositiveSide(corners[i]))
+				--iInCount;
+		}
+		if (iInCount == 0)
+			return false;
+	}
+	return true;
+}
+
+
+
+
 
