@@ -25,7 +25,7 @@ ComponentMesh::ComponentMesh(GameObject *gameobject) : Component(gameobject)
 	point_color[0] = point_color[1] = point_color[2] = point_color[3] = 1.f;
 	material = new ComponentMaterial(gameobject, this);
 	gameobject->components.push_back(material);
-	bounding_box = new BoundingBox();
+	
 }
 
 ComponentMesh::~ComponentMesh()
@@ -111,9 +111,6 @@ void ComponentMesh::OnPostUpdate()
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	bounding_box->Draw();
-	
 }
 
 void ComponentMesh::DrawVertexNormal()
@@ -189,19 +186,6 @@ void ComponentMesh::CleanUp()
 		delete mesh;
 		mesh = nullptr;
 	}
-	if (bounding_box != nullptr)
-	{
-		delete bounding_box;
-		bounding_box = nullptr;
-	}
+	
 }
 
-void ComponentMesh::UpdateBoundingBox(float4x4 matrix)
-{
-	bounding_box->MultiplyByMatrix(matrix, mesh->GetAABB());
-}
-
-AABB ComponentMesh::GetAABB()
-{
-	return bounding_box->GetAABB();
-}

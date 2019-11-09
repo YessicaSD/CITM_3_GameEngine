@@ -59,7 +59,7 @@ update_status ModuleCamera3D::Update(float dt)
 		const ComponentTransform *selected_transform = App->gui->panel_properties->GetSelecteTransform();
 		if (selected_transform != nullptr)
 		{
-			FocusToObject((*selected_transform));
+			FocusToObject((ComponentTransform)(*selected_transform));
 		}
 	}
 	vec3 new_pos(0, 0, 0);
@@ -179,14 +179,14 @@ void ModuleCamera3D::LookAt(const vec3 &Spot)
 	y = cross(z, x);
 }
 
-void ModuleCamera3D::FocusToObject(const ComponentTransform &transform)
+void ModuleCamera3D::FocusToObject( ComponentTransform &transform)
 {
 	ComponentMesh *mesh = transform.gameobject->GetComponent<ComponentMesh>();
 	float3 pos;
 	float length;
 	if (mesh)
 	{
-		AABB aux_aabb = mesh->GetAABB();
+		AABB aux_aabb = transform.GetAABB();
 		pos = aux_aabb.CenterPoint();
 		length = aux_aabb.Diagonal().Length();
 	}

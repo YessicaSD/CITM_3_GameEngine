@@ -8,20 +8,23 @@ BoundingBox::BoundingBox()
 {
 	obb_color = { 1,1,0,1 };
 	aabb_color = {0,1,0,1 };
+	float3 vertex = { 0,0,0 };
+	local_aabb.Enclose(&vertex, 1);
+	MultiplyByMatrix(float4x4::identity);
 }
 
-void BoundingBox::MultiplyByMatrix(float4x4 matrix, AABB aabb)
+void BoundingBox::MultiplyByMatrix(float4x4 matrix)
 {
 	float3 corners[8];
 
-	obb = aabb;
+	obb = local_aabb;
 	obb.Transform(matrix);
 	obb.GetCornerPoints(corners);
 	obb_cube.SetVetices((float*)&corners);
 
-	this->aabb.SetNegativeInfinity();
-	this->aabb.Enclose(obb);
-	this->aabb.GetCornerPoints(corners);
+	aabb.SetNegativeInfinity();
+	aabb.Enclose(obb);
+	aabb.GetCornerPoints(corners);
 	aabb_cube.SetVetices((float*)&corners);
 }
 
@@ -36,6 +39,11 @@ void BoundingBox::Draw()
 	glColor4f(1, 1, 1, 1);
 	glLineWidth(1);
 
+}
+
+void BoundingBox::SetLocalAABB(AABB local_aabb)
+{
+	this->local_aabb = local_aabb;
 }
 
 AABB BoundingBox::GetAABB()

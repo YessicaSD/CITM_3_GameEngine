@@ -29,15 +29,11 @@ public:
 	void DrawVertexNormal();
 	void DrawNormals();
 	void PropertiesEditor() override;
-	void CleanUp() override;
-	void UpdateBoundingBox(float4x4 matrix);
-	AABB GetAABB();
-	
-	
+	void CleanUp() override;	
 
 private:
 	AssetMesh *mesh = nullptr;
-	BoundingBox *bounding_box;
+
 	ComponentMaterial *material = nullptr;
 	RenderMode render_mode;
 

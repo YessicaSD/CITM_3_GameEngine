@@ -8,6 +8,7 @@
 #include "glew/include/GL/glew.h"
 
 
+
 CLASS_DEFINITION(Component, ComponentTransform)
 
 ComponentTransform::ComponentTransform(GameObject *gameobject) : Component(gameobject)
@@ -18,7 +19,11 @@ ComponentTransform::ComponentTransform(GameObject *gameobject) : Component(gameo
 	global_matrix = local_matrix = local_matrix.identity;
 	UpdateVector();
 	
+}
 
+ComponentTransform::~ComponentTransform()
+{
+	
 }
 
 void ComponentTransform::SetParent(ComponentTransform *parent)
@@ -33,6 +38,7 @@ void ComponentTransform::SetParent(ComponentTransform *parent)
 void ComponentTransform::OnPostUpdate()
 {
 	DrawAxis();
+	bounding_box.Draw();
 }
 
 void ComponentTransform::PropertiesEditor()
@@ -94,12 +100,7 @@ void ComponentTransform::RecalculateMatrices()
 
 	ComponentMesh *comp_mesh = gameobject->GetComponent<ComponentMesh>();
 
-
-	if (comp_mesh != nullptr)
-	{
-		comp_mesh->UpdateBoundingBox(global_matrix);
-	}
-
+	bounding_box.MultiplyByMatrix(global_matrix);
 
 	UpdateVector();
 
@@ -117,12 +118,7 @@ void ComponentTransform::UpdateChildrenMatrices()
 	{
 		(*iter)->global_matrix = global_matrix * (*iter)->local_matrix;
 		(*iter)->UpdateVector();
-		ComponentMesh *comp_mesh = gameobject->GetComponent<ComponentMesh>();
-		if (comp_mesh != nullptr)
-		{
-			comp_mesh->UpdateBoundingBox((*iter)->global_matrix);
-		}
-
+		(*iter)->bounding_box.MultiplyByMatrix(global_matrix);
 		(*iter)->UpdateChildrenMatrices();
 	}
 }
@@ -136,7 +132,6 @@ void ComponentTransform::UpdateVector()
 	y = matrix * y;
 	z = { 0,0,1 };
 	z = matrix * z;
-
 }
 
 void ComponentTransform::SetPosition(const float3 &position)
@@ -247,4 +242,9 @@ void ComponentTransform::DrawAxis()
 
 	glEnd();
 	
+}
+
+AABB ComponentTransform::GetAABB()
+{
+	return bounding_box.GetAABB();
 }

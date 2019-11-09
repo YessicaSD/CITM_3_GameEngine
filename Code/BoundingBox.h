@@ -12,15 +12,16 @@ class BoundingBox
 
 private:
 	CubeLine obb_cube, aabb_cube;
-	AABB aabb;
+	AABB local_aabb, aabb;
 	OBB	 obb;
 	
 public:
 
 	float4 aabb_color, obb_color;
 	BoundingBox();
-	void MultiplyByMatrix(float4x4 matrix, AABB aabb);
+	void MultiplyByMatrix(float4x4 matrix);
 	void Draw();
+	void SetLocalAABB(AABB local_aabb);
 	AABB GetAABB();
 
 };

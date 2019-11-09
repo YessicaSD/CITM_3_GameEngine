@@ -20,7 +20,7 @@
 ModuleScene::ModuleScene(bool start_enabled) :
 	Module(start_enabled)
 {
-	root_gameobject = new GameObject("Root", nullptr);
+	
 	
 
 }
@@ -32,6 +32,7 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Start(JSONFile * config)
 {
 	//LOG("Loading Intro assets");
+	root_gameobject = new GameObject("Root", nullptr);
 	bool ret = true;
 	camera = new GameObject("Camera", root_gameobject->transform);
 	component_camera = camera->CreateComponent<ComponentCamera>();

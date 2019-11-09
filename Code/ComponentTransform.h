@@ -5,6 +5,7 @@
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "MathGeoLib/include/Math/Quat.h"
+#include "BoundingBox.h"
 #include <vector>
 
 class GameObject;
@@ -14,6 +15,7 @@ class ComponentTransform : public Component
 	CLASS_DECLARATION(ComponentTransform)
 public:
 	ComponentTransform(GameObject * gameobject);
+	~ComponentTransform();
 	//Create 
 
 	void SetParent(ComponentTransform * parent);
@@ -41,7 +43,7 @@ public:
 	void UpdateDisplayValues();
 	void DeleteChildren();
 	void DrawAxis();
-
+	AABB GetAABB();
 private:
 	void RecalculateMatrices();
 	void UpdateChildrenMatrices();
@@ -61,7 +63,9 @@ private:
 
 	ComponentTransform * parent = nullptr;
 	std::vector<ComponentTransform*> children;
+	BoundingBox bounding_box;
 
+	friend class ModuleImport;
 	friend class PanelHierarchy;
 	friend class ModuleScene;
 };

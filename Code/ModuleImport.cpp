@@ -21,7 +21,7 @@
 
 #define PAR_SHAPES_IMPLEMENTATION
 #include "par\par_shapes.h"
-
+#include "BoundingBox.h"
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
 
 void AssimpWrite(const char *text, char *data)
@@ -130,7 +130,9 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode *node, ComponentTransform *
 			int index = node->mMeshes[i];
 			ComponentMesh *component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 			component_mesh->mesh = loaded_meshes[index];
-			component_mesh->bounding_box->MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix(), component_mesh->mesh->GetAABB());
+			new_gameobject->transform->bounding_box.SetLocalAABB(loaded_meshes[index]->GetAABB());
+			new_gameobject->transform->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
+			
 			if (textures[index])
 			{
 				component_mesh->material->SetTexture(textures[index]);
@@ -181,7 +183,8 @@ GameObject *ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTr
 	ComponentMesh *component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 	component_mesh->mesh = asset_mesh;
 	new_gameobject->transform->UpdateDisplayValues();
-	component_mesh->UpdateBoundingBox(new_gameobject->transform->GetGlobalMatrix());
+	parent->bounding_box.SetLocalAABB(asset_mesh->GetAABB());
+	parent->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
 	return new_gameobject;
 }
 
