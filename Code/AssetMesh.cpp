@@ -48,12 +48,14 @@ bool AssetMesh::LoadVertices(const int num_vertices, const float * vertices)
 	this->vertices = new float3[num_vertices];
 
 	//TODO change to memcopy
-	for (uint i = 0; i < num_vertices * 3; i += 3)
+	uint indices_index = 0u;
+	uint vertex_index = 0u;
+	while (indices_index < num_vertices)
 	{
-		this->vertices[i/3] = { vertices[i],vertices[i + 1],vertices[i + 2] };
+		this->vertices[indices_index] = { vertices[vertex_index],vertices[vertex_index + 1],vertices[vertex_index + 2] };
+		vertex_index += 3;
+		indices_index++;
 	}
-
-	
 
 	//memcpy(this->vertices, vertices, sizeof(float) * num_vertices * 3);
 	return true;
