@@ -2,7 +2,7 @@
 #include "imgui/imgui.h"
 #include "Application.h"
 #include "ModuleTexture.h"
-#include "Texture.h"
+#include "AssetTexture.h"
 #include "ModuleGui.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
@@ -16,11 +16,11 @@ void PanelAssets::Draw()
 	ImGui::Begin(name.c_str());
 	float num_colum = ImGui::GetWindowWidth()/ image_size;
 	uint i = 1;
-	for (std::map<std::string, Texture*>::iterator iter = App->texture->textures.begin();
+	for (std::map<std::string, AssetTexture*>::iterator iter = App->texture->textures.begin();
 		iter!= App->texture->textures.end();
 		++iter)
 	{
-		Texture* texture = (*iter).second;
+		AssetTexture* texture = (*iter).second;
 		if(ImGui::ImageButton((void*)(intptr_t)texture->buffer_id, ImVec2(image_size, image_size)))
 		{
 			ComponentTransform* selected_tranform = App->gui->GetSelecteTransform();

@@ -50,7 +50,9 @@ ModuleFileSystem::ModuleFileSystem(const char * name) : Module (true, name)
 	for (uint i = 0; i < sizeof(dirs) / sizeof(const char*); ++i)
 	{
 		if (PHYSFS_exists(dirs[i]) == 0)
+		{
 			PHYSFS_mkdir(dirs[i]);
+		}
 	}
 
 	// Generate IO interfaces

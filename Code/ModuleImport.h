@@ -6,7 +6,8 @@
 #define INVALID_MATERIAL 0xFFFFFFFF
 #include "Assimp/include/assimp/cimport.h"
 #include "ModuleScene.h"
-#include "Texture.h"
+#include "AssetTexture.h"
+
 class AssetMesh;
 struct aiMesh;
 struct aiNode;
@@ -24,15 +25,15 @@ public:
 	bool CleanUp() override;
 
 	void EventRequest(const Event& event) override;
-	AssetMesh* LoadAssimpMesh(aiMesh * assimp_mesh, const aiScene* scene_fbx, std::vector<Texture*>& textures);
+	AssetMesh* LoadAssimpMesh(aiMesh * assimp_mesh);
 	AssetMesh* LoadParShapeMesh(par_shapes_mesh * mesh);
 	GameObject * CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh);
 	bool AddMesh(AssetMesh * asset_mesh);
 private:
-	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<AssetMesh*> loaded_meshes, std::vector<Texture*>& textures);
+	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<AssetMesh*> loaded_meshes, std::vector<AssetTexture*>& textures);
 	
 public:
-	Texture * lenna_img_id = nullptr;
+	AssetTexture * lenna_img_id = nullptr;
 
 private:
 	

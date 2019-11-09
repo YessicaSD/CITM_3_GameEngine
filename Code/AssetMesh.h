@@ -4,7 +4,7 @@
 #include "MathGeoLib/include/Math/float3.h"
 #include "Assimp/include/vector3.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
-#include "Texture.h"
+#include "AssetTexture.h"
 #include <vector>
 
 typedef unsigned int uint;
@@ -15,7 +15,7 @@ class AssetMesh
 {
 public:
 	~AssetMesh();
-	bool LoadTexture(aiMesh *info, const aiScene *fbx, std::vector<Texture *> &textures);
+	bool LoadTexture(aiMesh *info, const aiScene *fbx, std::vector<AssetTexture *> &textures);
 	bool LoadVertices(const int num_vertices, const float *vertices);
 	bool LoadVerticesNormals(aiMesh *info);
 	bool LoadFaces(aiMesh *info);

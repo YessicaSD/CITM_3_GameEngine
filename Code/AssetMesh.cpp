@@ -9,7 +9,7 @@
 #include "Assimp/include/material.h"
 #include "ModuleImport.h"
 #include "ModuleTexture.h"
-#include "Texture.h"
+#include "AssetTexture.h"
 #include "BoundingBox.h"
 
 AssetMesh::~AssetMesh()
@@ -17,7 +17,7 @@ AssetMesh::~AssetMesh()
 	CleanUp();
 }
 
-bool AssetMesh::LoadTexture(aiMesh * info,const  aiScene* fbx, std::vector<Texture*>& textures)
+bool AssetMesh::LoadTexture(aiMesh * info,const  aiScene* fbx, std::vector<AssetTexture*>& textures)
 {
 	aiMaterial* material = fbx->mMaterials[info->mMaterialIndex];
 	

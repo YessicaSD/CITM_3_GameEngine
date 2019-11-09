@@ -260,7 +260,7 @@
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="ModuleRandom.h" />
     <ClInclude Include="Shortcut.h" />
-    <ClInclude Include="Texture.h" />
+    <ClInclude Include="AssetTexture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="ComponentTransform.h" />
   </ItemGroup>
@@ -355,7 +355,7 @@
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="ModuleRandom.cpp" />
     <ClCompile Include="Shortcut.cpp" />
-    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="AssetTexture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
   </ItemGroup>

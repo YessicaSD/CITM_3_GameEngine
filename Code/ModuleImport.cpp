@@ -53,12 +53,13 @@ bool ModuleImport::LoadMesh(const char *path)
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		std::vector<AssetMesh *> object_meshes;
-		std::vector<Texture *> textures;
+		std::vector<AssetTexture *> textures;
 		for (uint i = 0; i < scene->mNumMeshes; ++i)
 		{
 
 			aiMesh *assimp_mesh = scene->mMeshes[i];
-			AssetMesh *asset_mesh = LoadAssimpMesh(assimp_mesh, scene, textures);
+			AssetMesh *asset_mesh = LoadAssimpMesh(assimp_mesh);
+			asset_mesh->LoadTexture(assimp_mesh, scene, textures);
 
 			object_meshes.push_back(asset_mesh);
 			meshes.push_back(asset_mesh);
@@ -74,11 +75,10 @@ bool ModuleImport::LoadMesh(const char *path)
 	return true;
 }
 
-AssetMesh *ModuleImport::LoadAssimpMesh(aiMesh *assimp_mesh, const aiScene *scene_fbx, std::vector<Texture *> &textures)
+AssetMesh *ModuleImport::LoadAssimpMesh(aiMesh *assimp_mesh)
 {
 	AssetMesh *asset_mesh = new AssetMesh();
 	//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
-	asset_mesh->LoadTexture(assimp_mesh, scene_fbx, textures);
 	asset_mesh->LoadVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
 	asset_mesh->CreateBoundingBox();
 	asset_mesh->LoadVerticesNormals(assimp_mesh);
@@ -112,7 +112,7 @@ AssetMesh *ModuleImport::LoadParShapeMesh(par_shapes_mesh *mesh)
 	return asset_mesh;
 }
 
-void ModuleImport::CreateGameObjectsFromNodes(aiNode *node, ComponentTransform *parent, std::vector<AssetMesh *> loaded_meshes, std::vector<Texture *> &textures)
+void ModuleImport::CreateGameObjectsFromNodes(aiNode *node, ComponentTransform *parent, std::vector<AssetMesh *> loaded_meshes, std::vector<AssetTexture *> &textures)
 {
 	GameObject *new_gameobject = new GameObject(std::string(node->mName.C_Str()), parent);
 
@@ -131,7 +131,7 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode *node, ComponentTransform *
 			ComponentMesh *component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 			component_mesh->mesh = loaded_meshes[index];
 			component_mesh->bounding_box->MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix(), component_mesh->mesh->GetAABB());
-			if (textures[index])
+			if (textures[index] != nullptr)
 			{
 				component_mesh->material->SetTexture(textures[index]);
 			}

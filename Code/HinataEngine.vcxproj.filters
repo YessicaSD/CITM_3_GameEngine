@@ -546,9 +546,6 @@
     <ClInclude Include="ModuleTexture.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Sources\Containers</Filter>
-    </ClInclude>
     <ClInclude Include="Event.h">
       <Filter>Sources\Containers</Filter>
     </ClInclude>
@@ -606,6 +603,9 @@
     </ClInclude>
     <ClInclude Include="BassIO.h">
       <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetTexture.h">
+      <Filter>Sources\Containers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -825,9 +825,6 @@
     <ClCompile Include="ModuleTexture.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Sources\Containers</Filter>
-    </ClCompile>
     <ClCompile Include="PanelAssets.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
@@ -884,6 +881,9 @@
     </ClCompile>
     <ClCompile Include="BassIO.cpp">
       <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetTexture.cpp">
+      <Filter>Sources\Containers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

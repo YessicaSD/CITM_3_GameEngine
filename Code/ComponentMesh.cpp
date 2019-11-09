@@ -73,7 +73,7 @@ void ComponentMesh::OnPostUpdate()
 			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex_normals);
 			glNormalPointer(GL_FLOAT, 0, NULL);
 		}
-		if (material)
+		if (material != nullptr)
 		{
 			material->RenderTexture();
 		}
@@ -106,7 +106,9 @@ void ComponentMesh::OnPostUpdate()
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
 	material->DisableGLModes();
 	if (mesh->uv_coord)
+	{
 		glDisable(GL_TEXTURE_COORD_ARRAY);
+	}
 	glPopMatrix();
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

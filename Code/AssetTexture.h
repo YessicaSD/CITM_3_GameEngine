@@ -1,14 +1,14 @@
-#ifndef TEXTURE_H_
-#define TEXTURE_H_
+#ifndef __ASSET_TEXTURE_H__
+#define __ASSET_TEXTURE_H__
 typedef unsigned int uint;
 #include <string>
-class Texture
+class AssetTexture
 {
 public:
-	Texture() {
+	AssetTexture() {
 		path = "";
 	};
-	~Texture();
+	~AssetTexture();
 
 	//void GenerateTexture();
 	//void Render();

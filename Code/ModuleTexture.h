@@ -3,18 +3,18 @@
 
 #include "Module.h"
 #include <map>
-class Texture;
+class AssetTexture;
 
 class ModuleTexture : public Module
 {
 private:
-	std::map<std::string, Texture*> textures;
+	std::map<std::string, AssetTexture*> textures;
 
 public:
 	ModuleTexture(const char * name);
 	bool Init(JSONFile * module_file) override;
 	bool ImportTexture(const char * path);
-	Texture* LoadTexture(const char* path);
+	AssetTexture* LoadTexture(const char* path);
 	bool CleanUp() override;
 	friend class PanelAssets;
 	void makeCheckTexture();

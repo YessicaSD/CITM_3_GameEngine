@@ -15,7 +15,7 @@ ComponentMaterial::ComponentMaterial(GameObject * gameobject, ComponentMesh* mes
 		this->component_mesh = mesh;
 }
 
-void ComponentMaterial::SetTexture(Texture * texture)
+void ComponentMaterial::SetTexture(AssetTexture * texture)
 {
 	bool set = false;
 	if (component_mesh->mesh && component_mesh->mesh->uv_coord)
@@ -35,7 +35,7 @@ void ComponentMaterial::SetTexture(Texture * texture)
 
 void ComponentMaterial::DisableGLModes()
 {
-	if (texture)
+	if (texture != nullptr)
 	{
 		glFlush();
 		glDisable(GL_TEXTURE_2D);
@@ -46,9 +46,8 @@ void ComponentMaterial::DisableGLModes()
 
 void ComponentMaterial::RenderTexture()
 {
-	if (texture)
+	if (texture != nullptr)
 	{
-		
 		glEnable(GL_TEXTURE_2D);
 		//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
@@ -65,10 +64,10 @@ void ComponentMaterial::PropertiesEditor()
 	ImGuiStyle& style = ImGui::GetStyle();
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
-		if (this->texture)
+		if (texture != nullptr)
 		{
 			
-			ImGui::Image((void*)(intptr_t)this->texture->buffer_id, ImVec2(100, 100));
+			ImGui::Image((void*)(intptr_t)texture->buffer_id, ImVec2(100, 100));
 			
 			float child_height = ImGui::GetTextLineHeight() + style.ScrollbarSize + style.WindowPadding.y * 2.0f;
 			int i = 0;
