@@ -62,6 +62,7 @@ bool ComponentCamera::IsInfrustrum(const AABB & bounding_box)
 			if (plane.IsOnPositiveSide(corners[i]))
 				--iInCount;
 		}
+
 		if (iInCount == 0)
 			return false;
 	}
