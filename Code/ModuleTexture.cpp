@@ -3,8 +3,6 @@
 #include "DevIL/include/ilu.h"
 #include "DevIL/include/ilut.h"
 
-
-
 #pragma comment (lib, "DevIL/lib/DevIL.lib")
 #pragma comment (lib, "DevIL/lib/ILU.lib")
 #pragma comment (lib, "DevIL/lib/ILUT.lib")

@@ -1,6 +1,12 @@
 #include "ModuleFileSystem.h"
 #include "Module.h"
 #include "SDL/include/SDL_filesystem.h"
+#include "Globals.h"
+
+#include "Assimp/include/cfileio.h"
+
+#include "AssimpIO.h"
+#include "BassIO.h"
 
 #include "PhysFS/include/physfs.h"
 #pragma comment (lib, "PhysFS/libx86/physfs.lib")
@@ -8,9 +14,80 @@
 
 ModuleFileSystem::ModuleFileSystem(const char * name) : Module (true, name)
 {
-	//char* base_path = SDL_GetBasePath();
-	//PHYSFS_init(base_path);
+	char* base_path = SDL_GetBasePath();
+	PHYSFS_init(base_path);
+	SDL_free(base_path);
+
+	const char * game_path = ASSETS_FOLDER;
+
+	// workaround VS string directory mess
+	AddPath(".");
+
+	if (0 && game_path != nullptr)
+	{
+		AddPath(game_path);
+	}
+
+	// Dump list of paths
+	LOG("FileSystem Operations base is [%s] plus:", GetBasePath());
+	const char * read_paths = GetReadPaths();
+	LOG(read_paths);
+
+	// enable us to write in the game's dir area
+	if (PHYSFS_setWriteDir(".") == 0)
+	{
+		LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
+	}
+
+	// Make sure standard paths exist
+	const char* dirs[] = {
+		SETTINGS_FOLDER, ASSETS_FOLDER, LIBRARY_FOLDER,
+		LIBRARY_AUDIO_FOLDER, LIBRARY_MESH_FOLDER,
+		LIBRARY_MATERIAL_FOLDER, LIBRARY_SCENE_FOLDER, LIBRARY_MODEL_FOLDER,
+		LIBRARY_TEXTURES_FOLDER, LIBRARY_ANIMATION_FOLDER, LIBRARY_STATE_MACHINE_FOLDER,
+	};
+
+	for (uint i = 0; i < sizeof(dirs) / sizeof(const char*); ++i)
+	{
+		if (PHYSFS_exists(dirs[i]) == 0)
+			PHYSFS_mkdir(dirs[i]);
+	}
+
+	// Generate IO interfaces
+	CreateAssimpIO();
+	CreateBassIO();
 }
+
+void ModuleFileSystem::CreateAssimpIO()
+{
+	RELEASE(AssimpIO);
+
+	AssimpIO = new aiFileIO;
+	AssimpIO->OpenProc = AssimpOpen;
+	AssimpIO->CloseProc = AssimpClose;
+}
+
+aiFileIO * ModuleFileSystem::GetAssimpIO()
+{
+	return AssimpIO;
+}
+
+// Add a new zip file or folder
+bool ModuleFileSystem::AddPath(const char* path_or_zip)
+{
+	bool ret = false;
+
+	if (PHYSFS_mount(path_or_zip, nullptr, 1) == 0)
+	{
+		LOG("File System error while adding a path or zip: %s\n", PHYSFS_getLastError());
+	}
+	else
+	{
+		ret = true;
+	}
+	return ret;
+}
+
 
 void ModuleFileSystem::GetExtension(const char * full_path, std::string & extension)
 {
@@ -67,3 +144,41 @@ void ModuleFileSystem::GetExtension(const char * full_path, std::string & extens
 //
 //	return ret;
 //}
+
+const char * ModuleFileSystem::GetBasePath() const
+{
+	return PHYSFS_getBaseDir();
+}
+
+const char * ModuleFileSystem::GetReadPaths() const
+{
+	static char paths[512];
+
+	paths[0] = '\0';
+
+	char **path;
+	for (path = PHYSFS_getSearchPath(); *path != nullptr; path++)
+	{
+		strcat_s(paths, 512, *path);
+		strcat_s(paths, 512, "\n");
+	}
+
+	return paths;
+}
+
+void ModuleFileSystem::CreateBassIO()
+{
+	RELEASE(BassIO);
+
+	BassIO = new BASS_FILEPROCS;
+	//BassIO->close = BassClose;
+	//BassIO->length = BassLength;
+	//BassIO->read = BassRead;
+	//BassIO->seek = BassSeek;
+}
+
+BASS_FILEPROCS * ModuleFileSystem::GetBassIO()
+{
+	return BassIO;
+}
+

@@ -60,7 +60,19 @@ enum update_status
                               \
     }
 
-// Configuration -----------
+//Configuration
+#define ASSETS_FOLDER "/Assets/"
+#define SETTINGS_FOLDER "/Settings/"
+#define LIBRARY_FOLDER "/Library/"
+#define LIBRARY_AUDIO_FOLDER "/Library/Audio/"
+#define LIBRARY_TEXTURES_FOLDER "/Library/Textures/"
+#define LIBRARY_MESH_FOLDER "/Library/Meshes/"
+#define LIBRARY_ANIMATION_FOLDER "/Library/Animations/"
+#define LIBRARY_SCENE_FOLDER "/Library/Scenes/"
+#define LIBRARY_MODEL_FOLDER "/Library/Models/"
+#define LIBRARY_MATERIAL_FOLDER "/Library/Materials/"
+#define LIBRARY_STATE_MACHINE_FOLDER "/Library/StateMachines/"
+
 #define SCREEN_WIDTH 1920 * 0.75f //TODO: Remove when releasing the game
 #define SCREEN_HEIGHT 1080 * 0.75f //TODO: Remove when releasing the game
 #define SCREEN_SIZE 1

@@ -52,8 +52,8 @@ bool AssetMesh::LoadVertices(const int num_vertices, const float * vertices)
 	uint vertex_index = 0u;
 	while (indices_index < num_vertices)
 	{
-		this->vertices[indices_index] = { vertices[vertex_index],vertices[vertex_index + 1],vertices[vertex_index + 2] };
-		vertex_index += 3;
+		this->vertices[indices_index] = { vertices[vertex_index],vertices[vertex_index + 1u],vertices[vertex_index + 2u] };
+		vertex_index += 3u;
 		indices_index++;
 	}
 
@@ -137,10 +137,10 @@ bool AssetMesh::CalculateFaceNormals()
 		uint index = indices[i];
 		float3 vertex1 = vertices[curr_vertex];
 
-		index = indices[i + 1];
+		index = indices[i + 1u];
 		float3 vertex2 = vertices[curr_vertex];
 
-		index = indices[i + 2];
+		index = indices[i + 2u];
 		float3 vertex3 = vertices[curr_vertex];
 
 		float3 vector1 = vertex2 - vertex1;

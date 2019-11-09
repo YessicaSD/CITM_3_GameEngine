@@ -601,6 +601,12 @@
     <ClInclude Include="PhysFS\include\physfs.h">
       <Filter>Sources\Tools\PhysFS</Filter>
     </ClInclude>
+    <ClInclude Include="AssimpIO.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="BassIO.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -872,6 +878,12 @@
     </ClCompile>
     <ClCompile Include="imGuizmo\ImSequencer.cpp">
       <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="AssimpIO.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="BassIO.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
