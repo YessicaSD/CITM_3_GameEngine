@@ -21,7 +21,8 @@ class ModuleImport : public Module
 public:
 	ModuleImport(const char * name);
 	bool Start(JSONFile * module_file) override;
-	bool LoadMesh(const char* path);
+	bool ImportMesh(const char* path);
+	bool LoadFBXTexture(aiMesh * info, const aiScene * fbx, std::vector<AssetTexture*>& textures);
 	bool CleanUp() override;
 
 	void EventRequest(const Event& event) override;

@@ -33,7 +33,7 @@ bool ModuleScene::Start(JSONFile * config)
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));	
-	App->import->LoadMesh("Assets/BakerHouse.fbx");
+	App->import->ImportMesh("Assets/BakerHouse.fbx");
 	return ret;
 }
 

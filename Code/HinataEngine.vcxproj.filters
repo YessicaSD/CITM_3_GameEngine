@@ -607,6 +607,7 @@
     <ClInclude Include="AssetTexture.h">
       <Filter>Sources\Containers</Filter>
     </ClInclude>
+    <ClInclude Include="AssetMeshNode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">

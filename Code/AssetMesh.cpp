@@ -17,31 +17,6 @@ AssetMesh::~AssetMesh()
 	CleanUp();
 }
 
-bool AssetMesh::LoadTexture(aiMesh * info,const  aiScene* fbx, std::vector<AssetTexture*>& textures)
-{
-	aiMaterial* material = fbx->mMaterials[info->mMaterialIndex];
-	
-	if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
-	{
-		aiString aipath;
-		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &aipath, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
-		{
-			std::string path = ASSETS_FOLDER + std::string(aipath.data);
-			textures.push_back(App->texture->LoadTexture(path.c_str()));
-			return true;
-		}
-		else
-		{
-			LOG("Texture path note found");
-			textures.push_back(nullptr);
-			return false;
-		}
-	}
-
-	textures.push_back(nullptr);
-	return false;
-}
-
 bool AssetMesh::LoadVertices(const int num_vertices, const float * vertices)
 {
 	this->num_vertices = num_vertices;

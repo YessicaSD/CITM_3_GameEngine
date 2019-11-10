@@ -15,7 +15,6 @@ class AssetMesh
 {
 public:
 	~AssetMesh();
-	bool LoadTexture(aiMesh *info, const aiScene *fbx, std::vector<AssetTexture *> &textures);
 	bool LoadVertices(const int num_vertices, const float *vertices);
 	bool LoadVerticesNormals(aiMesh *info);
 	bool LoadFaces(aiMesh *info);
@@ -61,6 +60,9 @@ public:
 	uint id_uv = 0u;
 	uint uv_num_components = 0u;
 	uint id_texture = 0u;
+
+	std::vector<AssetMesh*> children_meshes;
+	AssetTexture* texture;//TODO: It should the whole material that comes with the FBX, not just the texture
 };
 
 #endif

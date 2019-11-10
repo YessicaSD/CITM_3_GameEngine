@@ -17,7 +17,7 @@ public:
 	AssetTexture* LoadTexture(const char* path);
 	bool CleanUp() override;
 	friend class PanelAssets;
-	void makeCheckTexture();
+	void CreateCheckerTexture();
 };
 
 

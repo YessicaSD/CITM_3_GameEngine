@@ -109,51 +109,51 @@ update_status ModuleInput::PreUpdate()
 
 	bool quit = false;
 	SDL_Event e;
-	while(SDL_PollEvent(&e))
+	while (SDL_PollEvent(&e))
 	{
 		ImGui_ImplSDL2_ProcessEvent(&e);
-		switch(e.type)
+		switch (e.type)
 		{
-			case SDL_MOUSEWHEEL:
+		case SDL_MOUSEWHEEL: {
 			mouse_wheel = e.wheel.y;
-			break;
+		} break;
 
-			case SDL_MOUSEMOTION:
+		case SDL_MOUSEMOTION: {
 			mouse_x = e.motion.x / SCREEN_SIZE;
 			mouse_y = e.motion.y / SCREEN_SIZE;
 
 			mouse_x_motion = e.motion.xrel / SCREEN_SIZE;
 			mouse_y_motion = e.motion.yrel / SCREEN_SIZE;
-			break;
+		} break;
 
-			case SDL_QUIT:
+		case SDL_QUIT: {
 			quit = true;
-			break;
+		}  break;
 
-			case SDL_WINDOWEVENT:
+		case SDL_WINDOWEVENT:
+		{
+			if (e.window.event == SDL_WINDOWEVENT_RESIZED)
 			{
-				if (e.window.event == SDL_WINDOWEVENT_RESIZED)
-				{
-					App->renderer3D->OnResize(e.window.data1, e.window.data2);
-				}
+				App->renderer3D->OnResize(e.window.data1, e.window.data2);
 			}
-			break;
+		} break;
 
-			case SDL_DROPFILE:
-				Event new_event(Event::EVENT_TYPE::DROPPED_FILE, e.drop.file);
-				App->EventRequest(new_event);
+		case SDL_DROPFILE:
+		{
+			Event new_event(Event::EVENT_TYPE::DROPPED_FILE, e.drop.file);
+			App->EventRequest(new_event);
 
-				//dropped_filedir=e.drop.file;
-				//SDL_ShowSimpleMessageBox(
-				//	SDL_MESSAGEBOX_INFORMATION,
-				//	"File dropped on window",
-				//	dropped_filedir,
-				//	App->window->window
-				//);
-				
-					//SDL_free(dropped_filedir);
+			//dropped_filedir=e.drop.file;
+			//SDL_ShowSimpleMessageBox(
+			//	SDL_MESSAGEBOX_INFORMATION,
+			//	"File dropped on window",
+			//	dropped_filedir,
+			//	App->window->window
+			//);
 
-				break;
+				//SDL_free(dropped_filedir);
+		} break;
+
 		}
 	}
 

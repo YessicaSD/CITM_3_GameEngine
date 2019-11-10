@@ -17,6 +17,8 @@
 #include "ModuleTexture.h"
 #include "Event.h"
 
+#include "AssetMeshNode.h"
+
 #include "ModuleFileSystem.h"
 
 #define PAR_SHAPES_IMPLEMENTATION
@@ -47,24 +49,40 @@ bool ModuleImport::Start(JSONFile * config)
 	return true;
 }
 
-bool ModuleImport::LoadMesh(const char *path)
+//Creates an AssetMesh (our custom format for 3d meshes) from an fbx
+bool ModuleImport::ImportMesh(const char *path)
 {
 	const aiScene *scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		std::vector<AssetMesh *> object_meshes;
-		std::vector<AssetTexture *> textures;
+		std::vector<AssetTexture *> textures;//TODO: Clear this vectors
+		//Texture list should be inside the AssetMesh too?
 		for (uint i = 0; i < scene->mNumMeshes; ++i)
 		{
 
 			aiMesh *assimp_mesh = scene->mMeshes[i];
 			AssetMesh *asset_mesh = LoadAssimpMesh(assimp_mesh);
-			asset_mesh->LoadTexture(assimp_mesh, scene, textures);
+			LoadFBXTexture(assimp_mesh, scene, textures);
 
 			object_meshes.push_back(asset_mesh);
 			meshes.push_back(asset_mesh);
 		}
+		//Get the nodes
+		AssetMeshNode asset_mesh_node;
 		CreateGameObjectsFromNodes(scene->mRootNode, App->scene->root_gameobject->transform, object_meshes, textures);
+		
+		//Save the file here
+		//It has
+		//- Meshes
+			//- Indices
+			//- Vertices
+		//- Textures
+		//- Nodes
+		//There is no class encapsulating all of this
+		//It's just a series of vectors that exist on this function
+
+		//TODO: We should save information about children so we can release the scene here and only use the assetmesh to creat all the gameobject 
 		aiReleaseImport(scene);
 	}
 	else
@@ -73,6 +91,31 @@ bool ModuleImport::LoadMesh(const char *path)
 	}
 
 	return true;
+}
+
+bool ModuleImport::LoadFBXTexture(aiMesh * info, const  aiScene* fbx, std::vector<AssetTexture*>& textures)
+{
+	aiMaterial* material = fbx->mMaterials[info->mMaterialIndex];
+
+	if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
+	{
+		aiString aipath;
+		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &aipath, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+		{
+			std::string path = ASSETS_FOLDER + std::string(aipath.data);
+			textures.push_back(App->texture->LoadTexture(path.c_str()));
+			return true;
+		}
+		else
+		{
+			LOG("Texture path note found");
+			textures.push_back(nullptr);
+			return false;
+		}
+	}
+
+	textures.push_back(nullptr);
+	return false;
 }
 
 AssetMesh *ModuleImport::LoadAssimpMesh(aiMesh *assimp_mesh)
@@ -160,10 +203,12 @@ void ModuleImport::EventRequest(const Event &event)
 		App->file_system->GetExtension(event.path, extension);
 		if (extension == "fbx" || extension == "FBX")
 		{
-			LoadMesh(event.path);
+			//Import mesh onto assets folder
+			ImportMesh(event.path);
 		}
 		else if (extension == "dds" || extension == "png" || extension == "jpg")
 		{
+			//Import texture onto assets folder
 			App->texture->LoadTexture(event.path);
 		}
 		else

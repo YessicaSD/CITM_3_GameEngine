@@ -25,7 +25,7 @@ bool ModuleTexture::Init(JSONFile * module_file)
 	iluInit();
 	ilutInit();
 	ilutRenderer(ILUT_OPENGL);
-	makeCheckTexture();
+	CreateCheckerTexture();
 	return true;
 }
 
@@ -118,7 +118,7 @@ bool ModuleTexture::CleanUp()
 	return true;
 }
 
-void ModuleTexture::makeCheckTexture()
+void ModuleTexture::CreateCheckerTexture()
 {
 	AssetTexture* new_texture = new AssetTexture();
 

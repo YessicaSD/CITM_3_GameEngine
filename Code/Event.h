@@ -1,5 +1,6 @@
-#ifndef  EVENT_H_
-#define  EVENT_H_
+#ifndef  __EVENT_H__
+#define  __EVENT_H__
+
 struct Event
 {
 public:
