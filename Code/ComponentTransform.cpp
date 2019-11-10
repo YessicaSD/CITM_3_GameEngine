@@ -47,6 +47,7 @@ void ComponentTransform::PropertiesEditor()
 	bool position_changed = false,
 		 rotation_changed = false,
 		 scale_changed = false;
+
 	if (ImGui::InputFloat3("Position", (float *)&position, "%.2f"))
 	{
 		position_changed = true;

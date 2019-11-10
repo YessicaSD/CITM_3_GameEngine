@@ -15,8 +15,8 @@ ComponentCamera::ComponentCamera(GameObject* gameobject):Component(gameobject)
 	frustum.front = math::float3::unitZ;
 	frustum.up = math::float3::unitY;
 
-	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 500.0f;
+	near_plane = frustum.nearPlaneDistance = 0.1f;
+	far_plane = frustum.farPlaneDistance = 500.0f;
 	frustum.verticalFov = 60.0f * DEGTORAD;
 	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * 1.3f);
 	float3 corners[8];
@@ -33,6 +33,29 @@ void ComponentCamera::PropertiesEditor()
 {
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
+		bool changed_near_plane, changed_far_plane, changed_field_of_view;
+		
+		ImGui::Checkbox("Active", &frustum_culling);
+		ImGui::Text("Near Plane"); 
+		ImGui::SameLine(); 
+		if (changed_near_plane = ImGui::InputFloat("##Near Plane", &near_plane, 1, 5, 2))
+		{
+			SetNearPlane(near_plane);
+		}
+
+		ImGui::Text("Far Plane");
+		ImGui::SameLine();
+		if (changed_far_plane = ImGui::InputFloat("##Far Plane", &far_plane, 1, 5, 2))
+		{
+			SetFarPlane(far_plane);
+		}
+
+		ImGui::Text("Field of view (Vertical FOV)");
+		ImGui::SameLine();
+		ImGui::SliderAngle("##VFOV", &v_fov);
+
+		if(changed_near_plane || changed_far_plane)
+			UpdateDrawingRepresentation();
 
 	}
 }
@@ -43,6 +66,11 @@ void ComponentCamera::TransformHaveChanged()
 	frustum.front = gameobject->transform->GetZAxis();
 	frustum.up = gameobject->transform->GetYAxis();
 
+	UpdateDrawingRepresentation();
+}
+
+void ComponentCamera::UpdateDrawingRepresentation()
+{
 	float3 corners[8];
 	frustum.GetCornerPoints(corners);
 	frustum_render.SetVetices((float*)&corners);
@@ -67,6 +95,23 @@ bool ComponentCamera::IsInfrustrum(const AABB & bounding_box)
 			return false;
 	}
 	return true;
+}
+
+void ComponentCamera::SetNearPlane(const float & value)
+{
+	if (value > 0.00f)
+	{
+		frustum.nearPlaneDistance = (value < frustum.farPlaneDistance) ? value : frustum.nearPlaneDistance;
+	}
+	near_plane = frustum.nearPlaneDistance;
+}
+
+void ComponentCamera::SetFarPlane(const float & value)
+{
+
+	frustum.farPlaneDistance = (value > frustum.nearPlaneDistance ) ? value : frustum.farPlaneDistance;
+	
+	far_plane = frustum.farPlaneDistance;
 }
 
 

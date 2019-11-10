@@ -13,10 +13,17 @@ public:
 	void OnPostUpdate() override;
 	void PropertiesEditor() override;
 	void TransformHaveChanged() override;
+	void UpdateDrawingRepresentation();
 	bool frustum_culling = true;
 	bool IsInfrustrum(const AABB& bounding_box);
+	void SetNearPlane(const float& value);
+	void SetFarPlane(const float& value);
 
+	
 private:
+	float near_plane;
+	float far_plane;
+	float v_fov;
 
 	Frustum frustum;
 	CubeLine frustum_render;
