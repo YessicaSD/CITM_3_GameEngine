@@ -17,8 +17,10 @@ ComponentCamera::ComponentCamera(GameObject* gameobject):Component(gameobject)
 
 	near_plane = frustum.nearPlaneDistance = 0.1f;
 	far_plane = frustum.farPlaneDistance = 500.0f;
-	frustum.verticalFov = 60.0f * DEGTORAD;
-	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * 1.3f);
+	
+	aspect_ratio = 1.3f;
+	v_fov = frustum.verticalFov = 60.0f * DEGTORAD;
+	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * aspect_ratio);
 	float3 corners[8];
 	frustum.GetCornerPoints(corners);
 	frustum_render.SetVetices((float*)&corners);
@@ -33,28 +35,31 @@ void ComponentCamera::PropertiesEditor()
 {
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
-		bool changed_near_plane, changed_far_plane, changed_field_of_view;
+		bool changed_near_plane, changed_far_plane, changed_field_of_view, changed_aspect_ratio;
 		
 		ImGui::Checkbox("Active", &frustum_culling);
-		ImGui::Text("Near Plane"); 
-		ImGui::SameLine(); 
-		if (changed_near_plane = ImGui::InputFloat("##Near Plane", &near_plane, 1, 5, 2))
+		
+		if (changed_near_plane = ImGui::InputFloat("Near Plane", &near_plane, 1, 5, 2))
 		{
 			SetNearPlane(near_plane);
 		}
 
-		ImGui::Text("Far Plane");
-		ImGui::SameLine();
-		if (changed_far_plane = ImGui::InputFloat("##Far Plane", &far_plane, 1, 5, 2))
+		if (changed_far_plane = ImGui::InputFloat("Far Plane", &far_plane, 1, 5, 2))
 		{
 			SetFarPlane(far_plane);
 		}
 
-		ImGui::Text("Field of view (Vertical FOV)");
-		ImGui::SameLine();
-		ImGui::SliderAngle("##VFOV", &v_fov);
 
-		if(changed_near_plane || changed_far_plane)
+		if (changed_field_of_view = ImGui::SliderAngle("Field of view", &v_fov, 0.0f, 179.0f))
+		{
+			SetFieldOfView(v_fov);
+		}
+
+		if (changed_aspect_ratio = ImGui::SliderFloat("Aspect_ratio", &aspect_ratio, 0, 5))
+		{
+			SetAspectRatio(aspect_ratio);
+		}
+		if(changed_near_plane || changed_far_plane || changed_field_of_view || changed_aspect_ratio)
 			UpdateDrawingRepresentation();
 
 	}
@@ -124,6 +129,18 @@ void ComponentCamera::SetFarPlane(const float & value)
 	frustum.farPlaneDistance = (value > frustum.nearPlaneDistance ) ? value : frustum.farPlaneDistance;
 	
 	far_plane = frustum.farPlaneDistance;
+}
+
+void ComponentCamera::SetFieldOfView(float & angle)
+{
+	 frustum.verticalFov = angle;
+	 frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * aspect_ratio);
+}
+
+void ComponentCamera::SetAspectRatio(float & ratio)
+{
+	aspect_ratio = ratio;
+	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * aspect_ratio);
 }
 
 

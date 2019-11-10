@@ -21,13 +21,14 @@ public:
 	bool IsInFrustum(math::float3  corners[8]);
 	void SetNearPlane(const float& value);
 	void SetFarPlane(const float& value);
-
+	void SetFieldOfView(float& angle);
+	void SetAspectRatio(float& ratio);
 	
 private:
 	float near_plane;
 	float far_plane;
 	float v_fov;
-
+	float aspect_ratio;
 	Frustum frustum;
 	CubeLine frustum_render;
 	float4 background_color;
