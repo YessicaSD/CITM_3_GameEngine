@@ -70,7 +70,7 @@ bool ModuleImport::ImportMesh(const char *path)
 		}
 		//Get the nodes
 		AssetMeshNode asset_mesh_node;
-		CreateGameObjectsFromNodes(scene->mRootNode, App->scene->root_gameobject->transform, object_meshes, textures);
+		LoadFBXNodes(&asset_mesh_node, scene->mRootNode);
 		
 		//Save the file here
 		//It has
@@ -88,6 +88,31 @@ bool ModuleImport::ImportMesh(const char *path)
 	else
 	{
 		LOG("Error loading scene %s", path);
+	}
+
+	return true;
+}
+
+bool ModuleImport::LoadFBXNodes(AssetMeshNode * asset_mesh_node, aiNode * node)
+{
+	//TODO: Load transformations
+
+	if (node->mNumMeshes > 0u)
+	{
+		//Load meshes and textures
+		for (int i = 0; i < node->mNumMeshes; ++i)
+		{
+			uint index = node->mMeshes[i];
+			asset_mesh_node->mesh_indices.push_back(index);
+			//how to associate each mesh with its correspondent texture?
+			//asset_mesh_node->meshes->texture.push_back(textures[index]);
+		}
+
+		//Do the same for the children
+		for (int i = 0; i < node->mNumChildren; ++i)
+		{
+			LoadFBXNodes(new AssetMeshNode(), node->mChildren[i]);
+		}
 	}
 
 	return true;

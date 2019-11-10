@@ -9,6 +9,7 @@
 #include "AssetTexture.h"
 
 class AssetMesh;
+class AssetMeshNode;
 struct aiMesh;
 struct aiNode;
 class ComponentTransform;
@@ -22,6 +23,7 @@ public:
 	ModuleImport(const char * name);
 	bool Start(JSONFile * module_file) override;
 	bool ImportMesh(const char* path);
+	bool LoadFBXNodes(AssetMeshNode * asset_mesh_node, aiNode * node);
 	bool LoadFBXTexture(aiMesh * info, const aiScene * fbx, std::vector<AssetTexture*>& textures);
 	bool CleanUp() override;
 

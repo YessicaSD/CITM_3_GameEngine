@@ -8,9 +8,11 @@ class AssetMesh;
 
 class AssetMeshNode
 {
+public:
 	std::string name;
-	std::vector<AssetMesh*> meshes;
-	std::vector<AssetMeshNode*> children;
+	std::vector<uint> mesh_indices;
+	//textures
+	//translation? rotation? scale?
 };
 
 #endif
