@@ -23,6 +23,7 @@ public:
 	void Draw();
 	void SetLocalAABB(AABB local_aabb);
 	AABB GetAABB();
+	OBB GetOBB();
 
 };
 

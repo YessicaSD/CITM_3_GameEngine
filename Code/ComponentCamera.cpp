@@ -76,11 +76,23 @@ void ComponentCamera::UpdateDrawingRepresentation()
 	frustum_render.SetVetices((float*)&corners);
 }
 
-bool ComponentCamera::IsInfrustrum(const AABB & bounding_box)
+bool ComponentCamera::IsInFrustum(const AABB & bounding_box)
+{
+	float3 corners[8];
+	bounding_box.GetCornerPoints((float3*)&corners);
+	return IsInFrustum(corners);
+}
+
+bool ComponentCamera::IsInFrustum(const OBB & bounding_box)
 {
 	float3 corners[8];
 	bounding_box.GetCornerPoints((float3*)&corners);
 
+	return IsInFrustum(corners);
+}
+
+bool ComponentCamera::IsInFrustum(math::float3  corners[8])
+{
 	for (uint index_plane = 0u; index_plane < 6; ++index_plane)
 	{
 		Plane plane = frustum.GetPlane(index_plane);

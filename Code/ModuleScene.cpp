@@ -60,7 +60,7 @@ update_status ModuleScene::Update(float dt)
 void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 {
 	object->OnPostUpdate();
-	if (component_camera->gameobject->transform == object || !component_camera->frustum_culling || component_camera->IsInfrustrum(object->bounding_box.GetAABB()))
+	if (component_camera->gameobject->transform == object || !component_camera->frustum_culling || component_camera->IsInFrustum(object->bounding_box.GetOBB()))
 		object->gameobject->OnPostUpdate();
 	for (std::vector<ComponentTransform *>::iterator iter = object->children.begin();
 		iter != object->children.end();

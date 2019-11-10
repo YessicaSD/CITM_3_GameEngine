@@ -50,3 +50,8 @@ AABB BoundingBox::GetAABB()
 {
 	return aabb;
 }
+
+OBB BoundingBox::GetOBB()
+{
+	return obb;
+}

@@ -6,6 +6,7 @@
 #include "MathGeoLib/include/Geometry/Frustum.h"
 #include "CubeLine.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
+#include "MathGeoLib/include/Geometry/OBB.h"
 class ComponentCamera : public Component
 {
 public:
@@ -15,7 +16,9 @@ public:
 	void TransformHaveChanged() override;
 	void UpdateDrawingRepresentation();
 	bool frustum_culling = true;
-	bool IsInfrustrum(const AABB& bounding_box);
+	bool IsInFrustum(const AABB& bounding_box);
+	bool IsInFrustum(const OBB& bounding_box);
+	bool IsInFrustum(math::float3  corners[8]);
 	void SetNearPlane(const float& value);
 	void SetFarPlane(const float& value);
 
