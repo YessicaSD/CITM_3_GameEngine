@@ -125,8 +125,9 @@
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="Cube.h" />
-    <ClInclude Include="CubeQuad.h" />
+    <ClInclude Include="CubeLine.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="imGuizmo\ImCurveEdit.h" />
     <ClInclude Include="imGuizmo\ImGradient.h" />
@@ -267,8 +268,9 @@
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="CubeQuad.cpp" />
+    <ClCompile Include="CubeLine.cpp" />
     <ClCompile Include="imGuizmo\ImCurveEdit.cpp" />
     <ClCompile Include="imGuizmo\ImGradient.cpp" />
     <ClCompile Include="imGuizmo\ImGuizmo.cpp" />

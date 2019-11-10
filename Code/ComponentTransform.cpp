@@ -5,6 +5,10 @@
 #include "ComponentMesh.h"
 #include "Globals.h"
 
+#include "glew/include/GL/glew.h"
+
+
+
 CLASS_DEFINITION(Component, ComponentTransform)
 
 ComponentTransform::ComponentTransform(GameObject *gameobject) : Component(gameobject)
@@ -13,7 +17,14 @@ ComponentTransform::ComponentTransform(GameObject *gameobject) : Component(gameo
 
 	//TODO: This is for testing purposes, remove when done
 	global_matrix = local_matrix = local_matrix.identity;
-	UpdatePos();
+	SetTransform(float3(0,0,0), float3(1,1,1), float3(0,0,0));
+	UpdateVector();
+	
+}
+
+ComponentTransform::~ComponentTransform()
+{
+	
 }
 
 void ComponentTransform::SetParent(ComponentTransform *parent)
@@ -25,12 +36,10 @@ void ComponentTransform::SetParent(ComponentTransform *parent)
 	}
 }
 
-void ComponentTransform::UpdatePos()
+void ComponentTransform::OnPostUpdate()
 {
-	float4 homogeneous_vec_pos = {0, 0, 0, 1};
-	homogeneous_vec_pos = homogeneous_vec_pos * global_matrix;
-	position = {homogeneous_vec_pos.x, homogeneous_vec_pos.y, homogeneous_vec_pos.z};
-	global_matrix.Decompose(position, qrotation, scale);
+	DrawAxis();
+	bounding_box.Draw();
 }
 
 void ComponentTransform::PropertiesEditor()
@@ -38,6 +47,7 @@ void ComponentTransform::PropertiesEditor()
 	bool position_changed = false,
 		 rotation_changed = false,
 		 scale_changed = false;
+
 	if (ImGui::InputFloat3("Position", (float *)&position, "%.2f"))
 	{
 		position_changed = true;
@@ -90,15 +100,16 @@ void ComponentTransform::RecalculateMatrices()
 		global_matrix = local_matrix;
 	}
 
-	ComponentMesh *comp_mesh = gameobject->GetComponent<ComponentMesh>();
+	bounding_box.MultiplyByMatrix(global_matrix);
 
+	UpdateVector();
 
-	if (comp_mesh != nullptr)
+	for (auto i = gameobject->components.begin(); i != gameobject->components.end(); ++i)
 	{
-		comp_mesh->UpdateBoundingBox(global_matrix);
+		(*i)->TransformHaveChanged();
 	}
-
 	UpdateChildrenMatrices();
+	
 }
 
 void ComponentTransform::UpdateChildrenMatrices()
@@ -106,14 +117,21 @@ void ComponentTransform::UpdateChildrenMatrices()
 	for (std::vector<ComponentTransform *>::iterator iter = children.begin(); iter != children.end(); ++iter)
 	{
 		(*iter)->global_matrix = global_matrix * (*iter)->local_matrix;
-		ComponentMesh *comp_mesh = gameobject->GetComponent<ComponentMesh>();
-		if (comp_mesh != nullptr)
-		{
-			comp_mesh->UpdateBoundingBox((*iter)->global_matrix);
-		}
-
+		(*iter)->UpdateVector();
+		(*iter)->bounding_box.MultiplyByMatrix((*iter)->global_matrix);
 		(*iter)->UpdateChildrenMatrices();
 	}
+}
+
+void ComponentTransform::UpdateVector()
+{
+	float3x3 matrix = global_matrix.Float3x3Part();
+	x = { 1,0,0 };
+	x =  matrix * x;
+	y = { 0,1,0 };
+	y = matrix * y;
+	z = { 0,0,1 };
+	z = matrix * z;
 }
 
 void ComponentTransform::SetPosition(const float3 &position)
@@ -145,6 +163,16 @@ void ComponentTransform::SetScale(const float3 &scale)
 
 	RecalculateMatrices();
 }
+
+float3 ComponentTransform::GetZAxis()
+{
+	return z;
+}
+float3 ComponentTransform::GetYAxis()
+{
+	return y;
+}
+
 
 float3 ComponentTransform::GetPosition() const
 {
@@ -193,4 +221,30 @@ void ComponentTransform::DeleteChildren()
 		}
 		gameobject->transform->children.clear();
 	}
+}
+
+void ComponentTransform::DrawAxis()
+{
+	float length = 2;
+	glLineWidth(5);
+	glBegin(GL_LINES);
+	glColor3f(0.0f, 0.0f, 1.0f);  // Blue
+	glVertex3f(position.x, position.y, position.z);
+	glVertex3f(position.x + z.x * length, position.y + z.y * length, position.z + z.z * length);
+
+	glColor3f(1.0f, 0.0f, 0.0f);  // Red
+	glVertex3f(position.x, position.y, position.z);
+	glVertex3f(position.x + x.x * length, position.y + x.y * length, position.z + x.z * length);
+
+	glColor3f(0.0f, 1.0f, 0.0f);  // Green
+	glVertex3f(position.x, position.y, position.z);
+	glVertex3f(position.x + y.x * length, position.y + y.y * length, position.z + y.z * length);
+
+	glEnd();
+	
+}
+
+AABB ComponentTransform::GetAABB()
+{
+	return bounding_box.GetAABB();
 }

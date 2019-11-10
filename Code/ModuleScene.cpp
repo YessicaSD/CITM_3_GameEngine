@@ -5,6 +5,7 @@
 #include "ModuleRandom.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
+#include "ComponentCamera.h"
 #include "glew\include\GL\glew.h"
 #include "PanelScene.h"
 #include <gl\GL.h>
@@ -19,7 +20,9 @@
 ModuleScene::ModuleScene(bool start_enabled) :
 	Module(start_enabled)
 {
-	root_gameobject = new GameObject("Root", nullptr);
+	
+	
+
 }
 
 ModuleScene::~ModuleScene()
@@ -29,7 +32,10 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Start(JSONFile * config)
 {
 	//LOG("Loading Intro assets");
+	root_gameobject = new GameObject("Root", nullptr);
 	bool ret = true;
+	camera = new GameObject("Camera", root_gameobject->transform);
+	component_camera = camera->CreateComponent<ComponentCamera>();
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));	
@@ -53,8 +59,10 @@ update_status ModuleScene::Update(float dt)
 
 void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 {
-	object->gameobject->OnPostUpdate();
-	for(std::vector<ComponentTransform *>::iterator iter = object->children.begin();
+	object->OnPostUpdate();
+	if (component_camera->gameobject->transform == object || !component_camera->frustum_culling || component_camera->IsInFrustum(object->bounding_box.GetOBB()))
+		object->gameobject->OnPostUpdate();
+	for (std::vector<ComponentTransform *>::iterator iter = object->children.begin();
 		iter != object->children.end();
 		++iter)
 	{
@@ -97,7 +105,7 @@ update_status ModuleScene::PostUpdate()
 
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;
-	p.wire = false;
+	//p.wire = false;
 	p.Render();
 
 	GameObjectPostUpdateRecursive(root_gameobject->transform);
