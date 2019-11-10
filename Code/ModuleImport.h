@@ -9,7 +9,7 @@
 #include "AssetTexture.h"
 
 class AssetMesh;
-class AssetMeshNode;
+class ResourceModelNode;
 struct aiMesh;
 struct aiNode;
 class ComponentTransform;
@@ -23,7 +23,8 @@ public:
 	ModuleImport(const char * name);
 	bool Start(JSONFile * module_file) override;
 	bool ImportMesh(const char* path);
-	bool LoadFBXNodes(AssetMeshNode * asset_mesh_node, aiNode * node);
+	bool LoadFBXNodes(ResourceModelNode * asset_mesh_node, aiNode * node);
+	bool SaveModelCustomFormat(const std::vector<AssetMesh*>& meshes, const std::vector<AssetTexture*>& textures, const ResourceModelNode root_node);
 	bool LoadFBXTexture(aiMesh * info, const aiScene * fbx, std::vector<AssetTexture*>& textures);
 	bool CleanUp() override;
 

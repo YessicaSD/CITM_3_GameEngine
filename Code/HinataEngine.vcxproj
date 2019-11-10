@@ -260,6 +260,8 @@
     <ClInclude Include="PerfTimer.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="ModuleRandom.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceModel.h" />
     <ClInclude Include="Shortcut.h" />
     <ClInclude Include="AssetTexture.h" />
     <ClInclude Include="Timer.h" />
@@ -355,6 +357,8 @@
     <ClCompile Include="PerfTimer.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="ModuleRandom.cpp" />
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceModel.cpp" />
     <ClCompile Include="Shortcut.cpp" />
     <ClCompile Include="AssetTexture.cpp" />
     <ClCompile Include="Timer.cpp" />

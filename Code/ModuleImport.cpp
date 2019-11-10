@@ -17,7 +17,7 @@
 #include "ModuleTexture.h"
 #include "Event.h"
 
-#include "AssetMeshNode.h"
+#include "ResourceModel.h"
 
 #include "ModuleFileSystem.h"
 
@@ -57,6 +57,7 @@ bool ModuleImport::ImportMesh(const char *path)
 	{
 		std::vector<AssetMesh *> object_meshes;
 		std::vector<AssetTexture *> textures;//TODO: Clear this vectors
+		ResourceModelNode model_node;
 		//Texture list should be inside the AssetMesh too?
 		for (uint i = 0; i < scene->mNumMeshes; ++i)
 		{
@@ -68,10 +69,13 @@ bool ModuleImport::ImportMesh(const char *path)
 			object_meshes.push_back(asset_mesh);
 			meshes.push_back(asset_mesh);
 		}
-		//Get the nodes
-		AssetMeshNode asset_mesh_node;
-		LoadFBXNodes(&asset_mesh_node, scene->mRootNode);
+		//Generate the Resource model and Resource Textures
+		//We need their id for this function
+
+		LoadFBXNodes(&model_node, scene->mRootNode, , );
 		
+		SaveModel(object_meshes, textures, model_node);
+
 		//Save the file here
 		//It has
 		//- Meshes
@@ -93,25 +97,53 @@ bool ModuleImport::ImportMesh(const char *path)
 	return true;
 }
 
-bool ModuleImport::LoadFBXNodes(AssetMeshNode * asset_mesh_node, aiNode * node)
+bool ModuleImport::SaveModel(const std::vector<AssetMesh*> & meshes, const std::vector<AssetTexture*> & textures)
 {
-	//TODO: Load transformations
+	//1. Meshes
+		//indices
+		//vertices
+		//uvs
+	//2. Textures
+	//3. Nodes
+		//meshes id
+		//textures id
+
+	uint ranges[2] = { mesh.num_indices, mesh.num_vertices };
+
+	uint size = sizeof(ranges) + sizeof(uint) * mesh.num_indices + sizeof(float) * mesh.num_vertices * 3;
+
+	char* data = new char[size]; // Allocate
+	char* cursor = data;
+
+	uint bytes = sizeof(ranges); // First store ranges
+	memcpy(cursor, ranges, bytes);
+
+	cursor += bytes; // Store indices
+	bytes = sizeof(uint) * mesh.num_indices;
+	memcpy(cursor, mesh.indices, bytes);
+
+	//Save char* data using PHYSFS
+}
+
+bool ModuleImport::LoadFBXNodes(ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials)
+{
+	model_node->name = node->mName.C_Str();
+	model_node->transform = reinterpret_cast<const float4x4&>(node->mTransformation);
+
 
 	if (node->mNumMeshes > 0u)
 	{
-		//Load meshes and textures
 		for (int i = 0; i < node->mNumMeshes; ++i)
 		{
 			uint index = node->mMeshes[i];
-			asset_mesh_node->mesh_indices.push_back(index);
-			//how to associate each mesh with its correspondent texture?
-			//asset_mesh_node->meshes->texture.push_back(textures[index]);
+			model_node->meshes.push_back(index);
+			//TODO: Associate textures
 		}
 
 		//Do the same for the children
 		for (int i = 0; i < node->mNumChildren; ++i)
 		{
-			LoadFBXNodes(new AssetMeshNode(), node->mChildren[i]);
+			LoadFBXNodes(new ResourceModelNode(), node->mChildren[i], , );
 		}
 	}
 

@@ -608,6 +608,8 @@
       <Filter>Sources\Containers</Filter>
     </ClInclude>
     <ClInclude Include="AssetMeshNode.h" />
+    <ClInclude Include="ResourceModel.h" />
+    <ClInclude Include="Resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -886,6 +888,8 @@
     <ClCompile Include="AssetTexture.cpp">
       <Filter>Sources\Containers</Filter>
     </ClCompile>
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
