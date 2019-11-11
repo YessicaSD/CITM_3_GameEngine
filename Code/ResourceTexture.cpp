@@ -33,4 +33,10 @@ ResourceTexture::~ResourceTexture()
 	{
 		ilDeleteImages(1, (ILuint*)&buffer_id);
 	}
-};
+}
+
+bool ResourceTexture::SaveResource()
+{
+	//TODO: Save resource texture (see ResourceMesh as an example)
+	return true;
+}

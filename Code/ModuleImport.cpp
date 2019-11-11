@@ -64,9 +64,9 @@ bool ModuleImport::ImportModel(const char *path)
 		{
 
 			aiMesh *assimp_mesh = scene->mMeshes[i];
-			ResourceMesh *resource_mesh = LoadAssimpMesh(assimp_mesh);
+			ResourceMesh *resource_mesh = ImportAssimpMesh(assimp_mesh);
 			//Save mesh (and create a uid for each one)
-			LoadFBXTexture(assimp_mesh, scene, textures);
+			ImportFBXTexture(assimp_mesh, scene, textures);
 			//Save texture (and create an uid for each one)
 
 			object_meshes.push_back(resource_mesh);
@@ -75,9 +75,9 @@ bool ModuleImport::ImportModel(const char *path)
 		//Generate the Resource model and Resource Textures
 		//We need their id for this function
 
-		LoadFBXNodes(&model_root_node, scene->mRootNode, , );
+		//LoadFBXNodes(&model_root_node, scene->mRootNode, , );
 		
-		SaveModel(object_meshes, textures, model_root_node);
+		//SaveModel(object_meshes, textures, model_root_node);
 
 		//Save the file here
 		//It has
@@ -101,66 +101,46 @@ bool ModuleImport::ImportModel(const char *path)
 }
 
 //Saves the model in our own custom file format
-bool ModuleImport::SaveModel(const std::vector<ResourceMesh*> & meshes, const std::vector<ResourceTexture*> & textures)
-{
-	//1. Meshes
-		//indices
-		//vertices
-		//uvs
-	//2. Textures
-	//3. Nodes
-		//meshes id
-		//textures id
+//bool ModuleImport::SaveModel(const std::vector<ResourceMesh*> & meshes, const std::vector<ResourceTexture*> & textures)
+//{
+//	//1. Meshes
+//		//indices
+//		//vertices
+//		//uvs
+//	//2. Textures
+//	//3. Nodes
+//		//meshes id
+//		//textures id
+//
+//
+//}
 
+//bool ModuleImport::LoadFBXNodes(ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials)
+//{
+//	model_node->name = node->mName.C_Str();
+//	model_node->transform = reinterpret_cast<const float4x4&>(node->mTransformation);
+//
+//
+//	if (node->mNumMeshes > 0u)
+//	{
+//		for (int i = 0; i < node->mNumMeshes; ++i)
+//		{
+//			uint index = node->mMeshes[i];
+//			model_node->meshes.push_back(index);
+//			//TODO: Associate textures
+//		}
+//
+//		//Do the same for the children
+//		for (int i = 0; i < node->mNumChildren; ++i)
+//		{
+//			LoadFBXNodes(new ResourceModelNode(), node->mChildren[i], , );
+//		}
+//	}
+//
+//	return true;
+//}
 
-}
-
-bool ModuleImporter::SaveMeshes()
-{
-	uint ranges[2] = { mesh.num_indices, mesh.num_vertices };
-
-	uint size = sizeof(ranges) + sizeof(uint) * mesh.num_indices + sizeof(float) * mesh.num_vertices * 3;
-
-	char* data = new char[size]; // Allocate
-	char* cursor = data;
-
-	uint bytes = sizeof(ranges); // First store ranges
-	memcpy(cursor, ranges, bytes);
-
-	cursor += bytes; // Store indices
-	bytes = sizeof(uint) * mesh.num_indices;
-	memcpy(cursor, mesh.indices, bytes);
-
-	//Save char* data using PHYSFS
-
-}
-
-bool ModuleImport::LoadFBXNodes(ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials)
-{
-	model_node->name = node->mName.C_Str();
-	model_node->transform = reinterpret_cast<const float4x4&>(node->mTransformation);
-
-
-	if (node->mNumMeshes > 0u)
-	{
-		for (int i = 0; i < node->mNumMeshes; ++i)
-		{
-			uint index = node->mMeshes[i];
-			model_node->meshes.push_back(index);
-			//TODO: Associate textures
-		}
-
-		//Do the same for the children
-		for (int i = 0; i < node->mNumChildren; ++i)
-		{
-			LoadFBXNodes(new ResourceModelNode(), node->mChildren[i], , );
-		}
-	}
-
-	return true;
-}
-
-bool ModuleImport::LoadFBXTexture(aiMesh * info, const  aiScene* fbx, std::vector<ResourceTexture*>& textures)
+bool ModuleImport::ImportFBXTexture(aiMesh * info, const  aiScene* fbx, std::vector<ResourceTexture*>& textures)
 {
 	aiMaterial* material = fbx->mMaterials[info->mMaterialIndex];
 
@@ -185,7 +165,7 @@ bool ModuleImport::LoadFBXTexture(aiMesh * info, const  aiScene* fbx, std::vecto
 	return false;
 }
 
-ResourceMesh *ModuleImport::LoadAssimpMesh(aiMesh *assimp_mesh)
+ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh)
 {
 	ResourceMesh *resource_mesh = App->resource_manager->CreateNewResource<ResourceMesh>();
 	//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
@@ -200,7 +180,9 @@ ResourceMesh *ModuleImport::LoadAssimpMesh(aiMesh *assimp_mesh)
 	resource_mesh->GenerateVerticesBuffer();
 	resource_mesh->GenerateFacesAndNormalsBuffer();
 	resource_mesh->GenerateUVsBuffer();
+
 	resource_mesh->SaveResource();
+
 	return resource_mesh;
 }
 

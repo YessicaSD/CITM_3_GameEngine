@@ -11,6 +11,7 @@
 #include "ModuleTexture.h"
 #include "ResourceTexture.h"
 #include "BoundingBox.h"
+#include "PhysFS/include/physfs.h"
 
 ResourceMesh::ResourceMesh() : Resource()
 {
@@ -19,6 +20,69 @@ ResourceMesh::ResourceMesh() : Resource()
 ResourceMesh::~ResourceMesh()
 {
 	CleanUp();
+}
+
+//Saves the mesh in our custom format
+bool ResourceMesh::SaveResource()
+{
+	uint ranges[] = {
+		num_vertices,
+		num_indices,
+		uv_num_components };
+
+	uint ranges_bytes = sizeof(ranges);
+	uint vertices_bytes = sizeof(float3) * num_vertices;
+	uint indices_bytes = sizeof(uint) * num_indices;
+	uint uv_bytes = sizeof(float) * uv_num_components;
+
+	uint size = ranges_bytes
+		+ vertices_bytes
+		+ indices_bytes
+		+ uv_bytes;
+
+	// Allocate
+	char* data = new char[size]; 
+
+	char* cursor = data;
+
+	 //Store ranges in which it must read.
+	memcpy(cursor, ranges, ranges_bytes);
+	cursor += ranges_bytes;
+
+	//Store vertices
+	memcpy(cursor, vertices, vertices_bytes);
+	cursor += vertices_bytes;
+
+	//Store indices
+	memcpy(cursor, indices, indices_bytes);
+	cursor += indices_bytes;
+
+	//Store uvs
+	memcpy(cursor, uv_coord, uv_bytes);
+	cursor += uv_bytes;
+
+	const char * file_name = "MESH";
+	PHYSFS_File * mesh_file = PHYSFS_openWrite(file_name);
+	if (mesh_file != nullptr)
+	{
+		uint bytes_written = (uint)PHYSFS_write(mesh_file, (const void *)data, 1, size);
+		//TODO: Download the new version of PHYSFS and use PHYSFS_writeBytes
+		if (bytes_written != size)
+		{
+			LOG("Error while writting to file %s: %s", file_name, PHYSFS_getLastError());
+		}
+		else
+		{
+			LOG("Successfully written file %s at %s", file_name, PHYSFS_getWriteDir());
+		}
+	}
+	else
+	{
+		LOG("Errror while opening the file %s: %s", file_name, PHYSFS_getLastError());
+	}
+
+	LOG("Mesh saved succesfully");
+	return true;
 }
 
 bool ResourceMesh::LoadVertices(const int num_vertices, const float * vertices)
@@ -52,7 +116,7 @@ bool ResourceMesh::LoadVerticesNormals(aiMesh * info)
 
 bool ResourceMesh::GenerateVertexNormalsBuffer()
 {
-	if (vertex_normals)
+	if (vertex_normals != nullptr)
 	{
 		glGenBuffers(1, &id_vertex_normals);
 		glBindBuffer(GL_ARRAY_BUFFER, this->id_vertex_normals);
@@ -64,7 +128,7 @@ bool ResourceMesh::GenerateVertexNormalsBuffer()
 
 bool ResourceMesh::GenerateVerticesBuffer()
 {
-	if (vertices)
+	if (vertices != nullptr)
 	{
 		glGenBuffers(1, &id_vertex);
 		glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
@@ -158,7 +222,7 @@ bool ResourceMesh::LoadUVs(float * coords)
 {
 	if (coords)
 	{
-		this->uv_num_components = 2;
+		this->uv_num_components = 2u;
 		this->uv_coord = new float[uv_num_components * this->num_vertices];
 		memcpy(this->uv_coord, coords, sizeof(float) * uv_num_components * this->num_vertices);
 
@@ -174,7 +238,7 @@ void ResourceMesh::CreateBoundingBox()
 
 bool ResourceMesh::GenerateFacesAndNormalsBuffer()
 {
-	if (num_faces > 0)
+	if (num_faces > 0u)
 	{
 		glGenBuffers(1, &id_indice);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indice);

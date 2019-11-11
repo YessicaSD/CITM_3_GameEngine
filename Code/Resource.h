@@ -5,9 +5,12 @@
 
 class Resource
 {
+public:
+	//INFO: Saves the resource with custom format in the Resources folder
+	virtual bool SaveResource() = 0;
+
 protected:
 	UID uid = 0u;
-	//TODO: Add necessary information for the resource manager
 };
 
 #endif

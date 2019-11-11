@@ -3,7 +3,9 @@
 
 #include "Component.h"
 #include "ComponentMesh.h"
-#include "ResourceTexture.h"
+
+class ResourceTexture;
+
 class ComponentMaterial : public Component
 {
 	CLASS_DECLARATION(ComponentMaterial)
@@ -13,7 +15,7 @@ private:
 public:
 	ComponentMaterial(GameObject * gameobject, ComponentMesh* component_mesh );
 	
-	void SetTexture(AssetTexture* texture);
+	void SetTexture(ResourceTexture* texture);
 	void DisableGLModes();
 	void RenderTexture();
 	void PropertiesEditor() override;

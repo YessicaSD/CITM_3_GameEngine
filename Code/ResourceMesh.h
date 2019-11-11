@@ -18,6 +18,7 @@ private:
 	ResourceMesh();//Constructor is private because Resources need to be created from ModuleResourceManager
 public:
 	~ResourceMesh();
+	bool SaveResource() override;
 	bool LoadVertices(const int num_vertices, const float *vertices);
 	bool LoadVerticesNormals(aiMesh *info);
 	bool LoadFaces(aiMesh *info);

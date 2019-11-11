@@ -25,11 +25,11 @@ public:
 	bool ImportModel(const char* path);
 	bool LoadFBXNodes(ResourceModelNode * asset_mesh_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials);
 	bool SaveModelCustomFormat(const std::vector<ResourceMesh*>& meshes, const std::vector<ResourceTexture*>& textures, const ResourceModelNode root_node);
-	bool LoadFBXTexture(aiMesh * info, const aiScene * fbx, std::vector<ResourceTexture*>& textures);
+	bool ImportFBXTexture(aiMesh * info, const aiScene * fbx, std::vector<ResourceTexture*>& textures);
 	bool CleanUp() override;
 
 	void EventRequest(const Event& event) override;
-	ResourceMesh* LoadAssimpMesh(aiMesh * assimp_mesh);
+	ResourceMesh* ImportAssimpMesh(aiMesh * assimp_mesh);
 	ResourceMesh* LoadParShapeMesh(par_shapes_mesh * mesh);
 	GameObject * CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, ResourceMesh * asset_mesh);
 	bool AddMesh(ResourceMesh * asset_mesh);

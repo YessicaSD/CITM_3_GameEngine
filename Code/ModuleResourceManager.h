@@ -5,8 +5,7 @@
 
 #include "Module.h"
 #include "Globals.h"
-
-class Resource;
+#include "Resource.h"
 
 class ModuleResourceManager : public Module
 {
@@ -17,7 +16,7 @@ public:
 	ResourceType * CreateNewResource()
 	{
 		ResourceType * resource = new ResourceType();
-		resource.uid = GenerateNewUID();
+		resource->uid = GenerateNewUID();
 		return resource;
 	}
 
