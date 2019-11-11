@@ -7,7 +7,7 @@
 #include "MathGeoLib/include/Geometry/AABB.h"
 #include "BoundingBox.h"
 
-class AssetMesh;
+class ResourceMesh;
 class ComponentMaterial;
 
 struct RenderMode
@@ -36,7 +36,7 @@ public:
 	
 
 private:
-	AssetMesh *mesh = nullptr;
+	ResourceMesh *mesh = nullptr;
 	BoundingBox *bounding_box;
 	ComponentMaterial *material = nullptr;
 	RenderMode render_mode;

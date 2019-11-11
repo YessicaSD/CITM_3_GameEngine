@@ -3,12 +3,12 @@
 
 #include "Component.h"
 #include "ComponentMesh.h"
-#include "AssetTexture.h"
+#include "ResourceTexture.h"
 class ComponentMaterial : public Component
 {
 	CLASS_DECLARATION(ComponentMaterial)
 private:
-	AssetTexture* texture = nullptr;
+	ResourceTexture* texture = nullptr;
 	ComponentMesh * component_mesh = nullptr;
 public:
 	ComponentMaterial(GameObject * gameobject, ComponentMesh* component_mesh );

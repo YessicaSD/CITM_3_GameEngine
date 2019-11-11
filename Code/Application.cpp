@@ -5,6 +5,7 @@
 #include "Event.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_stdlib.h"
+#include "JSONFile.h"
 
 #include "ModuleImport.h"
 #include "ModuleTexture.h"
@@ -17,7 +18,7 @@
 #include "ModuleCamera3D.h"
 #include "ModuleGui.h"
 #include "ModuleRenderer3D.h"
-#include "JSONFile.h"
+#include "ModuleResourceManager.h"
 
 Application::Application()
 {
@@ -37,6 +38,7 @@ Application::Application()
 	AddModule(camera = new ModuleCamera3D("Camera 3D"));
 	AddModule(audio = new ModuleAudio("Audio"));
 	AddModule(gui = new ModuleGui("Gui"));
+	AddModule(resource_manager = new ModuleResourceManager("Resource Manager"));
 
 	// Renderer last!
 	AddModule(renderer3D = new ModuleRenderer3D("Render"));

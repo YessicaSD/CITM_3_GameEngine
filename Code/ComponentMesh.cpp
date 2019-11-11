@@ -3,7 +3,7 @@
 
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
-#include "AssetMesh.h"
+#include "ResourceMesh.h"
 
 #include "GameObject.h"
 #include "ComponentTransform.h"

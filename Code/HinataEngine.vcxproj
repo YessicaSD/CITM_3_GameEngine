@@ -85,7 +85,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="AssetMeshNode.h" />
     <ClInclude Include="AssimpIO.h" />
     <ClInclude Include="assimp\include\ai_assert.h" />
     <ClInclude Include="assimp\include\anim.h" />
@@ -136,6 +135,7 @@
     <ClInclude Include="imGuizmo\ImGuizmo.h" />
     <ClInclude Include="imGuizmo\ImSequencer.h" />
     <ClInclude Include="JSONFile.h" />
+    <ClInclude Include="ModuleResourceManager.h" />
     <ClInclude Include="PhysFS\include\physfs.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="GameObject.h" />
@@ -218,7 +218,7 @@
     <ClInclude Include="MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="ComponentMesh.h" />
-    <ClInclude Include="AssetMesh.h" />
+    <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="MenuCreateShape.h" />
     <ClInclude Include="mmgr\mmgr.h" />
     <ClInclude Include="mmgr\nommgr.h" />
@@ -263,13 +263,13 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceModel.h" />
     <ClInclude Include="Shortcut.h" />
-    <ClInclude Include="AssetTexture.h" />
+    <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="ComponentTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="AssetMesh.cpp" />
+    <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="AssimpIO.cpp" />
     <ClCompile Include="BassIO.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
@@ -282,6 +282,7 @@
     <ClCompile Include="imGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="imGuizmo\ImSequencer.cpp" />
     <ClCompile Include="JSONFile.cpp" />
+    <ClCompile Include="ModuleResourceManager.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glmath.cpp" />
@@ -360,7 +361,7 @@
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceModel.cpp" />
     <ClCompile Include="Shortcut.cpp" />
-    <ClCompile Include="AssetTexture.cpp" />
+    <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
   </ItemGroup>

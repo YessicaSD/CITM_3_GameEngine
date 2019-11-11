@@ -1,4 +1,4 @@
-#include "AssetMesh.h"
+#include "ResourceMesh.h"
 #include "Globals.h"
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
@@ -9,15 +9,19 @@
 #include "Assimp/include/material.h"
 #include "ModuleImport.h"
 #include "ModuleTexture.h"
-#include "AssetTexture.h"
+#include "ResourceTexture.h"
 #include "BoundingBox.h"
 
-AssetMesh::~AssetMesh()
+ResourceMesh::ResourceMesh() : Resource()
+{
+}
+
+ResourceMesh::~ResourceMesh()
 {
 	CleanUp();
 }
 
-bool AssetMesh::LoadVertices(const int num_vertices, const float * vertices)
+bool ResourceMesh::LoadVertices(const int num_vertices, const float * vertices)
 {
 	this->num_vertices = num_vertices;
 	this->vertices = new float3[num_vertices];
@@ -36,7 +40,7 @@ bool AssetMesh::LoadVertices(const int num_vertices, const float * vertices)
 	return true;
 }
 
-bool AssetMesh::LoadVerticesNormals(aiMesh * info)
+bool ResourceMesh::LoadVerticesNormals(aiMesh * info)
 {
 	if (info->HasNormals())
 	{
@@ -46,7 +50,7 @@ bool AssetMesh::LoadVerticesNormals(aiMesh * info)
 	return true;
 }
 
-bool AssetMesh::GenerateVertexNormalsBuffer()
+bool ResourceMesh::GenerateVertexNormalsBuffer()
 {
 	if (vertex_normals)
 	{
@@ -58,7 +62,7 @@ bool AssetMesh::GenerateVertexNormalsBuffer()
 	return true;
 }
 
-bool AssetMesh::GenerateVerticesBuffer()
+bool ResourceMesh::GenerateVerticesBuffer()
 {
 	if (vertices)
 	{
@@ -70,7 +74,7 @@ bool AssetMesh::GenerateVerticesBuffer()
 	return true;
 }
 
-bool AssetMesh::LoadFaces(aiMesh * info)
+bool ResourceMesh::LoadFaces(aiMesh * info)
 {
 	if (info->HasFaces())
 	{
@@ -92,7 +96,7 @@ bool AssetMesh::LoadFaces(aiMesh * info)
 	return true;
 }
 
-bool AssetMesh::LoadFaces(const int num_faces, const uint * indices)
+bool ResourceMesh::LoadFaces(const int num_faces, const uint * indices)
 {
 	this->num_faces = num_faces;
 	num_indices = num_faces * 3;
@@ -102,7 +106,7 @@ bool AssetMesh::LoadFaces(const int num_faces, const uint * indices)
 	return true;
 }
 
-bool AssetMesh::CalculateFaceNormals()
+bool ResourceMesh::CalculateFaceNormals()
 {
 	faces_normals = new float3[num_faces];
 	face_middle_point = new float3[num_faces];
@@ -129,7 +133,7 @@ bool AssetMesh::CalculateFaceNormals()
 	return true;
 }
 
-bool AssetMesh::LoadUVs(aiMesh * info)
+bool ResourceMesh::LoadUVs(aiMesh * info)
 {
 	if (info->HasTextureCoords(0u))
 	{
@@ -150,7 +154,7 @@ bool AssetMesh::LoadUVs(aiMesh * info)
 	return true;
 }
 
-bool AssetMesh::LoadUVs(float * coords)
+bool ResourceMesh::LoadUVs(float * coords)
 {
 	if (coords)
 	{
@@ -163,12 +167,12 @@ bool AssetMesh::LoadUVs(float * coords)
 	return true;
 }
 
-void AssetMesh::CreateBoundingBox()
+void ResourceMesh::CreateBoundingBox()
 {
 	aabb.Enclose(this->vertices, num_vertices);
 }
 
-bool AssetMesh::GenerateFacesAndNormalsBuffer()
+bool ResourceMesh::GenerateFacesAndNormalsBuffer()
 {
 	if (num_faces > 0)
 	{
@@ -179,7 +183,7 @@ bool AssetMesh::GenerateFacesAndNormalsBuffer()
 	return true;
 }
 
-bool AssetMesh::GenerateUVsBuffer()
+bool ResourceMesh::GenerateUVsBuffer()
 {
 	if (uv_coord > 0)
 	{
@@ -191,7 +195,7 @@ bool AssetMesh::GenerateUVsBuffer()
 	return true;
 }
 
-void AssetMesh::CleanUp()
+void ResourceMesh::CleanUp()
 {
 	if (indices)
 	{
@@ -225,7 +229,7 @@ void AssetMesh::CleanUp()
 	}
 }
 
-AABB AssetMesh::GetAABB()
+AABB ResourceMesh::GetAABB()
 {
 	return aabb;
 }

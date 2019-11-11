@@ -13,8 +13,9 @@
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
-#include "AssetMesh.h"
+#include "ResourceMesh.h"
 #include "ModuleTexture.h"
+#include "ModuleResourceManager.h"
 #include "Event.h"
 
 #include "ResourceModel.h"
@@ -50,31 +51,33 @@ bool ModuleImport::Start(JSONFile * config)
 }
 
 //Creates an AssetMesh (our custom format for 3d meshes) from an fbx
-bool ModuleImport::ImportMesh(const char *path)
+bool ModuleImport::ImportModel(const char *path)
 {
 	const aiScene *scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
-		std::vector<AssetMesh *> object_meshes;
-		std::vector<AssetTexture *> textures;//TODO: Clear this vectors
-		ResourceModelNode model_node;
+		std::vector<ResourceMesh *> object_meshes;
+		std::vector<ResourceTexture *> textures;//TODO: Clear this vectors
+		ResourceModelNode model_root_node;
 		//Texture list should be inside the AssetMesh too?
 		for (uint i = 0; i < scene->mNumMeshes; ++i)
 		{
 
 			aiMesh *assimp_mesh = scene->mMeshes[i];
-			AssetMesh *asset_mesh = LoadAssimpMesh(assimp_mesh);
+			ResourceMesh *resource_mesh = LoadAssimpMesh(assimp_mesh);
+			//Save mesh (and create a uid for each one)
 			LoadFBXTexture(assimp_mesh, scene, textures);
+			//Save texture (and create an uid for each one)
 
-			object_meshes.push_back(asset_mesh);
-			meshes.push_back(asset_mesh);
+			object_meshes.push_back(resource_mesh);
+			meshes.push_back(resource_mesh);
 		}
 		//Generate the Resource model and Resource Textures
 		//We need their id for this function
 
-		LoadFBXNodes(&model_node, scene->mRootNode, , );
+		LoadFBXNodes(&model_root_node, scene->mRootNode, , );
 		
-		SaveModel(object_meshes, textures, model_node);
+		SaveModel(object_meshes, textures, model_root_node);
 
 		//Save the file here
 		//It has
@@ -97,7 +100,8 @@ bool ModuleImport::ImportMesh(const char *path)
 	return true;
 }
 
-bool ModuleImport::SaveModel(const std::vector<AssetMesh*> & meshes, const std::vector<AssetTexture*> & textures)
+//Saves the model in our own custom file format
+bool ModuleImport::SaveModel(const std::vector<ResourceMesh*> & meshes, const std::vector<ResourceTexture*> & textures)
 {
 	//1. Meshes
 		//indices
@@ -108,6 +112,11 @@ bool ModuleImport::SaveModel(const std::vector<AssetMesh*> & meshes, const std::
 		//meshes id
 		//textures id
 
+
+}
+
+bool ModuleImporter::SaveMeshes()
+{
 	uint ranges[2] = { mesh.num_indices, mesh.num_vertices };
 
 	uint size = sizeof(ranges) + sizeof(uint) * mesh.num_indices + sizeof(float) * mesh.num_vertices * 3;
@@ -123,6 +132,7 @@ bool ModuleImport::SaveModel(const std::vector<AssetMesh*> & meshes, const std::
 	memcpy(cursor, mesh.indices, bytes);
 
 	//Save char* data using PHYSFS
+
 }
 
 bool ModuleImport::LoadFBXNodes(ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials)
@@ -150,7 +160,7 @@ bool ModuleImport::LoadFBXNodes(ResourceModelNode * model_node, aiNode * node, c
 	return true;
 }
 
-bool ModuleImport::LoadFBXTexture(aiMesh * info, const  aiScene* fbx, std::vector<AssetTexture*>& textures)
+bool ModuleImport::LoadFBXTexture(aiMesh * info, const  aiScene* fbx, std::vector<ResourceTexture*>& textures)
 {
 	aiMaterial* material = fbx->mMaterials[info->mMaterialIndex];
 
@@ -175,44 +185,45 @@ bool ModuleImport::LoadFBXTexture(aiMesh * info, const  aiScene* fbx, std::vecto
 	return false;
 }
 
-AssetMesh *ModuleImport::LoadAssimpMesh(aiMesh *assimp_mesh)
+ResourceMesh *ModuleImport::LoadAssimpMesh(aiMesh *assimp_mesh)
 {
-	AssetMesh *asset_mesh = new AssetMesh();
+	ResourceMesh *resource_mesh = App->resource_manager->CreateNewResource<ResourceMesh>();
 	//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
-	asset_mesh->LoadVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
-	asset_mesh->CreateBoundingBox();
-	asset_mesh->LoadVerticesNormals(assimp_mesh);
-	asset_mesh->LoadFaces(assimp_mesh);
-	asset_mesh->CalculateFaceNormals();
-	asset_mesh->LoadUVs(assimp_mesh);
+	resource_mesh->LoadVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
+	resource_mesh->CreateBoundingBox();
+	resource_mesh->LoadVerticesNormals(assimp_mesh);
+	resource_mesh->LoadFaces(assimp_mesh);
+	resource_mesh->CalculateFaceNormals();
+	resource_mesh->LoadUVs(assimp_mesh);
 
-	asset_mesh->GenerateVertexNormalsBuffer();
-	asset_mesh->GenerateVerticesBuffer();
-	asset_mesh->GenerateFacesAndNormalsBuffer();
-	asset_mesh->GenerateUVsBuffer();
-	return asset_mesh;
+	resource_mesh->GenerateVertexNormalsBuffer();
+	resource_mesh->GenerateVerticesBuffer();
+	resource_mesh->GenerateFacesAndNormalsBuffer();
+	resource_mesh->GenerateUVsBuffer();
+	resource_mesh->SaveResource();
+	return resource_mesh;
 }
 
-AssetMesh *ModuleImport::LoadParShapeMesh(par_shapes_mesh *mesh)
+ResourceMesh *ModuleImport::LoadParShapeMesh(par_shapes_mesh *mesh)
 {
-	AssetMesh *asset_mesh = new AssetMesh();
+	ResourceMesh *resource_mesh = App->resource_manager->CreateNewResource<ResourceMesh>();
 
-	asset_mesh->LoadVertices(mesh->npoints, mesh->points);
-	asset_mesh->CreateBoundingBox();
+	resource_mesh->LoadVertices(mesh->npoints, mesh->points);
+	resource_mesh->CreateBoundingBox();
 
 	//TODO: Get vertices normals
-	asset_mesh->LoadFaces(mesh->ntriangles, mesh->triangles);
-	asset_mesh->CalculateFaceNormals();
-	asset_mesh->LoadUVs(mesh->tcoords);
+	resource_mesh->LoadFaces(mesh->ntriangles, mesh->triangles);
+	resource_mesh->CalculateFaceNormals();
+	resource_mesh->LoadUVs(mesh->tcoords);
 
-	asset_mesh->GenerateVerticesBuffer();
-	asset_mesh->GenerateFacesAndNormalsBuffer();
-	asset_mesh->GenerateUVsBuffer();
+	resource_mesh->GenerateVerticesBuffer();
+	resource_mesh->GenerateFacesAndNormalsBuffer();
+	resource_mesh->GenerateUVsBuffer();
 
-	return asset_mesh;
+	return resource_mesh;
 }
 
-void ModuleImport::CreateGameObjectsFromNodes(aiNode *node, ComponentTransform *parent, std::vector<AssetMesh *> loaded_meshes, std::vector<AssetTexture *> &textures)
+void ModuleImport::CreateGameObjectsFromNodes(aiNode *node, ComponentTransform *parent, std::vector<ResourceMesh *> loaded_meshes, std::vector<ResourceTexture *> &textures)
 {
 	GameObject *new_gameobject = new GameObject(std::string(node->mName.C_Str()), parent);
 
@@ -261,7 +272,7 @@ void ModuleImport::EventRequest(const Event &event)
 		if (extension == "fbx" || extension == "FBX")
 		{
 			//Import mesh onto assets folder
-			ImportMesh(event.path);
+			ImportModel(event.path);
 		}
 		else if (extension == "dds" || extension == "png" || extension == "jpg")
 		{
@@ -277,7 +288,7 @@ void ModuleImport::EventRequest(const Event &event)
 	}
 }
 
-GameObject *ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTransform *parent, AssetMesh *asset_mesh)
+GameObject *ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTransform *parent, ResourceMesh *asset_mesh)
 {
 	GameObject *new_gameobject = new GameObject(name, parent);
 	ComponentMesh *component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
@@ -287,7 +298,7 @@ GameObject *ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTr
 	return new_gameobject;
 }
 
-bool ModuleImport::AddMesh(AssetMesh *mesh)
+bool ModuleImport::AddMesh(ResourceMesh *mesh)
 {
 	meshes.push_back(mesh);
 	return true;

@@ -5,7 +5,7 @@
 #include "ModuleGui.h"
 #include "ModuleImport.h"
 #include "Globals.h"
-#include "AssetMesh.h"
+#include "ResourceMesh.h"
 
 MenuCreateShape::MenuCreateShape()
 {
@@ -322,7 +322,7 @@ void PanelCreateShape::MenuItem(const float button_height, const float button_sp
 	if (selectable_clicked && !button_clicked)
 	{
 		par_shapes_mesh* mesh = mesh_function();
-		AssetMesh* asset_mesh = App->import->LoadParShapeMesh(mesh);
+		ResourceMesh* asset_mesh = App->import->LoadParShapeMesh(mesh);
 		par_shapes_free_mesh(mesh);
 		App->import->AddMesh(asset_mesh);
 		App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);

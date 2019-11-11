@@ -1,4 +1,4 @@
-#include "AssetTexture.h"
+#include "ResourceTexture.h"
 #include "glew/include/GL/glew.h"
 #include "DevIL/include/il.h"
 
@@ -27,7 +27,7 @@
 //{
 //}
 
-AssetTexture::~AssetTexture()
+ResourceTexture::~ResourceTexture()
 {
 	if (buffer_id > 0)
 	{

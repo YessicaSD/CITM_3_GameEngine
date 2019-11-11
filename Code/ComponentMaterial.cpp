@@ -1,5 +1,5 @@
 #include "ComponentMaterial.h"
-#include "AssetMesh.h"
+#include "ResourceMesh.h"
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
 
@@ -15,7 +15,7 @@ ComponentMaterial::ComponentMaterial(GameObject * gameobject, ComponentMesh* mes
 		this->component_mesh = mesh;
 }
 
-void ComponentMaterial::SetTexture(AssetTexture * texture)
+void ComponentMaterial::SetTexture(ResourceTexture * texture)
 {
 	bool set = false;
 	if (component_mesh->mesh && component_mesh->mesh->uv_coord)
@@ -51,7 +51,7 @@ void ComponentMaterial::RenderTexture()
 		glEnable(GL_TEXTURE_2D);
 		//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
-		AssetMesh * mesh = component_mesh->mesh;
+		ResourceMesh * mesh = component_mesh->mesh;
 		glBindTexture(GL_TEXTURE_2D, texture->buffer_id);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 		glTexCoordPointer(mesh->uv_num_components, GL_FLOAT, 0, (void*)0);

@@ -6,9 +6,9 @@
 #define INVALID_MATERIAL 0xFFFFFFFF
 #include "Assimp/include/assimp/cimport.h"
 #include "ModuleScene.h"
-#include "AssetTexture.h"
+#include "ResourceTexture.h"
 
-class AssetMesh;
+class ResourceMesh;
 class ResourceModelNode;
 struct aiMesh;
 struct aiNode;
@@ -22,26 +22,26 @@ class ModuleImport : public Module
 public:
 	ModuleImport(const char * name);
 	bool Start(JSONFile * module_file) override;
-	bool ImportMesh(const char* path);
-	bool LoadFBXNodes(ResourceModelNode * asset_mesh_node, aiNode * node);
-	bool SaveModelCustomFormat(const std::vector<AssetMesh*>& meshes, const std::vector<AssetTexture*>& textures, const ResourceModelNode root_node);
-	bool LoadFBXTexture(aiMesh * info, const aiScene * fbx, std::vector<AssetTexture*>& textures);
+	bool ImportModel(const char* path);
+	bool LoadFBXNodes(ResourceModelNode * asset_mesh_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials);
+	bool SaveModelCustomFormat(const std::vector<ResourceMesh*>& meshes, const std::vector<ResourceTexture*>& textures, const ResourceModelNode root_node);
+	bool LoadFBXTexture(aiMesh * info, const aiScene * fbx, std::vector<ResourceTexture*>& textures);
 	bool CleanUp() override;
 
 	void EventRequest(const Event& event) override;
-	AssetMesh* LoadAssimpMesh(aiMesh * assimp_mesh);
-	AssetMesh* LoadParShapeMesh(par_shapes_mesh * mesh);
-	GameObject * CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh);
-	bool AddMesh(AssetMesh * asset_mesh);
+	ResourceMesh* LoadAssimpMesh(aiMesh * assimp_mesh);
+	ResourceMesh* LoadParShapeMesh(par_shapes_mesh * mesh);
+	GameObject * CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, ResourceMesh * asset_mesh);
+	bool AddMesh(ResourceMesh * asset_mesh);
 private:
-	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<AssetMesh*> loaded_meshes, std::vector<AssetTexture*>& textures);
+	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<ResourceMesh*> loaded_meshes, std::vector<ResourceTexture*>& textures);
 	
 public:
-	AssetTexture * lenna_img_id = nullptr;
+	ResourceTexture * lenna_img_id = nullptr;
 
 private:
 	
-	std::vector<AssetMesh*> meshes;
+	std::vector<ResourceMesh*> meshes;
 
 	friend ModuleScene;
 };

@@ -1,14 +1,18 @@
-#ifndef __ASSET_TEXTURE_H__
-#define __ASSET_TEXTURE_H__
+#ifndef __RESOURCE_TEXTURE_H__
+#define __RESOURCE_TEXTURE_H__
+
 typedef unsigned int uint;
 #include <string>
-class AssetTexture
+
+#include "Resource.h"
+
+class ResourceTexture : public Resource
 {
 public:
-	AssetTexture() {
+	ResourceTexture() {
 		path = "";
 	};
-	~AssetTexture();
+	~ResourceTexture();
 
 	//void GenerateTexture();
 	//void Render();

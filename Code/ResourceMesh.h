@@ -1,20 +1,23 @@
-#ifndef __ASSET_MESH_H__
-#define __ASSET_MESH_H__
+#ifndef __RESOURCE_MESH_H__
+#define __RESOURCE_MESH_H__
 
 #include "MathGeoLib/include/Math/float3.h"
 #include "Assimp/include/vector3.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
-#include "AssetTexture.h"
+#include "Resource.h"
+#include "ResourceTexture.h"
 #include <vector>
 
 typedef unsigned int uint;
 struct aiMesh;
 struct aiScene;
 
-class AssetMesh
+class ResourceMesh : public Resource
 {
+private:
+	ResourceMesh();//Constructor is private because Resources need to be created from ModuleResourceManager
 public:
-	~AssetMesh();
+	~ResourceMesh();
 	bool LoadVertices(const int num_vertices, const float *vertices);
 	bool LoadVerticesNormals(aiMesh *info);
 	bool LoadFaces(aiMesh *info);
@@ -60,6 +63,8 @@ public:
 	uint id_uv = 0u;
 	uint uv_num_components = 0u;
 	uint id_texture = 0u;
+
+	friend class ModuleResourceManager;
 };
 
 #endif

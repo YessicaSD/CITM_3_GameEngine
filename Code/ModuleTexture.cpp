@@ -8,7 +8,7 @@
 #pragma comment (lib, "DevIL/lib/ILUT.lib")
 
 #include "ModuleTexture.h"
-#include "AssetTexture.h"
+#include "ResourceTexture.h"
 
 #define checkImageWidth 512
 #define checkImageHeight 512
@@ -47,11 +47,11 @@ bool ModuleTexture::ImportTexture(const char * path)
 	return true;
 }
 
-AssetTexture* ModuleTexture::LoadTexture(const char* path)
+ResourceTexture* ModuleTexture::LoadTexture(const char* path)
 {
-	AssetTexture* new_texture = nullptr;
+	ResourceTexture* new_texture = nullptr;
 
-	std::map<std::string, AssetTexture*>::iterator iter= textures.find(path);
+	std::map<std::string, ResourceTexture*>::iterator iter= textures.find(path);
 	if (iter!= textures.end())
 	{
 		return (*iter).second;
@@ -71,7 +71,7 @@ AssetTexture* ModuleTexture::LoadTexture(const char* path)
 		}
 		else
 		{
-			new_texture = new AssetTexture();
+			new_texture = new ResourceTexture();
 			new_texture->path = path;
 			new_texture->buffer_id = ilutGLBindTexImage();
 			new_texture->height  = ilGetInteger(IL_IMAGE_HEIGHT);
@@ -106,7 +106,7 @@ AssetTexture* ModuleTexture::LoadTexture(const char* path)
 
 bool ModuleTexture::CleanUp()
 {
-	for (std::map<std::string, AssetTexture*>::iterator iter = textures.begin(); iter!= textures.end();++iter)
+	for (std::map<std::string, ResourceTexture*>::iterator iter = textures.begin(); iter!= textures.end();++iter)
 	{
 		if (((*iter).second))
 		{
@@ -120,7 +120,7 @@ bool ModuleTexture::CleanUp()
 
 void ModuleTexture::CreateCheckerTexture()
 {
-	AssetTexture* new_texture = new AssetTexture();
+	ResourceTexture* new_texture = new ResourceTexture();
 
 	int i, j, c;
 
