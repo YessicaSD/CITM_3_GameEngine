@@ -101,7 +101,7 @@ update_status ModuleCamera3D::Update(float dt)
 	int mouse_wheel = App->input->GetMouseWheel();
 	if (mouse_wheel != 0)
 	{
-		new_pos -= scene_camera->frustum.front * mouse_wheel * move_speed * 2.f;
+		new_pos += scene_camera->frustum.front * mouse_wheel * move_speed * 2.f;
 	}
 	if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_STATE::KEY_REPEAT)
 	{
