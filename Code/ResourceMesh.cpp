@@ -13,6 +13,9 @@
 #include "BoundingBox.h"
 #include "ModuleFileSystem.h"
 
+//TODO: Remove, only for testing purposes
+#include "ModuleResourceManager.h"
+
 ResourceMesh::ResourceMesh() : Resource()
 {
 }
@@ -65,14 +68,23 @@ bool ResourceMesh::SaveFileData()
 	cursor += uv_bytes;
 
 	//SaveFile
-	ret = App->file_system->SaveFile((const void *)data, size, RESOURCES_MESH_FOLDER, "model", uid, "hinata_mesh");
+	const char ** path = (const char **)App->file_system->CreatePath(RESOURCES_MESH_FOLDER, "mesh", uid, "hinata_mesh");
+	char path_copy[250u];
+	strcpy(path_copy, *path);
+	ret = App->file_system->SaveFile((const void *)data, size, path);
+
+	//TODO: Remove, only for testing purposes
+	char ** new_data = nullptr;
+	App->file_system->LoadFile(path_copy, new_data);
+	ResourceMesh * new_mesh = App->resource_manager->CreateNewResource<ResourceMesh>();
+	new_mesh->LoadFileData(new_data);
 
 	return ret;
 }
 
-bool ResourceMesh::LoadFileData(char * data)
+bool ResourceMesh::LoadFileData(char ** data)
 {
-	char * cursor = data;
+	char * cursor = *data;
 
 	//INFO: The number of elements on the ranges array must be the same as in the ranges array of ResourceMesh::GenerateFileData()
 	uint ranges[3];

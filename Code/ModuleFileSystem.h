@@ -11,13 +11,18 @@ class ModuleFileSystem : public Module
 {
 public:
 	ModuleFileSystem(const char * name);
-	void CreateAssimpIO();
-	aiFileIO * GetAssimpIO();
 	bool AddPath(const char * path_or_zip);
 	void GetExtension(const char* full_path, std::string& extension);
-	bool SaveFile(const void * data, uint data_size, const char * folder, const char * name, const UID & uid, const char * extension);
+	char ** CreatePath(const char * folder, const char * name, const UID & uid, const char * extension);
+	bool SaveFile(const void * data, uint data_size, const char ** path);
+	bool LoadFile(const char * path, char ** data);
 	const char * GetReadPaths() const;
 	const char * GetBasePath() const;
+
+private:
+	void CreateAssimpIO();
+	aiFileIO * GetAssimpIO();
+
 	void CreateBassIO();
 	BASS_FILEPROCS * GetBassIO();
 

@@ -104,35 +104,80 @@ void ModuleFileSystem::GetExtension(const char * full_path, std::string & extens
 	}
 }
 
-//Saves the data onto the PHYSFS directory
-bool ModuleFileSystem::SaveFile(const void * data, uint data_size, const char * folder, const char * name, const UID &uid, const char * extension)
+char ** ModuleFileSystem::CreatePath(const char * folder, const char * name, const UID & uid, const char * extension)
+{
+	const uint path_size = 250u;
+	char ** path = nullptr;
+	path = new char * [path_size];
+	sprintf_s(*path, path_size, "%s%s_%llu.%s", folder, name, uid, extension);
+	return path;
+}
+
+//Saves the data into the PHYSFS directory
+bool ModuleFileSystem::SaveFile(const void * data, uint data_size, const char ** path)
 {
 	bool ret = false;
 
-	//Append path
-	const uint path_size = 250u;
-	char path[path_size];
-	sprintf_s(path, path_size, "%s%s_%llu.%s", RESOURCES_MESH_FOLDER, "model", uid, "hinata_mesh");
-
-	//Save write data
-	PHYSFS_File * mesh_file = PHYSFS_openWrite(path);
-	if (mesh_file != nullptr)
+	PHYSFS_File * file = PHYSFS_openWrite(*path);
+	if (file != nullptr)
 	{
-		uint bytes_written = (uint)PHYSFS_write(mesh_file, (const void *)data, 1, data_size);
+		uint bytes_written = (uint)PHYSFS_write(file, (const void *)data, 1, data_size);
 		//TODO: Download the new version of PHYSFS and use PHYSFS_writeBytes
 		if (bytes_written != data_size)
 		{
-			LOG("Error while writting to file %s: %s", path, PHYSFS_getLastError());
+			LOG("Error while writting to file %s: %s", *path, PHYSFS_getLastError());
 		}
 		else
 		{
-			LOG("Successfully written file %s at %s", path, PHYSFS_getWriteDir());
+			LOG("Successfully written file %s at %s", *path, PHYSFS_getWriteDir());
 			ret = true;
+		}
+
+		if (PHYSFS_close(file) == 0)
+		{
+			LOG("Error while closing file %s: %s", *path, PHYSFS_getLastError());
 		}
 	}
 	else
 	{
-		LOG("Errror while opening the file %s: %s", path, PHYSFS_getLastError());
+		LOG("Errror while opening the file %s: %s", *path, PHYSFS_getLastError());
+	}
+
+	return ret;
+}
+
+//Loads a custom file from the PHYSFS directory
+bool ModuleFileSystem::LoadFile(const char * path, char ** data)
+{
+	bool ret = false;
+	PHYSFS_File * file = PHYSFS_openRead(path);
+
+	if (file != nullptr)
+	{
+		PHYSFS_sint64 file_size = PHYSFS_fileLength(file);
+		
+		if (file_size > 0)
+		{
+			*data = new char[file_size];
+			uint bytes_read = (uint)PHYSFS_read(file, *data, 1, file_size);
+			if (bytes_read != file_size)
+			{
+				LOG("Error while reading file %s: %s", path, PHYSFS_getLastError());
+				RELEASE(data);
+			}
+			else
+			{
+				ret = true;
+			}
+		}
+		if (PHYSFS_close(file) == 0)
+		{
+			LOG("Error while closing file %s: %s", path, PHYSFS_getLastError());
+		}
+	}
+	else
+	{
+		LOG("Error while opening file %s: %s", path, PHYSFS_getLastError());
 	}
 
 	return ret;
