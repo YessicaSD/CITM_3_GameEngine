@@ -16,6 +16,8 @@
 #include "ModuleInput.h"
 #include "ModuleImport.h"
 
+#include "RaycastHit.h"
+
 
 ModuleScene::ModuleScene(bool start_enabled) :
 	Module(start_enabled)
@@ -77,6 +79,14 @@ void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 	}
 }
 
+void ModuleScene::IntersectRay(LineSegment * ray, std::vector<RaycastHit> out_objects)
+{
+	GetIntersect(root_gameobject->transform, ray, out_objects);
+
+}
+
+
+
 void ModuleScene::DeleteGameObject(GameObject * gameobject)
 {
 	gameobject->transform->DeleteChildren();
@@ -96,6 +106,28 @@ void ModuleScene::DeleteGameObject(GameObject * gameobject)
 	delete gameobject;
 }
 
+void ModuleScene::GetIntersect(ComponentTransform * object, LineSegment * ray, std::vector<RaycastHit>& out_objects)
+{
+	if (object->enabled)
+	{
+		if (object->Intersect(*ray))
+		{
+			ComponentMesh* mesh = object->gameobject->GetComponent<ComponentMesh>();
+			if (mesh)
+			{
+				RaycastHit hit;
+				if (mesh->Intersect(ray, hit))
+				{
+					out_objects.push_back(hit);
+				}
+			}
+		}
+		for (auto iter = object->children.begin(); iter != object->children.end(); ++iter)
+		{
+			GetIntersect((*iter), ray, out_objects);
+		}
+	}
+}
 update_status ModuleScene::PostUpdate()
 {
 	App->renderer3D->scene_fbo.StartRender(App->gui->panel_scene->current_viewport_size);

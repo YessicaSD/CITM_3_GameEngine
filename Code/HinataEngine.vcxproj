@@ -134,6 +134,7 @@
     <ClInclude Include="imGuizmo\ImGuizmo.h" />
     <ClInclude Include="imGuizmo\ImSequencer.h" />
     <ClInclude Include="JSONFile.h" />
+    <ClInclude Include="RaycastHit.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="glew\include\GL\eglew.h" />

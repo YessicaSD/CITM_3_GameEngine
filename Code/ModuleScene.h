@@ -3,10 +3,12 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include "Module.h"
 #include "Globals.h"
 #include "GameObject.h"
+#include "MathGeoLib/include/Geometry/LineSegment.h"
 
 struct ImVec4;
 class ComponentCamera;
@@ -20,16 +22,13 @@ public:
 	bool Start(JSONFile* config) override;
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;
-	//void DrawFaceNormals();
-	//void DrawVertexNormals();
 	bool CleanUp();
-	void ChangeRenderMode(std::string variable);
-	bool GetRenderMode(std::string variable);
 	void GameObjectPostUpdateRecursive(ComponentTransform * object);
+	void IntersectRay(LineSegment* ray, std::vector<RaycastHit> out_objects);
 
 private:
 	void DeleteGameObject(GameObject* gameobject);
-
+	void GetIntersect(ComponentTransform * object, LineSegment* ray, std::vector<RaycastHit>& out_objects);
 public:
 	//All gameobjects are children of the root gameobject
 	GameObject* root_gameobject;

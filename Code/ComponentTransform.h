@@ -5,6 +5,7 @@
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "MathGeoLib/include/Math/Quat.h"
+#include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "BoundingBox.h"
 #include <vector>
 
@@ -31,7 +32,7 @@ public:
 	void SetScale(const float3 & scale);
 	void SetSelected(bool state);
 	bool IsSelected();
-
+	bool Intersect(LineSegment ray);
 	float3 GetZAxis();
 
 	float3 GetYAxis();

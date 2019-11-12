@@ -178,6 +178,11 @@ bool ComponentTransform::IsSelected()
 	return is_selected;
 }
 
+bool ComponentTransform::Intersect(LineSegment ray)
+{
+	return ray.Intersects(bounding_box.GetAABB());
+}
+
 float3 ComponentTransform::GetZAxis()
 {
 	return z;

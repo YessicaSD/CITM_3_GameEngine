@@ -11,11 +11,6 @@ PanelProperties::PanelProperties(std::string name, bool state, std::vector<SDL_S
 {
 }
 
-void PanelProperties::SetSelectedTransform(ComponentTransform * transform)
-{
-	this->selected_transform = transform;
-	App->gui->SetSelectedGameObjec(transform);
-}
 void PanelProperties::Draw()
 {
 	ImGui::Begin(name.c_str());

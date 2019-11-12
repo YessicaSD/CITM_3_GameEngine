@@ -3,6 +3,7 @@
 
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
+
 #include "AssetMesh.h"
 
 #include "GameObject.h"
@@ -10,7 +11,12 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleImport.h"
+
 #include "MathGeoLib/include/Math/float4.h"
+#include "MathGeoLib/include/Geometry/LineSegment.h"
+#include "MathGeoLib/include/Geometry/Triangle.h"
+
+
 #include "ComponentMaterial.h"
 #include "imgui/imgui.h"
 
@@ -242,4 +248,29 @@ void ComponentMesh::DrawOutline()
 		}
 	}
 
+}
+
+bool ComponentMesh::Intersect(LineSegment * ray, RaycastHit& hit)
+{
+	bool ret = false;
+	hit.transform = nullptr;
+	LineSegment local_ray;
+	float3x3 toLocalMatrix = gameobject->transform->GetGlobalMatrix().Inverted().Float3x3Part();
+	local_ray.a = toLocalMatrix.Mul(ray->a);
+	local_ray.b = toLocalMatrix.Mul(ray->b);
+	for (int i = 0; i < mesh->num_indices; i+=3)
+	{
+		Triangle tri(mesh->vertices[mesh->indices[i]], mesh->vertices[mesh->indices[i+1]], mesh->vertices[mesh->indices[i+2]]);
+		RaycastHit new_hit(gameobject->transform);
+		if (local_ray.Intersects(tri, &new_hit.distance, &new_hit.hit_point))
+		{
+			if (hit.transform == nullptr || new_hit.distance < hit.distance)
+			{
+				hit = new_hit;
+				ret = true;
+			}
+		}
+
+	}
+	return ret;
 }

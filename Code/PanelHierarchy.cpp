@@ -112,7 +112,7 @@ void PanelHierarchy::DisplayChildren(ComponentTransform * transform)
 		is_clicked = ImGui::IsItemClicked(0);
 		if (is_clicked)
 		{
-			App->gui->panel_properties->SetSelectedTransform((*iter));
+			App->gui->SetSelectedGameObjec((*iter));
 		}
 		if (is_open)
 		{

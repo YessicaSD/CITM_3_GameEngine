@@ -1,16 +1,21 @@
 #include "Globals.h"
 #include "Application.h"
+
 #include "ModuleCamera3D.h"
 #include "ModuleInput.h"
 #include "ModuleGui.h"
+#include "ModuleWindow.h"
+#include "ModuleScene.h"
+
 #include "Shortcut.h"
 #include "PanelProperties.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
-#include "MathGeoLib/include/Geometry/AABB.h"
 
+#include "MathGeoLib/include/Geometry/AABB.h"
+#include "MathGeoLib/include/Geometry/LineSegment.h"
 ModuleCamera3D::ModuleCamera3D(const char *name, bool start_enabled) : Module(start_enabled, name)
 {
 	reference = { 0.0f, 0.0f, 0.0f };
@@ -117,7 +122,23 @@ update_status ModuleCamera3D::Update(float dt)
 	{
 		RotateCamera(dt);
 	}
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		
+		float half_width  = App->window->GetWindowWidth()*0.5f;
+		float half_height  = App->window->GetWindowHeight()*0.5f;
+		float x_pos = (App->input->GetMouseX()-half_width)/ half_width;
+		float y_pos = (App->input->GetMouseY()-half_height)/ half_height;
+		LineSegment picking = scene_camera->frustum.UnProjectLineSegment(x_pos,y_pos);
+		std::vector<RaycastHit> hit_object;
+		App->scene->IntersectRay(&picking, hit_object);
 
+		if (hit_object.size()>0)
+		{
+			App->gui->SetSelectedGameObjec(hit_object[0].transform);
+		}
+
+	}
 	return UPDATE_CONTINUE;
 }
 
