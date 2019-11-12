@@ -35,8 +35,14 @@ ResourceTexture::~ResourceTexture()
 	}
 }
 
-bool ResourceTexture::GenerateWriteData()
+bool ResourceTexture::SaveFileData()
 {
 	//TODO: Save resource texture (see ResourceMesh as an example)
+	return true;
+}
+
+bool ResourceTexture::LoadFileData(char * data)
+{
+	//TODO: Finsih this function. Use ResourceMesh as an example.
 	return true;
 }

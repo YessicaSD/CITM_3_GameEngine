@@ -105,8 +105,10 @@ void ModuleFileSystem::GetExtension(const char * full_path, std::string & extens
 }
 
 //Saves the data onto the PHYSFS directory
-bool ModuleFileSystem::SaveWriteData(const void * data, uint data_size, const char * folder, const char * name, const UID &uid, const char * extension)
+bool ModuleFileSystem::SaveFile(const void * data, uint data_size, const char * folder, const char * name, const UID &uid, const char * extension)
 {
+	bool ret = false;
+
 	//Append path
 	const uint path_size = 250u;
 	char path[path_size];
@@ -125,6 +127,7 @@ bool ModuleFileSystem::SaveWriteData(const void * data, uint data_size, const ch
 		else
 		{
 			LOG("Successfully written file %s at %s", path, PHYSFS_getWriteDir());
+			ret = true;
 		}
 	}
 	else
@@ -132,7 +135,7 @@ bool ModuleFileSystem::SaveWriteData(const void * data, uint data_size, const ch
 		LOG("Errror while opening the file %s: %s", path, PHYSFS_getLastError());
 	}
 
-	return true;
+	return ret;
 }
 
 const char * ModuleFileSystem::GetBasePath() const

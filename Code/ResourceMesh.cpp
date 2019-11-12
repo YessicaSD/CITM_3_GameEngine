@@ -22,8 +22,12 @@ ResourceMesh::~ResourceMesh()
 	CleanUp();
 }
 
-bool ResourceMesh::GenerateWriteData()
+//Generates and saves data to a file
+bool ResourceMesh::SaveFileData()
 {
+	bool ret = false;
+
+	//Generate file data
 	uint ranges[] = {
 		num_vertices,
 		num_indices,
@@ -60,7 +64,46 @@ bool ResourceMesh::GenerateWriteData()
 	memcpy(cursor, uv_coord, uv_bytes);
 	cursor += uv_bytes;
 
-	App->file_system->SaveWriteData((const void *)data, size, RESOURCES_MESH_FOLDER, "model", uid, "hinata_mesh");
+	//SaveFile
+	ret = App->file_system->SaveFile((const void *)data, size, RESOURCES_MESH_FOLDER, "model", uid, "hinata_mesh");
+
+	return ret;
+}
+
+bool ResourceMesh::LoadFileData(char * data)
+{
+	char * cursor = data;
+
+	//INFO: The number of elements on the ranges array must be the same as in the ranges array of ResourceMesh::GenerateFileData()
+	uint ranges[3];
+
+	uint ranges_bytes = sizeof(ranges);
+	uint vertices_bytes = sizeof(float3) * num_vertices;
+	uint indices_bytes = sizeof(uint) * num_indices;
+	uint uv_bytes = sizeof(float) * uv_num_components;
+
+	memcpy(ranges, cursor, ranges_bytes);
+
+	//Load ranges
+	num_vertices = ranges[0];
+	num_indices = ranges[1];
+	uv_num_components = ranges[2];
+	cursor += ranges_bytes;
+
+	// Load vertices
+	vertices = new float3[num_vertices];
+	memcpy(vertices, cursor, vertices_bytes);
+	cursor += vertices_bytes;
+
+	//Load indices
+	indices = new uint[num_indices];
+	memcpy(indices, cursor, indices_bytes);
+	cursor += indices_bytes;
+
+	//Load uvs
+	uv_coord = new float[uv_num_components];
+	memcpy(uv_coord, cursor, uv_bytes);
+	cursor += uv_bytes;
 
 	return true;
 }

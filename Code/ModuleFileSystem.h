@@ -15,7 +15,7 @@ public:
 	aiFileIO * GetAssimpIO();
 	bool AddPath(const char * path_or_zip);
 	void GetExtension(const char* full_path, std::string& extension);
-	bool SaveWriteData(const void * data, uint data_size, const char * folder, const char * name, const UID & uid, const char * extension);
+	bool SaveFile(const void * data, uint data_size, const char * folder, const char * name, const UID & uid, const char * extension);
 	const char * GetReadPaths() const;
 	const char * GetBasePath() const;
 	void CreateBassIO();

@@ -181,7 +181,7 @@ ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh)
 	resource_mesh->GenerateFacesAndNormalsBuffer();
 	resource_mesh->GenerateUVsBuffer();
 
-	resource_mesh->GenerateWriteData();
+	resource_mesh->SaveFileData();
 
 	return resource_mesh;
 }
