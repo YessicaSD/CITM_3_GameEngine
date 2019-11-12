@@ -35,6 +35,14 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::OnPostUpdate()
 {
+	if (gameobject->transform->IsSelected())
+	{
+		glEnable(GL_STENCIL_TEST);
+		glStencilFunc(GL_ALWAYS, 1, -1);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	}
+	
+
 	if (mesh->UVCoord)
 	{
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -66,7 +74,6 @@ void ComponentMesh::OnPostUpdate()
 
 	if (render_mode.fill)
 	{
-
 		if (mesh->vertex_normals)
 		{
 			glEnableClientState(GL_NORMAL_ARRAY);
@@ -80,6 +87,9 @@ void ComponentMesh::OnPostUpdate()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glColor4f(fill_color[0], fill_color[1], fill_color[2], fill_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		
+		
 	}
 
 	if (render_mode.wireframe)
@@ -97,6 +107,11 @@ void ComponentMesh::OnPostUpdate()
 		glColor4f(point_color[0], point_color[1], point_color[2], point_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	}
+	if (gameobject->transform->IsSelected())
+	{
+		DrawOutline();
+	}
+
 	glLineWidth(5);
 	glColor4f(255, 0, 0, 1);
 
@@ -189,3 +204,42 @@ void ComponentMesh::CleanUp()
 	
 }
 
+void ComponentMesh::DrawOutline()
+{
+	if (glIsEnabled(GL_STENCIL_TEST) == GL_TRUE)
+	{
+		bool light = false;
+		if (light = glIsEnabled(GL_LIGHTING))
+		{
+			glDisable(GL_LIGHTING);
+		}
+
+		glColor3f(1.f,1.f, 1.f);
+		glLineWidth(5.f);
+
+		glStencilFunc(GL_NOTEQUAL, 1, -1);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
+		glPolygonMode(GL_FRONT, GL_LINE);
+
+		glEnableClientState(GL_VERTEX_ARRAY);
+
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indice);
+		glVertexPointer(3, GL_FLOAT, 0, 0);
+
+		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, 0);
+
+		glDisable(GL_STENCIL_TEST);
+		glDisable(GL_POLYGON_OFFSET_FILL);
+		glDisableClientState(GL_VERTEX_ARRAY);
+
+		glLineWidth(1);
+
+		if (light)
+		{
+			glEnable(GL_LIGHTING);
+		}
+	}
+
+}

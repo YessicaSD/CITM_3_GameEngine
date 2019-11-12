@@ -234,10 +234,8 @@ bool ModuleGui::Log(const char *sentence)
 
 void ModuleGui::SetSelectedGameObjec(ComponentTransform * gameobject)
 {
-
 		selected_transform = gameobject;
 		panel_properties->SetSelectedTransform(gameobject);
-	
 }
 
 void ModuleGui::MainMenuBar(update_status &ret)
