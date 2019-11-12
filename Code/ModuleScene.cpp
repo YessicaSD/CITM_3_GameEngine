@@ -79,7 +79,7 @@ void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 	}
 }
 
-void ModuleScene::IntersectRay(LineSegment * ray, std::vector<RaycastHit> out_objects)
+void ModuleScene::IntersectRay(LineSegment * ray, std::vector<RaycastHit>& out_objects)
 {
 	GetIntersect(root_gameobject->transform, ray, out_objects);
 
@@ -112,6 +112,8 @@ void ModuleScene::GetIntersect(ComponentTransform * object, LineSegment * ray, s
 	{
 		if (object->Intersect(*ray))
 		{
+			RaycastHit hit(object);
+			out_objects.push_back(hit);
 			ComponentMesh* mesh = object->gameobject->GetComponent<ComponentMesh>();
 			if (mesh)
 			{

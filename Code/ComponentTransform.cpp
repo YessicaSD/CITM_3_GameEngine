@@ -180,7 +180,16 @@ bool ComponentTransform::IsSelected()
 
 bool ComponentTransform::Intersect(LineSegment ray)
 {
-	return ray.Intersects(bounding_box.GetAABB());
+	AABB box = bounding_box.GetAABB();
+	if (box.IsFinite())
+	{
+		return ray.Intersects(box);
+
+	}
+	else
+	{
+		return false;
+	}
 }
 
 float3 ComponentTransform::GetZAxis()

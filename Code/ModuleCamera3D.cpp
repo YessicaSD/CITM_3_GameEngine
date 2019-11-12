@@ -125,10 +125,12 @@ update_status ModuleCamera3D::Update(float dt)
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		
-		float half_width  = App->window->GetWindowWidth()*0.5f;
-		float half_height  = App->window->GetWindowHeight()*0.5f;
-		float x_pos = (App->input->GetMouseX()-half_width)/ half_width;
-		float y_pos = (App->input->GetMouseY()-half_height)/ half_height;
+		float width  = App->window->GetWindowWidth();
+		float height  = App->window->GetWindowHeight();
+
+		1.0f - (float(App->input->GetMouseY()) * 2.0f) / height;
+		float x_pos = -(1.0f - (float(App->input->GetMouseX()) * 2.0f) / width);
+		float y_pos = 1.0f - (float(App->input->GetMouseY()) * 2.0f) / height;
 		LineSegment picking = scene_camera->frustum.UnProjectLineSegment(x_pos,y_pos);
 		std::vector<RaycastHit> hit_object;
 		App->scene->IntersectRay(&picking, hit_object);

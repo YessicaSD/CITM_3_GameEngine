@@ -24,7 +24,7 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp();
 	void GameObjectPostUpdateRecursive(ComponentTransform * object);
-	void IntersectRay(LineSegment* ray, std::vector<RaycastHit> out_objects);
+	void IntersectRay(LineSegment* ray, std::vector<RaycastHit>& out_objects);
 
 private:
 	void DeleteGameObject(GameObject* gameobject);

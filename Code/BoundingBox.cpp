@@ -11,6 +11,9 @@ BoundingBox::BoundingBox()
 	float3 vertex = { 0,0,0 };
 	local_aabb.Enclose(&vertex, 1);
 	MultiplyByMatrix(float4x4::identity);
+
+	aabb.SetNegativeInfinity();
+	
 }
 
 void BoundingBox::MultiplyByMatrix(float4x4 matrix)
