@@ -14,7 +14,7 @@ public:
 	};
 	~ResourceTexture();
 
-	bool SaveResource() override;
+	bool GenerateWriteData() override;
 
 	//void GenerateTexture();
 	//void Render();

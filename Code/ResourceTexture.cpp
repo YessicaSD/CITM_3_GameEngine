@@ -35,7 +35,7 @@ ResourceTexture::~ResourceTexture()
 	}
 }
 
-bool ResourceTexture::SaveResource()
+bool ResourceTexture::GenerateWriteData()
 {
 	//TODO: Save resource texture (see ResourceMesh as an example)
 	return true;

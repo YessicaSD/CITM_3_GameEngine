@@ -7,7 +7,7 @@ class Resource
 {
 public:
 	//INFO: Saves the resource with custom format in the Resources folder
-	virtual bool SaveResource() = 0;
+	virtual bool GenerateWriteData() = 0;
 
 protected:
 	UID uid = 0u;

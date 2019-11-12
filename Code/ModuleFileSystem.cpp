@@ -104,48 +104,36 @@ void ModuleFileSystem::GetExtension(const char * full_path, std::string & extens
 	}
 }
 
-//uint ModuleFileSystem::Save(const char* file, const void* buffer, unsigned int size, bool append)
-//{
-//	unsigned int ret = 0;
-//
-//	bool overwrite = PHYSFS_exists(file) != 0;
-//	PHYSFS_file* fs_file = (append) ? PHYSFS_openAppend(file) : PHYSFS_openWrite(file);
-//
-//	if (fs_file != nullptr)
-//	{
-//		uint written = (uint)PHYSFS_write(fs_file, (const void*)buffer, 1, size);
-//		if (written != size)
-//		{
-//			LOG("File System error while writing to file %s: %s", file, PHYSFS_getLastError());
-//		}
-//		else
-//		{
-//			if (append == true)
-//			{
-//				LOG("Added %u data to [%s%s]", size, PHYSFS_getWriteDir(), file);
-//			}
-//			//else if(overwrite == true)
-//				//LOG("File [%s%s] overwritten with %u bytes", PHYSFS_getWriteDir(), file, size);
-//			else if (overwrite == false)
-//			{
-//				LOG("New file created [%s%s] of %u bytes", PHYSFS_getWriteDir(), file, size);
-//			}
-//
-//			ret = written;
-//		}
-//
-//		if (PHYSFS_close(fs_file) == 0)
-//		{
-//			LOG("File System error while closing file %s: %s", file, PHYSFS_getLastError());
-//		}
-//	}
-//	else
-//	{
-//		LOG("File System error while opening file %s: %s", file, PHYSFS_getLastError());
-//	}
-//
-//	return ret;
-//}
+//Saves the data onto the PHYSFS directory
+bool ModuleFileSystem::SaveWriteData(const void * data, uint data_size, const char * folder, const char * name, const UID &uid, const char * extension)
+{
+	//Append path
+	const uint path_size = 250u;
+	char path[path_size];
+	sprintf_s(path, path_size, "%s%s_%llu.%s", RESOURCES_MESH_FOLDER, "model", uid, "hinata_mesh");
+
+	//Save write data
+	PHYSFS_File * mesh_file = PHYSFS_openWrite(path);
+	if (mesh_file != nullptr)
+	{
+		uint bytes_written = (uint)PHYSFS_write(mesh_file, (const void *)data, 1, data_size);
+		//TODO: Download the new version of PHYSFS and use PHYSFS_writeBytes
+		if (bytes_written != data_size)
+		{
+			LOG("Error while writting to file %s: %s", path, PHYSFS_getLastError());
+		}
+		else
+		{
+			LOG("Successfully written file %s at %s", path, PHYSFS_getWriteDir());
+		}
+	}
+	else
+	{
+		LOG("Errror while opening the file %s: %s", path, PHYSFS_getLastError());
+	}
+
+	return true;
+}
 
 const char * ModuleFileSystem::GetBasePath() const
 {

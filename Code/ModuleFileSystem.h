@@ -15,11 +15,11 @@ public:
 	aiFileIO * GetAssimpIO();
 	bool AddPath(const char * path_or_zip);
 	void GetExtension(const char* full_path, std::string& extension);
-	const char * GetBasePath() const;
+	bool SaveWriteData(const void * data, uint data_size, const char * folder, const char * name, const UID & uid, const char * extension);
 	const char * GetReadPaths() const;
+	const char * GetBasePath() const;
 	void CreateBassIO();
 	BASS_FILEPROCS * GetBassIO();
-	//uint Save(const char * file, const void * buffer, unsigned int size, bool append);
 
 private:
 	aiFileIO* AssimpIO = nullptr;
