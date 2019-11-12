@@ -20,7 +20,7 @@ public:
 	~ResourceMesh();
 
 	bool SaveFileData() override;
-	bool LoadFileData(char ** data) override;
+	bool LoadFileData(char * data) override;
 
 	bool LoadVertices(const int num_vertices, const float *vertices);
 	bool LoadVerticesNormals(aiMesh *info);

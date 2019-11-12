@@ -41,7 +41,7 @@ bool ResourceTexture::SaveFileData()
 	return true;
 }
 
-bool ResourceTexture::LoadFileData(char ** data)
+bool ResourceTexture::LoadFileData(char * data)
 {
 	//TODO: Finsih this function. Use ResourceMesh as an example.
 	return true;

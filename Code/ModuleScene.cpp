@@ -15,6 +15,8 @@
 #include "ModuleInput.h"
 #include "ModuleImport.h"
 
+//TODO: Remove, only for testing purposes
+#include "ModuleFileSystem.h"
 
 ModuleScene::ModuleScene(bool start_enabled) :
 	Module(start_enabled)
@@ -32,7 +34,16 @@ bool ModuleScene::Start(JSONFile * config)
 	bool ret = true;
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
-	App->camera->LookAt(vec3(0, 0, 0));	
+	App->camera->LookAt(vec3(0, 0, 0));
+
+	int file_content = 5;
+	uint file_size = sizeof(file_content);
+	char * data = new char[file_size];
+	char * cursor = data;
+	memcpy(cursor, &file_content, file_size);
+	char * path = "TEST_FILE.hinata_test";
+	App->file_system->SaveFile(data, file_size, &path);
+
 	App->import->ImportModel("Assets/BakerHouse.fbx");
 	return ret;
 }
@@ -84,9 +95,7 @@ void ModuleScene::DeleteGameObject(GameObject * gameobject)
 				gameobject->transform->parent->children.erase(iter);
 				break;
 			}
-			
 		}
-		
 	}
 	delete gameobject;
 }

@@ -77,14 +77,14 @@ bool ResourceMesh::SaveFileData()
 	char * new_data = nullptr;
 	App->file_system->LoadFile(path, &new_data);
 	ResourceMesh * new_mesh = App->resource_manager->CreateNewResource<ResourceMesh>();
-	new_mesh->LoadFileData(&new_data);
+	new_mesh->LoadFileData(new_data);
 
 	return ret;
 }
 
-bool ResourceMesh::LoadFileData(char ** data)
+bool ResourceMesh::LoadFileData(char * data)
 {
-	char * cursor = *data;
+	char * cursor = data;
 
 	//INFO: The number of elements on the ranges array must be the same as in the ranges array of ResourceMesh::GenerateFileData()
 	uint ranges[3];
