@@ -166,7 +166,7 @@ void ComponentTransform::SetScale(const float3 &scale)
 
 void ComponentTransform::SetSelected(bool state)
 {
-	is_selected = true;
+	is_selected = state;
 	for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
 	{
 		(*iter)->SetSelected(state);
