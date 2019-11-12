@@ -55,6 +55,11 @@ bool ModuleCamera3D::CleanUp()
 	return true;
 }
 
+bool Compare(RaycastHit & a, RaycastHit & b)
+{
+	return a.distance < b.distance;
+}
+
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
@@ -134,7 +139,7 @@ update_status ModuleCamera3D::Update(float dt)
 		LineSegment picking = scene_camera->frustum.UnProjectLineSegment(x_pos,y_pos);
 		std::vector<RaycastHit> hit_object;
 		App->scene->IntersectRay(&picking, hit_object);
-
+		std::sort(hit_object.begin(), hit_object.end(),Compare);
 		if (hit_object.size()>0)
 		{
 			App->gui->SetSelectedGameObjec(hit_object[0].transform);
@@ -252,4 +257,6 @@ float3 ModuleCamera3D::GetPos()
 {
 	return scene_camera->frustum.pos;
 }
+
+
 

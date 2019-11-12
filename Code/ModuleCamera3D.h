@@ -4,6 +4,7 @@
 #include "glmath.h"
 #include "MathGeoLib/include/Math/float3.h"
 
+
 class Shortcut;
 class ComponentTransform;
 class ComponentCamera;
@@ -48,4 +49,6 @@ private:
 	Shortcut * focus_object = nullptr;
 
 	ComponentCamera* scene_camera;
+
+	
 };

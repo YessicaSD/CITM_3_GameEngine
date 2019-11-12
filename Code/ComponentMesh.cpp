@@ -254,13 +254,12 @@ bool ComponentMesh::Intersect(LineSegment * ray, RaycastHit& hit)
 {
 	bool ret = false;
 	hit.transform = nullptr;
-	LineSegment local_ray;
-	float3x3 toLocalMatrix = gameobject->transform->GetGlobalMatrix().Inverted().Float3x3Part();
-	local_ray.a = toLocalMatrix.Mul(ray->a);
-	local_ray.b = toLocalMatrix.Mul(ray->b);
-	for (int i = 0; i < mesh->num_indices; i+=3)
+	LineSegment local_ray((*ray));
+	local_ray.Transform(gameobject->transform->GetGlobalMatrix().Inverted());
+
+	for (int i = 0; i < mesh->num_indices;i+=3 )
 	{
-		Triangle tri(mesh->vertices[mesh->indices[i]], mesh->vertices[mesh->indices[i+1]], mesh->vertices[mesh->indices[i+2]]);
+		Triangle tri(mesh->vertices[mesh->indices[i]], mesh->vertices[mesh->indices[i + 1]], mesh->vertices[mesh->indices[i + 2]]);
 		RaycastHit new_hit(gameobject->transform);
 		if (local_ray.Intersects(tri, &new_hit.distance, &new_hit.hit_point))
 		{
