@@ -61,24 +61,27 @@ bool ResourceMesh::SaveResource()
 	memcpy(cursor, uv_coord, uv_bytes);
 	cursor += uv_bytes;
 
-	const char * file_name = "MESH";
-	PHYSFS_File * mesh_file = PHYSFS_openWrite(file_name);
+	const uint path_size = 250u;
+	char path[path_size];
+	sprintf_s(path, path_size, "%s%s_%llu.%s", RESOURCES_MESH_FOLDER, "model", uid, "hinata_mesh");
+
+	PHYSFS_File * mesh_file = PHYSFS_openWrite(path);
 	if (mesh_file != nullptr)
 	{
 		uint bytes_written = (uint)PHYSFS_write(mesh_file, (const void *)data, 1, size);
 		//TODO: Download the new version of PHYSFS and use PHYSFS_writeBytes
 		if (bytes_written != size)
 		{
-			LOG("Error while writting to file %s: %s", file_name, PHYSFS_getLastError());
+			LOG("Error while writting to file %s: %s", path, PHYSFS_getLastError());
 		}
 		else
 		{
-			LOG("Successfully written file %s at %s", file_name, PHYSFS_getWriteDir());
+			LOG("Successfully written file %s at %s", path, PHYSFS_getWriteDir());
 		}
 	}
 	else
 	{
-		LOG("Errror while opening the file %s: %s", file_name, PHYSFS_getLastError());
+		LOG("Errror while opening the file %s: %s", path, PHYSFS_getLastError());
 	}
 
 	LOG("Mesh saved succesfully");
