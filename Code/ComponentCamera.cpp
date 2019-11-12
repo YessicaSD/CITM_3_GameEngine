@@ -81,6 +81,14 @@ void ComponentCamera::UpdateDrawingRepresentation()
 	frustum_render.SetVetices((float*)&corners);
 }
 
+void ComponentCamera::LookAt(float3 point)
+{
+	float3 vector = point - frustum.pos;
+	Quat quat = Quat::LookAt(frustum.front, vector.Normalized(), frustum.up, float3::unitY);
+	frustum.front = quat.Mul(frustum.front.Normalized());
+	frustum.up = quat.Mul(frustum.up.Normalized());
+}
+
 bool ComponentCamera::IsInFrustum(const AABB & bounding_box)
 {
 	float3 corners[8];
@@ -141,6 +149,22 @@ void ComponentCamera::SetAspectRatio(float & ratio)
 {
 	aspect_ratio = ratio;
 	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * aspect_ratio);
+}
+
+void ComponentCamera::SetPos(float3 & new_pos)
+{
+	frustum.pos = new_pos;
+}
+
+float4x4 ComponentCamera::GetViewMatrix()
+{
+	float4x4 ret = frustum.ViewMatrix();
+	return ret.Transposed();
+}
+
+float4x4 ComponentCamera::GetProjectionMatrix()
+{
+	return frustum.ProjectionMatrix();
 }
 
 

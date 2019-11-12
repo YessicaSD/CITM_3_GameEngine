@@ -36,9 +36,6 @@ bool ModuleScene::Start(JSONFile * config)
 	bool ret = true;
 	camera = new GameObject("Camera", root_gameobject->transform);
 	component_camera = camera->CreateComponent<ComponentCamera>();
-
-	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
-	App->camera->LookAt(vec3(0, 0, 0));	
 	App->import->LoadMesh("Assets/BakerHouse.fbx");
 	return ret;
 }

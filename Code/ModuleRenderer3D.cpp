@@ -139,7 +139,8 @@ bool ModuleRenderer3D::Init(JSONFile * module_file)
 update_status ModuleRenderer3D::PreUpdate()
 {
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->position.x, App->camera->position.y, App->camera->position.z);
+	float* pos = (float*)&App->camera->GetPos();
+	lights[0].SetPos(pos[0] , pos[1], pos[2]);
 
 	for (uint i = 0; i < MAX_LIGHTS; ++i)
 	{
