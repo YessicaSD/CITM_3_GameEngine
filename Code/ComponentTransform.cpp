@@ -164,6 +164,20 @@ void ComponentTransform::SetScale(const float3 &scale)
 	RecalculateMatrices();
 }
 
+void ComponentTransform::SetSelected(bool state)
+{
+	is_selected = state;
+	for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
+	{
+		(*iter)->SetSelected(state);
+	}
+}
+
+bool ComponentTransform::IsSelected()
+{
+	return is_selected;
+}
+
 float3 ComponentTransform::GetZAxis()
 {
 	return z;

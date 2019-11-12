@@ -29,6 +29,9 @@ public:
 	void SetRotation(const float3 & euler_rotation);
 	void SetRotation(const Quat & qrotation);
 	void SetScale(const float3 & scale);
+	void SetSelected(bool state);
+	bool IsSelected();
+
 	float3 GetZAxis();
 
 	float3 GetYAxis();
@@ -64,6 +67,8 @@ private:
 	ComponentTransform * parent = nullptr;
 	std::vector<ComponentTransform*> children;
 	BoundingBox bounding_box;
+
+	bool is_selected = false;
 
 	friend class ModuleImport;
 	friend class PanelHierarchy;

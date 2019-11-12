@@ -29,7 +29,9 @@ public:
 	void DrawVertexNormal();
 	void DrawNormals();
 	void PropertiesEditor() override;
-	void CleanUp() override;	
+	void CleanUp() override;
+	void DrawOutline();
+
 
 private:
 	AssetMesh *mesh = nullptr;
