@@ -104,17 +104,13 @@ void ModuleFileSystem::GetExtension(const char * full_path, std::string & extens
 	}
 }
 
-char ** ModuleFileSystem::CreatePath(const char * folder, const char * name, const UID & uid, const char * extension)
+void ModuleFileSystem::CreatePath(const char * folder, const char * name, const UID & uid, const char * extension, char * path, uint path_size)
 {
-	const uint path_size = 250u;
-	char ** path = nullptr;
-	path = new char * [path_size];
-	sprintf_s(*path, path_size, "%s%s_%llu.%s", folder, name, uid, extension);
-	return path;
+	sprintf_s(path, path_size, "%s%s_%llu.%s", folder, name, uid, extension);
 }
 
 //Saves the data into the PHYSFS directory
-bool ModuleFileSystem::SaveFile(const void * data, uint data_size, const char ** path)
+bool ModuleFileSystem::SaveFile(const void * data, uint data_size, char ** path)
 {
 	bool ret = false;
 

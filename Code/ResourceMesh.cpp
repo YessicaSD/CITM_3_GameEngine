@@ -68,16 +68,16 @@ bool ResourceMesh::SaveFileData()
 	cursor += uv_bytes;
 
 	//SaveFile
-	const char ** path = (const char **)App->file_system->CreatePath(RESOURCES_MESH_FOLDER, "mesh", uid, "hinata_mesh");
-	char path_copy[250u];
-	strcpy(path_copy, *path);
-	ret = App->file_system->SaveFile((const void *)data, size, path);
+	uint path_size = 250u;
+	char * path = new char[path_size];
+	App->file_system->CreatePath(RESOURCES_MESH_FOLDER, "mesh", uid, "hinata_mesh", path, path_size);
+	ret = App->file_system->SaveFile((const void *)data, size, &path);
 
 	//TODO: Remove, only for testing purposes
-	char ** new_data = nullptr;
-	App->file_system->LoadFile(path_copy, new_data);
+	char * new_data = nullptr;
+	App->file_system->LoadFile(path, &new_data);
 	ResourceMesh * new_mesh = App->resource_manager->CreateNewResource<ResourceMesh>();
-	new_mesh->LoadFileData(new_data);
+	new_mesh->LoadFileData(&new_data);
 
 	return ret;
 }
