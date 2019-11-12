@@ -2,9 +2,12 @@
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
+#include "MathGeoLib/include/Math/float3.h"
 
 class Shortcut;
 class ComponentTransform;
+class ComponentCamera;
+
 class ModuleCamera3D : public Module
 {
 public:
@@ -13,24 +16,23 @@ public:
 
 	bool Start(JSONFile * config) override;
 	update_status Update(float dt) override;
+	void RotateCamera(float dt);
 	bool CleanUp() override;
 
-	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
-	void LookAt(const vec3 &Spot);
-	void FocusToObject(ComponentTransform& transform);
-	void Move(const vec3 &Movement);
+	//void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
+	void LookAt(const float3 &Spot);
+	//void FocusToObject(ComponentTransform& transform);
+	void Move(const float3 &Movement);
 	float* GetViewMatrix();
 
 	void DrawConfigurationUi() override;
 	bool SaveConfiguration(JSONFile* module_file) override;
 	bool LoadConfiguration(JSONFile* module_file) override;
+	float3 GetPos();
 
-private:
-	void CalculateViewMatrix();
 
 public:
-	
-	vec3 x, y, z, position, reference;
+	float3 reference;
 
 private:
 	float camera_move_speed = 150.f;
@@ -45,6 +47,5 @@ private:
 	Shortcut * navigate_fast = nullptr;
 	Shortcut * focus_object = nullptr;
 
-
-	mat4x4 ViewMatrix, ViewMatrixInverse;
+	ComponentCamera* scene_camera;
 };
