@@ -11,7 +11,7 @@ class Panel
 {
 public:
 	Shortcut* shortcut = nullptr;
-
+	float width, height;
 protected:
 	bool active = false;
 	std::string name = "";
@@ -28,6 +28,8 @@ public:
 	{
 		return name.c_str();
 	}
-	virtual void Draw() {}
+	virtual void Draw() {
+	
+	}
 };
 #endif // !_PANEL_H_

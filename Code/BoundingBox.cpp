@@ -11,6 +11,9 @@ BoundingBox::BoundingBox()
 	float3 vertex = { 0,0,0 };
 	local_aabb.Enclose(&vertex, 1);
 	MultiplyByMatrix(float4x4::identity);
+
+	aabb.SetNegativeInfinity();
+	
 }
 
 void BoundingBox::MultiplyByMatrix(float4x4 matrix)
@@ -30,7 +33,11 @@ void BoundingBox::MultiplyByMatrix(float4x4 matrix)
 
 void BoundingBox::Draw()
 {
-
+	bool light = false;
+	if (light = glIsEnabled(GL_LIGHTING))
+	{
+		glDisable(GL_LIGHTING);
+	}
 	glColor4f(obb_color[0], obb_color[1], obb_color[2], obb_color[3]);
 	obb_cube.Draw();
 	glColor4f(aabb_color[0], aabb_color[1], aabb_color[2], aabb_color[3]);
@@ -38,7 +45,10 @@ void BoundingBox::Draw()
 	aabb_cube.Draw();
 	glColor4f(1, 1, 1, 1);
 	glLineWidth(1);
-
+	if (light)
+	{
+		glEnable(GL_LIGHTING);
+	}
 }
 
 void BoundingBox::SetLocalAABB(AABB local_aabb)

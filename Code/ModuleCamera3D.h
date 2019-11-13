@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "glmath.h"
 #include "MathGeoLib/include/Math/float3.h"
+#include "MathGeoLib/include/Geometry/LineSegment.h"
 
 class Shortcut;
 class ComponentTransform;
@@ -16,6 +17,7 @@ public:
 
 	bool Start(JSONFile * config) override;
 	update_status Update(float dt) override;
+	update_status PostUpdate() override;
 	void RotateCamera(float dt);
 	bool CleanUp() override;
 
@@ -29,7 +31,7 @@ public:
 	bool SaveConfiguration(JSONFile* module_file) override;
 	bool LoadConfiguration(JSONFile* module_file) override;
 	float3 GetPos();
-
+	
 
 public:
 	float3 reference;
@@ -47,5 +49,12 @@ private:
 	Shortcut * navigate_fast = nullptr;
 	Shortcut * focus_object = nullptr;
 
-	ComponentCamera* scene_camera;
+	ComponentCamera* scene_camera = nullptr;
+	ComponentCamera* current_camera = nullptr;
+
+	LineSegment picking;
+	int camera_combo;
+	
+	friend class ModuleRenderer3D;
+	friend class ModuleScene;
 };

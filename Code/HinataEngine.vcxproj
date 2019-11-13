@@ -134,6 +134,7 @@
     <ClInclude Include="imGuizmo\ImGuizmo.h" />
     <ClInclude Include="imGuizmo\ImSequencer.h" />
     <ClInclude Include="JSONFile.h" />
+    <ClInclude Include="RaycastHit.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="glew\include\GL\eglew.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeLine.cpp" />
+    <ClCompile Include="ImguiShortFuntions.cpp" />
     <ClCompile Include="imGuizmo\ImCurveEdit.cpp" />
     <ClCompile Include="imGuizmo\ImGradient.cpp" />
     <ClCompile Include="imGuizmo\ImGuizmo.cpp" />

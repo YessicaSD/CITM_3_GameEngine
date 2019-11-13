@@ -3,6 +3,7 @@
 
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
+
 #include "AssetMesh.h"
 
 #include "GameObject.h"
@@ -10,7 +11,12 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleImport.h"
+
 #include "MathGeoLib/include/Math/float4.h"
+#include "MathGeoLib/include/Geometry/LineSegment.h"
+#include "MathGeoLib/include/Geometry/Triangle.h"
+
+
 #include "ComponentMaterial.h"
 #include "imgui/imgui.h"
 
@@ -112,12 +118,6 @@ void ComponentMesh::OnPostUpdate()
 		DrawOutline();
 	}
 
-	glLineWidth(5);
-	glColor4f(255, 0, 0, 1);
-
-	glBegin(GL_LINES);
-
-	glEnd();
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
 	material->DisableGLModes();
 	if (mesh->UVCoord)
@@ -242,4 +242,28 @@ void ComponentMesh::DrawOutline()
 		}
 	}
 
+}
+
+bool ComponentMesh::Intersect(LineSegment * ray, RaycastHit& hit)
+{
+	bool ret = false;
+	hit.transform = nullptr;
+	LineSegment local_ray((*ray));
+	local_ray.Transform(gameobject->transform->GetGlobalMatrix().Inverted());
+
+	for (int i = 0; i < mesh->num_indices;i+=3 )
+	{
+		Triangle tri(mesh->vertices[mesh->indices[i]], mesh->vertices[mesh->indices[i + 1]], mesh->vertices[mesh->indices[i + 2]]);
+		RaycastHit new_hit(gameobject->transform);
+		if (local_ray.Intersects(tri, &new_hit.distance, &new_hit.hit_point))
+		{
+			if (hit.transform == nullptr || new_hit.distance < hit.distance)
+			{
+				hit = new_hit;
+				ret = true;
+			}
+		}
+
+	}
+	return ret;
 }

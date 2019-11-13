@@ -5,6 +5,8 @@
 
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
+
+#include "RaycastHit.h"
 #include "BoundingBox.h"
 
 class AssetMesh;
@@ -31,7 +33,7 @@ public:
 	void PropertiesEditor() override;
 	void CleanUp() override;
 	void DrawOutline();
-
+	bool Intersect(LineSegment* ray, RaycastHit& out_hit);
 
 private:
 	AssetMesh *mesh = nullptr;

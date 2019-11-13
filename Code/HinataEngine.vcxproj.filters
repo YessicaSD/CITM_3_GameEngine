@@ -73,6 +73,9 @@
     <Filter Include="Sources\Tools\imGuizmo">
       <UniqueIdentifier>{105bdc44-c4a5-4547-a5d8-3470ff648d94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\imguiShortFuntions">
+      <UniqueIdentifier>{738d4f33-3987-4525-a2c5-ee9ebf5dbe17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -599,6 +602,9 @@
     <ClInclude Include="imGuizmo\ImSequencer.h">
       <Filter>Sources\Tools\imGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="RaycastHit.h">
+      <Filter>Sources\ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -874,6 +880,9 @@
     </ClCompile>
     <ClCompile Include="imGuizmo\ImSequencer.cpp">
       <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiShortFuntions.cpp">
+      <Filter>Sources\Tools\imguiShortFuntions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

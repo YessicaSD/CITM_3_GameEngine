@@ -10,7 +10,12 @@
 #include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleInput.h"
+#include "ModuleScene.h"
+
 #include "ModuleCamera3D.h"
+#include "ComponentCamera.h"
+
+
 
 //RULES: Every variable you add here should also be added in the Save and Load method of the corresponding module
 
@@ -90,6 +95,33 @@ void ModuleCamera3D::DrawConfigurationUi()
 {
 	ImGui::InputFloat("Move speed", &camera_move_speed);
 	ImGui::InputFloat("Roate speed", &camera_rotate_speed);
+	
+	
+	scene_camera->PropertiesEditor();
+	const char * view_nodes[] = {
+		"scene_camera",
+		"camera",
+		};
+	if (ImGui::Combo("Change view", &camera_combo, view_nodes, IM_ARRAYSIZE(view_nodes)))
+	{
+		switch (camera_combo)
+		{
+			case 0:
+			{
+				current_camera = scene_camera;
+			}
+			break;
+			case 1:
+			{
+				current_camera = App->scene->component_camera;
+			}
+			break;
+		default:
+			break;
+		}
+		current_camera->update_project_matrix = true;
+	}
+
 }
 
 void ModuleInput::DrawConfigurationUi()
