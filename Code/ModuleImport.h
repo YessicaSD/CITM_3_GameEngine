@@ -14,6 +14,7 @@ class ResourceTexture;
 struct aiMesh;
 struct aiNode;
 class ComponentTransform;
+class ResourceModel;
 
 typedef struct par_shapes_mesh_s par_shapes_mesh;
 
@@ -24,25 +25,17 @@ public:
 	ModuleImport(const char * name);
 	bool Start(JSONFile * module_file) override;
 	bool ImportModel(const char* path);
-	bool LoadFBXNodes(ResourceModelNode * asset_mesh_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials);
+	bool LoadFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, uint parent_index);
 	bool SaveModelCustomFormat(const std::vector<ResourceMesh*>& meshes, const std::vector<ResourceTexture*>& textures, const ResourceModelNode root_node);
 	bool CleanUp() override;
 
 	void EventRequest(const Event& event) override;
 	ResourceMesh* ImportAssimpMesh(aiMesh * assimp_mesh);
 	ResourceTexture * ImportFBXTexture(aiMesh * info, const aiScene * fbx);
-	ResourceMesh* LoadParShapeMesh(par_shapes_mesh * mesh);
+	ResourceMesh* ImportParShapeMesh(par_shapes_mesh * mesh);
 	GameObject * CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, ResourceMesh * asset_mesh);
-	bool AddMesh(ResourceMesh * asset_mesh);
 private:
 	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<ResourceMesh*> loaded_meshes, std::vector<ResourceTexture*>& textures);
-	
-public:
-	ResourceTexture * lenna_img_id = nullptr;
-
-private:
-	
-	std::vector<ResourceMesh*> meshes;
 
 	friend ModuleScene;
 };

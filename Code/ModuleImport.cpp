@@ -64,6 +64,7 @@ bool ModuleImport::ImportModel(const char *path)
 		std::vector<UID> fbx_textures_uids;
 
 		ResourceModelNode model_root_node;
+		ResourceModel * resource_model = nullptr;
 
 		for (uint i = 0; i < scene->mNumMeshes; ++i)
 		{
@@ -71,29 +72,16 @@ bool ModuleImport::ImportModel(const char *path)
 			ResourceMesh *resource_mesh = ImportAssimpMesh(assimp_mesh);
 			fbx_meshes.push_back(resource_mesh);
 			fbx_meshes_uids.push_back(resource_mesh->GetUID());
-			meshes.push_back(resource_mesh);
 
 			ResourceTexture * resource_texture = ImportFBXTexture(assimp_mesh, scene);
 			fbx_textures.push_back(resource_texture);
 			fbx_textures_uids.push_back(resource_texture->GetUID());
-			//TODO: Push this texture on the texture array or in the resources array
 		}
 
-		LoadFBXNodes(&model_root_node, scene->mRootNode, fbx_meshes_uids, fbx_textures_uids);
-		
-		//SaveModel(object_meshes, textures, model_root_node);
+		resource_model = App->resource_manager->CreateNewResource<ResourceModel>();
+		LoadFBXNodes(resource_model, &model_root_node, scene->mRootNode, fbx_meshes_uids, fbx_textures_uids, 0);//If it's itself, it will know it is the root node
+		resource_model->SaveFileData();
 
-		//Save the file here
-		//It has
-		//- Meshes
-			//- Indices
-			//- Vertices
-		//- Textures
-		//- Nodes
-		//There is no class encapsulating all of this
-		//It's just a series of vectors that exist on this function
-
-		//TODO: We should save information about children so we can release the scene here and only use the assetmesh to creat all the gameobject 
 		aiReleaseImport(scene);
 	}
 	else
@@ -119,30 +107,29 @@ bool ModuleImport::ImportModel(const char *path)
 //
 //}
 
-bool ModuleImport::LoadFBXNodes(ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials)
+bool ModuleImport::LoadFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, uint parent_index)
 {
+	uint curr_index = resource_model->nodes.size();
+
 	model_node->name = (char*)node->mName.C_Str();
 	model_node->transform = reinterpret_cast<const float4x4&>(node->mTransformation);
+	model_node->parent_index = parent_index;
 
 	if (node->mNumMeshes > 0u)
 	{
 		for (int i = 0; i < node->mNumMeshes; ++i)
 		{
 			uint index = node->mMeshes[i];
-			model_node->mesh = index;
-			model_node->material = index;
+			model_node->mesh_uid = index;
+			model_node->material_uid = index;
 		}
-		//Save parent id
-		//How if it's recursive?
-		//TODO: Make a push back here?
-		//Tree only needs to be reconstructed to assemble GameObjects
-		//And make a preview model
+		//TODO: Create a new ResourceModelNode for each mesh
+		resource_model->nodes.push_back(model_node);
+	}
 
-		//Do the same for the children
-		for (int i = 0; i < node->mNumChildren; ++i)
-		{
-			LoadFBXNodes(new ResourceModelNode(), node->mChildren[i], meshes, materials);
-		}
+	for (int i = 0; i < node->mNumChildren; ++i)
+	{
+		LoadFBXNodes(resource_model, new ResourceModelNode(), node->mChildren[i], meshes, materials, curr_index);
 	}
 
 	return true;
@@ -191,7 +178,7 @@ ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh)
 	return resource_mesh;
 }
 
-ResourceMesh *ModuleImport::LoadParShapeMesh(par_shapes_mesh *mesh)
+ResourceMesh *ModuleImport::ImportParShapeMesh(par_shapes_mesh *mesh)
 {
 	ResourceMesh *resource_mesh = App->resource_manager->CreateNewResource<ResourceMesh>();
 
@@ -206,6 +193,8 @@ ResourceMesh *ModuleImport::LoadParShapeMesh(par_shapes_mesh *mesh)
 	resource_mesh->GenerateVerticesBuffer();
 	resource_mesh->GenerateFacesAndNormalsBuffer();
 	resource_mesh->GenerateUVsBuffer();
+
+	resource_mesh->SaveFileData();
 
 	return resource_mesh;
 }
@@ -283,10 +272,4 @@ GameObject *ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTr
 	new_gameobject->transform->UpdateDisplayValues();
 	component_mesh->UpdateBoundingBox(new_gameobject->transform->GetGlobalMatrix());
 	return new_gameobject;
-}
-
-bool ModuleImport::AddMesh(ResourceMesh *mesh)
-{
-	meshes.push_back(mesh);
-	return true;
 }

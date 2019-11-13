@@ -34,6 +34,7 @@ bool ModuleScene::Start(JSONFile * config)
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	App->import->ImportModel("Assets/BakerHouse.fbx");
+	//Load the model
 	return ret;
 }
 

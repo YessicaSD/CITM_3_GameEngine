@@ -8,10 +8,11 @@ typedef unsigned int uint;
 
 class ResourceTexture : public Resource
 {
-public:
+private:
 	ResourceTexture() {
 		path = "";
 	};
+public:
 	~ResourceTexture();
 
 	bool SaveFileData() override;
@@ -25,6 +26,8 @@ public:
 	int buffer_id = -1, size = 0;
 	uint width = 0, height = 0;
 	std::string path;
+
+	friend class ModuleResourceManager;
 };
 
 

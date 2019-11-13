@@ -9,6 +9,8 @@
 
 #include "ModuleTexture.h"
 #include "ResourceTexture.h"
+#include "Application.h"
+#include "ModuleResourceManager.h"
 
 #define checkImageWidth 512
 #define checkImageHeight 512
@@ -71,7 +73,7 @@ ResourceTexture* ModuleTexture::LoadTexture(const char* path)
 		}
 		else
 		{
-			new_texture = new ResourceTexture();
+			new_texture = App->resource_manager->CreateNewResource<ResourceTexture>();
 			new_texture->path = path;
 			new_texture->buffer_id = ilutGLBindTexImage();
 			new_texture->height  = ilGetInteger(IL_IMAGE_HEIGHT);
@@ -89,6 +91,7 @@ ResourceTexture* ModuleTexture::LoadTexture(const char* path)
 
 			glBindTexture(GL_TEXTURE_2D, 0);
 
+			new_texture->SaveFileData();
 		}
 		//free(lump);
 		ilDeleteImages(1, &devil_id);
@@ -120,7 +123,7 @@ bool ModuleTexture::CleanUp()
 
 void ModuleTexture::CreateCheckerTexture()
 {
-	ResourceTexture* new_texture = new ResourceTexture();
+	ResourceTexture* new_texture = App->resource_manager->CreateNewResource<ResourceTexture>();
 
 	int i, j, c;
 

@@ -5,14 +5,32 @@
 
 bool ResourceModel::SaveFileData()
 {
-	char * data;
-	char * cursor;
+	uint header_bytes = sizeof(uint);
+	uint node_name_bytes = sizeof(char) * NODE_NAME_SIZE;
+	uint node_transform_bytes = sizeof(float) * 16u;
+	uint node_parent_index_bytes = sizeof(uint);
+	uint node_mesh_uid_bytes = sizeof(UID);
+	uint node_material_uid_bytes = sizeof(UID);
 
-	uint name_bytes = NODE_NAME_SIZE * sizeof(char);
+	uint node_size = node_name_bytes
+		+ node_transform_bytes
+		+ node_parent_index_bytes
+		+ node_mesh_uid_bytes
+		+ node_material_uid_bytes;
+
+	uint total_size = header_bytes
+		+ node_size * nodes.size();
+
+	char * data = new char[total_size];
+	char * cursor = data;
 
 	for (auto iter = nodes.begin(); iter != nodes.end(); ++iter)
 	{
-		memcpy((*iter)->name, cursor, name_bytes);
+		CopyToFile((*iter)->name, cursor, node_name_bytes);
+		CopyToFile(&(*iter)->transform, cursor, node_transform_bytes);
+		CopyToFile(&(*iter)->parent_index, cursor, node_parent_index_bytes);
+		CopyToFile(&(*iter)->mesh_uid, cursor, node_mesh_uid_bytes);
+		CopyToFile(&(*iter)->material_uid, cursor, node_material_uid_bytes);
 	}
 
 	uint path_size = 250u;
@@ -45,6 +63,7 @@ bool ResourceModel::LoadFileData()
 	{
 		ResourceModelNode * node = new ResourceModelNode();
 		node->name = new char[NODE_NAME_SIZE];
+		//TODO: See if it's necessary if we're copyinf froma a file with the same name length
 		//INFO: Clear the name
 		//memset(nodes[i]->name, 0, name_bytes);
 		CopyToMemory(nodes[i]->name, cursor, name_bytes);
@@ -53,17 +72,17 @@ bool ResourceModel::LoadFileData()
 			CopyToMemory(&node->transform[rows], cursor, sizeof(float) * 4u);
 		}
 		CopyToMemory(&node->parent_index, cursor, sizeof(uint));
-		CopyToMemory(&node->mesh, cursor, sizeof(UID));
-		CopyToMemory(&node->material, cursor, sizeof(UID));
+		CopyToMemory(&node->mesh_uid, cursor, sizeof(UID));
+		CopyToMemory(&node->material_uid, cursor, sizeof(UID));
 
 		nodes.push_back(node);
 	}
 
 	for (uint i  = 0u; i < nodes.size(); ++i)
 	{
-		if (nodes[i]->mesh != INVALID_RESOURCE_UID)
+		if (nodes[i]->mesh_uid != INVALID_RESOURCE_UID)
 		{
-			Resource * resource = App->resource_manager->GetResource(nodes[i]->mesh);
+			Resource * resource = App->resource_manager->GetResource(nodes[i]->mesh_uid);
 			resource->StartUsingResource();
 		}
 	}
