@@ -29,6 +29,8 @@ public:
 private:
 	void DeleteGameObject(GameObject* gameobject);
 	void GetIntersect(ComponentTransform * object, LineSegment* ray, std::vector<RaycastHit>& out_objects);
+
+	LineSegment ray;
 public:
 	//All gameobjects are children of the root gameobject
 	GameObject* root_gameobject;

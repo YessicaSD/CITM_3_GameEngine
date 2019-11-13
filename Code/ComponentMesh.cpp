@@ -118,12 +118,6 @@ void ComponentMesh::OnPostUpdate()
 		DrawOutline();
 	}
 
-	glLineWidth(5);
-	glColor4f(255, 0, 0, 1);
-
-	glBegin(GL_LINES);
-
-	glEnd();
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
 	material->DisableGLModes();
 	if (mesh->UVCoord)

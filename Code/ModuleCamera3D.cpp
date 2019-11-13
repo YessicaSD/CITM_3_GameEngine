@@ -16,6 +16,8 @@
 
 #include "MathGeoLib/include/Geometry/AABB.h"
 #include "MathGeoLib/include/Geometry/LineSegment.h"
+
+#include "glew/include/GL/glew.h"
 ModuleCamera3D::ModuleCamera3D(const char *name, bool start_enabled) : Module(start_enabled, name)
 {
 	reference = { 0.0f, 0.0f, 0.0f };
@@ -133,10 +135,10 @@ update_status ModuleCamera3D::Update(float dt)
 		float width  = App->window->GetWindowWidth();
 		float height  = App->window->GetWindowHeight();
 
-		1.0f - (float(App->input->GetMouseY()) * 2.0f) / height;
 		float x_pos = -(1.0f - (float(App->input->GetMouseX()) * 2.0f) / width);
 		float y_pos = 1.0f - (float(App->input->GetMouseY()) * 2.0f) / height;
-		LineSegment picking = scene_camera->frustum.UnProjectLineSegment(x_pos,y_pos);
+
+		picking = scene_camera->frustum.UnProjectLineSegment(x_pos,y_pos);
 		std::vector<RaycastHit> hit_object;
 		App->scene->IntersectRay(&picking, hit_object);
 		std::sort(hit_object.begin(), hit_object.end(),Compare);
@@ -147,6 +149,12 @@ update_status ModuleCamera3D::Update(float dt)
 
 	}
 	return UPDATE_CONTINUE;
+}
+
+update_status ModuleCamera3D::PostUpdate()
+{
+
+	return update_status::UPDATE_CONTINUE;
 }
 
 void ModuleCamera3D::RotateCamera(float dt)

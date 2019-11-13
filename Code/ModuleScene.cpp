@@ -81,6 +81,7 @@ void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 
 void ModuleScene::IntersectRay(LineSegment * ray, std::vector<RaycastHit>& out_objects)
 {
+	this->ray = (*ray);
 	GetIntersect(root_gameobject->transform, ray, out_objects);
 
 }
@@ -139,6 +140,16 @@ update_status ModuleScene::PostUpdate()
 	p.Render();
 
 	GameObjectPostUpdateRecursive(root_gameobject->transform);
+
+	glPushMatrix();
+	glMultMatrixf((const GLfloat*)& float4x4::identity.Inverted());
+	glLineWidth(10);
+	glColor4f(255, 0, 0, 1);
+	glBegin(GL_LINES);
+	glVertex3f(ray.a.x, ray.a.y, ray.a.z);
+	glVertex3f(ray.b.x, ray.b.y, ray.b.z);
+	glEnd();
+	glPopMatrix();
 
 	App->renderer3D->scene_fbo.EndRender();
 
