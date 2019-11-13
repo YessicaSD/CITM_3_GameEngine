@@ -142,14 +142,15 @@ void ComponentCamera::SetFarPlane(const float & value)
 {
 
 	frustum.farPlaneDistance = (value > frustum.nearPlaneDistance ) ? value : frustum.farPlaneDistance;
-	
 	far_plane = frustum.farPlaneDistance;
+
 }
 
 void ComponentCamera::SetFieldOfView(float & angle)
 {
 	 frustum.verticalFov = angle;
 	 frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * aspect_ratio);
+	 update_project_matrix = true;
 }
 
 void ComponentCamera::SetAspectRatio(float & ratio)

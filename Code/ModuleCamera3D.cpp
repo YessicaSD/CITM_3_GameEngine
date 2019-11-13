@@ -35,8 +35,10 @@ bool ModuleCamera3D::Start(JSONFile* config)
 	bool ret = true;
 
 	scene_camera = new ComponentCamera(nullptr);
-	scene_camera->SetPos(float3(0,2,10));
-	scene_camera->LookAt(reference);
+	current_camera = scene_camera;
+
+	current_camera->SetPos(float3(0,2,10));
+	current_camera->LookAt(reference);
 
 	navigate_forward = new Shortcut("Move camera forward", {SDL_SCANCODE_W});
 	navigate_backward = new Shortcut("Move camera backward", {SDL_SCANCODE_S});
@@ -85,44 +87,44 @@ update_status ModuleCamera3D::Update(float dt)
 
 	if (navigate_up->Held())
 	{
-		new_pos += move_speed * scene_camera->frustum.up;
+		new_pos += move_speed * current_camera->frustum.up;
 	}
 	if (navigate_down->Held())
 	{
-		new_pos -= move_speed * scene_camera->frustum.up;
+		new_pos -= move_speed * current_camera->frustum.up;
 	}
 
 	if (navigate_forward->Held())
 	{
-		new_pos += scene_camera->frustum.front * move_speed;
+		new_pos += current_camera->frustum.front * move_speed;
 	}
 	if (navigate_backward->Held())
 	{
-		new_pos -= scene_camera->frustum.front * move_speed;
+		new_pos -= current_camera->frustum.front * move_speed;
 	}
 
 	if (navigate_left->Held())
 	{
-		new_pos -= scene_camera->frustum.WorldRight() * move_speed;
+		new_pos -= current_camera->frustum.WorldRight() * move_speed;
 	}
 	if (navigate_right->Held())
 	{
-		new_pos += scene_camera->frustum.WorldRight() * move_speed;
+		new_pos += current_camera->frustum.WorldRight() * move_speed;
 	}
 
 	
 	int mouse_wheel = App->input->GetMouseWheel();
 	if (mouse_wheel != 0)
 	{
-		new_pos += scene_camera->frustum.front * mouse_wheel * move_speed * 2.f;
+		new_pos += current_camera->frustum.front * mouse_wheel * move_speed * 2.f;
 	}
 	if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_STATE::KEY_REPEAT)
 	{
-		new_pos -= scene_camera->frustum.WorldRight() * App->input->GetMouseMotionX() * move_speed * 0.5f;
-		new_pos += scene_camera->frustum.up * App->input->GetMouseMotionY() * move_speed * 0.5f;
+		new_pos -= current_camera->frustum.WorldRight() * App->input->GetMouseMotionX() * move_speed * 0.5f;
+		new_pos += current_camera->frustum.up * App->input->GetMouseMotionY() * move_speed * 0.5f;
 	}
 
-	scene_camera->SetPos(scene_camera->frustum.pos + new_pos);
+	current_camera->SetPos(current_camera->frustum.pos + new_pos);
 	reference += new_pos;
 
 	// Mouse motion ----------------
@@ -130,17 +132,17 @@ update_status ModuleCamera3D::Update(float dt)
 	{
 		RotateCamera(dt);
 	}
+	
+
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
-		
-		float width  = App->gui->panel_scene->width;
-		float height  = App->gui->panel_scene->height;
+		float width = App->gui->panel_scene->width;
+		float height = App->gui->panel_scene->height;
 
 		float x_pos = -(1.0f - (float(App->gui->panel_scene->cursor.x) * 2.0f) / width);
 		float y_pos = 1.0f - (float(App->gui->panel_scene->cursor.y) * 2.0f) / height;
 
-		LOG("X = %.2f, Y=%.2f", App->gui->panel_scene->cursor.x, App->gui->panel_scene->cursor.y);
-		picking = scene_camera->frustum.UnProjectLineSegment(x_pos,y_pos);
+		picking = current_camera->frustum.UnProjectLineSegment(x_pos,y_pos);
 		std::vector<RaycastHit> hit_object;
 		App->scene->IntersectRay(&picking, hit_object);
 		std::sort(hit_object.begin(), hit_object.end(),Compare);
@@ -150,6 +152,8 @@ update_status ModuleCamera3D::Update(float dt)
 		}
 
 	}
+	current_camera->UpdateDrawingRepresentation();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -167,40 +171,23 @@ void ModuleCamera3D::RotateCamera(float dt)
 
 	if (dx != 0 || dy != 0)
 	{
-		float3 vector = scene_camera->frustum.pos - reference;
-		Quat quat_y(scene_camera->frustum.up, dx  * DEGTORAD);
-		Quat quat_x(scene_camera->frustum.WorldRight(), dy  * DEGTORAD);
+		float3 vector = current_camera->frustum.pos - reference;
+		Quat quat_y(current_camera->frustum.up, dx  * DEGTORAD);
+		Quat quat_x(current_camera->frustum.WorldRight(), dy  * DEGTORAD);
 		Quat result_rotation = quat_y * quat_x;
 		vector = result_rotation.Transform(vector);
-		scene_camera->frustum.pos = vector + reference;
+		current_camera->SetPos(vector + reference);
 		LookAt(reference);
 	}
 }
 
-//// -----------------------------------------------------------------
-//void ModuleCamera3D::Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference)
-//{
-//	this->position = Position;
-//	this->reference = Reference;
-//
-//	z = (Position - Reference).Normalized();
-//	x = (z.Cross(float3(0.0f, 1.0f, 0.0f))).Normalized();
-//	y = z.Cross(x);
-//
-//	if (!RotateAroundReference)
-//	{
-//		this->reference = this->position;
-//		this->position += z * 0.05f;
-//	}
-//
-//	CalculateViewMatrix();
-//}
+
 
 ////// -----------------------------------------------------------------
 void ModuleCamera3D::LookAt(const float3 &spot)
 {
 	reference = spot;
-	scene_camera->LookAt(spot);
+	current_camera->LookAt(spot);
 }
 
 //void ModuleCamera3D::FocusToObject( ComponentTransform &transform)
@@ -238,7 +225,7 @@ void ModuleCamera3D::LookAt(const float3 &spot)
 // -----------------------------------------------------------------
 void ModuleCamera3D::Move(const float3 &Movement)
 {
-	scene_camera->frustum.pos += Movement;
+	current_camera->frustum.pos += Movement;
 	reference += Movement;
 
 }
@@ -246,7 +233,7 @@ void ModuleCamera3D::Move(const float3 &Movement)
 // -----------------------------------------------------------------
 float *ModuleCamera3D::GetViewMatrix()
 {
-	return (float*)&scene_camera->GetViewMatrix();
+	return (float*)&current_camera->GetViewMatrix();
 }
 
 bool ModuleCamera3D::SaveConfiguration(JSONFile * module_file)

@@ -33,6 +33,7 @@ public:
 	float4x4 GetViewMatrix();
 	float4x4 GetProjectionMatrix();
 
+	bool update_project_matrix = false;
 private:
 	float near_plane;
 	float far_plane;

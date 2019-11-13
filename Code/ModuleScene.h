@@ -36,6 +36,7 @@ public:
 	GameObject* root_gameobject;
 	GameObject* camera;
 	ComponentCamera* component_camera;
+	friend class ModuleRender3D;
 };
 
 #endif // !MODULESCENE_H_

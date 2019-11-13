@@ -53,13 +53,23 @@ bool ModuleScene::CleanUp()
 // Update: draw background
 update_status ModuleScene::Update(float dt)
 {
+	//TODO: Turn into a shortcut
+	if (App->input->GetKey(SDL_SCANCODE_DELETE))
+	{
+		if (ComponentTransform* selected_object = App->gui->GetSelecteTransform())
+		{
+			App->gui->SetSelectedGameObjec(nullptr);
+			DeleteGameObject(selected_object->gameobject);
+
+		}
+	}
 	return UPDATE_CONTINUE;
 }
 
 void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 {
 	object->OnPostUpdate();
-	if (component_camera->gameobject->transform == object || !component_camera->frustum_culling || component_camera->IsInFrustum(object->bounding_box.GetOBB()))
+//	if (component_camera->gameobject->transform == object || !component_camera->frustum_culling || component_camera->IsInFrustum(object->bounding_box.GetOBB()))
 		object->gameobject->OnPostUpdate();
 	for (std::vector<ComponentTransform *>::iterator iter = object->children.begin();
 		iter != object->children.end();
@@ -68,15 +78,11 @@ void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 		GameObjectPostUpdateRecursive((*iter));
 	}
 
-	//TODO: Turn into a shortcut
-	if (App->input->GetKey(SDL_SCANCODE_DELETE))
-	{
-		if (ComponentTransform* selected_object = App->gui->GetSelecteTransform())
-		{
-			DeleteGameObject(selected_object->gameobject);
-			App->gui->SetSelectedGameObjec(nullptr);
-		}
-	}
+
+
+	
+
+	
 }
 
 void ModuleScene::IntersectRay(LineSegment * ray, std::vector<RaycastHit>& out_objects)
@@ -138,6 +144,8 @@ update_status ModuleScene::PostUpdate()
 	p.axis = true;
 	//p.wire = false;
 	p.Render();
+
+	App->camera->scene_camera->OnPostUpdate();
 
 	GameObjectPostUpdateRecursive(root_gameobject->transform);
 
