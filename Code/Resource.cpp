@@ -18,26 +18,41 @@ void Resource::CopyToMemory(void* info, char* data_cursor, size_t bytes)
 	data_cursor += bytes;
 }
 
-void Resource::StartUsingResource()
+//INFO: Keeps the resource but deletes all its data
+bool Resource::ReleaseData()
+{
+	bool ret = false;
+
+	return ret;
+}
+
+//INFO: Called each time a GameObject needs to use this resource
+//INFO: Only load resource once
+bool Resource::StartUsingResource()
 {
 	if (reference_count > 0u)
 	{
-		reference_count++;
+		++reference_count;
 	}
 	else
 	{
-		//Ony load the resource once
-		App->file_system->LoadFile();
-		//DDS don't need to use this
-		//LoadFileData should call LoadFile
-		LoadFileData();
+		if (LoadFileData())
+		{
+			++reference_count;
+		}
 	}
+	return reference_count > 0u;
 }
 
-void Resource::StopUsingResource()
+//INFO: Called each time a GameObject stops using this resource
+//INFO: Unload resource when no GameObject references it
+bool Resource::StopUsingResource()
 {
-	if ()
+	bool ret = true;
+	--reference_count;
+	if (reference_count == 0u)
 	{
-
+		ret = ReleaseData();
 	}
+	return ret;
 }

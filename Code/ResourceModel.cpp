@@ -1,6 +1,7 @@
 #include "ResourceModel.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h"
 
 bool ResourceModel::SaveFileData()
 {
@@ -21,8 +22,12 @@ bool ResourceModel::SaveFileData()
 	return false;
 }
 
-bool ResourceModel::LoadFileData(char * data)
+bool ResourceModel::LoadFileData()
 {
+	char * data = nullptr;
+	uint path_size = 250u;
+	char * path = new char[path_size];
+	App->file_system->CreatePath(path, path_size, RESOURCES_MODEL_FOLDER, "model", uid, "hinata_model");
 	char * cursor = data;
 
 	//Load header
@@ -54,5 +59,20 @@ bool ResourceModel::LoadFileData(char * data)
 		nodes.push_back(node);
 	}
 
+	for (uint i  = 0u; i < nodes.size(); ++i)
+	{
+		if (nodes[i]->mesh != INVALID_RESOURCE_UID)
+		{
+			Resource * resource = App->resource_manager->GetResource(nodes[i]->mesh);
+			resource->StartUsingResource();
+		}
+	}
+
+	return true;
+}
+
+bool ResourceModel::ReleaseData()
+{
+	//TODO: Finish function
 	return true;
 }

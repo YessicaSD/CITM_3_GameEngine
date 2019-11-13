@@ -11,8 +11,9 @@
 
 #define NODE_NAME_SIZE 250
 
-#include<string>
-#include<vector>
+#include <string>
+#include <vector>
+
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "Resource.h"
 #include "Globals.h"
@@ -30,7 +31,8 @@ class ResourceModel : public Resource
 {
 public:
 	bool SaveFileData() override;
-	bool LoadFileData(char * data) override;
+	bool LoadFileData() override;
+	bool ReleaseData() override;
 
 public:
 	std::vector<ResourceModelNode*> nodes;

@@ -63,34 +63,51 @@ bool ResourceMesh::SaveFileData()
 	char * path = new char[path_size];
 	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, "mesh", uid, "hinata_mesh");
 	ret = App->file_system->SaveFile((const void *)data, size, &path);
+	RELEASE_ARRAY(path);
+	return ret;
+}
+
+bool ResourceMesh::LoadFileData()
+{
+	//Create path
+	char * data = nullptr;
+	uint path_size = 250u;
+	char * path = new char[path_size];
+	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, "mesh", uid, "hinata_mesh");
+	bool ret = App->file_system->LoadFile(path, &data);
+	RELEASE_ARRAY(path);
+
+	if (ret)
+	{
+		char * cursor = data;
+
+		//INFO: The number of elements on the ranges array must be the same as in the ranges array of ResourceMesh::SaveFileData()
+		uint ranges[3];
+
+		uint ranges_bytes = sizeof(ranges);
+		memcpy(ranges, cursor, ranges_bytes);
+
+		num_vertices = ranges[0];
+		num_indices = ranges[1];
+		uv_dimensions = ranges[2];
+		cursor += ranges_bytes;
+
+		vertices = new float3[num_vertices];
+		CopyToMemory(vertices, cursor, sizeof(float3) * num_vertices);
+
+		indices = new uint[num_indices];
+		CopyToMemory(indices, cursor, sizeof(uint) * num_indices);
+
+		uv_coord = new float[uv_dimensions];
+		CopyToMemory(uv_coord, cursor, sizeof(float) * uv_dimensions);
+	}
 
 	return ret;
 }
 
-bool ResourceMesh::LoadFileData(char * data)
+bool ResourceMesh::ReleaseData()
 {
-	char * cursor = data;
-
-	//INFO: The number of elements on the ranges array must be the same as in the ranges array of ResourceMesh::SaveFileData()
-	uint ranges[3];
-
-	uint ranges_bytes = sizeof(ranges);
-	memcpy(ranges, cursor, ranges_bytes);
-
-	num_vertices = ranges[0];
-	num_indices = ranges[1];
-	uv_dimensions = ranges[2];
-	cursor += ranges_bytes;
-
-	vertices = new float3[num_vertices];
-	CopyToMemory(vertices, cursor, sizeof(float3) * num_vertices);
-
-	indices = new uint[num_indices];
-	CopyToMemory(indices, cursor, sizeof(uint) * num_indices);
-
-	uv_coord = new float[uv_dimensions];
-	CopyToMemory(uv_coord, cursor, sizeof(float) * uv_dimensions);
-
+	//TODO. Finish this function
 	return true;
 }
 
