@@ -184,7 +184,6 @@ bool ComponentTransform::Intersect(LineSegment ray)
 	if (box.IsFinite())
 	{
 		return ray.Intersects(box);
-
 	}
 	else
 	{

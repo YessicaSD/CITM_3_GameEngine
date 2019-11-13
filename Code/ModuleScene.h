@@ -24,12 +24,12 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp();
 	void GameObjectPostUpdateRecursive(ComponentTransform * object);
-	void IntersectRay(LineSegment* ray, std::vector<RaycastHit>& out_objects);
+	bool IntersectRay(LineSegment* ray, RaycastHit& hit);
 
 private:
 	void DeleteGameObject(GameObject* gameobject);
-	void GetIntersect(ComponentTransform * object, LineSegment* ray, std::vector<RaycastHit>& out_objects);
-
+	void GetIntersectBox(ComponentTransform * object, LineSegment* ray, std::vector<RaycastHit>& out_objects);
+	bool TestWithTriangles(LineSegment * ray, std::vector<RaycastHit>& out_objects, RaycastHit& hit_out);
 	LineSegment ray;
 public:
 	//All gameobjects are children of the root gameobject
