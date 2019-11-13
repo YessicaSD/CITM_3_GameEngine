@@ -18,6 +18,7 @@
 #include "ModuleResourceManager.h"
 #include "Event.h"
 
+#include "Resource.h"
 #include "ResourceModel.h"
 
 #include "ModuleFileSystem.h"
@@ -56,26 +57,29 @@ bool ModuleImport::ImportModel(const char *path)
 	const aiScene *scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
-		std::vector<ResourceMesh *> object_meshes;
-		std::vector<ResourceTexture *> textures;//TODO: Clear this vectors
+		std::vector<ResourceMesh *> fbx_meshes;
+		std::vector<UID> fbx_meshes_uids;
+
+		std::vector<ResourceTexture *> fbx_textures;
+		std::vector<UID> fbx_textures_uids;
+
 		ResourceModelNode model_root_node;
-		//Texture list should be inside the AssetMesh too?
+
 		for (uint i = 0; i < scene->mNumMeshes; ++i)
 		{
-
 			aiMesh *assimp_mesh = scene->mMeshes[i];
 			ResourceMesh *resource_mesh = ImportAssimpMesh(assimp_mesh);
-			//Save mesh (and create a uid for each one)
-			ImportFBXTexture(assimp_mesh, scene, textures);
-			//Save texture (and create an uid for each one)
-
-			object_meshes.push_back(resource_mesh);
+			fbx_meshes.push_back(resource_mesh);
+			fbx_meshes_uids.push_back(resource_mesh->GetUID());
 			meshes.push_back(resource_mesh);
-		}
-		//Generate the Resource model and Resource Textures
-		//We need their id for this function
 
-		//LoadFBXNodes(&model_root_node, scene->mRootNode, , );
+			ResourceTexture * resource_texture = ImportFBXTexture(assimp_mesh, scene);
+			fbx_textures.push_back(resource_texture);
+			fbx_textures_uids.push_back(resource_texture->GetUID());
+			//TODO: Push this texture on the texture array or in the resources array
+		}
+
+		LoadFBXNodes(&model_root_node, scene->mRootNode, fbx_meshes_uids, fbx_textures_uids);
 		
 		//SaveModel(object_meshes, textures, model_root_node);
 
@@ -115,34 +119,35 @@ bool ModuleImport::ImportModel(const char *path)
 //
 //}
 
-//bool ModuleImport::LoadFBXNodes(ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials)
-//{
-//	model_node->name = node->mName.C_Str();
-//	model_node->transform = reinterpret_cast<const float4x4&>(node->mTransformation);
-//
-//
-//	if (node->mNumMeshes > 0u)
-//	{
-//		for (int i = 0; i < node->mNumMeshes; ++i)
-//		{
-//			uint index = node->mMeshes[i];
-//			model_node->meshes.push_back(index);
-//			//TODO: Associate textures
-//		}
-//
-//		//Do the same for the children
-//		for (int i = 0; i < node->mNumChildren; ++i)
-//		{
-//			LoadFBXNodes(new ResourceModelNode(), node->mChildren[i], , );
-//		}
-//	}
-//
-//	return true;
-//}
+bool ModuleImport::LoadFBXNodes(ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials)
+{
+	model_node->name = node->mName.C_Str();
+	model_node->transform = reinterpret_cast<const float4x4&>(node->mTransformation);
 
-bool ModuleImport::ImportFBXTexture(aiMesh * info, const  aiScene* fbx, std::vector<ResourceTexture*>& textures)
+	if (node->mNumMeshes > 0u)
+	{
+		for (int i = 0; i < node->mNumMeshes; ++i)
+		{
+			uint index = node->mMeshes[i];
+			model_node->mesh = index;
+			model_node->material = index;
+		}
+
+		//Do the same for the children
+		for (int i = 0; i < node->mNumChildren; ++i)
+		{
+			LoadFBXNodes(new ResourceModelNode(), node->mChildren[i], meshes, materials);
+		}
+	}
+
+	return true;
+}
+
+ResourceTexture * ModuleImport::ImportFBXTexture(aiMesh * info, const  aiScene* fbx)
 {
 	aiMaterial* material = fbx->mMaterials[info->mMaterialIndex];
+
+	ResourceTexture * ret = nullptr;
 
 	if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
 	{
@@ -150,19 +155,14 @@ bool ModuleImport::ImportFBXTexture(aiMesh * info, const  aiScene* fbx, std::vec
 		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &aipath, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
 			std::string path = ASSETS_FOLDER + std::string(aipath.data);
-			textures.push_back(App->texture->LoadTexture(path.c_str()));
-			return true;
+			ret = App->texture->LoadTexture(path.c_str());
 		}
 		else
 		{
 			LOG("Texture path note found");
-			textures.push_back(nullptr);
-			return false;
 		}
 	}
-
-	textures.push_back(nullptr);
-	return false;
+	return ret;
 }
 
 ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh)

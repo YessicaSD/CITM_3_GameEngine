@@ -9,6 +9,8 @@
 #ifndef __RESOURCE_MODEL_H__
 #define __RESOURCE_MODEL_H__
 
+#define NODE_NAME_SIZE 250
+
 #include<string>
 #include<vector>
 #include "MathGeoLib/include/Math/float4x4.h"
@@ -16,21 +18,25 @@
 #include "Globals.h"
 
 struct ResourceModelNode {
-	std::string name;
+	char * name;
 	float4x4 transform = float4x4::identity;
-	std::vector<UID> meshes;//A single node can have more than one mesh
-	std::vector<UID> materials;//A single node can have more than one material
-	uint parent_index = 0u;//The position of the parent on the node array
+	UID mesh;
+	UID material;
+	uint parent_index = 0u;
 };
+//TODO: Alert when a Node has more than one mesh or material
 
 class ResourceModel : public Resource
 {
 public:
+	bool SaveFileData() override;
+	bool LoadFileData(char * data) override;
 
-	std::vector<uint> mesh_indices;
+public:
 	std::vector<ResourceModelNode*> nodes;
-	//textures
-	//translation? rotation? scale?
+	std::vector<UID> meshes_uid;
+	std::vector<UID> textures_uid;
 };
+
 
 #endif
