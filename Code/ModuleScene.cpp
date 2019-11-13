@@ -119,6 +119,7 @@ void ModuleScene::GetIntersect(ComponentTransform * object, LineSegment * ray, s
 	{
 		if (object->Intersect(*ray))
 		{
+			out_objects.push_back(hit);
 			RaycastHit hit(object);
 			ComponentMesh* mesh = object->gameobject->GetComponent<ComponentMesh>();
 			if (mesh)

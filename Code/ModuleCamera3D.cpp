@@ -134,7 +134,7 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 	
 
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->gui->panel_scene->mouse_is_hovering && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		float width = App->gui->panel_scene->width;
 		float height = App->gui->panel_scene->height;
