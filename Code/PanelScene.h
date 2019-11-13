@@ -3,7 +3,7 @@
 
 #include "Panel.h"
 #include "imgui/imgui.h"
-
+#include "MathGeoLib/include/Math/float2.h"
 class PanelScene : public Panel
 {
 public:
@@ -12,6 +12,7 @@ public:
 
 public:
 	ImVec2 current_viewport_size;
+	float2 cursor;
 };
 
 #endif

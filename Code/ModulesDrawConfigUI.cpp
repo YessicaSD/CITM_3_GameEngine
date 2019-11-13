@@ -11,6 +11,8 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleInput.h"
 #include "ModuleCamera3D.h"
+#include "ComponentCamera.h"
+
 
 //RULES: Every variable you add here should also be added in the Save and Load method of the corresponding module
 
@@ -90,6 +92,10 @@ void ModuleCamera3D::DrawConfigurationUi()
 {
 	ImGui::InputFloat("Move speed", &camera_move_speed);
 	ImGui::InputFloat("Roate speed", &camera_rotate_speed);
+	
+	
+	scene_camera->PropertiesEditor();
+	
 }
 
 void ModuleInput::DrawConfigurationUi()

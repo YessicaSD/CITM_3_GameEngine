@@ -18,6 +18,7 @@
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 
 #include "glew/include/GL/glew.h"
+#include "PanelScene.h"
 ModuleCamera3D::ModuleCamera3D(const char *name, bool start_enabled) : Module(start_enabled, name)
 {
 	reference = { 0.0f, 0.0f, 0.0f };
@@ -132,12 +133,13 @@ update_status ModuleCamera3D::Update(float dt)
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		
-		float width  = App->window->GetWindowWidth();
-		float height  = App->window->GetWindowHeight();
+		float width  = App->gui->panel_scene->width;
+		float height  = App->gui->panel_scene->height;
 
-		float x_pos = -(1.0f - (float(App->input->GetMouseX()) * 2.0f) / width);
-		float y_pos = 1.0f - (float(App->input->GetMouseY()) * 2.0f) / height;
+		float x_pos = -(1.0f - (float(App->gui->panel_scene->cursor.x) * 2.0f) / width);
+		float y_pos = 1.0f - (float(App->gui->panel_scene->cursor.y) * 2.0f) / height;
 
+		LOG("X = %.2f, Y=%.2f", App->gui->panel_scene->cursor.x, App->gui->panel_scene->cursor.y);
 		picking = scene_camera->frustum.UnProjectLineSegment(x_pos,y_pos);
 		std::vector<RaycastHit> hit_object;
 		App->scene->IntersectRay(&picking, hit_object);

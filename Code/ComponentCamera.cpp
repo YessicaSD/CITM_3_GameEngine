@@ -33,28 +33,35 @@ void ComponentCamera::OnPostUpdate()
 
 void ComponentCamera::PropertiesEditor()
 {
+	ImGui::Separator();
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
 		bool changed_near_plane, changed_far_plane, changed_field_of_view, changed_aspect_ratio;
 		
+		
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
 		ImGui::Checkbox("Active", &frustum_culling);
 		
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
 		if (changed_near_plane = ImGui::InputFloat("Near Plane", &near_plane, 1, 5, 2))
 		{
 			SetNearPlane(near_plane);
 		}
-
+		
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
 		if (changed_far_plane = ImGui::InputFloat("Far Plane", &far_plane, 1, 5, 2))
 		{
 			SetFarPlane(far_plane);
 		}
 
-
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
 		if (changed_field_of_view = ImGui::SliderAngle("Field of view", &v_fov, 0.0f, 179.0f))
 		{
 			SetFieldOfView(v_fov);
 		}
 
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
 		if (changed_aspect_ratio = ImGui::SliderFloat("Aspect_ratio", &aspect_ratio, 0, 5))
 		{
 			SetAspectRatio(aspect_ratio);

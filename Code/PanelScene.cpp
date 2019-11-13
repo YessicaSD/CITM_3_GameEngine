@@ -16,10 +16,18 @@ void PanelScene::Draw()
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
 	ImGui::Begin("Scene");
+
+	
 	current_viewport_size = ImGui::GetContentRegionAvail();
 	ImVec2 min = ImGui::GetCursorScreenPos();
 	ImVec2 max = ImVec2(min.x + current_viewport_size.x, min.y + current_viewport_size.y);
 	bool mouse_is_hovering = ImGui::IsMouseHoveringRect(min, max);
+
+	
+	cursor = { ImGui::GetMousePos().x - min.x,ImGui::GetMousePos().y - min.y };
+	width = ImGui::GetWindowWidth();
+	height = ImGui::GetWindowHeight();
+
 	ImGui::Image((ImTextureID)App->renderer3D->scene_fbo.render_texture, ImVec2(current_viewport_size.x, current_viewport_size.y), ImVec2(0, 1), ImVec2(1, 0));
 	ImGui::End();
 	ImGui::PopStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding);
