@@ -121,7 +121,7 @@ bool ModuleImport::ImportModel(const char *path)
 
 bool ModuleImport::LoadFBXNodes(ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials)
 {
-	model_node->name = node->mName.C_Str();
+	model_node->name = (char*)node->mName.C_Str();
 	model_node->transform = reinterpret_cast<const float4x4&>(node->mTransformation);
 
 	if (node->mNumMeshes > 0u)
@@ -132,6 +132,11 @@ bool ModuleImport::LoadFBXNodes(ResourceModelNode * model_node, aiNode * node, c
 			model_node->mesh = index;
 			model_node->material = index;
 		}
+		//Save parent id
+		//How if it's recursive?
+		//TODO: Make a push back here?
+		//Tree only needs to be reconstructed to assemble GameObjects
+		//And make a preview model
 
 		//Do the same for the children
 		for (int i = 0; i < node->mNumChildren; ++i)

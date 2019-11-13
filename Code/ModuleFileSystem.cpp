@@ -163,6 +163,7 @@ bool ModuleFileSystem::LoadFile(const char * path, char ** data)
 			}
 			else
 			{
+				LOG("Successfully read file %s at %s", path, PHYSFS_getWriteDir());
 				ret = true;
 			}
 		}

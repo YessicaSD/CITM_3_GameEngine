@@ -37,6 +37,8 @@ public:
 	void CleanUp();
 	AABB GetAABB();
 
+	uint GetNumUV();
+
 private:
 	AABB aabb;
 
@@ -48,7 +50,7 @@ public:
 	//TODO: Change to uint *
 	//Assimp uses uint * and par_shapes uses uint16_t *
 
-	//Vertec ================================
+	//Vertex ================================
 	uint id_vertex = 0u; // unique vertex in VRAM
 	uint num_vertices = 0u;
 	float3 *vertices = nullptr;
@@ -65,7 +67,8 @@ public:
 	// UV ==================
 	float *uv_coord = nullptr;
 	uint id_uv = 0u;
-	uint uv_num_components = 0u;
+	uint uv_dimensions = 0u;//Whether the UVs are stored as 2D or 3D
+	//INFO: 
 	uint id_texture = 0u;
 
 	friend class ModuleResourceManager;

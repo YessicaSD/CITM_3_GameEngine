@@ -61,7 +61,7 @@ void ComponentMesh::OnPostUpdate()
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
-		glTexCoordPointer(mesh->uv_num_components, GL_FLOAT, 0, NULL);
+		glTexCoordPointer(mesh->uv_dimensions, GL_FLOAT, 0, NULL);
 	}
 
 	if (render_mode.fill)

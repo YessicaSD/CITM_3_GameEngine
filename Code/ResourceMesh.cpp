@@ -27,16 +27,18 @@ bool ResourceMesh::SaveFileData()
 {
 	bool ret = false;
 
+	uint num_uvs = GetNumUV();
+
 	//Generate file data
 	uint ranges[] = {
 		num_vertices,
 		num_indices,
-		uv_num_components };
+		num_uvs };
 
 	uint ranges_bytes = sizeof(ranges);
 	uint vertices_bytes = sizeof(float3) * num_vertices;
 	uint indices_bytes = sizeof(uint) * num_indices;
-	uint uv_bytes = sizeof(float) * uv_num_components;
+	uint uv_bytes = sizeof(float) * num_uvs;
 
 	uint size = ranges_bytes
 		+ vertices_bytes
@@ -48,21 +50,13 @@ bool ResourceMesh::SaveFileData()
 
 	char* cursor = data;
 
-	 //Store ranges in which it must read.
-	memcpy(cursor, ranges, ranges_bytes);
-	cursor += ranges_bytes;
+	CopyToFile(ranges, cursor, ranges_bytes);
 
-	//Store vertices
-	memcpy(cursor, vertices, vertices_bytes);
-	cursor += vertices_bytes;
+	CopyToFile(vertices, cursor, vertices_bytes);
 
-	//Store indices
-	memcpy(cursor, indices, indices_bytes);
-	cursor += indices_bytes;
+	CopyToFile(indices, cursor, indices_bytes);
 
-	//Store uvs
-	memcpy(cursor, uv_coord, uv_bytes);
-	cursor += uv_bytes;
+	CopyToFile(uv_coord, cursor, uv_bytes);
 
 	//SaveFile
 	uint path_size = 250u;
@@ -77,35 +71,25 @@ bool ResourceMesh::LoadFileData(char * data)
 {
 	char * cursor = data;
 
-	//INFO: The number of elements on the ranges array must be the same as in the ranges array of ResourceMesh::GenerateFileData()
+	//INFO: The number of elements on the ranges array must be the same as in the ranges array of ResourceMesh::SaveFileData()
 	uint ranges[3];
 
 	uint ranges_bytes = sizeof(ranges);
 	memcpy(ranges, cursor, ranges_bytes);
 
-	//Load ranges
 	num_vertices = ranges[0];
 	num_indices = ranges[1];
-	uv_num_components = ranges[2];
+	uv_dimensions = ranges[2];
 	cursor += ranges_bytes;
 
-	// Load vertices
 	vertices = new float3[num_vertices];
-	uint vertices_bytes = sizeof(float3) * num_vertices;
-	memcpy(vertices, cursor, vertices_bytes);
-	cursor += vertices_bytes;
+	CopyToMemory(vertices, cursor, sizeof(float3) * num_vertices);
 
-	//Load indices
 	indices = new uint[num_indices];
-	uint indices_bytes = sizeof(uint) * num_indices;
-	memcpy(indices, cursor, indices_bytes);
-	cursor += indices_bytes;
+	CopyToMemory(indices, cursor, sizeof(uint) * num_indices);
 
-	//Load uvs
-	uv_coord = new float[uv_num_components];
-	uint uv_bytes = sizeof(float) * uv_num_components;
-	memcpy(uv_coord, cursor, uv_bytes);
-	cursor += uv_bytes;
+	uv_coord = new float[uv_dimensions];
+	CopyToMemory(uv_coord, cursor, sizeof(float) * uv_dimensions);
 
 	return true;
 }
@@ -229,13 +213,13 @@ bool ResourceMesh::LoadUVs(aiMesh * info)
 		//num components determines the dimention if the uv
 		//the majority of them got only x and y but some uv got also has a z coordinate
 		//for now one we are only going to load uv coordinates which have 2 dimensions
-		uv_num_components = info->mNumUVComponents[0];
-		if (uv_num_components == 2u)
+		uv_dimensions = info->mNumUVComponents[0];
+		if (uv_dimensions == 2u)
 		{
-			uv_coord = new float[num_vertices*uv_num_components];
+			uv_coord = new float[num_vertices*uv_dimensions];
 			for (uint i = 0u; i < num_vertices; ++i)
 			{
-				memcpy(&uv_coord[i*uv_num_components], &info->mTextureCoords[0][i], sizeof(float)* uv_num_components);
+				memcpy(&uv_coord[i*uv_dimensions], &info->mTextureCoords[0][i], sizeof(float)* uv_dimensions);
 			}
 		}
 	}
@@ -247,9 +231,9 @@ bool ResourceMesh::LoadUVs(float * coords)
 {
 	if (coords)
 	{
-		this->uv_num_components = 2u;
-		this->uv_coord = new float[uv_num_components * this->num_vertices];
-		memcpy(this->uv_coord, coords, sizeof(float) * uv_num_components * this->num_vertices);
+		this->uv_dimensions = 2u;
+		this->uv_coord = new float[uv_dimensions * this->num_vertices];
+		memcpy(this->uv_coord, coords, sizeof(float) * uv_dimensions * this->num_vertices);
 
 	}
 
@@ -278,7 +262,7 @@ bool ResourceMesh::GenerateUVsBuffer()
 	{
 		glGenBuffers(1, &id_uv);
 		glBindBuffer(GL_ARRAY_BUFFER, id_uv);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * uv_num_components * num_vertices, &uv_coord[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * uv_dimensions * num_vertices, &uv_coord[0], GL_STATIC_DRAW);
 	}
 
 	return true;
@@ -321,6 +305,11 @@ void ResourceMesh::CleanUp()
 AABB ResourceMesh::GetAABB()
 {
 	return aabb;
+}
+
+uint ResourceMesh::GetNumUV()
+{
+	return num_vertices * uv_dimensions;
 }
 
 

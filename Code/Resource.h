@@ -11,6 +11,9 @@ public:
 	virtual bool LoadFileData(char * data) = 0;
 	UID GetUID() const;
 
+	void CopyToFile(void* info, char* data_cursor, size_t bytes);
+	void CopyToMemory(void* info, char* data_cursor, size_t bytes);
+
 protected:
 	UID uid = 0u;
 };
