@@ -34,22 +34,25 @@ bool ResourceModel::LoadFileData(char * data)
 	nodes.reserve(header[0u]);
 
 	uint name_bytes = NODE_NAME_SIZE * sizeof(char);
-	
 
 	//Load nodes
 	for (uint i = 0u; i < header[0u]; ++i)
 	{
-		ResourceModelNode node;
-		nodes[i]->name = new char[NODE_NAME_SIZE];
+		ResourceModelNode * node = new ResourceModelNode();
+		node->name = new char[NODE_NAME_SIZE];
 		//INFO: Clear the name
 		//memset(nodes[i]->name, 0, name_bytes);
 		CopyToMemory(nodes[i]->name, cursor, name_bytes);
-		for (uint i = 0u; i < 16u; ++i)
+		for (uint rows = 0u; rows < 4u; ++rows)
 		{
-			//reinterpret_cast<float*>(&node.transform)[i];
-
+			CopyToMemory(&node->transform[rows], cursor, sizeof(float) * 4u);
 		}
+		CopyToMemory(&node->parent_index, cursor, sizeof(uint));
+		CopyToMemory(&node->mesh, cursor, sizeof(UID));
+		CopyToMemory(&node->material, cursor, sizeof(UID));
+
+		nodes.push_back(node);
 	}
 
-	return false;
+	return true;
 }

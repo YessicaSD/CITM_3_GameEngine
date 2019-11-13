@@ -14,8 +14,12 @@ public:
 	void CopyToFile(void* info, char* data_cursor, size_t bytes);
 	void CopyToMemory(void* info, char* data_cursor, size_t bytes);
 
+	void StartUsingResource();
+	void StopUsingResource();
+
 protected:
 	UID uid = 0u;
+	uint reference_count = 0u;//How many GameObjects are currently using this resource
 };
 
 #endif
