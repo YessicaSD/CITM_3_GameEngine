@@ -36,13 +36,28 @@ bool ModuleScene::Start(JSONFile * config)
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
-	int file_content = 5;
-	uint file_size = sizeof(file_content);
-	char * data = new char[file_size];
-	char * cursor = data;
-	memcpy(cursor, &file_content, file_size);
-	char * path = "TEST_FILE.hinata_test";
-	App->file_system->SaveFile(data, file_size, &path);
+	////Save data
+	//int file_content = 5;
+	//int file_content_2 = 12;
+	//uint file_size = sizeof(file_content) + sizeof(file_content_2);
+	//char * data = new char[file_size];
+	//char * cursor = data;
+	//memcpy(cursor, &file_content, sizeof(file_content));
+	//cursor += sizeof(file_content);
+	//memcpy(cursor, &file_content_2, sizeof(file_content_2));
+	//char * path = "TEST_FILE.hinata_test";
+	//App->file_system->SaveFile(data, file_size, &path);
+
+	////Load data
+	//char * new_data = nullptr;
+	//App->file_system->LoadFile(path, &new_data);
+	//char * new_cursor = new_data;
+	//int new_file_content = 0;
+	//memcpy(&new_file_content, cursor, sizeof(file_content));
+	//cursor += sizeof(file_content);
+	//int new_file_content_2 = 0;
+	//memcpy(&new_file_content_2, cursor, sizeof(file_content_2));
+
 
 	App->import->ImportModel("Assets/BakerHouse.fbx");
 	return ret;

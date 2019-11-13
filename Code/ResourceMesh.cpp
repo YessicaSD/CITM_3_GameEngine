@@ -90,10 +90,6 @@ bool ResourceMesh::LoadFileData(char * data)
 	uint ranges[3];
 
 	uint ranges_bytes = sizeof(ranges);
-	uint vertices_bytes = sizeof(float3) * num_vertices;
-	uint indices_bytes = sizeof(uint) * num_indices;
-	uint uv_bytes = sizeof(float) * uv_num_components;
-
 	memcpy(ranges, cursor, ranges_bytes);
 
 	//Load ranges
@@ -104,16 +100,19 @@ bool ResourceMesh::LoadFileData(char * data)
 
 	// Load vertices
 	vertices = new float3[num_vertices];
+	uint vertices_bytes = sizeof(float3) * num_vertices;
 	memcpy(vertices, cursor, vertices_bytes);
 	cursor += vertices_bytes;
 
 	//Load indices
 	indices = new uint[num_indices];
+	uint indices_bytes = sizeof(uint) * num_indices;
 	memcpy(indices, cursor, indices_bytes);
 	cursor += indices_bytes;
 
 	//Load uvs
 	uv_coord = new float[uv_num_components];
+	uint uv_bytes = sizeof(float) * uv_num_components;
 	memcpy(uv_coord, cursor, uv_bytes);
 	cursor += uv_bytes;
 
