@@ -13,9 +13,6 @@
 #include "BoundingBox.h"
 #include "ModuleFileSystem.h"
 
-//TODO: Remove, only for testing purposes
-#include "ModuleResourceManager.h"
-
 ResourceMesh::ResourceMesh() : Resource()
 {
 }
@@ -70,14 +67,8 @@ bool ResourceMesh::SaveFileData()
 	//SaveFile
 	uint path_size = 250u;
 	char * path = new char[path_size];
-	App->file_system->CreatePath(RESOURCES_MESH_FOLDER, "mesh", uid, "hinata_mesh", path, path_size);
+	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, "mesh", uid, "hinata_mesh");
 	ret = App->file_system->SaveFile((const void *)data, size, &path);
-
-	//TODO: Remove, only for testing purposes
-	char * new_data = nullptr;
-	App->file_system->LoadFile(path, &new_data);
-	ResourceMesh * new_mesh = App->resource_manager->CreateNewResource<ResourceMesh>();
-	new_mesh->LoadFileData(new_data);
 
 	return ret;
 }
