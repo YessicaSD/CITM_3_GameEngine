@@ -58,6 +58,7 @@ void PanelScene::DrawGizmo(ComponentCamera* camera, ComponentTransform* go)
 	float4x4 view = camera->GetViewMatrix();
 	float4x4 proj = camera->GetProjectionMatrix();
 
+	//ImGuizmo::BeginFrame();
 	ImGuizmo::Enable(true);
 	float4x4 model = go->GetGlobalMatrix();
 	model.Transpose();

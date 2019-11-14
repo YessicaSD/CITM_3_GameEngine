@@ -108,7 +108,7 @@ update_status ModuleGui::PostUpdate()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
-	ImGuizmo::BeginFrame();
+	
 
 	ImGuiIO& io = ImGui::GetIO();
 
