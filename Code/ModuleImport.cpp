@@ -183,8 +183,8 @@ GameObject *ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTr
 	ComponentMesh *component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 	component_mesh->mesh = asset_mesh;
 	new_gameobject->transform->UpdateDisplayValues();
-	parent->bounding_box.SetLocalAABB(asset_mesh->GetAABB());
-	parent->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
+	new_gameobject->transform->bounding_box.SetLocalAABB(asset_mesh->GetAABB());
+	new_gameobject->transform->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
 	return new_gameobject;
 }
 
