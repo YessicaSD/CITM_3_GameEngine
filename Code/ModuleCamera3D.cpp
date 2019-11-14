@@ -146,7 +146,7 @@ update_status ModuleCamera3D::Update(float dt)
 		}
 
 	}
-	current_camera->UpdateDrawingRepresentation();
+	//current_camera->UpdateDrawingRepresentation();
 
 	return UPDATE_CONTINUE;
 }
