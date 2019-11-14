@@ -76,34 +76,34 @@ update_status ModuleCamera3D::Update(float dt)
 	float3 new_pos(0, 0, 0);
 	float move_speed = camera_move_speed * dt;
 
-	if (navigate_fast->Held())
+	if (navigate_fast->Held() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		move_speed *= 2.f;
 	}
 
-	if (navigate_up->Held())
+	if (navigate_up->Held() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		new_pos += move_speed * current_camera->frustum.up;
 	}
-	if (navigate_down->Held())
+	if (navigate_down->Held() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		new_pos -= move_speed * current_camera->frustum.up;
 	}
 
-	if (navigate_forward->Held())
+	if (navigate_forward->Held() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		new_pos += current_camera->frustum.front * move_speed;
 	}
-	if (navigate_backward->Held())
+	if (navigate_backward->Held() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		new_pos -= current_camera->frustum.front * move_speed;
 	}
 
-	if (navigate_left->Held())
+	if (navigate_left->Held() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		new_pos -= current_camera->frustum.WorldRight() * move_speed;
 	}
-	if (navigate_right->Held())
+	if (navigate_right->Held() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		new_pos += current_camera->frustum.WorldRight() * move_speed;
 	}
