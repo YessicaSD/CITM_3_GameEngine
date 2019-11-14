@@ -21,7 +21,6 @@ bool ResourceTexture::LoadFileData()
 bool ResourceTexture::ReleaseData()
 {
 	glDeleteTextures(1, &buffer_id);
-	//glDeleteBuffers(1, &buffer_id);
 	//TODO: Finish this function
 	return true;
 }
