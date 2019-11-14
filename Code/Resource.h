@@ -20,8 +20,8 @@ public:
 
 protected:
 	//Helpers for LoadFileData() and SaveFileData()
-	void CopyToFile(void* info, char* data_cursor, size_t bytes);
-	void CopyToMemory(void* info, char* data_cursor, size_t bytes);
+	void CopyToFile(void* info, char ** data_cursor, size_t bytes);
+	void CopyToMemory(void* info, char ** data_cursor, size_t bytes);
 
 
 

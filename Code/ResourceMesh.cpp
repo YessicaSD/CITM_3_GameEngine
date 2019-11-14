@@ -50,13 +50,13 @@ bool ResourceMesh::SaveFileData()
 
 	char* cursor = data;
 
-	CopyToFile(ranges, cursor, ranges_bytes);
+	CopyToFile(ranges, &cursor, ranges_bytes);
 
-	CopyToFile(vertices, cursor, vertices_bytes);
+	CopyToFile(vertices, &cursor, vertices_bytes);
 
-	CopyToFile(indices, cursor, indices_bytes);
+	CopyToFile(indices, &cursor, indices_bytes);
 
-	CopyToFile(uv_coord, cursor, uv_bytes);
+	CopyToFile(uv_coord, &cursor, uv_bytes);
 
 	//SaveFile
 	uint path_size = 250u;
@@ -93,13 +93,13 @@ bool ResourceMesh::LoadFileData()
 		cursor += ranges_bytes;
 
 		vertices = new float3[num_vertices];
-		CopyToMemory(vertices, cursor, sizeof(float3) * num_vertices);
+		CopyToMemory(vertices, &cursor, sizeof(float3) * num_vertices);
 
 		indices = new uint[num_indices];
-		CopyToMemory(indices, cursor, sizeof(uint) * num_indices);
+		CopyToMemory(indices, &cursor, sizeof(uint) * num_indices);
 
 		uv_coord = new float[uv_dimensions];
-		CopyToMemory(uv_coord, cursor, sizeof(float) * uv_dimensions);
+		CopyToMemory(uv_coord, &cursor, sizeof(float) * uv_dimensions);
 	}
 
 	return ret;

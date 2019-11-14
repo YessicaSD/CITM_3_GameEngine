@@ -33,15 +33,15 @@ bool ResourceModel::SaveFileData()
 	char * cursor = data;
 
 	uint header = nodes.size();
-	CopyToFile(&header, cursor, header_bytes);
+	CopyToFile(&header, &cursor, header_bytes);
 
 	for (auto iter = nodes.begin(); iter != nodes.end(); ++iter)
 	{
-		CopyToFile((*iter)->name, cursor, node_name_bytes);
-		CopyToFile(&(*iter)->transform, cursor, node_transform_bytes);
-		CopyToFile(&(*iter)->parent_index, cursor, node_parent_index_bytes);
-		CopyToFile(&(*iter)->mesh_uid, cursor, node_mesh_uid_bytes);
-		CopyToFile(&(*iter)->material_uid, cursor, node_material_uid_bytes);
+		CopyToFile((*iter)->name, &cursor, node_name_bytes);
+		CopyToFile(&(*iter)->transform, &cursor, node_transform_bytes);
+		CopyToFile(&(*iter)->parent_index, &cursor, node_parent_index_bytes);
+		CopyToFile(&(*iter)->mesh_uid, &cursor, node_mesh_uid_bytes);
+		CopyToFile(&(*iter)->material_uid, &cursor, node_material_uid_bytes);
 	}
 
 	uint path_size = 250u;
@@ -66,7 +66,7 @@ bool ResourceModel::LoadFileData()
 	//Called num_nodes (it's more descriptive)
 	//INFO: The number of elements on the ranges array must be the same as in the ranges array of SaveFileData()
 	uint header[1] = { 0u };
-	CopyToMemory(header, cursor, sizeof(header));
+	CopyToMemory(header, &cursor, sizeof(header));
 	nodes.reserve(header[0u]);
 
 	uint name_bytes = NODE_NAME_SIZE * sizeof(char);
@@ -79,14 +79,14 @@ bool ResourceModel::LoadFileData()
 		//INFO: Clear the name
 		//TODO: See if it's necessary if we're copy info from a file with the same name length and which has \0 character at the end
 		//memset(nodes[i]->name, 0, name_bytes);
-		CopyToMemory(node->name, cursor, name_bytes);
+		CopyToMemory(node->name, &cursor, name_bytes);
 		for (uint rows = 0u; rows < 4u; ++rows)
 		{
-			CopyToMemory(&node->transform[rows], cursor, sizeof(float) * 4u);
+			CopyToMemory(&node->transform[rows], &cursor, sizeof(float) * 4u);
 		}
-		CopyToMemory(&node->parent_index, cursor, sizeof(uint));
-		CopyToMemory(&node->mesh_uid, cursor, sizeof(UID));
-		CopyToMemory(&node->material_uid, cursor, sizeof(UID));
+		CopyToMemory(&node->parent_index, &cursor, sizeof(uint));
+		CopyToMemory(&node->mesh_uid, &cursor, sizeof(UID));
+		CopyToMemory(&node->material_uid, &cursor, sizeof(UID));
 
 		nodes.push_back(node);
 	}
