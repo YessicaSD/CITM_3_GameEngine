@@ -31,7 +31,7 @@ public:
 	bool SaveConfiguration(JSONFile* module_file) override;
 	bool LoadConfiguration(JSONFile* module_file) override;
 	float3 GetPos();
-	
+	ComponentCamera* GetCurrentCamera();
 
 public:
 	float3 reference;

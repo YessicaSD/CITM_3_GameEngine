@@ -164,6 +164,14 @@ void ComponentTransform::SetScale(const float3 &scale)
 	RecalculateMatrices();
 }
 
+void ComponentTransform::SetLocalMatrix(const float4x4& matrix)
+{
+	float3 position, scale;
+	Quat rotation;
+	matrix.Decompose(position, rotation, scale);
+	this->SetTransform(position, scale, rotation);
+}
+
 void ComponentTransform::SetSelected(bool state)
 {
 	is_selected = state;

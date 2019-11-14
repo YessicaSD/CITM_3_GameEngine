@@ -4,6 +4,10 @@
 #include "Panel.h"
 #include "imgui/imgui.h"
 #include "MathGeoLib/include/Math/float2.h"
+#include "imGuizmo/ImGuizmo.h"
+class ComponentCamera;
+class ComponentTransform;
+
 class PanelScene : public Panel
 {
 public:
@@ -15,9 +19,15 @@ public:
 	float2 cursor;
 	int width, height;
 	bool mouse_is_hovering;
+
+	void DrawGizmo(ComponentCamera* camera, ComponentTransform* selected_object);
+
 private:
 	void GetSizeWithAspectRatio(int current_width, int current_height, int wanted_width, int wanted_height, int& new_width, int& new_height);
+	ImGuizmo::OPERATION guizmo_op = ImGuizmo::TRANSLATE;
+	ImGuizmo::MODE      guizmo_mode = ImGuizmo::LOCAL;
 
+	friend class ModuleScene;
 };
 
 #endif

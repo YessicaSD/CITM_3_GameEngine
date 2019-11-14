@@ -1,22 +1,27 @@
 #include "PanelScene.h"
 #include "imgui/imgui.h"
 #include "Application.h"
+
 #include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
-#include <algorithm>
+#include "ModuleGui.h"
+#include "ModuleCamera3D.h"
 
+#include "ComponentCamera.h"
+#include "ComponentTransform.h"
+
+#include <algorithm>
 
 PanelScene::PanelScene(std::string name, bool active, std::vector<SDL_Scancode> shortcuts) :
 	Panel(name, active, shortcuts)
-{
-
-}
+{ }
 
 //PanelScene is called by ModuleGui
 //ModuleScene executes draws (fills the framebuffer texture) before ModuleGui
 //By doing it in this order we can get the image of this frame
 void PanelScene::Draw()
 {
+	
 	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
 	ImGui::Begin("Scene");
 
@@ -38,8 +43,37 @@ void PanelScene::Draw()
 		ImVec2(min.x + width,  min.y + height),
 		ImVec2(0, 1),
 		ImVec2(1, 0));
+	ComponentTransform* go = App->gui->GetSelecteTransform();
+	if ( go != nullptr)
+	{
+		DrawGizmo(App->camera->GetCurrentCamera(), go);
+	}
+
 	ImGui::End();
 	ImGui::PopStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding);
+}
+
+void PanelScene::DrawGizmo(ComponentCamera* camera, ComponentTransform* go)
+{
+	float4x4 view = camera->GetViewMatrix();
+	float4x4 proj = camera->GetProjectionMatrix();
+
+	//ImGuizmo::BeginFrame();
+	ImGuizmo::Enable(true);
+	float4x4 model = go->GetGlobalMatrix();
+	model.Transpose();
+	float4x4 delta;
+
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuizmo::SetRect(float(ImGui::GetCursorScreenPos().x), float(ImGui::GetCursorScreenPos().y), float(width), float(height));
+	ImGuizmo::SetDrawlist();
+	ImGuizmo::Manipulate((const float*)& view, (const float*)& proj.Transposed(), guizmo_op, guizmo_mode, (float*)& model, (float*)& delta);
+
+	if (ImGuizmo::IsUsing() && !delta.IsIdentity())
+	{
+		go->SetLocalMatrix(model.Transposed());
+	}
+
 }
 
 void PanelScene::GetSizeWithAspectRatio(int current_width, int current_height, int wanted_width, int wanted_height, int & new_width, int & new_height)

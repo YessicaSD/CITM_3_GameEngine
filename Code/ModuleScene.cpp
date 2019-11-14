@@ -17,7 +17,7 @@
 #include "ModuleImport.h"
 
 #include "RaycastHit.h"
-
+#include "imGuizmo/ImGuizmo.h"
 
 ModuleScene::ModuleScene(bool start_enabled) :
 	Module(start_enabled)
@@ -53,6 +53,18 @@ bool ModuleScene::CleanUp()
 // Update: draw background
 update_status ModuleScene::Update(float dt)
 {
+	if(App->input->GetKey(SDL_SCANCODE_W))
+	{
+		App->gui->panel_scene->guizmo_op = ImGuizmo::TRANSLATE;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_E))
+	{
+		App->gui->panel_scene->guizmo_op = ImGuizmo::SCALE ;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_R))
+	{
+		App->gui->panel_scene->guizmo_op = ImGuizmo::ROTATE;
+	}
 	//TODO: Turn into a shortcut
 	if (App->input->GetKey(SDL_SCANCODE_DELETE))
 	{
@@ -164,6 +176,8 @@ bool ModuleScene::TestWithTriangles(LineSegment * ray, std::vector<RaycastHit>& 
 	}
 	return false;
 }
+
+
 update_status ModuleScene::PostUpdate()
 {
 	App->renderer3D->scene_fbo.StartRender(App->gui->panel_scene->current_viewport_size);
@@ -173,7 +187,7 @@ update_status ModuleScene::PostUpdate()
 	//p.wire = false;
 	p.Render();
 
-	App->camera->scene_camera->OnPostUpdate();
+	//App->camera->scene_camera->OnPostUpdate();
 
 	GameObjectPostUpdateRecursive(root_gameobject->transform);
 
