@@ -16,7 +16,7 @@ class ComponentCamera;
 class ModuleScene : public Module
 {	
 public:
-	ModuleScene(bool start_enabled = true);
+	ModuleScene(const char * name, bool start_enabled = true);
 	~ModuleScene();
 
 	bool Start(JSONFile* config) override;

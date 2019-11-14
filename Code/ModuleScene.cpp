@@ -21,8 +21,8 @@
 #include "ResourceModel.h"
 
 
-ModuleScene::ModuleScene(bool start_enabled) :
-	Module(start_enabled)
+ModuleScene::ModuleScene(const char * name, bool start_enabled) :
+	Module(start_enabled, name)
 {
 	
 	
