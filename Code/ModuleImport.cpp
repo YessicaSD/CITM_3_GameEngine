@@ -58,33 +58,45 @@ ResourceModel * ModuleImport::ImportModel(const char *path)
 	const aiScene *scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
-		std::vector<ResourceMesh *> fbx_meshes;
-		fbx_meshes.reserve(scene->mNumMeshes);
-		std::vector<UID> fbx_meshes_uids;
-		fbx_meshes_uids.reserve(scene->mNumMeshes);
-
 		std::vector<ResourceTexture *> fbx_textures;
 		fbx_textures.reserve(scene->mNumMeshes);
 		std::vector<UID> fbx_textures_uids;
 		fbx_textures_uids.reserve(scene->mNumMeshes);
 
+		std::vector<ResourceMesh *> fbx_meshes;
+		fbx_meshes.reserve(scene->mNumMeshes);
+		std::vector<UID> fbx_meshes_uids;
+		fbx_meshes_uids.reserve(scene->mNumMeshes);
+		std::vector<uint> fbx_meshes_textures;
+		fbx_meshes_textures.reserve(scene->mNumTextures);
+
 		ResourceModelNode  * model_root_node = new ResourceModelNode();
 
-		for (uint i = 0; i < scene->mNumMeshes; ++i)
+		if (scene->HasMaterials())
 		{
-			aiMesh *assimp_mesh = scene->mMeshes[i];
+			for (uint i = 0u; i < scene->mNumMaterials; ++i)
+			{
+				aiMaterial * material = scene->mMaterials[i];
+				ResourceTexture * resource_texture = ImportFBXTexture(material);
+				fbx_textures.push_back(resource_texture);
+				fbx_textures_uids.push_back(resource_texture->GetUID());
+			}
+		}
 
-			ResourceMesh *resource_mesh = ImportAssimpMesh(assimp_mesh);
-			fbx_meshes.push_back(resource_mesh);
-			fbx_meshes_uids.push_back(resource_mesh->GetUID());
-
-			ResourceTexture * resource_texture = ImportFBXTexture(assimp_mesh, scene);
-			fbx_textures.push_back(resource_texture);
-			fbx_textures_uids.push_back(resource_texture->GetUID());
+		if (scene->HasMeshes())
+		{
+			for (uint i = 0u; i < scene->mNumMeshes; ++i)
+			{
+				aiMesh *assimp_mesh = scene->mMeshes[i];
+				ResourceMesh * resource_mesh = ImportAssimpMesh(assimp_mesh);
+				fbx_meshes.push_back(resource_mesh);
+				fbx_meshes_uids.push_back(resource_mesh->GetUID());
+				fbx_meshes_textures.push_back(assimp_mesh->mMaterialIndex);
+			}
 		}
 
 		resource_model = App->resource_manager->CreateNewResource<ResourceModel>();
-		LoadFBXNodes(resource_model, model_root_node, scene->mRootNode, fbx_meshes_uids, fbx_textures_uids, INVALID_MODEL_ARRAY_INDEX);
+		ImportFBXNodes(resource_model, model_root_node, scene->mRootNode, fbx_meshes_uids, fbx_textures_uids, fbx_meshes_textures, INVALID_MODEL_ARRAY_INDEX);
 		resource_model->SaveFileData();
 
 		aiReleaseImport(scene);
@@ -97,7 +109,7 @@ ResourceModel * ModuleImport::ImportModel(const char *path)
 	return resource_model;
 }
 
-bool ModuleImport::LoadFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, uint parent_index)
+bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index)
 {
 	uint curr_index = resource_model->nodes.size();
 
@@ -113,24 +125,23 @@ bool ModuleImport::LoadFBXNodes(ResourceModel * resource_model, ResourceModelNod
 		{
 			uint index = node->mMeshes[i];
 			model_node->mesh_uid = meshes[index];
-			model_node->material_uid = materials[index];
+			model_node->material_uid = materials[mesh_texture_idxs[i]];
 		}
 		//TODO: Create a new ResourceModelNode for each mesh
+		//Right now this for allows that there is more than one mesh per gameobject
 	}
 	resource_model->nodes.push_back(model_node);
 
 	for (uint i = 0u; i < node->mNumChildren; ++i)
 	{
-		LoadFBXNodes(resource_model, new ResourceModelNode(), node->mChildren[i], meshes, materials, curr_index);
+		ImportFBXNodes(resource_model, new ResourceModelNode(), node->mChildren[i], meshes, materials, mesh_texture_idxs, curr_index);
 	}
 
 	return true;
 }
 
-ResourceTexture * ModuleImport::ImportFBXTexture(aiMesh * info, const  aiScene* fbx)
+ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material)
 {
-	aiMaterial* material = fbx->mMaterials[info->mMaterialIndex];
-
 	ResourceTexture * ret = nullptr;
 
 	if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)

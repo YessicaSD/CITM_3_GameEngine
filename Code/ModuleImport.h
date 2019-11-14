@@ -12,6 +12,7 @@ class ResourceMesh;
 class ResourceModelNode;
 class ResourceTexture;
 struct aiMesh;
+struct aiMaterial;
 struct aiNode;
 class ComponentTransform;
 class ResourceModel;
@@ -25,12 +26,12 @@ public:
 	ModuleImport(const char * name);
 	bool Start(JSONFile * module_file) override;
 	ResourceModel * ImportModel(const char* path);
-	bool LoadFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, uint parent_index);
+	bool ImportFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index);
 	bool CleanUp() override;
 
 	void EventRequest(const Event& event) override;
 	ResourceMesh* ImportAssimpMesh(aiMesh * assimp_mesh);
-	ResourceTexture * ImportFBXTexture(aiMesh * info, const aiScene * fbx);
+	ResourceTexture * ImportFBXTexture(const  aiMaterial * material);
 	ResourceMesh* ImportParShapeMesh(par_shapes_mesh * mesh);
 	void CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent);
 

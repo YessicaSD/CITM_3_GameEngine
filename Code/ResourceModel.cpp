@@ -99,7 +99,10 @@ bool ResourceModel::LoadFileData()
 		}
 	}
 
-	//TODO: Load textures resources
+	//for (uint i  = 0u; i < nodes.size(); ++i)
+	//{
+
+	//}
 
 	return true;
 }
@@ -128,8 +131,13 @@ bool ResourceModel::ReleaseData()
 		}
 	}
 
-
-	//TODO: Release texture resources
+	if (textures_uid.size() > 0u)
+	{
+		for (int i = textures_uid.size() - 1; i >= 0; --i)
+		{
+			App->resource_manager->GetResource(textures_uid[i])->StopUsingResource();
+		}
+	}
 
 	return true;
 }

@@ -23,8 +23,8 @@ public:
 	//void Render();
 
 public:
-	int buffer_id = -1, size = 0;
-	uint width = 0, height = 0;
+	uint buffer_id = 0u, size = 0u;
+	uint width = 0u, height = 0u;
 	std::string path;
 
 	friend class ModuleResourceManager;
