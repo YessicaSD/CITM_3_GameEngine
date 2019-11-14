@@ -24,13 +24,19 @@ public:
 	
 	void OnPostUpdate() override;
 	void PropertiesEditor() override;
+
 	void SetTransform(float3& position, float3& scale, float3 & rotation);
 	void SetTransform(float3& position, float3& scale, Quat & qrotation);
 	void SetPosition(const float3 & position);
 	void SetRotation(const float3 & euler_rotation);
 	void SetRotation(const Quat & qrotation);
 	void SetScale(const float3 & scale);
+	void SetLocalMatrix(const float4x4& matrix);
+
 	void SetSelected(bool state);
+
+
+
 	bool IsSelected();
 	bool Intersect(LineSegment ray);
 	float3 GetZAxis();

@@ -64,10 +64,16 @@ void PanelScene::DrawGizmo(ComponentCamera* camera, ComponentTransform* go)
 	model.Transpose();
 	float4x4 delta;
 
-	//ImGuiIO& io = ImGui::GetIO();
+	ImGuiIO& io = ImGui::GetIO();
 	ImGuizmo::SetRect(float(ImGui::GetCursorScreenPos().x), float(ImGui::GetCursorScreenPos().y), float(width), float(height));
 	ImGuizmo::SetDrawlist();
 	ImGuizmo::Manipulate((const float*)& view, (const float*)& proj.Transposed(), guizmo_op, guizmo_mode, (float*)& model, (float*)& delta);
+
+	if (ImGuizmo::IsUsing() && !delta.IsIdentity())
+	{
+		go->SetLocalMatrix(model.Transposed());
+	}
+
 }
 
 void PanelScene::GetSizeWithAspectRatio(int current_width, int current_height, int wanted_width, int wanted_height, int & new_width, int & new_height)
