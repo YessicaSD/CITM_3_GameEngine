@@ -3,6 +3,14 @@
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h"
 
+ResourceModel::~ResourceModel()
+{
+	for (auto iter = nodes.begin(); iter != nodes.end(); ++iter)
+	{
+		RELEASE_ARRAY((*iter)->name);
+	}
+}
+
 bool ResourceModel::SaveFileData()
 {
 	uint header_bytes = sizeof(uint);

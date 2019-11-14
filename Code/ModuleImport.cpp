@@ -28,7 +28,7 @@
 
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
 
-void AssimpWrite(const char *text, char *data)
+void AssimpWriteLogStream(const char *text, char *data)
 {
 
 	std::string tmp_txt = text;
@@ -46,7 +46,7 @@ bool ModuleImport::Start(JSONFile * config)
 	LOG("Creating assimp LOG stream");
 	aiLogStream stream;
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
-	stream.callback = AssimpWrite;
+	stream.callback = AssimpWriteLogStream;
 	aiAttachLogStream(&stream);
 	return true;
 }
@@ -58,12 +58,16 @@ bool ModuleImport::ImportModel(const char *path)
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		std::vector<ResourceMesh *> fbx_meshes;
+		fbx_meshes.reserve(scene->mNumMeshes);
 		std::vector<UID> fbx_meshes_uids;
+		fbx_meshes_uids.reserve(scene->mNumMeshes);
 
 		std::vector<ResourceTexture *> fbx_textures;
+		fbx_textures.reserve(scene->mNumMeshes);
 		std::vector<UID> fbx_textures_uids;
+		fbx_textures_uids.reserve(scene->mNumMeshes);
 
-		ResourceModelNode model_root_node;
+		ResourceModelNode  * model_root_node = new ResourceModelNode();
 		ResourceModel * resource_model = nullptr;
 
 		for (uint i = 0; i < scene->mNumMeshes; ++i)
@@ -79,7 +83,7 @@ bool ModuleImport::ImportModel(const char *path)
 		}
 
 		resource_model = App->resource_manager->CreateNewResource<ResourceModel>();
-		LoadFBXNodes(resource_model, &model_root_node, scene->mRootNode, fbx_meshes_uids, fbx_textures_uids, 0);//If it's itself, it will know it is the root node
+		LoadFBXNodes(resource_model, model_root_node, scene->mRootNode, fbx_meshes_uids, fbx_textures_uids, INVALID_PARENT_ID);
 		resource_model->SaveFileData();
 
 		last_model_imported = resource_model;
@@ -98,23 +102,25 @@ bool ModuleImport::LoadFBXNodes(ResourceModel * resource_model, ResourceModelNod
 {
 	uint curr_index = resource_model->nodes.size();
 
-	model_node->name = (char*)node->mName.C_Str();
+	const char * node_name = node->mName.C_Str();
+	model_node->name = new char[strlen(node_name)];
+	strcpy(model_node->name, node_name);
 	model_node->transform = reinterpret_cast<const float4x4&>(node->mTransformation);
 	model_node->parent_index = parent_index;
 
 	if (node->mNumMeshes > 0u)
 	{
-		for (int i = 0; i < node->mNumMeshes; ++i)
+		for (uint i = 0u; i < node->mNumMeshes; ++i)
 		{
 			uint index = node->mMeshes[i];
-			model_node->mesh_uid = index;
-			model_node->material_uid = index;
+			model_node->mesh_uid = meshes[index];
+			model_node->material_uid = materials[index];
 		}
 		//TODO: Create a new ResourceModelNode for each mesh
-		resource_model->nodes.push_back(model_node);
 	}
+	resource_model->nodes.push_back(model_node);
 
-	for (int i = 0; i < node->mNumChildren; ++i)
+	for (uint i = 0u; i < node->mNumChildren; ++i)
 	{
 		LoadFBXNodes(resource_model, new ResourceModelNode(), node->mChildren[i], meshes, materials, curr_index);
 	}
@@ -205,7 +211,7 @@ void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, Com
 	//Parent them
 	for (uint i = 0u; i < model_gameobjects.size(); ++i)
 	{
-		if (resource_model->nodes[i]->parent_index != 0)
+		if (resource_model->nodes[i]->parent_index != INVALID_PARENT_ID)
 		{
 			model_gameobjects[i]->transform->SetParent(model_gameobjects[resource_model->nodes[i]->parent_index]->transform);
 		}

@@ -18,11 +18,14 @@
 #include "Resource.h"
 #include "Globals.h"
 
+#include "limits.h"
+#define INVALID_PARENT_ID UINT_MAX
+
 struct ResourceModelNode {
-	char * name;
+	char * name = nullptr;
 	float4x4 transform = float4x4::identity;
-	UID mesh_uid;
-	UID material_uid;
+	UID mesh_uid = 0u;
+	UID material_uid = 0u;
 	uint parent_index = 0u;
 };
 //TODO: Alert when a Node has more than one mesh or material
@@ -31,6 +34,9 @@ class ResourceModel : public Resource
 {
 private:
 	ResourceModel() {};
+
+public:
+	~ResourceModel();
 
 public:
 	bool SaveFileData() override;
