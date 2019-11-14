@@ -46,7 +46,7 @@ void ComponentMesh::OnPostUpdate()
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	}
 
-	if (mesh->uv_coord)
+	if (mesh->uv_coord != nullptr)
 	{
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	}

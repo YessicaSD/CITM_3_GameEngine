@@ -92,7 +92,8 @@ void ComponentTransform::SetTransform(const float4x4 &local_matrix)
 {
 	this->local_matrix = local_matrix;
 
-	//TODO: Calculate position rotation and scale to display them
+	local_matrix.Decompose(position, qrotation, scale);
+	euler_rotation = qrotation.ToEulerXYX() * RADTODEG;
 
 	if (parent != nullptr)
 	{

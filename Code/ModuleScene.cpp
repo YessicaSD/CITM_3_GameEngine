@@ -78,23 +78,14 @@ update_status ModuleScene::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
+void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * transform)
 {
-	object->OnPostUpdate();
-//	if (component_camera->gameobject->transform == object || !component_camera->frustum_culling || component_camera->IsInFrustum(object->bounding_box.GetOBB()))
-		object->gameobject->OnPostUpdate();
-	for (std::vector<ComponentTransform *>::iterator iter = object->children.begin();
-		iter != object->children.end();
-		++iter)
+	//	if (component_camera->gameobject->transform == object || !component_camera->frustum_culling || component_camera->IsInFrustum(object->bounding_box.GetOBB()))
+	transform->gameobject->OnPostUpdate();
+	for (auto iter = transform->children.begin(); iter != transform->children.end(); ++iter)
 	{
 		GameObjectPostUpdateRecursive((*iter));
 	}
-
-
-
-	
-
-	
 }
 bool Compare(RaycastHit & a, RaycastHit & b)
 {
