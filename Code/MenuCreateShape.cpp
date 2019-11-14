@@ -348,6 +348,10 @@ GameObject *MenuCreateShape::CreateGameObjectWithParShape(std::string name, Comp
 	ComponentMesh *component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 	component_mesh->mesh = asset_mesh;
 	new_gameobject->transform->UpdateDisplayValues();
-	component_mesh->UpdateBoundingBox(new_gameobject->transform->GetGlobalMatrix());
+	if (parent != nullptr)
+	{
+		parent->bounding_box.SetLocalAABB(asset_mesh->GetAABB());
+		parent->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
+	}
 	return new_gameobject;
 }

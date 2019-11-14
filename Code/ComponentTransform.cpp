@@ -108,7 +108,7 @@ void ComponentTransform::SetTransform(const float4x4 &local_matrix)
 
 	if (comp_mesh != nullptr)
 	{
-		comp_mesh->UpdateBoundingBox(global_matrix);
+		//TODO: Update bounding box
 	}
 
 	UpdateChildrenMatrices();
