@@ -20,7 +20,7 @@ public:
 	//Create 
 
 	void SetParent(ComponentTransform * parent);
-	//void SetChildren(std::vector<Transform*> children);
+	ComponentTransform* GetParent();
 	
 	void OnPostUpdate() override;
 	void PropertiesEditor() override;
@@ -54,6 +54,8 @@ public:
 	void DeleteChildren();
 	void DrawAxis();
 	AABB GetAABB();
+
+	bool open_in_hierarchy = false;
 private:
 	void RecalculateMatrices();
 	void UpdateChildrenMatrices();

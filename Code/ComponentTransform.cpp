@@ -36,6 +36,11 @@ void ComponentTransform::SetParent(ComponentTransform *parent)
 	}
 }
 
+ComponentTransform * ComponentTransform::GetParent()
+{
+	return parent;
+}
+
 void ComponentTransform::OnPostUpdate()
 {
 	DrawAxis();

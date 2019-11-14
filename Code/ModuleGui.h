@@ -81,6 +81,8 @@ private:
 
 	RenderMode render_mode_all;
 
+	void OpenInHierarchy(ComponentTransform* gameobject);
+
 	friend class Shortcut;
 	friend class Panel;
 	friend class PanelShortcuts;
