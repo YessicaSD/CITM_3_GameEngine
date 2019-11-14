@@ -27,18 +27,16 @@ bool ResourceMesh::SaveFileData()
 {
 	bool ret = false;
 
-	uint num_uvs = GetNumUV();
-
 	//Generate file data
 	uint ranges[] = {
 		num_vertices,
-		num_indices,
-		num_uvs };
+		num_indices
+	};
 
 	uint ranges_bytes = sizeof(ranges);
 	uint vertices_bytes = sizeof(float3) * num_vertices;
 	uint indices_bytes = sizeof(uint) * num_indices;
-	uint uv_bytes = sizeof(float) * num_uvs;
+	uint uv_bytes = sizeof(float) * GetUVCoordSize();
 
 	uint size = ranges_bytes
 		+ vertices_bytes
@@ -82,14 +80,13 @@ bool ResourceMesh::LoadFileData()
 		char * cursor = data;
 
 		//INFO: The number of elements on the ranges array must be the same as in the ranges array of ResourceMesh::SaveFileData()
-		uint ranges[3];
+		uint ranges[2];
 
 		uint ranges_bytes = sizeof(ranges);
 		memcpy(ranges, cursor, ranges_bytes);
 
 		num_vertices = ranges[0];
 		num_indices = ranges[1];
-		uv_dimensions = ranges[2];
 		cursor += ranges_bytes;
 
 		vertices = new float3[num_vertices];
@@ -98,8 +95,9 @@ bool ResourceMesh::LoadFileData()
 		indices = new uint[num_indices];
 		CopyToMemory(indices, &cursor, sizeof(uint) * num_indices);
 
-		uv_coord = new float[uv_dimensions];
-		CopyToMemory(uv_coord, &cursor, sizeof(float) * uv_dimensions);
+		uint num_uv = GetUVCoordSize();
+		uv_coord = new float[num_uv];
+		CopyToMemory(uv_coord, &cursor, sizeof(float) * num_uv);
 	}
 
 	return ret;
@@ -111,7 +109,6 @@ bool ResourceMesh::ReleaseData()
 	RELEASE_ARRAY(indices);
 	RELEASE_ARRAY(vertices);
 
-	uv_dimensions = 0u;
 	num_indices = 0u;
 	num_vertices = 0u;
 
@@ -331,7 +328,7 @@ AABB ResourceMesh::GetAABB()
 	return aabb;
 }
 
-uint ResourceMesh::GetNumUV()
+uint ResourceMesh::GetUVCoordSize()
 {
 	return num_vertices * uv_dimensions;
 }

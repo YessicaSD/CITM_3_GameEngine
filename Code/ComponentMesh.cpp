@@ -68,7 +68,7 @@ void ComponentMesh::OnPostUpdate()
 		DrawNormals();
 	}
 
-	if (mesh->uv_coord)
+	if (mesh->uv_coord != nullptr)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
@@ -77,7 +77,7 @@ void ComponentMesh::OnPostUpdate()
 
 	if (render_mode.fill)
 	{
-		if (mesh->vertex_normals)
+		if (mesh->vertex_normals != nullptr)
 		{
 			glEnableClientState(GL_NORMAL_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex_normals);
@@ -117,7 +117,8 @@ void ComponentMesh::OnPostUpdate()
 
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
 	material->DisableGLModes();
-	if (mesh->uv_coord)
+
+	if (mesh->uv_coord != nullptr)
 	{
 		glDisable(GL_TEXTURE_COORD_ARRAY);
 	}

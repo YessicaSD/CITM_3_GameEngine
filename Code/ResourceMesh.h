@@ -39,7 +39,7 @@ public:
 	void CleanUp();
 	AABB GetAABB();
 
-	uint GetNumUV();
+	uint GetUVCoordSize();
 
 private:
 	AABB aabb;
