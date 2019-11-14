@@ -58,45 +58,42 @@ ResourceModel * ModuleImport::ImportModel(const char *path)
 	const aiScene *scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
+		resource_model = App->resource_manager->CreateNewResource<ResourceModel>();
 		std::vector<ResourceTexture *> fbx_textures;
-		fbx_textures.reserve(scene->mNumMeshes);
-		std::vector<UID> fbx_textures_uids;
-		fbx_textures_uids.reserve(scene->mNumMeshes);
-
 		std::vector<ResourceMesh *> fbx_meshes;
-		fbx_meshes.reserve(scene->mNumMeshes);
-		std::vector<UID> fbx_meshes_uids;
-		fbx_meshes_uids.reserve(scene->mNumMeshes);
 		std::vector<uint> fbx_meshes_textures;
-		fbx_meshes_textures.reserve(scene->mNumTextures);
-
-		ResourceModelNode  * model_root_node = new ResourceModelNode();
 
 		if (scene->HasMaterials())
 		{
+			fbx_textures.reserve(scene->mNumTextures);
+			resource_model->textures_uid.reserve(scene->mNumTextures);
+
 			for (uint i = 0u; i < scene->mNumMaterials; ++i)
 			{
 				aiMaterial * material = scene->mMaterials[i];
 				ResourceTexture * resource_texture = ImportFBXTexture(material);
 				fbx_textures.push_back(resource_texture);
-				fbx_textures_uids.push_back(resource_texture->GetUID());
+				resource_model->textures_uid.push_back(resource_texture->GetUID());
 			}
 		}
 
 		if (scene->HasMeshes())
 		{
+			fbx_meshes.reserve(scene->mNumMeshes);
+			resource_model->meshes_uid.reserve(scene->mNumMeshes);
+			fbx_meshes_textures.reserve(scene->mNumTextures);
+
 			for (uint i = 0u; i < scene->mNumMeshes; ++i)
 			{
 				aiMesh *assimp_mesh = scene->mMeshes[i];
 				ResourceMesh * resource_mesh = ImportAssimpMesh(assimp_mesh);
 				fbx_meshes.push_back(resource_mesh);
-				fbx_meshes_uids.push_back(resource_mesh->GetUID());
+				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
 				fbx_meshes_textures.push_back(assimp_mesh->mMaterialIndex);
 			}
 		}
 
-		resource_model = App->resource_manager->CreateNewResource<ResourceModel>();
-		ImportFBXNodes(resource_model, model_root_node, scene->mRootNode, fbx_meshes_uids, fbx_textures_uids, fbx_meshes_textures, INVALID_MODEL_ARRAY_INDEX);
+		ImportFBXNodes(resource_model, new ResourceModelNode(), scene->mRootNode, resource_model->meshes_uid, resource_model->textures_uid, fbx_meshes_textures, INVALID_MODEL_ARRAY_INDEX);
 		resource_model->SaveFileData();
 
 		aiReleaseImport(scene);
