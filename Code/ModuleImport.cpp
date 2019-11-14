@@ -153,12 +153,12 @@ ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh)
 {
 	ResourceMesh *resource_mesh = App->resource_manager->CreateNewResource<ResourceMesh>();
 	//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
-	resource_mesh->LoadVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
+	resource_mesh->ImportVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
 	resource_mesh->CreateBoundingBox();
-	resource_mesh->LoadVerticesNormals(assimp_mesh);
-	resource_mesh->LoadFaces(assimp_mesh);
+	resource_mesh->ImportVerticesNormals(assimp_mesh);
+	resource_mesh->ImportFaces(assimp_mesh);
 	resource_mesh->CalculateFaceNormals();
-	resource_mesh->LoadUVs(assimp_mesh);
+	resource_mesh->ImportUVs(assimp_mesh);
 
 	resource_mesh->GenerateVertexNormalsBuffer();
 	resource_mesh->GenerateVerticesBuffer();
@@ -174,13 +174,13 @@ ResourceMesh *ModuleImport::ImportParShapeMesh(par_shapes_mesh *mesh)
 {
 	ResourceMesh *resource_mesh = App->resource_manager->CreateNewResource<ResourceMesh>();
 
-	resource_mesh->LoadVertices(mesh->npoints, mesh->points);
+	resource_mesh->ImportVertices(mesh->npoints, mesh->points);
 	resource_mesh->CreateBoundingBox();
 
 	//TODO: Get vertices normals
-	resource_mesh->LoadFaces(mesh->ntriangles, mesh->triangles);
+	resource_mesh->ImportFaces(mesh->ntriangles, mesh->triangles);
 	resource_mesh->CalculateFaceNormals();
-	resource_mesh->LoadUVs(mesh->tcoords);
+	resource_mesh->ImportUVs(mesh->tcoords);
 
 	resource_mesh->GenerateVerticesBuffer();
 	resource_mesh->GenerateFacesAndNormalsBuffer();

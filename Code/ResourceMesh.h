@@ -24,13 +24,13 @@ public:
 	bool ReleaseData() override;
 
 
-	bool LoadVertices(const int num_vertices, const float *vertices);
-	bool LoadVerticesNormals(aiMesh *info);
-	bool LoadFaces(aiMesh *info);
+	bool ImportVertices(const int num_vertices, const float *vertices);
+	bool ImportVerticesNormals(aiMesh *info);
+	bool ImportFaces(aiMesh *info);
 	bool CalculateFaceNormals();
-	bool LoadFaces(const int num_faces, const uint *indices);
-	bool LoadUVs(aiMesh *info);
-	bool LoadUVs(float *coods);
+	bool ImportFaces(const int num_faces, const uint *indices);
+	bool ImportUVs(aiMesh *info);
+	bool ImportUVs(float *coods);
 	bool GenerateVertexNormalsBuffer();
 	void CreateBoundingBox();
 	bool GenerateVerticesBuffer();

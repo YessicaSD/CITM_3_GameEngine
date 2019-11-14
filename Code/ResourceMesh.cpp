@@ -115,7 +115,7 @@ bool ResourceMesh::ReleaseData()
 	return true;
 }
 
-bool ResourceMesh::LoadVertices(const int num_vertices, const float * vertices)
+bool ResourceMesh::ImportVertices(const int num_vertices, const float * vertices)
 {
 	this->num_vertices = num_vertices;
 	this->vertices = new float3[num_vertices];
@@ -134,7 +134,7 @@ bool ResourceMesh::LoadVertices(const int num_vertices, const float * vertices)
 	return true;
 }
 
-bool ResourceMesh::LoadVerticesNormals(aiMesh * info)
+bool ResourceMesh::ImportVerticesNormals(aiMesh * info)
 {
 	if (info->HasNormals())
 	{
@@ -168,7 +168,7 @@ bool ResourceMesh::GenerateVerticesBuffer()
 	return true;
 }
 
-bool ResourceMesh::LoadFaces(aiMesh * info)
+bool ResourceMesh::ImportFaces(aiMesh * info)
 {
 	if (info->HasFaces())
 	{
@@ -190,7 +190,7 @@ bool ResourceMesh::LoadFaces(aiMesh * info)
 	return true;
 }
 
-bool ResourceMesh::LoadFaces(const int num_faces, const uint * indices)
+bool ResourceMesh::ImportFaces(const int num_faces, const uint * indices)
 {
 	this->num_faces = num_faces;
 	num_indices = num_faces * 3;
@@ -227,7 +227,7 @@ bool ResourceMesh::CalculateFaceNormals()
 	return true;
 }
 
-bool ResourceMesh::LoadUVs(aiMesh * info)
+bool ResourceMesh::ImportUVs(aiMesh * info)
 {
 	if (info->HasTextureCoords(0u))
 	{
@@ -248,7 +248,7 @@ bool ResourceMesh::LoadUVs(aiMesh * info)
 	return true;
 }
 
-bool ResourceMesh::LoadUVs(float * coords)
+bool ResourceMesh::ImportUVs(float * coords)
 {
 	if (coords)
 	{
