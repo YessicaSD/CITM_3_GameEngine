@@ -240,13 +240,18 @@ void ModuleGui::SetSelectedGameObjec(ComponentTransform * gameobject)
 	{
 		selected_transform->SetSelected(false);
 	}
+
 	selected_transform = gameobject;
 	panel_properties->selected_transform = gameobject;
 
 	if (gameobject != nullptr)
 	{
 		gameobject->SetSelected(true);
+		OpenInHierarchy(gameobject);
 	}
+
+	
+
 }
 
 void ModuleGui::MainMenuBar(update_status &ret)
@@ -338,6 +343,16 @@ void ModuleGui::MainMenuBar(update_status &ret)
 		ImGui::EndMenu();
 	}
 	ImGui::EndMainMenuBar();
+}
+
+void ModuleGui::OpenInHierarchy(ComponentTransform * gameobject)
+{
+	ComponentTransform* parent = gameobject->GetParent();
+	if (parent != nullptr)
+	{
+		parent->open_in_hierarchy = true;
+		OpenInHierarchy(parent);
+	}
 }
 
 
