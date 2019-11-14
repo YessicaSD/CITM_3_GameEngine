@@ -17,6 +17,9 @@
 #include "ModuleImport.h"
 #include "RaycastHit.h"
 
+//TODO: Remove, only for testing purposes
+#include "ResourceModel.h"
+
 
 ModuleScene::ModuleScene(bool start_enabled) :
 	Module(start_enabled)
@@ -39,8 +42,11 @@ bool ModuleScene::Start(JSONFile * config)
 	//App->camera->Move(float3(1.0f, 1.0f, 0.0f));
 	//App->camera->LookAt(float3(0.f, 0.f, 0.f));
 
-	App->import->ImportModel("Assets/BakerHouse.fbx");
-	App->import->CreateGameObjectFromModel(App->import->last_model_imported, App->scene->root_gameobject->transform);
+	ResourceModel * resource_model = App->import->ImportModel("Assets/BakerHouse.fbx");
+	resource_model->ReleaseData();
+	//INFO: We simulate that a new gameobject starts using this model so it's allocated again
+	resource_model->StartUsingResource();
+	App->import->CreateGameObjectFromModel(resource_model, App->scene->root_gameobject->transform);
 
 	camera = new GameObject("Camera", root_gameobject->transform);
 	component_camera = camera->CreateComponent<ComponentCamera>();

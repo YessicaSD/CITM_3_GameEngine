@@ -107,7 +107,14 @@ bool ResourceMesh::LoadFileData()
 
 bool ResourceMesh::ReleaseData()
 {
-	//TODO. Finish this function
+	RELEASE_ARRAY(uv_coord);
+	RELEASE_ARRAY(indices);
+	RELEASE_ARRAY(vertices);
+
+	uv_dimensions = 0u;
+	num_indices = 0u;
+	num_vertices = 0u;
+
 	return true;
 }
 

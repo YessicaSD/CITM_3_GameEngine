@@ -19,14 +19,18 @@
 #include "Globals.h"
 
 #include "limits.h"
-#define INVALID_PARENT_ID UINT_MAX
+#define INVALID_MODEL_ARRAY_INDEX UINT_MAX
+//If there is a model that has more meshes or textures than uint max it will give errors
+//We can't use 0 because it points to the first element
+//Best solution I can think of is to have another variable a bool or an int with different individual bytes
+//Where we specify if it has a mesh, a material or a parent
 
 struct ResourceModelNode {
 	char * name = nullptr;
 	float4x4 transform = float4x4::identity;
-	UID mesh_uid = 0u;
-	UID material_uid = 0u;
-	uint parent_index = 0u;
+	UID mesh_uid = INVALID_RESOURCE_UID;
+	UID material_uid = INVALID_RESOURCE_UID;
+	uint parent_index = INVALID_MODEL_ARRAY_INDEX;
 };
 //TODO: Alert when a Node has more than one mesh or material
 

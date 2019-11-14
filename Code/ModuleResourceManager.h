@@ -8,8 +8,6 @@
 #include "Globals.h"
 #include "Resource.h"
 
-#define INVALID_RESOURCE_UID 0
-
 class ModuleResourceManager : public Module
 {
 public:

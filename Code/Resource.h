@@ -3,6 +3,8 @@
 
 #include "Globals.h"
 
+#define INVALID_RESOURCE_UID 0
+
 class Resource
 {
 public:

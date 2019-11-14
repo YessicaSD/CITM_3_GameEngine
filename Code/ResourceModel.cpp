@@ -32,6 +32,9 @@ bool ResourceModel::SaveFileData()
 	char * data = new char[total_size];
 	char * cursor = data;
 
+	uint header = nodes.size();
+	CopyToFile(&header, cursor, header_bytes);
+
 	for (auto iter = nodes.begin(); iter != nodes.end(); ++iter)
 	{
 		CopyToFile((*iter)->name, cursor, node_name_bytes);
@@ -55,13 +58,14 @@ bool ResourceModel::LoadFileData()
 	uint path_size = 250u;
 	char * path = new char[path_size];
 	App->file_system->CreatePath(path, path_size, RESOURCES_MODEL_FOLDER, "model", uid, "hinata_model");
+	App->file_system->LoadFile(path, &data);
 	char * cursor = data;
 
 	//Load header
 	//TODO: If it's only one variable that it's on the header, make a single variable instead of an array
 	//Called num_nodes (it's more descriptive)
 	//INFO: The number of elements on the ranges array must be the same as in the ranges array of SaveFileData()
-	uint header[1];
+	uint header[1] = { 0u };
 	CopyToMemory(header, cursor, sizeof(header));
 	nodes.reserve(header[0u]);
 
@@ -72,10 +76,10 @@ bool ResourceModel::LoadFileData()
 	{
 		ResourceModelNode * node = new ResourceModelNode();
 		node->name = new char[NODE_NAME_SIZE];
-		//TODO: See if it's necessary if we're copyinf froma a file with the same name length
 		//INFO: Clear the name
+		//TODO: See if it's necessary if we're copy info from a file with the same name length and which has \0 character at the end
 		//memset(nodes[i]->name, 0, name_bytes);
-		CopyToMemory(nodes[i]->name, cursor, name_bytes);
+		CopyToMemory(node->name, cursor, name_bytes);
 		for (uint rows = 0u; rows < 4u; ++rows)
 		{
 			CopyToMemory(&node->transform[rows], cursor, sizeof(float) * 4u);
@@ -91,16 +95,41 @@ bool ResourceModel::LoadFileData()
 	{
 		if (nodes[i]->mesh_uid != INVALID_RESOURCE_UID)
 		{
-			Resource * resource = App->resource_manager->GetResource(nodes[i]->mesh_uid);
-			resource->StartUsingResource();
+			App->resource_manager->GetResource(nodes[i]->mesh_uid)->StartUsingResource();
 		}
 	}
+
+	//TODO: Load textures resources
 
 	return true;
 }
 
 bool ResourceModel::ReleaseData()
 {
-	//TODO: Finish function
+	if (nodes.size() > 0u)
+	{
+		for (int i = nodes.size() - 1; i >= 0; --i)
+		{
+			RELEASE_ARRAY(nodes[i]->name);
+			nodes[i]->transform = float4x4::identity;
+			nodes[i]->material_uid = INVALID_MODEL_ARRAY_INDEX;
+			nodes[i]->mesh_uid = INVALID_MODEL_ARRAY_INDEX;
+			nodes[i]->parent_index = INVALID_MODEL_ARRAY_INDEX;
+			RELEASE(nodes[i]);
+		}
+		nodes.clear();
+	}
+
+	if (meshes_uid.size() > 0u)
+	{
+		for (int i = meshes_uid.size() - 1; i >= 0; --i)
+		{
+			App->resource_manager->GetResource(meshes_uid[i])->StopUsingResource();
+		}
+	}
+
+
+	//TODO: Release texture resources
+
 	return true;
 }

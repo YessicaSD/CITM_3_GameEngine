@@ -24,7 +24,7 @@ class ModuleImport : public Module
 public:
 	ModuleImport(const char * name);
 	bool Start(JSONFile * module_file) override;
-	bool ImportModel(const char* path);
+	ResourceModel * ImportModel(const char* path);
 	bool LoadFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, uint parent_index);
 	bool CleanUp() override;
 
@@ -36,10 +36,6 @@ public:
 
 private:
 	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<ResourceMesh*> loaded_meshes, std::vector<ResourceTexture*>& textures);
-
-	//TODO: Remove, only for testing purposes
-public:
-	ResourceModel * last_model_imported = nullptr;
 
 	friend ModuleScene;
 };

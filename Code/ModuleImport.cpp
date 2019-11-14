@@ -52,8 +52,9 @@ bool ModuleImport::Start(JSONFile * config)
 }
 
 //Creates an AssetMesh (our custom format for 3d meshes) from an fbx
-bool ModuleImport::ImportModel(const char *path)
+ResourceModel * ModuleImport::ImportModel(const char *path)
 {
+	ResourceModel * resource_model = nullptr;
 	const aiScene *scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
@@ -68,7 +69,6 @@ bool ModuleImport::ImportModel(const char *path)
 		fbx_textures_uids.reserve(scene->mNumMeshes);
 
 		ResourceModelNode  * model_root_node = new ResourceModelNode();
-		ResourceModel * resource_model = nullptr;
 
 		for (uint i = 0; i < scene->mNumMeshes; ++i)
 		{
@@ -84,10 +84,8 @@ bool ModuleImport::ImportModel(const char *path)
 		}
 
 		resource_model = App->resource_manager->CreateNewResource<ResourceModel>();
-		LoadFBXNodes(resource_model, model_root_node, scene->mRootNode, fbx_meshes_uids, fbx_textures_uids, INVALID_PARENT_ID);
+		LoadFBXNodes(resource_model, model_root_node, scene->mRootNode, fbx_meshes_uids, fbx_textures_uids, INVALID_MODEL_ARRAY_INDEX);
 		resource_model->SaveFileData();
-
-		last_model_imported = resource_model;
 
 		aiReleaseImport(scene);
 	}
@@ -96,7 +94,7 @@ bool ModuleImport::ImportModel(const char *path)
 		LOG("Error loading scene %s", path);
 	}
 
-	return true;
+	return resource_model;
 }
 
 bool ModuleImport::LoadFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, uint parent_index)
@@ -104,7 +102,7 @@ bool ModuleImport::LoadFBXNodes(ResourceModel * resource_model, ResourceModelNod
 	uint curr_index = resource_model->nodes.size();
 
 	const char * node_name = node->mName.C_Str();
-	model_node->name = new char[strlen(node_name)];
+	model_node->name = new char[strlen(node_name) + 1];//we add + 1 to the length because of the last \0 character
 	strcpy(model_node->name, node_name);
 	model_node->transform = reinterpret_cast<const float4x4&>(node->mTransformation);
 	model_node->parent_index = parent_index;
@@ -217,7 +215,7 @@ void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, Com
 	//Parent them
 	for (uint i = 0u; i < model_gameobjects.size(); ++i)
 	{
-		if (resource_model->nodes[i]->parent_index != INVALID_PARENT_ID)
+		if (resource_model->nodes[i]->parent_index != INVALID_MODEL_ARRAY_INDEX)
 		{
 			model_gameobjects[i]->transform->SetParent(model_gameobjects[resource_model->nodes[i]->parent_index]->transform);
 		}
