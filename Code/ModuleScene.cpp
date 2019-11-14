@@ -164,6 +164,8 @@ bool ModuleScene::TestWithTriangles(LineSegment * ray, std::vector<RaycastHit>& 
 	}
 	return false;
 }
+
+
 update_status ModuleScene::PostUpdate()
 {
 	App->renderer3D->scene_fbo.StartRender(App->gui->panel_scene->current_viewport_size);

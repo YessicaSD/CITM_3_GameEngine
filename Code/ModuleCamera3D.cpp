@@ -249,5 +249,10 @@ float3 ModuleCamera3D::GetPos()
 	return scene_camera->frustum.pos;
 }
 
+ComponentCamera* ModuleCamera3D::GetCurrentCamera()
+{
+	return current_camera;
+}
+
 
 

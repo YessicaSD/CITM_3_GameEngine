@@ -8,6 +8,7 @@
 
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "imGuizmo/ImGuizmo.h"
 
 #include "Timer.h"
 #include "Panel.h"
@@ -107,6 +108,7 @@ update_status ModuleGui::PostUpdate()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
 
 	ImGuiIO& io = ImGui::GetIO();
 
