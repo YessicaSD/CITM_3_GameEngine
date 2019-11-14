@@ -73,6 +73,7 @@ bool ModuleImport::ImportModel(const char *path)
 		for (uint i = 0; i < scene->mNumMeshes; ++i)
 		{
 			aiMesh *assimp_mesh = scene->mMeshes[i];
+
 			ResourceMesh *resource_mesh = ImportAssimpMesh(assimp_mesh);
 			fbx_meshes.push_back(resource_mesh);
 			fbx_meshes_uids.push_back(resource_mesh->GetUID());
@@ -201,14 +202,18 @@ void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, Com
 		new_gameobject->transform->SetTransform(resource_model->nodes[i]->transform);
 		// new_gameobject->transform->bounding_box.SetLocalAABB(loaded_meshes[index]->GetAABB());
 		// new_gameobject->transform->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
-		if (resource_model->nodes[i]->mesh_uid != 0)
+		if (resource_model->nodes[i]->mesh_uid != INVALID_RESOURCE_UID)
 		{
 			ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 			component_mesh->mesh = (ResourceMesh*)App->resource_manager->GetResource(resource_model->nodes[i]->mesh_uid);
-			//TODO: Set texture using material uid
+
+			//INFO: component mesh creates a material component inside its constructor
+			ComponentMaterial * component_material = new_gameobject->GetComponent<ComponentMaterial>();
+			component_material->SetTexture((ResourceTexture*)App->resource_manager->GetResource(resource_model->nodes[i]->material_uid));
 		}
 		model_gameobjects.push_back(new_gameobject);
 	}
+
 	//Parent them
 	for (uint i = 0u; i < model_gameobjects.size(); ++i)
 	{

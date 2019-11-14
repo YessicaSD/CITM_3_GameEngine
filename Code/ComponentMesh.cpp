@@ -28,9 +28,8 @@ ComponentMesh::ComponentMesh(GameObject *gameobject) : Component(gameobject)
 	fill_color[0] = fill_color[1] = fill_color[2] = fill_color[3] = 1.f;
 	line_color[0] = line_color[1] = line_color[2] = line_color[3] = 1.f;
 	point_color[0] = point_color[1] = point_color[2] = point_color[3] = 1.f;
-	material = new ComponentMaterial(gameobject, this);
-	gameobject->components.push_back(material);
-	
+	material = gameobject->CreateComponent<ComponentMaterial>();
+	material->SetMeshComponent(this);
 }
 
 ComponentMesh::~ComponentMesh()

@@ -60,12 +60,12 @@ ResourceTexture* ModuleTexture::LoadTexture(const char* path)
 	}
 	if (path != nullptr && path != "")
 	{
-		uint devil_id = 0;
+		uint devil_id = 0u;
 		ilGenImages(1, &devil_id);
 		ilBindImage(devil_id);
 		//ilutRenderer(ILUT_OPENGL);
 
-		if (!ilLoadImage(path))
+		if (ilLoadImage(path) == IL_FALSE)
 		{
 			auto error = ilGetError();
 			LOG("Failed to load texture with path: %s. Error: %s", path, ilGetString(error));

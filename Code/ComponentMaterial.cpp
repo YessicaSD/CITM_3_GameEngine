@@ -11,26 +11,32 @@ CLASS_DEFINITION(Component, ComponentMaterial)
 ComponentMaterial::ComponentMaterial(GameObject * gameobject, ComponentMesh* mesh) : Component(gameobject)
 {
 	name = "Material";
-	if(mesh)
+	if (mesh != nullptr)
+	{
 		this->component_mesh = mesh;
+	}
 }
 
-void ComponentMaterial::SetTexture(ResourceTexture * texture)
+ComponentMaterial::ComponentMaterial(GameObject * gameobject) : Component(gameobject)
 {
-	bool set = false;
-	if (component_mesh->mesh && component_mesh->mesh->uv_coord)
+}
+
+bool ComponentMaterial::SetTexture(ResourceTexture * texture)
+{
+	bool ret = false;
+	if (component_mesh->mesh != nullptr
+		&& component_mesh->mesh->uv_coord != nullptr
+		&& texture != nullptr)
 	{
-		if (texture)
-		{
-			this->texture = texture;
-			set = true;
-		}
+		this->texture = texture;
+		ret = true;
 	}
-	if (!set)
+	else
 	{
 		LOG("Can't set the texture to this object");
 	}
-	
+
+	return ret;
 }
 
 void ComponentMaterial::DisableGLModes()
@@ -84,5 +90,10 @@ void ComponentMaterial::PropertiesEditor()
 
 
 
+}
+
+void ComponentMaterial::SetMeshComponent(ComponentMesh * component_mesh)
+{
+	this->component_mesh = component_mesh;
 }
 
