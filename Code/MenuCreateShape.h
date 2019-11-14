@@ -15,6 +15,7 @@
 typedef unsigned int uint;
 typedef struct par_shapes_mesh_s par_shapes_mesh;
 class MenuCreateShape;
+class ComponentTransform;
 class GameObject;
 class ResourceMesh;
 class ShapeValue
@@ -67,6 +68,7 @@ public:
 	~MenuCreateShape();
 
 	void MenuBarTab();
+	GameObject * CreateGameObjectWithParShape(std::string name, ComponentTransform * parent, ResourceMesh * asset_mesh);
 	//TODO: Load variables with a function from ModuleGui
 
 public:

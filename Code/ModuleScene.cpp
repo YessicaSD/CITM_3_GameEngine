@@ -34,7 +34,7 @@ bool ModuleScene::Start(JSONFile * config)
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	App->import->ImportModel("Assets/BakerHouse.fbx");
-	//Load the model
+	App->import->CreateGameObjectFromModel(App->import->last_model_imported, App->scene->root_gameobject->transform);
 	return ret;
 }
 

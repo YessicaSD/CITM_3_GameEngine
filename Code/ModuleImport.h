@@ -26,16 +26,20 @@ public:
 	bool Start(JSONFile * module_file) override;
 	bool ImportModel(const char* path);
 	bool LoadFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, uint parent_index);
-	bool SaveModelCustomFormat(const std::vector<ResourceMesh*>& meshes, const std::vector<ResourceTexture*>& textures, const ResourceModelNode root_node);
 	bool CleanUp() override;
 
 	void EventRequest(const Event& event) override;
 	ResourceMesh* ImportAssimpMesh(aiMesh * assimp_mesh);
 	ResourceTexture * ImportFBXTexture(aiMesh * info, const aiScene * fbx);
 	ResourceMesh* ImportParShapeMesh(par_shapes_mesh * mesh);
-	GameObject * CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, ResourceMesh * asset_mesh);
+	void CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent);
+
 private:
 	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<ResourceMesh*> loaded_meshes, std::vector<ResourceTexture*>& textures);
+
+	//TODO: Remove, only for testing purposes
+public:
+	ResourceModel * last_model_imported = nullptr;
 
 	friend ModuleScene;
 };

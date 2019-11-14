@@ -22,6 +22,7 @@ public:
 	void PropertiesEditor() override;
 	void SetTransform(float3& position, float3& scale, float3 & rotation);
 	void SetTransform(float3& position, float3& scale, Quat & qrotation);
+	void SetTransform(const float4x4 & local_matrix);
 	void SetPosition(const float3 & position);
 	void SetRotation(const float3 & euler_rotation);
 	void SetRotation(const Quat & qrotation);

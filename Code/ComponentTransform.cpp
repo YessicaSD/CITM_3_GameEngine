@@ -23,6 +23,7 @@ void ComponentTransform::SetParent(ComponentTransform *parent)
 		this->parent = parent;
 		parent->children.push_back(this);
 	}
+	//TODO: This should update the position, rotation and scale so that it remains intact in world space but it displays relative to the parent
 }
 
 void ComponentTransform::UpdatePos()
@@ -75,6 +76,32 @@ void ComponentTransform::SetTransform(float3 &position, float3 &scale, Quat &qro
 	this->scale = scale;
 
 	RecalculateMatrices();
+}
+
+void ComponentTransform::SetTransform(const float4x4 &local_matrix)
+{
+	this->local_matrix = local_matrix;
+
+	//TODO: Calculate position rotation and scale to display them
+
+	if (parent != nullptr)
+	{
+		global_matrix = parent->global_matrix * local_matrix;
+	}
+	else
+	{
+		global_matrix = local_matrix;
+	}
+
+	ComponentMesh *comp_mesh = gameobject->GetComponent<ComponentMesh>();
+
+
+	if (comp_mesh != nullptr)
+	{
+		comp_mesh->UpdateBoundingBox(global_matrix);
+	}
+
+	UpdateChildrenMatrices();
 }
 
 void ComponentTransform::RecalculateMatrices()

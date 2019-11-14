@@ -20,6 +20,9 @@ public:
 	{
 		ResourceType * resource = new ResourceType();
 		resource->uid = GenerateNewUID();
+		//TODO: Remove, only for testing purposes
+		//Ideally resources would be in the map already and we would just need to load their data or not depending on if there is an / some object/s refecencing them or not
+		resources[resource->GetUID()] = resource;
 		return resource;
 	}
 

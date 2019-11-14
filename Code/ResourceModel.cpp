@@ -36,6 +36,7 @@ bool ResourceModel::SaveFileData()
 	uint path_size = 250u;
 	char * path = new char[path_size];
 	App->file_system->CreatePath(path, path_size, RESOURCES_MODEL_FOLDER, "model", uid, "hinata_model");
+	App->file_system->SaveFile(data, total_size, &path);
 
 	return false;
 }

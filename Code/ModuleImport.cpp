@@ -82,6 +82,8 @@ bool ModuleImport::ImportModel(const char *path)
 		LoadFBXNodes(resource_model, &model_root_node, scene->mRootNode, fbx_meshes_uids, fbx_textures_uids, 0);//If it's itself, it will know it is the root node
 		resource_model->SaveFileData();
 
+		last_model_imported = resource_model;
+
 		aiReleaseImport(scene);
 	}
 	else
@@ -91,21 +93,6 @@ bool ModuleImport::ImportModel(const char *path)
 
 	return true;
 }
-
-//Saves the model in our own custom file format
-//bool ModuleImport::SaveModel(const std::vector<ResourceMesh*> & meshes, const std::vector<ResourceTexture*> & textures)
-//{
-//	//1. Meshes
-//		//indices
-//		//vertices
-//		//uvs
-//	//2. Textures
-//	//3. Nodes
-//		//meshes id
-//		//textures id
-//
-//
-//}
 
 bool ModuleImport::LoadFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, uint parent_index)
 {
@@ -199,6 +186,33 @@ ResourceMesh *ModuleImport::ImportParShapeMesh(par_shapes_mesh *mesh)
 	return resource_mesh;
 }
 
+void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent)
+{
+	std::vector<GameObject*> model_gameobjects;
+	for (uint i = 0u; i < resource_model->nodes.size(); ++i)
+	{
+		GameObject * new_gameobject = new GameObject(resource_model->nodes[i]->name, nullptr);
+		new_gameobject->transform->SetTransform(resource_model->nodes[i]->transform);
+		if (resource_model->nodes[i]->mesh_uid != 0)
+		{
+			ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
+			component_mesh->mesh = (ResourceMesh*)App->resource_manager->GetResource(resource_model->nodes[i]->mesh_uid);
+			//component_mesh->bounding_box->MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix(), component_mesh->mesh->GetAABB());
+			//TODO: Set texture using material uid
+		}
+		model_gameobjects.push_back(new_gameobject);
+	}
+	//Parent them
+	for (uint i = 0u; i < model_gameobjects.size(); ++i)
+	{
+		if (resource_model->nodes[i]->parent_index != 0)
+		{
+			model_gameobjects[i]->transform->SetParent(model_gameobjects[resource_model->nodes[i]->parent_index]->transform);
+		}
+	}
+	model_gameobjects[0]->transform->SetParent(parent);
+}
+
 void ModuleImport::CreateGameObjectsFromNodes(aiNode *node, ComponentTransform *parent, std::vector<ResourceMesh *> loaded_meshes, std::vector<ResourceTexture *> &textures)
 {
 	GameObject *new_gameobject = new GameObject(std::string(node->mName.C_Str()), parent);
@@ -262,14 +276,4 @@ void ModuleImport::EventRequest(const Event &event)
 		}
 		LOG("File dropped %s", event.path);
 	}
-}
-
-GameObject *ModuleImport::CreateGameObjectWithMesh(std::string name, ComponentTransform *parent, ResourceMesh *asset_mesh)
-{
-	GameObject *new_gameobject = new GameObject(name, parent);
-	ComponentMesh *component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
-	component_mesh->mesh = asset_mesh;
-	new_gameobject->transform->UpdateDisplayValues();
-	component_mesh->UpdateBoundingBox(new_gameobject->transform->GetGlobalMatrix());
-	return new_gameobject;
 }

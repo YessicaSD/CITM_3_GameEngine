@@ -51,7 +51,9 @@ private:
 	//Point
 	float point_color[4];
 	float point_size = 1.f;
+
 	friend class ModuleImport;
+	friend class MenuCreateShape;
 	friend class ComponentMaterial;
 };
 
