@@ -73,11 +73,8 @@
     <Filter Include="Sources\Tools\imGuizmo">
       <UniqueIdentifier>{105bdc44-c4a5-4547-a5d8-3470ff648d94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Tools\PhysFS">
-      <UniqueIdentifier>{30e39cc2-dfd4-448e-b46d-1c2e274bddbd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\Resources">
-      <UniqueIdentifier>{1c905e8a-d8dc-4e0b-8f0c-702b7fb93993}</UniqueIdentifier>
+    <Filter Include="Sources\Tools\imguiShortFuntions">
+      <UniqueIdentifier>{738d4f33-3987-4525-a2c5-ee9ebf5dbe17}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -576,7 +573,11 @@
     <ClInclude Include="BoundingBox.h">
       <Filter>Sources\3DPrimitive</Filter>
     </ClInclude>
-    <ClInclude Include="CubeQuad.h">
+    <ClInclude Include="JSONFile.h" />
+    <ClInclude Include="ComponentCamera.h">
+      <Filter>Sources\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeLine.h">
       <Filter>Sources\3DPrimitive</Filter>
     </ClInclude>
     <ClInclude Include="imGuizmo\ImCurveEdit.h">
@@ -591,41 +592,8 @@
     <ClInclude Include="imGuizmo\ImSequencer.h">
       <Filter>Sources\Tools\imGuizmo</Filter>
     </ClInclude>
-    <ClInclude Include="PhysFS\include\physfs.h">
-      <Filter>Sources\Tools\PhysFS</Filter>
-    </ClInclude>
-    <ClInclude Include="AssimpIO.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="BassIO.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceModel.h">
-      <Filter>Sources\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceMesh.h">
-      <Filter>Sources\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Sources\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceTexture.h">
-      <Filter>Sources\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleResourceManager.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="JSONFile.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuCreateShape.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="PerfTimer.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderTexture.h">
-      <Filter>Sources</Filter>
+    <ClInclude Include="RaycastHit.h">
+      <Filter>Sources\ECS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -875,7 +843,11 @@
     <ClCompile Include="BoundingBox.cpp">
       <Filter>Sources\3DPrimitive</Filter>
     </ClCompile>
-    <ClCompile Include="CubeQuad.cpp">
+    <ClCompile Include="JSONFile.cpp" />
+    <ClCompile Include="ComponentCamera.cpp">
+      <Filter>Sources\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeLine.cpp">
       <Filter>Sources\3DPrimitive</Filter>
     </ClCompile>
     <ClCompile Include="imGuizmo\ImCurveEdit.cpp">
@@ -890,35 +862,8 @@
     <ClCompile Include="imGuizmo\ImSequencer.cpp">
       <Filter>Sources\Tools\imGuizmo</Filter>
     </ClCompile>
-    <ClCompile Include="AssimpIO.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="BassIO.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceModel.cpp">
-      <Filter>Sources\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceMesh.cpp">
-      <Filter>Sources\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Resource.cpp">
-      <Filter>Sources\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceTexture.cpp">
-      <Filter>Sources\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleResourceManager.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="JSONFile.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="MenuCreateShape.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="PerfTimer.cpp">
-      <Filter>Sources</Filter>
+    <ClCompile Include="ImguiShortFuntions.cpp">
+      <Filter>Sources\Tools\imguiShortFuntions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

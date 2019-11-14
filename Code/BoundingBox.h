@@ -1,6 +1,6 @@
 #ifndef  BOUNDING_BOX_H_
 #define  BOUNDING_BOX_H_
-#include "CubeQuad.h"
+#include "CubeLine.h"
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "MathGeoLib/include/Math/float4.h"
@@ -11,17 +11,19 @@ class BoundingBox
 {
 
 private:
-	CubeQuad obb_cube, aabb_cube;
-	AABB aabb;
+	CubeLine obb_cube, aabb_cube;
+	AABB local_aabb, aabb;
 	OBB	 obb;
 	
 public:
 
 	float4 aabb_color, obb_color;
 	BoundingBox();
-	void MultiplyByMatrix(float4x4 matrix, AABB aabb);
+	void MultiplyByMatrix(float4x4 matrix);
 	void Draw();
+	void SetLocalAABB(AABB local_aabb);
 	AABB GetAABB();
+	OBB GetOBB();
 
 };
 

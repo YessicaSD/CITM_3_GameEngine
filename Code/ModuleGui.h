@@ -87,6 +87,7 @@ private:
 	friend class PanelHierarchy;
 	friend class ModuleCamera3D;
 	friend class PanelProperties;
+
 };
 
 #endif // !MODULEGUI_H_

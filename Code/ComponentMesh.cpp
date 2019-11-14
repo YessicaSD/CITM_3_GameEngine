@@ -10,7 +10,12 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleImport.h"
+
 #include "MathGeoLib/include/Math/float4.h"
+#include "MathGeoLib/include/Geometry/LineSegment.h"
+#include "MathGeoLib/include/Geometry/Triangle.h"
+
+
 #include "ComponentMaterial.h"
 #include "imgui/imgui.h"
 
@@ -25,7 +30,7 @@ ComponentMesh::ComponentMesh(GameObject *gameobject) : Component(gameobject)
 	point_color[0] = point_color[1] = point_color[2] = point_color[3] = 1.f;
 	material = new ComponentMaterial(gameobject, this);
 	gameobject->components.push_back(material);
-	bounding_box = new BoundingBox();
+	
 }
 
 ComponentMesh::~ComponentMesh()
@@ -35,6 +40,13 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::OnPostUpdate()
 {
+	if (gameobject->transform->IsSelected())
+	{
+		glEnable(GL_STENCIL_TEST);
+		glStencilFunc(GL_ALWAYS, 1, -1);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	}
+
 	if (mesh->uv_coord)
 	{
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -66,7 +78,6 @@ void ComponentMesh::OnPostUpdate()
 
 	if (render_mode.fill)
 	{
-
 		if (mesh->vertex_normals)
 		{
 			glEnableClientState(GL_NORMAL_ARRAY);
@@ -80,6 +91,9 @@ void ComponentMesh::OnPostUpdate()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glColor4f(fill_color[0], fill_color[1], fill_color[2], fill_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		
+		
 	}
 
 	if (render_mode.wireframe)
@@ -97,12 +111,11 @@ void ComponentMesh::OnPostUpdate()
 		glColor4f(point_color[0], point_color[1], point_color[2], point_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	}
-	glLineWidth(5);
-	glColor4f(255, 0, 0, 1);
+	if (gameobject->transform->IsSelected())
+	{
+		DrawOutline();
+	}
 
-	glBegin(GL_LINES);
-
-	glEnd();
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
 	material->DisableGLModes();
 	if (mesh->uv_coord)
@@ -113,8 +126,6 @@ void ComponentMesh::OnPostUpdate()
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	bounding_box->Draw();
 }
 
 void ComponentMesh::DrawVertexNormal()
@@ -190,19 +201,69 @@ void ComponentMesh::CleanUp()
 		delete mesh;
 		mesh = nullptr;
 	}
-	if (bounding_box != nullptr)
+	
+}
+
+void ComponentMesh::DrawOutline()
+{
+	if (glIsEnabled(GL_STENCIL_TEST) == GL_TRUE)
 	{
-		delete bounding_box;
-		bounding_box = nullptr;
+		bool light = false;
+		if (light = glIsEnabled(GL_LIGHTING))
+		{
+			glDisable(GL_LIGHTING);
+		}
+
+		glColor3f(1.f,1.f, 1.f);
+		glLineWidth(5.f);
+
+		glStencilFunc(GL_NOTEQUAL, 1, -1);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
+		glPolygonMode(GL_FRONT, GL_LINE);
+
+		glEnableClientState(GL_VERTEX_ARRAY);
+
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indice);
+		glVertexPointer(3, GL_FLOAT, 0, 0);
+
+		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, 0);
+
+		glDisable(GL_STENCIL_TEST);
+		glDisable(GL_POLYGON_OFFSET_FILL);
+		glDisableClientState(GL_VERTEX_ARRAY);
+
+		glLineWidth(1);
+
+		if (light)
+		{
+			glEnable(GL_LIGHTING);
+		}
 	}
+
 }
 
-void ComponentMesh::UpdateBoundingBox(float4x4 matrix)
+bool ComponentMesh::Intersect(LineSegment * ray, RaycastHit& hit)
 {
-	bounding_box->MultiplyByMatrix(matrix, mesh->GetAABB());
-}
+	bool ret = false;
+	hit.transform = nullptr;
+	LineSegment local_ray((*ray));
+	local_ray.Transform(gameobject->transform->GetGlobalMatrix().Inverted());
 
-AABB ComponentMesh::GetAABB()
-{
-	return bounding_box->GetAABB();
+	for (int i = 0; i < mesh->num_indices;i+=3 )
+	{
+		Triangle tri(mesh->vertices[mesh->indices[i]], mesh->vertices[mesh->indices[i + 1]], mesh->vertices[mesh->indices[i + 2]]);
+		RaycastHit new_hit(gameobject->transform);
+		if (local_ray.Intersects(tri, &new_hit.distance, &new_hit.hit_point))
+		{
+			if (hit.transform == nullptr || new_hit.distance < hit.distance)
+			{
+				hit = new_hit;
+				ret = true;
+			}
+		}
+
+	}
+	return ret;
 }

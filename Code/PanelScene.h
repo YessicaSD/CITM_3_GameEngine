@@ -3,7 +3,7 @@
 
 #include "Panel.h"
 #include "imgui/imgui.h"
-
+#include "MathGeoLib/include/Math/float2.h"
 class PanelScene : public Panel
 {
 public:
@@ -12,6 +12,12 @@ public:
 
 public:
 	ImVec2 current_viewport_size;
+	float2 cursor;
+	int width, height;
+	bool mouse_is_hovering;
+private:
+	void GetSizeWithAspectRatio(int current_width, int current_height, int wanted_width, int wanted_height, int& new_width, int& new_height);
+
 };
 
 #endif

@@ -1,8 +1,8 @@
-#include "CubeQuad.h"
+#include "CubeLine.h"
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
 
-void CubeQuad::OpenBuffers()
+void CubeLine::OpenBuffers()
 {
 	//Opening buffer for vertexs
 	glGenBuffers(1, (GLuint*) & (vetex_buf_id));
@@ -11,7 +11,7 @@ void CubeQuad::OpenBuffers()
 	glGenBuffers(1, (GLuint*) & (indices_buf_id));
 }
 
-void CubeQuad::SetIndices()
+void CubeLine::SetIndices()
 {
 	uint indices[NUM_INDICES] = {
 	0,1, 0,1,  4,5,	0,4,//Front
@@ -22,21 +22,21 @@ void CubeQuad::SetIndices()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * NUM_INDICES, indices, GL_STATIC_DRAW);
 }
 
-CubeQuad::CubeQuad(float width, float height, float depth, float3 position)
+CubeLine::CubeLine(float width, float height, float depth, float3 position)
 {
 	OpenBuffers();
 	SetIndices();
 	Set(width, height, depth, position);
 }
 
-CubeQuad::CubeQuad()
+CubeLine::CubeLine()
 {
 	OpenBuffers();
 	SetIndices();
 	Set(1, 1, 1, float3(0,0,0));
 }
 
-void CubeQuad::Draw()
+void CubeLine::Draw()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, vetex_buf_id);
@@ -46,7 +46,7 @@ void CubeQuad::Draw()
 	glDrawElements(GL_LINES, NUM_INDICES, GL_UNSIGNED_INT, NULL);
 }
 
-void CubeQuad::Set(float width, float height, float depth, float3 position)
+void CubeLine::Set(float width, float height, float depth, float3 position)
 {
 	float half_width = 0.5f*width;
 	float half_height = 0.5f*height;
@@ -65,7 +65,7 @@ void CubeQuad::Set(float width, float height, float depth, float3 position)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * NUM_VERTICES * 3, vertices, GL_STATIC_DRAW);
 }
 
-void CubeQuad::SetVetices(float * vertices)
+void CubeLine::SetVetices(float * vertices)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vetex_buf_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * NUM_VERTICES * 3, vertices, GL_STATIC_DRAW);

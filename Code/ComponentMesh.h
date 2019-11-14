@@ -5,6 +5,8 @@
 
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
+
+#include "RaycastHit.h"
 #include "BoundingBox.h"
 
 class ResourceMesh;
@@ -30,10 +32,8 @@ public:
 	void DrawNormals();
 	void PropertiesEditor() override;
 	void CleanUp() override;
-	void UpdateBoundingBox(float4x4 matrix);
-	AABB GetAABB();
-	
-	
+	void DrawOutline();
+	bool Intersect(LineSegment* ray, RaycastHit& out_hit);
 
 private:
 	ResourceMesh *mesh = nullptr;

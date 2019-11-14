@@ -25,7 +25,7 @@
 
 #define PAR_SHAPES_IMPLEMENTATION
 #include "par\par_shapes.h"
-
+#include "BoundingBox.h"
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
 
 void AssimpWriteLogStream(const char *text, char *data)
@@ -199,11 +199,12 @@ void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, Com
 	{
 		GameObject * new_gameobject = new GameObject(resource_model->nodes[i]->name, nullptr);
 		new_gameobject->transform->SetTransform(resource_model->nodes[i]->transform);
+		// new_gameobject->transform->bounding_box.SetLocalAABB(loaded_meshes[index]->GetAABB());
+		// new_gameobject->transform->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
 		if (resource_model->nodes[i]->mesh_uid != 0)
 		{
 			ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 			component_mesh->mesh = (ResourceMesh*)App->resource_manager->GetResource(resource_model->nodes[i]->mesh_uid);
-			//component_mesh->bounding_box->MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix(), component_mesh->mesh->GetAABB());
 			//TODO: Set texture using material uid
 		}
 		model_gameobjects.push_back(new_gameobject);
@@ -237,7 +238,10 @@ void ModuleImport::CreateGameObjectsFromNodes(aiNode *node, ComponentTransform *
 			int index = node->mMeshes[i];
 			ComponentMesh *component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 			component_mesh->mesh = loaded_meshes[index];
-			component_mesh->bounding_box->MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix(), component_mesh->mesh->GetAABB());
+
+			new_gameobject->transform->bounding_box.SetLocalAABB(loaded_meshes[index]->GetAABB());
+			new_gameobject->transform->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
+			
 			if (textures[index] != nullptr)
 			{
 				component_mesh->material->SetTexture(textures[index]);

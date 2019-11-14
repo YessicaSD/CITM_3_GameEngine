@@ -15,7 +15,7 @@
 typedef unsigned int uint;
 
 
-class CubeQuad
+class CubeLine
 {
 	float vertices[NUM_VERTICES * 3];
 	uint vetex_buf_id, indices_buf_id;
@@ -24,8 +24,8 @@ private:
 	void SetIndices();
 public:
 
-	CubeQuad(float width, float height, float depth, float3	position);
-	CubeQuad();
+	CubeLine(float width, float height, float depth, float3	position);
+	CubeLine();
 
 	void Draw();
 	void Set(float width, float height, float depth, float3 position);

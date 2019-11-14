@@ -55,6 +55,9 @@ public:
 	virtual bool                                IsClassType(const std::size_t classType) const {
 		return classType == type;
 	}
+protected:
+	bool enabled = true;
+	std::string name;
 
 protected:
 	virtual void OnUpdate(float dt) {};
@@ -62,16 +65,17 @@ protected:
 	virtual void OnEnable() {};
 	virtual void OnDisable() {};
 	virtual void CleanUp() {};
-
 	bool CollapsigHeaderWithCheckbox();
+
+public:
+	//this funtion should only be call by transform component
+	virtual void TransformHaveChanged() {};
 
 public:
 	//The gameobject which contains this component
 	GameObject* gameobject = nullptr;
 
-protected: 
-	bool enabled = true;
-	std::string name;
+
 	
 	friend class GameObject;
 };

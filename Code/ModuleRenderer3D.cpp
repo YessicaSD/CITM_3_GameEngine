@@ -11,6 +11,7 @@
 #include "JSONFile.h"
 #include "PanelConfiguration.h"
 #include "ModuleWindow.h"
+#include "ComponentCamera.h"
 
 
 ModuleRenderer3D::ModuleRenderer3D(const char* name, bool start_enabled) : Module(start_enabled, name)
@@ -131,15 +132,39 @@ bool ModuleRenderer3D::Init(JSONFile * module_file)
 	texture_2d = glIsEnabled(GL_TEXTURE_2D) == GL_TRUE;
 
 	scene_fbo.GenerateFrameBuffer();
-
+	
 	return ret;
 }
+
+void ModuleRenderer3D::UpdateProjectionMatrix()
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	glLoadMatrixf((GLfloat*)&App->camera->current_camera->GetProjectionMatrix().Transposed());
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}
+
+bool ModuleRenderer3D::Start(JSONFile * module_file)
+{
+	UpdateProjectionMatrix();
+	return true;
+}
+
 
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate()
 {
+	if (App->camera->current_camera->update_project_matrix)
+	{
+		UpdateProjectionMatrix();
+		App->camera->current_camera->update_project_matrix = false;
+	}
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->position.x, App->camera->position.y, App->camera->position.z);
+	float* pos = (float*)&App->camera->GetPos();
+	lights[0].SetPos(pos[0] , pos[1], pos[2]);
 
 	for (uint i = 0; i < MAX_LIGHTS; ++i)
 	{

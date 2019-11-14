@@ -25,6 +25,8 @@ public:
 	~ModuleRenderer3D();
 
 	bool Init(JSONFile * module_file);
+	void UpdateProjectionMatrix();
+	bool Start(JSONFile * module_file) override;
 	update_status PreUpdate() override;
 	update_status PostUpdate() override;
 	bool CleanUp();
