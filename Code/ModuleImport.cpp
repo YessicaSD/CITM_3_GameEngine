@@ -114,7 +114,8 @@ bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ResourceModelN
 	uint curr_index = resource_model->nodes.size();
 
 	const char * node_name = node->mName.C_Str();
-	model_node->name = new char[strlen(node_name) + 1];//we add + 1 to the length because of the last \0 character
+	model_node->name = new char[NODE_NAME_SIZE];
+	memset(model_node->name, NULL, NODE_NAME_SIZE);
 	strcpy(model_node->name, node_name);
 	model_node->transform = reinterpret_cast<const float4x4&>(node->mTransformation);
 	model_node->parent_index = parent_index;
@@ -232,41 +233,6 @@ void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, Com
 		}
 	}
 	model_gameobjects[0]->transform->SetParent(parent);
-}
-
-void ModuleImport::CreateGameObjectsFromNodes(aiNode *node, ComponentTransform *parent, std::vector<ResourceMesh *> loaded_meshes, std::vector<ResourceTexture *> &textures)
-{
-	GameObject *new_gameobject = new GameObject(std::string(node->mName.C_Str()), parent);
-
-	aiVector3D translation, scaling;
-	aiQuaternion rotation;
-	node->mTransformation.Decompose(scaling, rotation, translation);
-	new_gameobject->transform->SetTransform(float3(translation.x, translation.y, translation.z), float3(scaling.x, scaling.y, scaling.z), Quat(rotation.x, rotation.y, rotation.z, rotation.w));
-	new_gameobject->transform->Reset();
-
-	if (node->mNumMeshes > 0u)
-	{
-		//Load the meshes of this GameObject
-		for (int i = 0; i < node->mNumMeshes; ++i)
-		{
-			int index = node->mMeshes[i];
-			ComponentMesh *component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
-			component_mesh->mesh = loaded_meshes[index];
-
-			new_gameobject->transform->bounding_box.SetLocalAABB(loaded_meshes[index]->GetAABB());
-			new_gameobject->transform->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
-			
-			if (textures[index] != nullptr)
-			{
-				component_mesh->material->SetTexture(textures[index]);
-			}
-		}
-	}
-
-	for (int i = 0; i < node->mNumChildren; ++i)
-	{
-		CreateGameObjectsFromNodes(node->mChildren[i], new_gameobject->transform, loaded_meshes, textures);
-	}
 }
 
 bool ModuleImport::CleanUp()

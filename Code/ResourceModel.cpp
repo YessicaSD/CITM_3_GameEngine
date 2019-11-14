@@ -99,10 +99,13 @@ bool ResourceModel::LoadFileData()
 		}
 	}
 
-	//for (uint i  = 0u; i < nodes.size(); ++i)
-	//{
-
-	//}
+	for (uint i  = 0u; i < nodes.size(); ++i)
+	{
+		if (nodes[i]->material_uid != INVALID_RESOURCE_UID)
+		{
+			App->resource_manager->GetResource(nodes[i]->material_uid)->StartUsingResource();
+		}
+	}
 
 	return true;
 }
