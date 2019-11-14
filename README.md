@@ -10,7 +10,7 @@ A 3D game engine created in the third year of our Videogame Design and Developme
 
 ## Assignment 2:
 - Create multiple shapes at one by pressing the circle button on the create menu.
-
+- Event system to notify multiple modules
 
 # Credits:
 
