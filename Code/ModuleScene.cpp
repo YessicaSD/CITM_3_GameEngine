@@ -43,9 +43,6 @@ bool ModuleScene::Start(JSONFile * config)
 	//App->camera->LookAt(float3(0.f, 0.f, 0.f));
 
 	ResourceModel * resource_model = App->import->ImportModel("Assets/BakerHouse.fbx");
-	resource_model->ReleaseData();
-	//INFO: We simulate that a new gameobject starts using this model so it's allocated again
-	resource_model->StartUsingResource();
 	App->import->CreateGameObjectFromModel(resource_model, App->scene->root_gameobject->transform);
 
 	camera = new GameObject("Camera", root_gameobject->transform);

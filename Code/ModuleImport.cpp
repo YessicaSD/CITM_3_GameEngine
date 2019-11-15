@@ -96,6 +96,8 @@ ResourceModel * ModuleImport::ImportModel(const char *path)
 		ImportFBXNodes(resource_model, new ResourceModelNode(), scene->mRootNode, resource_model->meshes_uid, resource_model->textures_uid, fbx_meshes_textures, INVALID_MODEL_ARRAY_INDEX);
 		resource_model->SaveFileData();
 
+		//Delete all the data from the resource (without using ReleaseData, which calls StopUsingResource)
+
 		aiReleaseImport(scene);
 	}
 	else
@@ -169,11 +171,6 @@ ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh)
 	resource_mesh->CalculateFaceNormals();
 	resource_mesh->ImportUVs(assimp_mesh);
 
-	resource_mesh->GenerateVertexNormalsBuffer();
-	resource_mesh->GenerateVerticesBuffer();
-	resource_mesh->GenerateFacesAndNormalsBuffer();
-	resource_mesh->GenerateUVsBuffer();
-
 	resource_mesh->SaveFileData();
 
 	return resource_mesh;
@@ -191,10 +188,6 @@ ResourceMesh *ModuleImport::ImportParShapeMesh(par_shapes_mesh *mesh)
 	resource_mesh->CalculateFaceNormals();
 	resource_mesh->ImportUVs(mesh->tcoords);
 
-	resource_mesh->GenerateVerticesBuffer();
-	resource_mesh->GenerateFacesAndNormalsBuffer();
-	resource_mesh->GenerateUVsBuffer();
-
 	resource_mesh->SaveFileData();
 
 	return resource_mesh;
@@ -203,6 +196,10 @@ ResourceMesh *ModuleImport::ImportParShapeMesh(par_shapes_mesh *mesh)
 void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent)
 {
 	std::vector<GameObject*> model_gameobjects;
+
+	//Loads the data
+	resource_model->StartUsingResource();
+
 	for (uint i = 0u; i < resource_model->nodes.size(); ++i)
 	{
 		GameObject * new_gameobject = new GameObject(resource_model->nodes[i]->name, nullptr);
@@ -212,7 +209,7 @@ void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, Com
 		if (resource_model->nodes[i]->mesh_uid != INVALID_RESOURCE_UID)
 		{
 			ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
-			component_mesh->mesh = (ResourceMesh*)App->resource_manager->GetResource(resource_model->nodes[i]->mesh_uid);
+			component_mesh->SetMesh((ResourceMesh*)App->resource_manager->GetResource(resource_model->nodes[i]->mesh_uid));
 
 			//INFO: component mesh creates a material component inside its constructor
 			ComponentMaterial * component_material = new_gameobject->GetComponent<ComponentMaterial>();

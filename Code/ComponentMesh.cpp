@@ -267,3 +267,26 @@ bool ComponentMesh::Intersect(LineSegment * ray, RaycastHit& hit)
 	}
 	return ret;
 }
+
+bool ComponentMesh::SetMesh(ResourceMesh * mesh)
+{
+	bool ret = false;
+
+	if (this->mesh != nullptr)
+	{
+		this->mesh->StopUsingResource();
+	}
+
+	if (mesh != nullptr)
+	{
+		this->mesh = mesh;
+		mesh->StartUsingResource();
+		ret = true;
+	}
+	else
+	{
+		LOG("Can't set the mesh to this GameObject.");
+	}
+
+	return ret;
+}

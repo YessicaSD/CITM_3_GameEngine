@@ -90,23 +90,6 @@ bool ResourceModel::LoadFileData()
 
 		nodes.push_back(node);
 	}
-
-	for (uint i  = 0u; i < nodes.size(); ++i)
-	{
-		if (nodes[i]->mesh_uid != INVALID_RESOURCE_UID)
-		{
-			App->resource_manager->GetResource(nodes[i]->mesh_uid)->StartUsingResource();
-		}
-	}
-
-	for (uint i  = 0u; i < nodes.size(); ++i)
-	{
-		if (nodes[i]->material_uid != INVALID_RESOURCE_UID)
-		{
-			App->resource_manager->GetResource(nodes[i]->material_uid)->StartUsingResource();
-		}
-	}
-
 	return true;
 }
 

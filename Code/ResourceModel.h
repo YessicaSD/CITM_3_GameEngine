@@ -36,13 +36,11 @@ struct ResourceModelNode {
 
 class ResourceModel : public Resource
 {
-private:
-	ResourceModel() {};
-
 public:
 	~ResourceModel();
 
-public:
+private:
+	ResourceModel() {};
 	bool SaveFileData() override;
 	bool LoadFileData() override;
 	bool ReleaseData() override;
@@ -52,6 +50,7 @@ public:
 	std::vector<UID> meshes_uid;
 	std::vector<UID> textures_uid;
 
+	friend class ModuleImport;
 	friend class ModuleResourceManager;
 };
 

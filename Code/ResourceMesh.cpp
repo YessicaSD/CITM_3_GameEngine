@@ -98,6 +98,11 @@ bool ResourceMesh::LoadFileData()
 		uint num_uv = GetUVCoordSize();
 		uv_coord = new float[num_uv];
 		CopyToMemory(uv_coord, &cursor, sizeof(float) * num_uv);
+
+		GenerateVertexNormalsBuffer();
+		GenerateVerticesBuffer();
+		GenerateFacesAndNormalsBuffer();
+		GenerateUVsBuffer();
 	}
 
 	return ret;

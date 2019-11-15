@@ -16,13 +16,13 @@ class ResourceMesh : public Resource
 {
 private:
 	ResourceMesh();//Constructor is private because Resources need to be created from ModuleResourceManager
-public:
-	~ResourceMesh();
 
 	bool SaveFileData() override;
 	bool LoadFileData() override;
 	bool ReleaseData() override;
 
+public:
+	~ResourceMesh();
 
 	bool ImportVertices(const int num_vertices, const float *vertices);
 	bool ImportVerticesNormals(aiMesh *info);
@@ -73,6 +73,7 @@ public:
 	//INFO: 
 	uint id_texture = 0u;
 
+	friend class ModuleImport;
 	friend class ModuleResourceManager;
 };
 

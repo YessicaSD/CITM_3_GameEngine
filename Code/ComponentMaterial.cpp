@@ -24,16 +24,23 @@ ComponentMaterial::ComponentMaterial(GameObject * gameobject) : Component(gameob
 bool ComponentMaterial::SetTexture(ResourceTexture * texture)
 {
 	bool ret = false;
+
+	if (this->texture != nullptr)
+	{
+		this->texture->StopUsingResource();
+	}
+
 	if (component_mesh->mesh != nullptr
 		&& component_mesh->mesh->uv_coord != nullptr
 		&& texture != nullptr)
 	{
 		this->texture = texture;
+		texture->StartUsingResource();
 		ret = true;
 	}
 	else
 	{
-		LOG("Can't set the texture to this object");
+		LOG("Can't set the texture to this GameObject");
 	}
 
 	return ret;
