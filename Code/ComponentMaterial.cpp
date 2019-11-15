@@ -86,25 +86,15 @@ void ComponentMaterial::PropertiesEditor()
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
 		if (texture != nullptr)
-		{
-			
 			ImGui::Image((void*)(intptr_t)texture->buffer_id, ImVec2(100, 100));
-			
+		{
 			float child_height = ImGui::GetTextLineHeight() + style.ScrollbarSize + style.WindowPadding.y * 2.0f;
 			int i = 0;
 			ImGuiWindowFlags child_flags = ImGuiWindowFlags_HorizontalScrollbar;
 			ImGui::BeginChild(ImGui::GetID((void*)(intptr_t)i), ImVec2(-100, child_height), true, child_flags);
-		
-			ImGui::Text("Path: %s", texture->path.c_str());
 			ImGui::EndChild();
-			
 		}
 	}
-
-
-
-
-
 }
 
 void ComponentMaterial::SetMeshComponent(ComponentMesh * component_mesh)

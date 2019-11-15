@@ -31,7 +31,7 @@ bool ModuleTexture::Init(JSONFile * module_file)
 }
 
 //Saves the texture as DDS in the Library folder (faster to use)
-ResourceTexture* ModuleTexture::ImportTexture(const char * path)
+ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path)
 {
 	ResourceTexture* resource_texture = nullptr;
 
@@ -41,24 +41,15 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * path)
 	ilBindImage(image_id);
 	//ilutRenderer(ILUT_OPENGL);
 
-	if (ilLoadImage(path) == IL_TRUE)
+	if (ilLoadImage(asset_path) == IL_TRUE)
 	{
 		resource_texture = App->resource_manager->CreateNewResource<ResourceTexture>();
-		resource_texture->path = path;
-		resource_texture->buffer_id = ilutGLBindTexImage();
+
 		resource_texture->height = ilGetInteger(IL_IMAGE_HEIGHT);
 		resource_texture->width = ilGetInteger(IL_IMAGE_WIDTH);
 		resource_texture->size = ilGetInteger(IL_IMAGE_SIZE_OF_DATA);
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		glBindTexture(GL_TEXTURE_2D, resource_texture->buffer_id);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, 0x8072, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glBindTexture(GL_TEXTURE_2D, 0);
 
-		//TODO: It just needs to load the data from the file, not to bind any buffers
+		//fill the data
 
 		//Then save file
 		resource_texture->SaveFileData();
@@ -70,7 +61,7 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * path)
 	else
 	{
 		auto error = ilGetError();
-		LOG("Failed to load texture with path: %s. Error: %s", path, ilGetString(error));
+		LOG("Failed to load texture with path: %s. Error: %s", asset_path, ilGetString(error));
 	}
 	//free(lump);
 

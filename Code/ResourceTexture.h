@@ -13,7 +13,6 @@ public:
 
 private:
 	ResourceTexture() {
-		path = "";
 	};
 
 	bool SaveFileData() override;
@@ -21,9 +20,10 @@ private:
 	bool ReleaseData() override;
 
 public:
-	uint buffer_id = 0u, size = 0u;
-	uint width = 0u, height = 0u;
-	std::string path;
+	uint buffer_id = 0u;
+	uint size = 0u;
+	uint width = 0u;
+	uint height = 0u;
 
 	friend class ModuleTexture;
 	friend class ModuleResourceManager;
