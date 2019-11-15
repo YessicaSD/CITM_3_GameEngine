@@ -48,6 +48,7 @@ void PanelHierarchy::DisplayChildren(ComponentTransform * transform)
 			(*iter)->open_in_hierarchy = false;
 		}
 		is_open = ImGui::TreeNodeEx((*iter)->gameobject->GetName(), node_flags);
+
 		if (is_selected)
 		{
 			ImGui::PopStyleColor();

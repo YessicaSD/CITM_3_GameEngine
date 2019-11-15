@@ -23,8 +23,24 @@ void PanelScene::Draw()
 {
 	
 	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
-	ImGui::Begin("Scene");
+	ImGui::Begin("Scene",NULL, ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar);
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::Button("World"))
+		{
+			guizmo_mode = ImGuizmo::WORLD;
+		}
+		if (ImGui::Button("Local"))
+		{
+			guizmo_mode = ImGuizmo::LOCAL;
+		}
+		ImGui::EndMenuBar();
+	}
 
+
+	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
+	
+	
 	 width = ImGui::GetWindowWidth();
 	 height = ImGui::GetWindowHeight();
 	
@@ -50,6 +66,14 @@ void PanelScene::Draw()
 	}
 
 	ImGui::End();
+	/*if(ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("Menu"))
+		{
+			ImGui::EndMenu();
+		}
+		ImGui::EndMenuBar();
+	}*/
 	ImGui::PopStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding);
 }
 

@@ -127,7 +127,7 @@ update_status ModuleGui::PostUpdate()
 	}
 	if (showMenuImGui)
 	{
-		ImGui::ShowDemoWindow();
+		ImGui::ShowDemoWindow(&showMenuImGui);
 	}
 
 	ImGui::Render();
