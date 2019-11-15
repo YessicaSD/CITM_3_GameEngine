@@ -47,8 +47,6 @@ private:
 	AABB aabb;
 
 public:
-
-
 	//Vertices
 	uint id_vertex = 0u; // unique vertex in VRAM
 	uint num_vertices = 0u;

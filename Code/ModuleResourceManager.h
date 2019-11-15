@@ -1,5 +1,5 @@
 #ifndef __MODULE_RESOURCE_MANAGER_H__
-#define __MODULE_RESOURCE_MANAGER__H__
+#define __MODULE_RESOURCE_MANAGER_H__
 
 #include <vector>
 #include <map>

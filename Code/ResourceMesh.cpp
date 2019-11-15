@@ -77,7 +77,9 @@ bool ResourceMesh::LoadFileData()
 	uint path_size = 250u;
 	char * path = new char[path_size];
 	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, "mesh", uid, "hinata_mesh");
+	
 	bool ret = App->file_system->LoadFile(path, &data);
+
 	RELEASE_ARRAY(path);
 
 	if (ret)

@@ -151,7 +151,7 @@ ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material)
 		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &aipath, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
 			std::string path = ASSETS_FOLDER + std::string(aipath.data);
-			ret = App->texture->LoadTexture(path.c_str());
+			ret = App->texture->ImportTexture(path.c_str());
 		}
 		else
 		{
@@ -252,7 +252,7 @@ void ModuleImport::EventRequest(const Event &event)
 		else if (extension == "dds" || extension == "png" || extension == "jpg")
 		{
 			//Import texture onto assets folder
-			App->texture->LoadTexture(event.path);
+			App->texture->ImportTexture(event.path);
 		}
 		else
 		{

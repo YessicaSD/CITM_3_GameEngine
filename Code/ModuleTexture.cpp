@@ -31,93 +31,15 @@ bool ModuleTexture::Init(JSONFile * module_file)
 }
 
 //Saves the texture as DDS in the Library folder (faster to use)
-bool ModuleTexture::ImportTexture(const char * path)
+ResourceTexture* ModuleTexture::ImportTexture(const char * path)
 {
-	ILuint size;
-	ILubyte * data;
-	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
-	size = ilSaveL(IL_DDS, NULL, 0);
-	if (size > 0)
-	{
-		data = new ILubyte[size];
-		if (ilSaveL(IL_DDS, data, size) > 0)
-		{
-			//TODO: Finish this function
-		}
-	}
-	return true;
-}
+	ResourceTexture* resource_texture = App->resource_manager->CreateNewResource<ResourceTexture>();
 
-ResourceTexture* ModuleTexture::LoadTexture(const char* path)
-{
-	ResourceTexture* new_texture = nullptr;
+	//Import data from path first
 
-	std::map<std::string, ResourceTexture*>::iterator iter= textures.find(path);
-	if (iter!= textures.end())
-	{
-		return (*iter).second;
-	}
-	if (path != nullptr && path != "")
-	{
-		uint devil_id = 0u;
-		ilGenImages(1, &devil_id);
-		ilBindImage(devil_id);
-		//ilutRenderer(ILUT_OPENGL);
-
-		if (ilLoadImage(path) == IL_FALSE)
-		{
-			auto error = ilGetError();
-			LOG("Failed to load texture with path: %s. Error: %s", path, ilGetString(error));
-			return new_texture;
-		}
-		else
-		{
-			new_texture = App->resource_manager->CreateNewResource<ResourceTexture>();
-			new_texture->path = path;
-			new_texture->buffer_id = ilutGLBindTexImage();
-			new_texture->height  = ilGetInteger(IL_IMAGE_HEIGHT);
-			new_texture->width = ilGetInteger(IL_IMAGE_WIDTH);
-			new_texture->size = ilGetInteger(IL_IMAGE_SIZE_OF_DATA);
-			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-			glBindTexture(GL_TEXTURE_2D, new_texture->buffer_id);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, 0x8072, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-			textures[path] = new_texture;
-
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			new_texture->SaveFileData();
-		}
-		//free(lump);
-		ilDeleteImages(1, &devil_id);
-		
-		
-	}
-	else
-	{
-		LOG("Invalid path");
-	}
-	
-
-	return new_texture;
-}
-
-bool ModuleTexture::CleanUp()
-{
-	for (std::map<std::string, ResourceTexture*>::iterator iter = textures.begin(); iter!= textures.end();++iter)
-	{
-		if (((*iter).second))
-		{
-			delete ((*iter).second);
-			(*iter).second = nullptr;
-		}
-	}
-	textures.clear();
-	return true;
+	//Then save file
+	resource_texture->SaveFileData();
+	return resource_texture;
 }
 
 void ModuleTexture::CreateCheckerTexture()
@@ -153,6 +75,4 @@ void ModuleTexture::CreateCheckerTexture()
 		checkImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,
 		checkImage);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	
-	textures["checkTexture"] = new_texture;
 }

@@ -7,21 +7,14 @@ class ResourceTexture;
 
 class ModuleTexture : public Module
 {
-private:
-	std::map<std::string, ResourceTexture*> textures;
-
 public:
 	ModuleTexture(const char * name);
 	bool Init(JSONFile * module_file) override;
-	bool ImportTexture(const char * path);
-	ResourceTexture* LoadTexture(const char* path);
-	bool CleanUp() override;
-	friend class PanelAssets;
+	ResourceTexture* ImportTexture(const char * path);
 	void CreateCheckerTexture();
+	
+	friend class PanelAssets;
 };
-
-
-
 
 #endif // !MODULE_TEXTURE
 

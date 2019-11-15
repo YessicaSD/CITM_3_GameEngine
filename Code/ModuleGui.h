@@ -68,7 +68,7 @@ public:
 		return new_panel;
 	}
 
-	ComponentTransform* GetSelecteTransform()
+	ComponentTransform* GetSelectedTransform()
 	{
 		return selected_transform;
 	}
