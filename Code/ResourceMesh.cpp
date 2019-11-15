@@ -124,13 +124,27 @@ bool ResourceMesh::LoadFileData()
 bool ResourceMesh::ReleaseData()
 {
 	RELEASE_ARRAY(uv_coord);
+	glDeleteBuffers(1, &id_uv);
+	id_uv = 0u;
+
+	RELEASE_ARRAY(faces_normals);
+	//glDeleteBuffer(1, &id_faces_normals);
+	//id_faces_normals = 0u;
+
 	RELEASE_ARRAY(indices);
-	RELEASE_ARRAY(vertices);
-
 	num_indices = 0u;
-	num_vertices = 0u;
+	num_faces = 0u;
+	glDeleteBuffers(1, &id_indice);
+	id_indice = 0u;
 
-	//TODO: Delete buffers
+	RELEASE_ARRAY(vertex_normals);
+	glDeleteBuffers(1, &id_vertex_normals);
+	id_vertex_normals = 0u;
+
+	RELEASE_ARRAY(vertices);
+	num_vertices = 0u;
+	glDeleteBuffers(1, &id_vertex);
+	id_vertex = 0u;
 
 	return true;
 }
