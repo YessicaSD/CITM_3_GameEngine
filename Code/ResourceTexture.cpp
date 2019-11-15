@@ -37,6 +37,8 @@ bool ResourceTexture::SaveFileData()
 
 bool ResourceTexture::LoadFileData()
 {
+	//Load the dds we created in SaveFileData
+
 	return true;
 }
 

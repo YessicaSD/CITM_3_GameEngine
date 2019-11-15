@@ -58,8 +58,12 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * path)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
+		//TODO: It just needs to load the data from the file, not to bind any buffers
+
 		//Then save file
 		resource_texture->SaveFileData();
+
+		//TODO: Delete all the data after saving the image as dds
 
 		ilDeleteImages(1, &image_id);
 	}
