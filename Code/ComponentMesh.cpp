@@ -34,7 +34,7 @@ ComponentMesh::ComponentMesh(GameObject *gameobject) : Component(gameobject)
 
 ComponentMesh::~ComponentMesh()
 {
-	CleanUp();
+	gameobject->RemoveComponent<ComponentMaterial>();
 }
 
 void ComponentMesh::OnPostUpdate()
@@ -196,12 +196,12 @@ void ComponentMesh::CleanUp()
 {
 	gameobject->RemoveComponent<ComponentMaterial>();
 
-	if (mesh)
+	if (mesh != nullptr)
 	{
-		delete mesh;
+		mesh->StopUsingResource();
 		mesh = nullptr;
 	}
-	
+	//TODO: Go to the gameobject and remove this component
 }
 
 void ComponentMesh::DrawOutline()

@@ -24,8 +24,11 @@ struct RenderMode
 class ComponentMesh : public Component
 {
 	CLASS_DECLARATION(ComponentMesh)
-public:
+
+private:
 	ComponentMesh(GameObject *gameobject);
+
+public:
 	~ComponentMesh();
 	void OnPostUpdate() override;
 	void DrawVertexNormal();
@@ -53,6 +56,7 @@ private:
 	float point_color[4];
 	float point_size = 1.f;
 
+	friend class GameObject;
 	friend class MenuCreateShape;
 	friend class ComponentMaterial;
 };

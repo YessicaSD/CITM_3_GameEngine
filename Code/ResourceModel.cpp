@@ -108,22 +108,5 @@ bool ResourceModel::ReleaseData()
 		}
 		nodes.clear();
 	}
-
-	if (meshes_uid.size() > 0u)
-	{
-		for (int i = meshes_uid.size() - 1; i >= 0; --i)
-		{
-			App->resource_manager->GetResource(meshes_uid[i])->StopUsingResource();
-		}
-	}
-
-	if (textures_uid.size() > 0u)
-	{
-		for (int i = textures_uid.size() - 1; i >= 0; --i)
-		{
-			App->resource_manager->GetResource(textures_uid[i])->StopUsingResource();
-		}
-	}
-
 	return true;
 }

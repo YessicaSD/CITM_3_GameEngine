@@ -9,11 +9,13 @@ class ResourceTexture;
 class ComponentMaterial : public Component
 {
 	CLASS_DECLARATION(ComponentMaterial)
+
 private:
 	ComponentMaterial(GameObject * gameobject, ComponentMesh* component_mesh );
 	ComponentMaterial(GameObject * gameobject);
 
 public:
+	void CleanUp() override;
 	bool SetTexture(ResourceTexture* texture);
 	void DisableGLModes();
 	void RenderTexture();

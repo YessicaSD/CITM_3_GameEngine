@@ -45,12 +45,15 @@ public:
 	bool RemoveComponent()
 	{
 		if (components.empty())
+		{
 			return false;
+		}
 
 		for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
 		{
 			if ((*iter)->IsClassType(ComponentType::type))
 			{
+				(*iter)->CleanUp();
 				delete (*iter);
 				components.erase(iter);
 				return true;

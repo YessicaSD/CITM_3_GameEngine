@@ -21,6 +21,15 @@ ComponentMaterial::ComponentMaterial(GameObject * gameobject) : Component(gameob
 {
 }
 
+void ComponentMaterial::CleanUp()
+{
+	if (texture != nullptr)
+	{
+		texture->StopUsingResource();
+		texture = nullptr;
+	}
+}
+
 bool ComponentMaterial::SetTexture(ResourceTexture * texture)
 {
 	bool ret = false;
@@ -54,7 +63,6 @@ void ComponentMaterial::DisableGLModes()
 		glDisable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
-
 }
 
 void ComponentMaterial::RenderTexture()

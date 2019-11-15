@@ -51,7 +51,7 @@ bool ModuleImport::Start(JSONFile * config)
 	return true;
 }
 
-//Creates an AssetMesh (our custom format for 3d meshes) from an fbx
+//INFO: Creates a .hinata_model (our custom format for 3d models) from an fbx
 ResourceModel * ModuleImport::ImportModel(const char *path)
 {
 	ResourceModel * resource_model = nullptr;
@@ -94,11 +94,12 @@ ResourceModel * ModuleImport::ImportModel(const char *path)
 		}
 
 		ImportFBXNodes(resource_model, new ResourceModelNode(), scene->mRootNode, resource_model->meshes_uid, resource_model->textures_uid, fbx_meshes_textures, INVALID_MODEL_ARRAY_INDEX);
+		aiReleaseImport(scene);
+
 		resource_model->SaveFileData();
 
-		//Delete all the data from the resource (without using ReleaseData, which calls StopUsingResource)
-
-		aiReleaseImport(scene);
+		//Delete all the data from the Resource (when it has just been imported, there is no object referencing it)
+		resource_model->ReleaseData();
 	}
 	else
 	{
