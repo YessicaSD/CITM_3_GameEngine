@@ -26,8 +26,9 @@ private:
 	void GetSizeWithAspectRatio(int current_width, int current_height, int wanted_width, int wanted_height, int& new_width, int& new_height);
 	ImGuizmo::OPERATION guizmo_op = ImGuizmo::TRANSLATE;
 	ImGuizmo::MODE      guizmo_mode = ImGuizmo::LOCAL;
-
+	bool is_using_gizmo = false;
 	friend class ModuleScene;
+	friend class ModuleCamera3D;
 };
 
 #endif

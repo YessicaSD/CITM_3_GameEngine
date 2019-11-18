@@ -84,21 +84,22 @@ void PanelScene::DrawGizmo(ComponentCamera* camera, ComponentTransform* go)
 
 	//ImGuizmo::BeginFrame();
 	ImGuizmo::Enable(true);
-	float4x4 model = go->GetGlobalMatrix();
-	model.Transpose();
-	float4x4 delta;
+	float4x4 model = go->GetGlobalMatrix().Transposed();
 
-	ImGuiIO& io = ImGui::GetIO();
 	ImGuizmo::SetRect(float(ImGui::GetCursorScreenPos().x), float(ImGui::GetCursorScreenPos().y), float(width), float(height));
 	ImGuizmo::SetDrawlist();
 
 	if (guizmo_op == ImGuizmo::OPERATION::SCALE && guizmo_mode != ImGuizmo::MODE::LOCAL)
 		guizmo_mode = ImGuizmo::MODE::LOCAL;
 
-	ImGuizmo::Manipulate((const float*)& view, (const float*)& proj.Transposed(), guizmo_op, guizmo_mode, (float*)& model, (float*)& delta);
-
-	if (ImGuizmo::IsUsing() && !delta.IsIdentity())
+	ImGuizmo::Manipulate((const float*)& view, (const float*)& proj.Transposed(), guizmo_op, guizmo_mode, (float*)& model);
+	if (ImGuizmo::IsOver())
 	{
+		is_using_gizmo = true;
+	}
+	if (ImGuizmo::IsUsing())
+	{
+		
 		go->SetLocalMatrix(model.Transposed());
 	}
 

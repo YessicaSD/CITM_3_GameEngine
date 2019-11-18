@@ -130,7 +130,7 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 	
 
-	if (App->gui->panel_scene->mouse_is_hovering && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->gui->panel_scene->mouse_is_hovering && !App->gui->panel_scene->is_using_gizmo && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		float width = App->gui->panel_scene->width;
 		float height = App->gui->panel_scene->height;
@@ -144,8 +144,9 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			App->gui->SetSelectedGameObjec(hit.transform);
 		}
-
+		
 	}
+	App->gui->panel_scene->is_using_gizmo = false;
 	//current_camera->UpdateDrawingRepresentation();
 
 	return UPDATE_CONTINUE;
