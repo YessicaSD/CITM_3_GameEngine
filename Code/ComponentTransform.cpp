@@ -175,6 +175,24 @@ void ComponentTransform::SetLocalMatrix(const float4x4& matrix)
 	Quat rotation;
 	matrix.Decompose(position, rotation, scale);
 	this->SetTransform(position, scale, rotation);
+
+	
+}
+
+void ComponentTransform::SetGlobalMatrix(const float4x4 & matrix)
+{
+	if (parent != nullptr)
+	{
+		math::float4x4 new_matrix = parent->global_matrix.Inverted();
+		new_matrix = new_matrix * matrix;
+
+		float3 aux_position, aux_scale;
+		Quat aux_rotation;
+
+		new_matrix.Decompose(aux_position, aux_rotation, aux_scale);
+
+		SetTransform(position, scale, aux_rotation);
+	}
 }
 
 void ComponentTransform::SetSelected(bool state)

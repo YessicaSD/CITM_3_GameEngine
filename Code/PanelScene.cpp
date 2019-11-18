@@ -91,6 +91,10 @@ void PanelScene::DrawGizmo(ComponentCamera* camera, ComponentTransform* go)
 	ImGuiIO& io = ImGui::GetIO();
 	ImGuizmo::SetRect(float(ImGui::GetCursorScreenPos().x), float(ImGui::GetCursorScreenPos().y), float(width), float(height));
 	ImGuizmo::SetDrawlist();
+
+	if (guizmo_op == ImGuizmo::OPERATION::SCALE && guizmo_mode != ImGuizmo::MODE::LOCAL)
+		guizmo_mode = ImGuizmo::MODE::LOCAL;
+
 	ImGuizmo::Manipulate((const float*)& view, (const float*)& proj.Transposed(), guizmo_op, guizmo_mode, (float*)& model, (float*)& delta);
 
 	if (ImGuizmo::IsUsing() && !delta.IsIdentity())
