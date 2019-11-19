@@ -17,6 +17,10 @@ void PanelAssets::Draw()
 	ImGui::Begin(name.c_str());
 	//TODO: Show the name of the files in the assets folder
 	//If they are dragged, they are really dragging the custom formats
+	for (auto iter = App->resource_manager->assets.begin(); iter != App->resource_manager->assets.end(); ++iter)
+	{
+		ImGui::Text((*iter).name);
+	}
 	ImGui::End();
 }
 

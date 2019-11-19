@@ -8,8 +8,11 @@
 #include "Globals.h"
 #include "Resource.h"
 
+class ResourceTexture;
+
 struct Asset {
 	ResourceTexture* image;
+	const char* name;
 	//Childs in meta that can be expanded
 };
 
@@ -40,7 +43,7 @@ private:
 
 	//Used for the "Assets" window
 	//Tree structure?
-	std::list<Asset> assets;
+	std::vector<Asset> assets;
 
 	friend class PanelAssets;
 };

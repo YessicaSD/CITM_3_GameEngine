@@ -4,6 +4,13 @@ ModuleResourceManager::ModuleResourceManager(const char * name) : Module(true, n
 {
 }
 
+//TODO:
+//Start()
+//Check for new assets
+
+//ModuleGUI
+//+ Refresh button to check for new resources
+
 Resource * ModuleResourceManager::GetResource(UID uid)
 {
 	Resource * resource = nullptr;
