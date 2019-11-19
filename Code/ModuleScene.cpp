@@ -197,6 +197,10 @@ void ModuleScene::LoadStaticObjects()
 {
 	std::vector<ComponentTransform*> static_objects;
 	root_gameobject->transform->GetStaticObjects(static_objects);
+	for (std::vector<ComponentTransform*>::iterator iter = static_objects.begin(); iter < static_objects.end(); ++iter)
+	{
+		octree.Insert((*iter));
+	}
 }
 
 

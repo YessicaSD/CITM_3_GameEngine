@@ -142,17 +142,6 @@ update_status ModuleInput::PreUpdate()
 			case SDL_DROPFILE:
 				Event new_event(Event::EVENT_TYPE::DROPPED_FILE, e.drop.file);
 				App->EventRequest(new_event);
-
-				//dropped_filedir=e.drop.file;
-				//SDL_ShowSimpleMessageBox(
-				//	SDL_MESSAGEBOX_INFORMATION,
-				//	"File dropped on window",
-				//	dropped_filedir,
-				//	App->window->window
-				//);
-				
-					//SDL_free(dropped_filedir);
-
 				break;
 		}
 	}
