@@ -1,11 +1,12 @@
 #ifndef OCTREE_H_
 #define OCTREE_H_
 #include "MathGeoLib/include/Geometry/AABB.h"
+#include "CubeLine.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include <list>
 
-#define MAX_BUCKET_SIZE 5
+#define MAX_BUCKET_SIZE 1
 #define MAX_SUBDIVISION 15
 
 /*
@@ -34,20 +35,22 @@ class OctreeNode
 public:
 	OctreeNode(const AABB& limits);
 	void Insert(ComponentTransform* transform);
-
+	void Erase(ComponentTransform* transform);
+	
 
 private:
 	AABB limits;
-
+	CubeLine box;
 	uint division_level = 0;
 	bool is_divided  = false;
 
 	std::list<ComponentTransform*> objects;
-	OctreeNode* parent = nullptr;
+	
 	OctreeNode* childs[8];
 
 	void CreateChildsNodes();
 	void RedistributeObjects();
+	void Draw();
 
 	friend class Octree;
 };
@@ -57,8 +60,9 @@ class Octree
 public:
 	void SetLimits(const AABB& box);
 	void Insert(ComponentTransform* go);
+	void Erase(ComponentTransform* go);
 	void Clear();
-
+	void Draw();
 private:
 	OctreeNode* root_node = nullptr;
 };

@@ -8,6 +8,8 @@
 #include "Module.h"
 #include "Globals.h"
 #include "GameObject.h"
+#include "Octree.h"
+
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "imGuizmo/ImGuizmo.h"
 struct ImVec4;
@@ -25,15 +27,13 @@ public:
 	bool CleanUp();
 	void GameObjectPostUpdateRecursive(ComponentTransform * object);
 	bool IntersectRay(LineSegment* ray, RaycastHit& hit);
-
+	Octree octree;
 private:
 	void DeleteGameObject(GameObject* gameobject);
 	void GetIntersectBox(ComponentTransform * object, LineSegment* ray, std::vector<RaycastHit>& out_objects);
 	bool TestWithTriangles(LineSegment * ray, std::vector<RaycastHit>& out_objects, RaycastHit& hit_out);
 	LineSegment ray;
-
 	
-
 
 public:
 	//All gameobjects are children of the root gameobject

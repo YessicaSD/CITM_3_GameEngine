@@ -35,6 +35,8 @@ bool ModuleScene::Start(JSONFile * config)
 {
 	//LOG("Loading Intro assets");
 	root_gameobject = new GameObject("Root", nullptr);
+	octree.SetLimits(AABB(float3(-100, 0, -100), float3(100, 30, 100)));
+
 	bool ret = true;
 	camera = new GameObject("Camera", root_gameobject->transform);
 	component_camera = camera->CreateComponent<ComponentCamera>();
@@ -89,12 +91,6 @@ void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 	{
 		GameObjectPostUpdateRecursive((*iter));
 	}
-
-
-
-	
-
-	
 }
 bool Compare(RaycastHit & a, RaycastHit & b)
 {
@@ -181,6 +177,8 @@ bool ModuleScene::TestWithTriangles(LineSegment * ray, std::vector<RaycastHit>& 
 update_status ModuleScene::PostUpdate()
 {
 	App->renderer3D->scene_fbo.StartRender(App->gui->panel_scene->current_viewport_size);
+
+	octree.Draw();
 
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;

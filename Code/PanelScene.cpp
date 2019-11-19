@@ -100,7 +100,7 @@ void PanelScene::DrawGizmo(ComponentCamera* camera, ComponentTransform* go)
 	if (ImGuizmo::IsUsing())
 	{
 		
-		go->SetLocalMatrix(model.Transposed());
+		go->SetGlobalMatrix(model.Transposed());
 	}
 
 }

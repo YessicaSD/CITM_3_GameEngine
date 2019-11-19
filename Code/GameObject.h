@@ -13,7 +13,7 @@ class PanelHierarchy;
 class GameObject
 {
 public:
-	bool is_static = false;
+
 
 	GameObject(std::string name, ComponentTransform * parent);
 	~GameObject();

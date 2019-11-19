@@ -25,6 +25,8 @@ public:
 	void OnPostUpdate() override;
 	void PropertiesEditor() override;
 
+	void SwitchedStatic();
+
 	void SetTransform(float3& position, float3& scale, float3 & rotation);
 	void SetTransform(float3& position, float3& scale, Quat & qrotation);
 	void SetPosition(const float3 & position);
@@ -57,6 +59,7 @@ public:
 	AABB GetAABB();
 
 	bool open_in_hierarchy = false;
+	bool is_static = false;
 private:
 	void RecalculateMatrices();
 	void UpdateChildrenMatrices();

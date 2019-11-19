@@ -6,6 +6,8 @@
 #include "Globals.h"
 
 #include "glew/include/GL/glew.h"
+#include "Application.h"
+#include "ModuleScene.h"
 
 
 
@@ -49,6 +51,11 @@ void ComponentTransform::OnPostUpdate()
 
 void ComponentTransform::PropertiesEditor()
 {
+	ImGui::SameLine();
+	if (ImGui::Checkbox("Static", &is_static))
+	{
+		SwitchedStatic();
+	}
 	bool position_changed = false,
 		 rotation_changed = false,
 		 scale_changed = false;
@@ -72,6 +79,18 @@ void ComponentTransform::PropertiesEditor()
 	if (position_changed || rotation_changed || scale_changed)
 	{
 		SetTransform(position, scale, euler_rotation);
+	}
+}
+
+void ComponentTransform::SwitchedStatic()
+{
+	if (is_static)
+	{
+		App->scene->octree.Insert(this);
+	}
+	else
+	{
+
 	}
 }
 
@@ -173,17 +192,15 @@ void ComponentTransform::SetScale(const float3 &scale)
 	RecalculateMatrices();
 }
 
-void ComponentTransform::SetLocalMatrix(const float4x4& matrix)
+void ComponentTransform::SetGlobalMatrix(const float4x4& matrix)
 {
 	float3 position, scale;
 	Quat rotation;
 	matrix.Decompose(position, rotation, scale);
 	this->SetTransform(position, scale, rotation);
-
-	
 }
 
-void ComponentTransform::SetGlobalMatrix(const float4x4 & matrix)
+void ComponentTransform::SetLocalMatrix(const float4x4 & matrix)
 {
 	if (parent != nullptr)
 	{

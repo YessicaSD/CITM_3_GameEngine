@@ -49,8 +49,8 @@ private:
 	Shortcut * navigate_fast = nullptr;
 	Shortcut * focus_object = nullptr;
 
-	ComponentCamera* scene_camera = nullptr;
-	ComponentCamera* current_camera = nullptr;
+	ComponentCamera * scene_camera = nullptr;
+	ComponentCamera * current_camera = nullptr;
 
 	LineSegment picking;
 	int camera_combo;

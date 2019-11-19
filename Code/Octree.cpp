@@ -1,10 +1,12 @@
 #include "Octree.h"
 #include "Globals.h"
 #include "mmgr/mmgr.h"
-
+#include "MathGeoLib/include/Math/float3.h"
 OctreeNode::OctreeNode(const AABB & limits): limits(limits)
 {
-	
+	float3 corners[8];
+	limits.GetCornerPoints(corners);
+	box.SetVetices((float*)&corners);
 }
 
 void OctreeNode::Insert(ComponentTransform * transform)
@@ -21,12 +23,39 @@ void OctreeNode::Insert(ComponentTransform * transform)
 			CreateChildsNodes();
 		}
 		objects.push_back(transform);
+		RedistributeObjects();
+	}
+}
 
+void OctreeNode::Erase(ComponentTransform * transform)
+{
+	std::list<ComponentTransform*>::iterator it = std::find(objects.begin(), objects.end(), transform);
+	if (it != objects.end())
+		objects.erase(it);
+
+	if (is_divided == true)
+	{
+		for (int i = 0; i < 8; ++i)
+			childs[i]->Erase(transform);
+	}
+
+}
+
+void OctreeNode::Draw()
+{
+	box.Draw();
+	if (is_divided)
+	{
+		for(uint i=0; i<8; ++i)
+		{
+			childs[i]->Draw();
+		}
 	}
 }
 
 void OctreeNode::CreateChildsNodes()
 {
+	is_divided = true;
 	float3 size(limits.Size());
 	float3 new_size(size.x*0.5f, size.y*0.5f, size.z*0.5f); 
 	
@@ -118,7 +147,7 @@ void OctreeNode::RedistributeObjects()
 		else
 		{
 			it = objects.erase(it);
-			for (int i = 0; i < 4; ++i)
+			for (int i = 0; i < 8; ++i)
 				if (intersects[i]) childs[i]->Insert(go);
 		}
 	}
@@ -140,7 +169,18 @@ void Octree::Insert(ComponentTransform * go)
 	}
 }
 
+void Octree::Erase(ComponentTransform * go)
+{
+	if (root_node != nullptr)
+		root_node->Erase(go);
+}
+
 void Octree::Clear()
 {
 	RELEASE(root_node);
+}
+
+void Octree::Draw()
+{
+	root_node->Draw();
 }
