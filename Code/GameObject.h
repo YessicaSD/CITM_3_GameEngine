@@ -21,6 +21,7 @@ public:
 	bool OnUpdate(float dt);
 	bool OnPostUpdate();
 	void SetActive(bool value);
+	
 
 	template <class ComponentClass>
 	ComponentClass * CreateComponent()

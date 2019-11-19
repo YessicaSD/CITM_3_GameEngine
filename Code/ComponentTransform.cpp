@@ -90,7 +90,7 @@ void ComponentTransform::SwitchedStatic()
 	}
 	else
 	{
-
+		App->scene->RecreateOctree();
 	}
 }
 
@@ -326,4 +326,20 @@ void ComponentTransform::DrawAxis()
 AABB ComponentTransform::GetAABB()
 {
 	return bounding_box.GetAABB();
+}
+
+void ComponentTransform::GetStaticObjects(std::vector<ComponentTransform*> static_objects)
+{
+	if (is_static)
+	{
+		static_objects.push_back(this);
+	}
+
+	if (children.size())
+	{
+		for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
+		{
+			(*iter)->GetStaticObjects(static_objects);
+		}
+	}
 }

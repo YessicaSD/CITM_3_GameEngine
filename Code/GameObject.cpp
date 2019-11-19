@@ -96,3 +96,5 @@ void GameObject::SetActive(bool value)
 {
 	active = value;
 }
+
+

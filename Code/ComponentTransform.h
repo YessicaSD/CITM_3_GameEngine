@@ -58,6 +58,8 @@ public:
 	void DrawAxis();
 	AABB GetAABB();
 
+	void GetStaticObjects(std::vector<ComponentTransform*> static_objects);
+
 	bool open_in_hierarchy = false;
 	bool is_static = false;
 private:
@@ -86,6 +88,7 @@ private:
 	friend class ModuleImport;
 	friend class PanelHierarchy;
 	friend class ModuleScene;
+	
 };
 #endif // !TRANSFORM_H_
 

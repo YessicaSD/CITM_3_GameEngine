@@ -110,6 +110,26 @@ bool ModuleScene::IntersectRay(LineSegment * ray, RaycastHit& hit)
 
 }
 
+void ModuleScene::RecreateOctree()
+{
+	CreateOctree();
+	LoadStaticObjects();
+}
+
+void ModuleScene::CreateOctree()
+{
+	const float3 center(0.0f, 0.0f, 0.0f);
+	const float3 size(OCTREE_X_SIZE, OCTREE_Y_SIZE, OCTREE_Z_SIZE);
+	AABB boundary;
+	boundary.SetFromCenterAndSize(center, size);
+	octree.SetLimits(boundary);
+}
+
+void ModuleScene::GetStaticObjects(std::vector<ComponentTransform*>& static_objects)
+{
+	
+}
+
 
 
 void ModuleScene::DeleteGameObject(GameObject * gameobject)
@@ -171,6 +191,12 @@ bool ModuleScene::TestWithTriangles(LineSegment * ray, std::vector<RaycastHit>& 
 		}
 	}
 	return false;
+}
+
+void ModuleScene::LoadStaticObjects()
+{
+	std::vector<ComponentTransform*> static_objects;
+	root_gameobject->transform->GetStaticObjects(static_objects);
 }
 
 

@@ -166,8 +166,9 @@ update_status Application::Update()
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 
-	std::vector<Module*>::iterator item = modules.begin();
 
+
+	std::vector<Module*>::iterator item = modules.begin();
 	while (item != modules.end() && ret == UPDATE_CONTINUE)
 	{
 		if ((*item)->IsActive())
@@ -268,6 +269,11 @@ void Application::DrawMsGraph(char * titleGraph, const ImVec2 &size)
 
 	sprintf_s(titleGraph, GRAPH_TITLE_SIZE, "Milliseconds: %i", ms_history[last_index]);
 	ImGui::PlotHistogram("##ASDFASF", ms_history, IM_ARRAYSIZE(ms_history), ms_graph_index, titleGraph, 0.0f, 15.0f, size);
+}
+
+void Application::PopEventsInQueue()
+{
+
 }
 
 bool Application::SaveModulesConfiguration()
@@ -415,6 +421,11 @@ void Application::DrawModulesConfigUi()
 			}
 		}
 	}
+}
+
+void Application::AddEvent(const Event & event)
+{
+	event_queue.push_back(event);
 }
 
 void Application::AddModule(Module* mod)
