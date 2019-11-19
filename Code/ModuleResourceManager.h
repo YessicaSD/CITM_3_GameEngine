@@ -8,6 +8,11 @@
 #include "Globals.h"
 #include "Resource.h"
 
+struct Asset {
+	ResourceTexture* image;
+	//Childs in meta that can be expanded
+};
+
 class ModuleResourceManager : public Module
 {
 public:
@@ -32,6 +37,13 @@ private:
 private:
 	UID last_uid = 0u;
 	std::map<UID, Resource*> resources;
+
+	//Used for the "Assets" window
+	//Tree structure?
+	std::list<Asset> assets;
+
+	friend class PanelAssets;
 };
+
 
 #endif

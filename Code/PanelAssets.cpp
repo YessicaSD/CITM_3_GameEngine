@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
+#include "ModuleResourceManager.h"
 
 PanelAssets::PanelAssets(std::string name, bool state, std::vector<SDL_Scancode> shortcuts):Panel(name, state, shortcuts)
 {
