@@ -71,10 +71,7 @@ void ModuleRenderer3D::DrawConfigurationUi()
 	ImGui::Text("Change background color:");
 
 	static float default_color_background[3] = { 3 / 255.F,19 / 255.F,29 / 255.F };
-	if (ImGui::ColorPicker3("MyColor##4", background_col))
-	{
-		glClearColor(background_col[0], background_col[1], background_col[2], 1);
-	}
+	
 	if (ImGui::Button("Reset"))
 	{
 		glClearColor(default_color_background[0], default_color_background[1], default_color_background[2], 1);

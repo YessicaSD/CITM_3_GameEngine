@@ -8,6 +8,7 @@
 #include "ComponentCamera.h"
 #include "glew\include\GL\glew.h"
 #include "PanelScene.h"
+#include "PanelGame.h"
 #include <gl\GL.h>
 
 #include "ModuleGui.h"
@@ -250,7 +251,7 @@ update_status ModuleScene::PostUpdate()
 	App->renderer3D->scene_fbo.EndRender();
 
 
-	App->renderer3D->game_fbo.StartRender(App->gui->panel_scene->current_viewport_size);
+	App->renderer3D->game_fbo.StartRender(App->gui->panel_game->current_viewport_size);
 	DrawObjects();
 	App->renderer3D->game_fbo.EndRender();
 	return UPDATE_CONTINUE;

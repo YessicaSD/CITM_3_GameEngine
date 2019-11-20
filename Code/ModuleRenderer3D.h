@@ -39,16 +39,8 @@ public:
 	void DrawConfigurationUi();
 public:
 	Light lights[MAX_LIGHTS];
-	mat3x3 NormalMatrix;
-	mat4x4 ModelMatrix, ViewMatrix, projection_matrix;
-
 	RenderTexture scene_fbo;
 	RenderTexture game_fbo;
-
-	float camera_near = 1.f;
-	float camera_far = 1000.f;
-	float fov = 60.f;
-	float background_col[3];
 
 	friend class PanelConfiguration;
 };
