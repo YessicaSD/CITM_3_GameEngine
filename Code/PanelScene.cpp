@@ -11,6 +11,7 @@
 #include "ComponentTransform.h"
 
 #include <algorithm>
+#include "Event.h"
 
 PanelScene::PanelScene(std::string name, bool active, std::vector<SDL_Scancode> shortcuts) :
 	Panel(name, active, shortcuts)
@@ -95,13 +96,22 @@ void PanelScene::DrawGizmo(ComponentCamera* camera, ComponentTransform* go)
 	ImGuizmo::Manipulate((const float*)& view, (const float*)& proj.Transposed(), guizmo_op, guizmo_mode, (float*)& model);
 	if (ImGuizmo::IsOver())
 	{
-		is_using_gizmo = true;
+		is_over_gizmo = true;
 	}
 	if (ImGuizmo::IsUsing())
 	{
-		
+		if (go->is_static == true)
+		{
+			update_octree_when_stop_moving = true;
+		}
 		go->SetGlobalMatrix(model.Transposed());
 	}
+	else if (update_octree_when_stop_moving)
+		{
+		update_octree_when_stop_moving = false;
+			App->AddEvent(Event (Event::UPDATE_OCTREE));
+		}
+
 
 }
 

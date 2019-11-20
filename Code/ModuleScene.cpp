@@ -9,15 +9,16 @@
 #include "glew\include\GL\glew.h"
 #include "PanelScene.h"
 #include <gl\GL.h>
+
 #include "ModuleGui.h"
 #include "ModuleInput.h"
-
 #include "ModuleGui.h"
 #include "ModuleInput.h"
 #include "ModuleImport.h"
 
 #include "RaycastHit.h"
 #include "imGuizmo/ImGuizmo.h"
+#include "Event.h"
 
 ModuleScene::ModuleScene(bool start_enabled) :
 	Module(start_enabled)
@@ -232,4 +233,12 @@ update_status ModuleScene::PostUpdate()
 	App->renderer3D->scene_fbo.EndRender();
 
 	return UPDATE_CONTINUE;
+}
+
+void ModuleScene::EventRequest(const Event & event)
+{
+	if (event.type == Event::UPDATE_OCTREE)
+	{
+		RecreateOctree();
+	}
 }

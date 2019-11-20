@@ -17,6 +17,7 @@
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "imGuizmo/ImGuizmo.h"
 struct ImVec4;
+struct Event;
 class ComponentCamera;
 
 class ModuleScene : public Module

@@ -167,7 +167,7 @@ update_status Application::Update()
 	PrepareUpdate();
 
 
-
+	PopEventsInQueue();
 	std::vector<Module*>::iterator item = modules.begin();
 	while (item != modules.end() && ret == UPDATE_CONTINUE)
 	{
