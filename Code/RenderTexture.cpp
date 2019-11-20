@@ -112,7 +112,8 @@ void RenderTexture::PrepareCameraFrustum(ImVec2& size)
 {
 	glMatrixMode(GL_PROJECTION);
 	//App->renderer3D->projection_matrix = perspective(60.0f, size.x / size.y, App->renderer3D->camera_near, App->renderer3D->camera_far);
-	
+	float ratio = size.x / size.y;
+	camera->SetAspectRatio(ratio);
 	glLoadMatrixf((GLfloat*)&camera->GetFrustrum().ProjectionMatrix().Transposed());
 }
 
