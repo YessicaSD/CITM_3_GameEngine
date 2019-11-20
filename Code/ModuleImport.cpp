@@ -52,10 +52,12 @@ bool ModuleImport::Start(JSONFile * config)
 }
 
 //INFO: Creates a .hinata_model (our custom format for 3d models) from an fbx
-ResourceModel * ModuleImport::ImportModel(const char *path)
+ResourceModel * ModuleImport::ImportModel(const char *asset_path)
 {
+	Timer import_timer;
+
 	ResourceModel * resource_model = nullptr;
-	const aiScene *scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+	const aiScene *scene = aiImportFile(asset_path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		resource_model = App->resource_manager->CreateNewResource<ResourceModel>();
@@ -100,11 +102,15 @@ ResourceModel * ModuleImport::ImportModel(const char *path)
 
 		//Delete all the data from the Resource (when it has just been imported, there is no object referencing it)
 		resource_model->ReleaseData();
+
+		LOG("Success importing model from: %s in %i ms.", asset_path, import_timer.Read());
 	}
 	else
 	{
-		LOG("Error loading scene %s", path);
+		LOG("Error importing model from: %s.", asset_path);
 	}
+
+	import_timer.ReadSec();
 
 	return resource_model;
 }
@@ -163,6 +169,8 @@ ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material)
 
 ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh)
 {
+	Timer import_timer;
+
 	ResourceMesh *resource_mesh = App->resource_manager->CreateNewResource<ResourceMesh>();
 	//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
 	resource_mesh->ImportVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
@@ -173,6 +181,8 @@ ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh)
 	resource_mesh->ImportUVs(assimp_mesh);
 
 	resource_mesh->SaveFileData();
+
+	LOG("Success importing mesh with uid: %llu in: %i ms.", resource_mesh->GetUID(), import_timer.Read());
 
 	return resource_mesh;
 }
@@ -248,6 +258,7 @@ void ModuleImport::EventRequest(const Event &event)
 		{
 			//Import mesh onto assets folder
 			ImportModel(event.path);
+			//TODO: Show the model in assets folder
 		}
 		else if (extension == "dds" || extension == "png" || extension == "jpg")
 		{

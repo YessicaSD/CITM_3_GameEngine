@@ -54,6 +54,8 @@ bool ResourceModel::SaveFileData()
 
 bool ResourceModel::LoadFileData()
 {
+	Timer load_timer;
+
 	char * data = nullptr;
 	uint path_size = 250u;
 	char * path = new char[path_size];
@@ -90,6 +92,9 @@ bool ResourceModel::LoadFileData()
 
 		nodes.push_back(node);
 	}
+
+	LOG("Success loading model nodes from: %s in: %i.", path, load_timer.Read());
+
 	return true;
 }
 

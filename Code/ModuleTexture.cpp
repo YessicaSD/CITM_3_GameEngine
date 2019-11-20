@@ -33,6 +33,8 @@ bool ModuleTexture::Init(JSONFile * module_file)
 //Saves the texture as DDS in the Library folder (faster to use)
 ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path)
 {
+	Timer import_timer;
+
 	ResourceTexture* resource_texture = App->resource_manager->CreateNewResource<ResourceTexture>();
 
 	//Import data from path first
@@ -45,6 +47,7 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path)
 		resource_texture->SaveFileData();
 		ilDeleteImages(1, &resource_texture->buffer_id);
 		resource_texture->buffer_id = 0u;
+		LOG("Success importing texture from: %s in: %i", asset_path, import_timer.Read());
 	}
 	else
 	{

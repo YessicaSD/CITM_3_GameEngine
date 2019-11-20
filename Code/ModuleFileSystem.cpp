@@ -125,7 +125,7 @@ bool ModuleFileSystem::SaveFile(const void * data, uint data_size, char ** path)
 		}
 		else
 		{
-			LOG("Successfully written file %s at %s", *path, PHYSFS_getWriteDir());
+			LOG("Success writing file %s at %s", *path, PHYSFS_getWriteDir());
 			ret = true;
 		}
 
@@ -136,7 +136,7 @@ bool ModuleFileSystem::SaveFile(const void * data, uint data_size, char ** path)
 	}
 	else
 	{
-		LOG("Errror while opening the file %s: %s", *path, PHYSFS_getLastError());
+		LOG("Error while opening the file %s: %s", *path, PHYSFS_getLastError());
 	}
 
 	return ret;
@@ -163,7 +163,7 @@ bool ModuleFileSystem::LoadFile(const char * path, char ** data)
 			}
 			else
 			{
-				LOG("Successfully read file %s at %s", path, PHYSFS_getWriteDir());
+				LOG("Success reading file %s at %s", path, PHYSFS_getWriteDir());
 				ret = true;
 			}
 		}

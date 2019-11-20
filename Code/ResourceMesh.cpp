@@ -72,16 +72,15 @@ bool ResourceMesh::SaveFileData()
 
 bool ResourceMesh::LoadFileData()
 {
+	Timer load_timer;
+
 	//Create path
 	char * data = nullptr;
 	uint path_size = 250u;
 	char * path = new char[path_size];
 	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, "mesh", uid, "hinata_mesh");
-	
+
 	bool ret = App->file_system->LoadFile(path, &data);
-
-	RELEASE_ARRAY(path);
-
 	if (ret)
 	{
 		char * cursor = data;
@@ -118,7 +117,11 @@ bool ResourceMesh::LoadFileData()
 		uv_coord = new float[num_uv];
 		CopyToMemory(uv_coord, &cursor, sizeof(float) * num_uv);
 		GenerateUVsBuffer();
+
+		LOG("Success loading mesh from: %s in: %i ms.", path, load_timer.Read());
 	}
+
+	RELEASE_ARRAY(path);
 
 	return ret;
 }

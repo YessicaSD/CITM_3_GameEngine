@@ -40,6 +40,8 @@ bool ResourceTexture::SaveFileData()
 //Load the dds we createXd in SaveFileData
 bool ResourceTexture::LoadFileData()
 {
+	Timer load_timer;
+
 	//Create path
 	uint path_size = 250u;
 	char * custom_format_path = new char[path_size];
@@ -72,12 +74,12 @@ bool ResourceTexture::LoadFileData()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-
+		LOG("Success loading texture from: %s in: %i ms.", custom_format_path, load_timer.Read());
 	}
 	else
 	{
 		auto error = ilGetError();
-		LOG("Failed to load texture with path: %s. Error: %s", custom_format_path, ilGetString(error));
+		LOG("Error loadig texture with path: %s. Error: %s", custom_format_path, ilGetString(error));
 	}
 	//free(lump);
 

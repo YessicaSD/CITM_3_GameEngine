@@ -297,7 +297,7 @@ bool Application::SaveModulesConfiguration()
 
 	if (ret)
 	{
-		LOG("Saved configuration successfully.");
+		LOG("Success saving configuration.");
 	}
 
 	return ret;
