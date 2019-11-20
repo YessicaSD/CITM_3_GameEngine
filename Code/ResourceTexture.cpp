@@ -23,7 +23,7 @@ bool ResourceTexture::SaveFileData()
 	ILuint size = size = ilSaveL(IL_DDS, NULL, 0);
 	if (size > 0)
 	{
-		//INFO: It loads the data of the image we've just Bind using BindImage at 
+		//INFO: It loads the data of the image we've just Bind using BindImage at ModuleTextures::ImportTexture()
 		ILubyte * data = new ILubyte[size];
 		if (ilSaveL(IL_DDS, data, size) > 0)
 		{
@@ -72,7 +72,7 @@ bool ResourceTexture::LoadFileData()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		//ilDeleteImages(1, &image_id);
+
 	}
 	else
 	{
@@ -86,8 +86,8 @@ bool ResourceTexture::LoadFileData()
 
 bool ResourceTexture::ReleaseData()
 {
-	glDeleteTextures(1, &buffer_id);
+	ilDeleteImages(1, &buffer_id);
 	buffer_id = 0u;
-	//TODO: Finish this function
+
 	return true;
 }

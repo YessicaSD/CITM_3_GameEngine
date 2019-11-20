@@ -33,19 +33,18 @@ bool ModuleTexture::Init(JSONFile * module_file)
 //Saves the texture as DDS in the Library folder (faster to use)
 ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path)
 {
-	ResourceTexture* resource_texture = nullptr;
+	ResourceTexture* resource_texture = App->resource_manager->CreateNewResource<ResourceTexture>();
 
 	//Import data from path first
-	uint image_id = 0u;
-	ilGenImages(1, &image_id);
-	ilBindImage(image_id);
+	ilGenImages(1, &resource_texture->buffer_id);
+	ilBindImage(resource_texture->buffer_id);
 	//ilutRenderer(ILUT_OPENGL);
 
 	if (ilLoadImage(asset_path) == IL_TRUE)
 	{
-		resource_texture = App->resource_manager->CreateNewResource<ResourceTexture>();
 		resource_texture->SaveFileData();
-		ilDeleteImages(1, &image_id);
+		ilDeleteImages(1, &resource_texture->buffer_id);
+		resource_texture->buffer_id = 0u;
 	}
 	else
 	{
