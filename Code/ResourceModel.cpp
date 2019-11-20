@@ -93,7 +93,7 @@ bool ResourceModel::LoadFileData()
 		nodes.push_back(node);
 	}
 
-	LOG("Success loading model nodes from: %s in: %i.", path, load_timer.Read());
+	LOG("Success loading model nodes from: %s in: %i ms.", path, load_timer.Read());
 
 	return true;
 }

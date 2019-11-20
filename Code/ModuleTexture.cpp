@@ -47,7 +47,7 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path)
 		resource_texture->SaveFileData();
 		ilDeleteImages(1, &resource_texture->buffer_id);
 		resource_texture->buffer_id = 0u;
-		LOG("Success importing texture from: %s in: %i", asset_path, import_timer.Read());
+		LOG("Success importing texture from: %s in: %i ms", asset_path, import_timer.Read());
 	}
 	else
 	{
