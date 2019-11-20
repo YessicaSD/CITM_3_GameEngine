@@ -19,11 +19,11 @@ bool ResourceTexture::SaveFileData()
 	App->file_system->CreatePath(path, path_size, RESOURCES_TEXTURES_FOLDER, "texture", uid, "dds");
 
 	//Save the image as .dds (quicker format)
-
 	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
 	ILuint size = size = ilSaveL(IL_DDS, NULL, 0);
 	if (size > 0)
 	{
+		//INFO: It loads the data of the image we've just Bind using BindImage at 
 		ILubyte * data = new ILubyte[size];
 		if (ilSaveL(IL_DDS, data, size) > 0)
 		{
@@ -54,9 +54,15 @@ bool ResourceTexture::LoadFileData()
 	if (ilLoadImage(custom_format_path) == IL_TRUE)
 	{
 		buffer_id = ilutGLBindTexImage();
+
 		height = ilGetInteger(IL_IMAGE_HEIGHT);
 		width = ilGetInteger(IL_IMAGE_WIDTH);
 		size = ilGetInteger(IL_IMAGE_SIZE_OF_DATA);
+
+		height = ilGetInteger(IL_IMAGE_HEIGHT);
+		width = ilGetInteger(IL_IMAGE_WIDTH);
+		size = ilGetInteger(IL_IMAGE_SIZE_OF_DATA);
+		//Get the data?
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glBindTexture(GL_TEXTURE_2D, buffer_id);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -66,7 +72,7 @@ bool ResourceTexture::LoadFileData()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		ilDeleteImages(1, &image_id);
+		//ilDeleteImages(1, &image_id);
 	}
 	else
 	{

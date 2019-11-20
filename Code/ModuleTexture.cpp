@@ -44,18 +44,7 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path)
 	if (ilLoadImage(asset_path) == IL_TRUE)
 	{
 		resource_texture = App->resource_manager->CreateNewResource<ResourceTexture>();
-
-		resource_texture->height = ilGetInteger(IL_IMAGE_HEIGHT);
-		resource_texture->width = ilGetInteger(IL_IMAGE_WIDTH);
-		resource_texture->size = ilGetInteger(IL_IMAGE_SIZE_OF_DATA);
-
-		//fill the data
-
-		//Then save file
 		resource_texture->SaveFileData();
-
-		//TODO: Delete all the data after saving the image as dds
-
 		ilDeleteImages(1, &image_id);
 	}
 	else
