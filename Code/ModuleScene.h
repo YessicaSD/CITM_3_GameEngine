@@ -28,6 +28,7 @@ public:
 	bool Start(JSONFile* config) override;
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;
+	void EventRequest(const Event& event) override;
 	bool CleanUp();
 	void GameObjectPostUpdateRecursive(ComponentTransform * object);
 	bool IntersectRay(LineSegment* ray, RaycastHit& hit);

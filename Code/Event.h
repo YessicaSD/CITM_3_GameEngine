@@ -5,7 +5,8 @@ struct Event
 public:
 	enum EVENT_TYPE
 	{
-		DROPPED_FILE
+		DROPPED_FILE,
+		UPDATE_OCTREE,
 	}type;
 	const char* path;
 	Event(EVENT_TYPE type) : type(type)

@@ -273,7 +273,11 @@ void Application::DrawMsGraph(char * titleGraph, const ImVec2 &size)
 
 void Application::PopEventsInQueue()
 {
-
+	for (std::vector<Event>::iterator iter = event_queue.begin(); iter != event_queue.end(); ++iter)
+	{
+		EventRequest((*iter));
+	}
+	event_queue.clear();
 }
 
 bool Application::SaveModulesConfiguration()

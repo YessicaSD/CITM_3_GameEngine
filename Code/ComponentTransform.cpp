@@ -56,30 +56,34 @@ void ComponentTransform::PropertiesEditor()
 	{
 		SwitchedStatic();
 	}
-	bool position_changed = false,
-		 rotation_changed = false,
-		 scale_changed = false;
+	
+		bool position_changed = false,
+			rotation_changed = false,
+			scale_changed = false;
 
-	if (ImGui::Button("Reset"))
-	{
-		Reset();
-	}
-	if (ImGui::InputFloat3("Position", (float *)&position, "%.2f"))
-	{
-		position_changed = true;
-	}
-	if (ImGui::InputFloat3("Rotation", (float *)&euler_rotation, "%.2f"))
-	{
-		rotation_changed = true;
-	}
-	if (ImGui::InputFloat3("Scale", (float *)&scale, "%.2f"))
-	{
-		scale_changed = true;
-	}
-	if (position_changed || rotation_changed || scale_changed)
-	{
-		SetTransform(position, scale, euler_rotation);
-	}
+		if (ImGui::Button("Reset"))
+		{
+			Reset();
+		}
+		if (ImGui::InputFloat3("Position", (float *)&position, "%.2f"))
+		{
+			position_changed = true;
+		}
+		if (ImGui::InputFloat3("Rotation", (float *)&euler_rotation, "%.2f"))
+		{
+			rotation_changed = true;
+		}
+		if (ImGui::InputFloat3("Scale", (float *)&scale, "%.2f"))
+		{
+			scale_changed = true;
+		}
+		if (position_changed || rotation_changed || scale_changed)
+		{
+			SetTransform(position, scale, euler_rotation);
+		}
+	
+	
+	
 }
 
 void ComponentTransform::SwitchedStatic()
