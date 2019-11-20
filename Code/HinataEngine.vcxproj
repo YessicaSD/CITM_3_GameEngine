@@ -135,6 +135,7 @@
     <ClInclude Include="imGuizmo\ImSequencer.h" />
     <ClInclude Include="JSONFile.h" />
     <ClInclude Include="Octree.h" />
+    <ClInclude Include="PanelGame.h" />
     <ClInclude Include="RaycastHit.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="GameObject.h" />
@@ -280,6 +281,7 @@
     <ClCompile Include="imGuizmo\ImSequencer.cpp" />
     <ClCompile Include="JSONFile.cpp" />
     <ClCompile Include="Octree.cpp" />
+    <ClCompile Include="PanelGame.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glmath.cpp" />

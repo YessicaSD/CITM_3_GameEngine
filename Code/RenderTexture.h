@@ -1,6 +1,7 @@
 #ifndef __RENDER_TEXTURE_H__
 #define __RENDER_TEXTURE_H__
 
+class ComponentCamera;
 typedef unsigned int uint;
 struct ImVec2;
 
@@ -37,6 +38,7 @@ public:
 
 	ImVec2* panel_size = nullptr;
 	float clear_color[4];
+	ComponentCamera* camera = nullptr;
 };
 
 #endif

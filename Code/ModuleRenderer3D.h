@@ -43,6 +43,7 @@ public:
 	mat4x4 ModelMatrix, ViewMatrix, projection_matrix;
 
 	RenderTexture scene_fbo;
+	RenderTexture game_fbo;
 
 	float camera_near = 1.f;
 	float camera_far = 1000.f;

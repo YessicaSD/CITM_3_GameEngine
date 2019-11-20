@@ -132,19 +132,20 @@ bool ModuleRenderer3D::Init(JSONFile * module_file)
 	texture_2d = glIsEnabled(GL_TEXTURE_2D) == GL_TRUE;
 
 	scene_fbo.GenerateFrameBuffer();
+	game_fbo.GenerateFrameBuffer();
 	
 	return ret;
 }
 
 void ModuleRenderer3D::UpdateProjectionMatrix()
 {
+	//TODO: MAKE IT USE THE SAME MATRIX AS RENDER TEXTURE 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
 	glLoadMatrixf((GLfloat*)&App->camera->current_camera->GetProjectionMatrix().Transposed());
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+
 }
 
 bool ModuleRenderer3D::Start(JSONFile * module_file)

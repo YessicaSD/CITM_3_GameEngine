@@ -240,18 +240,19 @@ update_status ModuleScene::PostUpdate()
 	DrawObjects();
 	
 
-	glPushMatrix();
-	glMultMatrixf((const GLfloat*)& float4x4::identity.Inverted());
+
 	glLineWidth(10);
 	glColor4f(255, 0, 0, 1);
 	glBegin(GL_LINES);
 	glVertex3f(ray.a.x, ray.a.y, ray.a.z);
 	glVertex3f(ray.b.x, ray.b.y, ray.b.z);
 	glEnd();
-	glPopMatrix();
-
 	App->renderer3D->scene_fbo.EndRender();
 
+
+	App->renderer3D->game_fbo.StartRender(App->gui->panel_scene->current_viewport_size);
+	DrawObjects();
+	App->renderer3D->game_fbo.EndRender();
 	return UPDATE_CONTINUE;
 }
 

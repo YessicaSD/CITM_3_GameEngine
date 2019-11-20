@@ -52,9 +52,9 @@ private:
 
 public:
 	//All gameobjects are children of the root gameobject
-	GameObject* root_gameobject;
-	GameObject* camera;
-	ComponentCamera* component_camera;
+	GameObject* root_gameobject = nullptr;
+	GameObject* camera = nullptr;
+	ComponentCamera* component_camera = nullptr;
 	friend class ModuleRender3D;
 };
 

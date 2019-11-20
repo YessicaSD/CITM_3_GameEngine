@@ -6,7 +6,7 @@
 #include "ModuleGui.h"
 #include "PanelScene.h"
 #include "ModuleCamera3D.h"
-
+#include "ComponentCamera.h"
 RenderTexture::RenderTexture()
 {
 	clear_color[0] = 0;
@@ -105,14 +105,15 @@ void RenderTexture::PrepareCameraPosition()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glLoadMatrixf(App->camera->GetViewMatrix());
+	glLoadMatrixf((GLfloat*)&camera->GetViewMatrix());
 }
 
 void RenderTexture::PrepareCameraFrustum(ImVec2& size)
 {
 	glMatrixMode(GL_PROJECTION);
-	App->renderer3D->projection_matrix = perspective(60.0f, size.x / size.y, App->renderer3D->camera_near, App->renderer3D->camera_far);
-	glLoadMatrixf(&App->renderer3D->projection_matrix);
+	//App->renderer3D->projection_matrix = perspective(60.0f, size.x / size.y, App->renderer3D->camera_near, App->renderer3D->camera_far);
+	
+	glLoadMatrixf((GLfloat*)&camera->GetFrustrum().ProjectionMatrix().Transposed());
 }
 
 void RenderTexture::PrepareDepthBuffer(ImVec2& size)
