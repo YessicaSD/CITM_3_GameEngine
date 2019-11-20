@@ -62,11 +62,11 @@ void CubeLine::Set(float width, float height, float depth, float3 position)
 								half_width + position.x, half_height + position.y, -half_depth + position.z }; //1,1,0
 
 	glBindBuffer(GL_ARRAY_BUFFER, vetex_buf_id);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * NUM_VERTICES * 3, vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * NUM_VERTICES * 3, vertices, GL_DYNAMIC_DRAW);
 }
 
 void CubeLine::SetVetices(float * vertices)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vetex_buf_id);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * NUM_VERTICES * 3, vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * NUM_VERTICES * 3, vertices, GL_DYNAMIC_DRAW);
 }
