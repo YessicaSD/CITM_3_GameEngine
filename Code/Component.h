@@ -55,6 +55,7 @@ public:
 	virtual bool                                IsClassType(const std::size_t classType) const {
 		return classType == type;
 	}
+	bool IsActive();
 protected:
 	bool enabled = true;
 	std::string name;

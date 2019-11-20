@@ -128,7 +128,7 @@ inline void OctreeNode::CollectIntersections(std::map<float, ComponentTransform*
 		float hit_near, hit_far;
 		for (std::list<ComponentTransform*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
 		{
-			if (primitive.Intersects((*it)->bounding_box.obb, hit_near, hit_far))
+			if (primitive.Intersects((*it)->bounding_box.GetOBB(), hit_near, hit_far))
 				objects[hit_near] = *it;
 		}
 		if (is_divided)

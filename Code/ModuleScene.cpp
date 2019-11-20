@@ -19,7 +19,7 @@
 #include "RaycastHit.h"
 #include "imGuizmo/ImGuizmo.h"
 #include "Event.h"
-
+#include <map>
 ModuleScene::ModuleScene(bool start_enabled) :
 	Module(start_enabled)
 {
@@ -104,13 +104,11 @@ bool ModuleScene::IntersectRay(LineSegment * ray, RaycastHit& hit)
 {
 	this->ray = (*ray);
 
-	std::vector<RaycastHit> out_objects;
-	GetIntersectBox(root_gameobject->transform, ray, out_objects);
-
-	std::sort(out_objects.begin(), out_objects.end(), Compare);
+	std::map<float , ComponentTransform*> out_objects;
+	octree.CollectIntersections(out_objects, (*ray));
+	GetIntersectBoxNonStatics(root_gameobject->transform, ray, out_objects);
 
 	return TestWithTriangles(ray, out_objects, hit);
-
 }
 
 void ModuleScene::RecreateOctree()
@@ -154,35 +152,33 @@ void ModuleScene::DeleteGameObject(GameObject * gameobject)
 	delete gameobject;
 }
 
-void ModuleScene::GetIntersectBox(ComponentTransform * object, LineSegment * ray, std::vector<RaycastHit>& out_objects)
+void ModuleScene::GetIntersectBoxNonStatics(ComponentTransform * object, LineSegment * ray, std::map<float, ComponentTransform*>& out_objects)
 {
-	if (object->enabled)
+	if (object->enabled && !object->is_static)
 	{
 		if (object->Intersect(*ray))
 		{
 			
-			RaycastHit hit(object);
+			
 			float near_hit, far_hit;
 			if (ray->Intersects(object->bounding_box.GetOBB(), near_hit, far_hit))
 			{
-				hit.distance = near_hit;
-				out_objects.push_back(hit);
+				
+				out_objects[near_hit] = object;
 			}
-
-			
 		}
 		for (auto iter = object->children.begin(); iter != object->children.end(); ++iter)
 		{
-			GetIntersectBox((*iter), ray, out_objects);
+			GetIntersectBoxNonStatics((*iter), ray, out_objects);
 		}
 	}
 }
-bool ModuleScene::TestWithTriangles(LineSegment * ray, std::vector<RaycastHit>& out_objects, RaycastHit& hit_out)
+bool ModuleScene::TestWithTriangles(LineSegment * ray, std::map<float, ComponentTransform*>& out_objects, RaycastHit& hit_out)
 {
 	
-	for (std::vector<RaycastHit>::iterator iter = out_objects.begin(); iter != out_objects.end(); ++iter)
+	for (std::map<float, ComponentTransform*>::iterator iter = out_objects.begin(); iter != out_objects.end(); ++iter)
 	{
-		ComponentMesh* mesh = (*iter).transform->gameobject->GetComponent<ComponentMesh>();
+		ComponentMesh* mesh = (*iter).second->gameobject->GetComponent<ComponentMesh>();
 		if (mesh)
 		{
 			RaycastHit hit;

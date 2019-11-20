@@ -40,8 +40,8 @@ public:
 private:
 	void CreateOctree();
 	void DeleteGameObject(GameObject* gameobject);
-	void GetIntersectBox(ComponentTransform * object, LineSegment* ray, std::vector<RaycastHit>& out_objects);
-	bool TestWithTriangles(LineSegment * ray, std::vector<RaycastHit>& out_objects, RaycastHit& hit_out);
+	void GetIntersectBoxNonStatics(ComponentTransform * object, LineSegment* ray, std::map<float, ComponentTransform*>& out_objects);
+	bool TestWithTriangles(LineSegment * ray, std::map<float, ComponentTransform*>& out_objects, RaycastHit& hit_out);
 	void LoadStaticObjects();
 	void DrawObjects();
 
