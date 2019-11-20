@@ -2,6 +2,7 @@
 #define MODULE_FILESYSTEM_H_
 #include "Module.h"
 #include <string>
+#include <vector>
 
 struct aiFileIO;
 #include "Bass/include/bass.h"
@@ -18,6 +19,7 @@ public:
 	bool LoadFile(const char * path, char ** data);
 	const char * GetReadPaths() const;
 	const char * GetBasePath() const;
+	void GetFilesAndDirs(const char * directory, std::vector<std::string>& file_list, std::vector<std::string>& dir_list) const;
 
 private:
 	void CreateAssimpIO();
@@ -25,6 +27,7 @@ private:
 
 	void CreateBassIO();
 	BASS_FILEPROCS * GetBassIO();
+
 
 private:
 	aiFileIO* AssimpIO = nullptr;

@@ -8,20 +8,109 @@
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 #include "ModuleResourceManager.h"
+#include "ModuleFileSystem.h"
+//#include "mmgr/mmgr.h"
 
-PanelAssets::PanelAssets(std::string name, bool state, std::vector<SDL_Scancode> shortcuts):Panel(name, state, shortcuts)
+#include "PhysFS/include/physfs.h"
+
+PanelAssets::PanelAssets(std::string name, bool state, std::vector<SDL_Scancode> shortcuts) :Panel(name, state, shortcuts)
 {
 }
+
 void PanelAssets::Draw()
 {
 	ImGui::Begin(name.c_str());
-	//TODO: Show the name of the files in the assets folder
-	//If they are dragged, they are really dragging the custom formats
-	for (auto iter = App->resource_manager->assets.begin(); iter != App->resource_manager->assets.end(); ++iter)
+
+	if (ImGui::Button("Refresh"))
 	{
-		ImGui::Text((*iter).name);
+		//Checks for new assets
+		//Compares the previous asset list with the new list
+		//Adds the new files to the asset list
 	}
+
+	//TODO: This shouldn't be done every frame
+	App->resource_manager->asset_dir = new Dir();
+	App->resource_manager->asset_dir->name = ASSETS_FOLDER;
+	FillAssetTreeRecursive(App->resource_manager->asset_dir);
+
+	DisplayFolderAssetsRecursive(App->resource_manager->asset_dir);
+
+	DeleteTreeRecursive(App->resource_manager->asset_dir);
+
 	ImGui::End();
+}
+
+//TODO: Fill asset tree the first time
+void PanelAssets::FillAssetTreeRecursive(Dir * dir)
+{
+	std::vector<std::string> file_list;
+	std::vector<std::string> dir_list;
+
+	App->file_system->GetFilesAndDirs(dir->name, file_list, dir_list);
+
+	//Add files
+	for (auto iter = file_list.begin(); iter != file_list.end(); ++iter)
+	{
+		Asset * new_asset = new Asset();
+		const char * cpy_name = (*iter).c_str();
+		new_asset->name = new char[strlen(cpy_name)];
+		strcpy(new_asset->name, cpy_name);
+		dir->assets.push_back(new_asset);
+	}
+
+	//Add dirs
+	for (auto iter = dir_list.begin(); iter != dir_list.end(); ++iter)
+	{
+		Dir * new_dir = new Dir();
+		const char * cpy_name = (*iter).c_str();
+		new_dir->name = new char[strlen(cpy_name)];
+		strcpy(new_dir->name, cpy_name);
+		FillAssetTreeRecursive(new_dir);
+		dir->dirs.push_back(new_dir);
+	}
+}
+
+//TODO: Compare
+
+//TODO: Delete for every new
+//Instead of adding, compare and import the new files
+
+//Delte tree recursively
+
+void PanelAssets::DeleteTreeRecursive(Dir * dir)
+{
+	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
+	{
+		delete[](*iter)->name;
+		delete((*iter));
+	}
+
+	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
+	{
+		DeleteTreeRecursive((*iter));
+	}
+	delete[](dir)->name;
+	delete(dir);
+}
+
+void PanelAssets::DisplayFolderAssetsRecursive(Dir * dir)
+{
+	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+	if (dir->dirs.size() == 0)
+	{
+		node_flags |= ImGuiTreeNodeFlags_Leaf;
+	}
+	bool is_open = ImGui::TreeNodeEx(dir->name, node_flags);
+
+	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
+	{
+		DisplayFolderAssetsRecursive((*iter));
+	}
+
+	if (is_open)
+	{
+		ImGui::TreePop();
+	}
 }
 
 //float num_colum = ImGui::GetWindowWidth() / image_size;

@@ -10,10 +10,17 @@
 
 class ResourceTexture;
 
-struct Asset {
-	ResourceTexture* image;
-	const char* name;
-	//Childs in meta that can be expanded
+//Used to display the assets in the PanelAssets
+struct Asset
+{
+	//type (used to get the appropiate icon)
+	char* name;
+};
+
+struct Dir {
+	char * name;
+	std::vector<Asset*>assets;
+	std::vector<Dir*>dirs;
 };
 
 class ModuleResourceManager : public Module
@@ -41,9 +48,8 @@ private:
 	UID last_uid = 0u;
 	std::map<UID, Resource*> resources;
 
-	//Used for the "Assets" window
-	//Tree structure?
-	std::vector<Asset> assets;
+	//Used to diplay the assets in PanelAssets
+	Dir * asset_dir = nullptr;
 
 	friend class PanelAssets;
 };

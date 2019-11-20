@@ -217,3 +217,24 @@ BASS_FILEPROCS * ModuleFileSystem::GetBassIO()
 	return BassIO;
 }
 
+void ModuleFileSystem::GetFilesAndDirs(const char* directory, std::vector<std::string> & file_list, std::vector<std::string> & dir_list) const
+{
+	char **rc = PHYSFS_enumerateFiles(directory);
+
+	std::string dir(directory);
+
+	for (char **i = rc; *i != nullptr; i++)
+	{
+		if (PHYSFS_isDirectory((dir + *i).c_str()))
+		{
+			dir_list.push_back(*i);
+		}
+		else
+		{
+			file_list.push_back(*i);
+		}
+	}
+
+	PHYSFS_freeList(rc);
+}
+
