@@ -14,11 +14,11 @@ class ResourceTexture;
 struct Asset
 {
 	//type (used to get the appropiate icon)
-	char* name;
+	std::string name;
 };
 
 struct Dir {
-	char * name;
+	std::string name;
 	std::vector<Asset*>assets;
 	std::vector<Dir*>dirs;
 };

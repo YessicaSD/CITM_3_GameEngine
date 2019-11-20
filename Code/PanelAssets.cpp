@@ -46,15 +46,13 @@ void PanelAssets::FillAssetTreeRecursive(Dir * dir)
 	std::vector<std::string> file_list;
 	std::vector<std::string> dir_list;
 
-	App->file_system->GetFilesAndDirs(dir->name, file_list, dir_list);
+	App->file_system->GetFilesAndDirs(dir->name.c_str(), file_list, dir_list);
 
 	//Add files
 	for (auto iter = file_list.begin(); iter != file_list.end(); ++iter)
 	{
 		Asset * new_asset = new Asset();
-		const char * cpy_name = (*iter).c_str();
-		new_asset->name = new char[strlen(cpy_name)];
-		strcpy(new_asset->name, cpy_name);
+		new_asset->name = (*iter);
 		dir->assets.push_back(new_asset);
 	}
 
@@ -62,9 +60,7 @@ void PanelAssets::FillAssetTreeRecursive(Dir * dir)
 	for (auto iter = dir_list.begin(); iter != dir_list.end(); ++iter)
 	{
 		Dir * new_dir = new Dir();
-		const char * cpy_name = (*iter).c_str();
-		new_dir->name = new char[strlen(cpy_name)];
-		strcpy(new_dir->name, cpy_name);
+		new_dir->name = (*iter);
 		FillAssetTreeRecursive(new_dir);
 		dir->dirs.push_back(new_dir);
 	}
@@ -81,7 +77,6 @@ void PanelAssets::DeleteTreeRecursive(Dir * dir)
 {
 	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
 	{
-		delete[](*iter)->name;
 		delete((*iter));
 	}
 
@@ -89,27 +84,34 @@ void PanelAssets::DeleteTreeRecursive(Dir * dir)
 	{
 		DeleteTreeRecursive((*iter));
 	}
-	delete[](dir)->name;
 	delete(dir);
 }
 
 void PanelAssets::DisplayFolderAssetsRecursive(Dir * dir)
 {
-	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+	ImGuiTreeNodeFlags asset_tree_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_Leaf;
+	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
+	{
+		if (ImGui::TreeNodeEx((*iter)->name.c_str(), asset_tree_flags))
+		{
+			ImGui::TreePop();
+		}
+	}
+	
+	ImGuiTreeNodeFlags dir_tree_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
 	if (dir->dirs.size() == 0)
 	{
-		node_flags |= ImGuiTreeNodeFlags_Leaf;
+		dir_tree_flags |= ImGuiTreeNodeFlags_Leaf;
 	}
-	bool is_open = ImGui::TreeNodeEx(dir->name, node_flags);
 
 	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
 	{
+		bool is_open = ImGui::TreeNodeEx((*iter)->name.c_str(), dir_tree_flags);
 		DisplayFolderAssetsRecursive((*iter));
-	}
-
-	if (is_open)
-	{
-		ImGui::TreePop();
+		if (is_open)
+		{
+			ImGui::TreePop();
+		}
 	}
 }
 
