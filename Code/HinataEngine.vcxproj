@@ -137,6 +137,7 @@
     <ClInclude Include="imGuizmo\ImSequencer.h" />
     <ClInclude Include="JSONFile.h" />
     <ClInclude Include="ModuleResourceManager.h" />
+    <ClInclude Include="PanelResources.h" />
     <ClInclude Include="PhysFS\include\physfs.h" />
     <ClInclude Include="RaycastHit.h" />
     <ClInclude Include="RenderTexture.h" />
@@ -271,6 +272,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="PanelResources.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="AssimpIO.cpp" />
     <ClCompile Include="BassIO.cpp" />

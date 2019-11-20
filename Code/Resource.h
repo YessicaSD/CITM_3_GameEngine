@@ -9,6 +9,7 @@ class Resource
 {
 public:
 	bool StartUsingResource();
+	uint GetReferenceCount() const;
 	bool StopUsingResource();
 
 	UID GetUID() const;

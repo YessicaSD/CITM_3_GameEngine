@@ -21,6 +21,7 @@ class PanelHierarchy;
 class PanelAbout;
 class PanelAssets;
 class PanelScene;
+class PanelResources;
 class ComponentTransform;
 
 enum KEY_STATE;
@@ -44,6 +45,7 @@ private:
 	PanelAbout* panel_about = nullptr;
 	PanelHierarchy * panel_hierarchy = nullptr;
 	PanelAssets* panel_assets = nullptr;
+	PanelResources * panel_resources = nullptr;
 	std::vector<Shortcut *> shortcuts;
 	ComponentTransform* selected_transform = nullptr;
 

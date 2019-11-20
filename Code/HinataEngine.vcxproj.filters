@@ -595,6 +595,20 @@
     <ClInclude Include="RaycastHit.h">
       <Filter>Sources\ECS</Filter>
     </ClInclude>
+    <ClInclude Include="AssimpIO.h" />
+    <ClInclude Include="BassIO.h" />
+    <ClInclude Include="ModuleResourceManager.h" />
+    <ClInclude Include="PhysFS\include\physfs.h" />
+    <ClInclude Include="RenderTexture.h" />
+    <ClInclude Include="ResourceMesh.h" />
+    <ClInclude Include="MenuCreateShape.h" />
+    <ClInclude Include="PerfTimer.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceModel.h" />
+    <ClInclude Include="ResourceTexture.h" />
+    <ClInclude Include="PanelResources.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -864,6 +878,17 @@
     </ClCompile>
     <ClCompile Include="ImguiShortFuntions.cpp">
       <Filter>Sources\Tools\imguiShortFuntions</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceMesh.cpp" />
+    <ClCompile Include="AssimpIO.cpp" />
+    <ClCompile Include="BassIO.cpp" />
+    <ClCompile Include="ModuleResourceManager.cpp" />
+    <ClCompile Include="PerfTimer.cpp" />
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceModel.cpp" />
+    <ClCompile Include="ResourceTexture.cpp" />
+    <ClCompile Include="PanelResources.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

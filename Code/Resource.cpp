@@ -44,6 +44,11 @@ bool Resource::StartUsingResource()
 	return reference_count > 0u;
 }
 
+uint Resource::GetReferenceCount() const
+{
+	return reference_count;
+}
+
 //INFO: Called each time a GameObject stops using this resource
 //INFO: Unload resource when no GameObject references it
 bool Resource::StopUsingResource()

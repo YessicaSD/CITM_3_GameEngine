@@ -60,7 +60,7 @@ void PanelAssets::FillAssetTreeRecursive(Dir * dir)
 	for (auto iter = dir_list.begin(); iter != dir_list.end(); ++iter)
 	{
 		Dir * new_dir = new Dir();
-		new_dir->name = (*iter);
+		new_dir->name = dir->name + (*iter);
 		FillAssetTreeRecursive(new_dir);
 		dir->dirs.push_back(new_dir);
 	}
@@ -106,10 +106,9 @@ void PanelAssets::DisplayFolderAssetsRecursive(Dir * dir)
 
 	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
 	{
-		bool is_open = ImGui::TreeNodeEx((*iter)->name.c_str(), dir_tree_flags);
-		DisplayFolderAssetsRecursive((*iter));
-		if (is_open)
+		if (ImGui::TreeNodeEx((*iter)->name.c_str(), dir_tree_flags))
 		{
+			DisplayFolderAssetsRecursive((*iter));
 			ImGui::TreePop();
 		}
 	}

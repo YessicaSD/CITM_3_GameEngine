@@ -26,6 +26,9 @@
 #define PAR_SHAPES_IMPLEMENTATION
 #include "par\par_shapes.h"
 #include "BoundingBox.h"
+
+#include <filesystem>
+
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
 
 void AssimpWriteLogStream(const char *text, char *data)
@@ -256,18 +259,20 @@ void ModuleImport::EventRequest(const Event &event)
 		App->file_system->GetExtension(event.path, extension);
 		if (extension == "fbx" || extension == "FBX")
 		{
-			//Import mesh onto assets folder
+			//TODO: Copy mesh to assets folder
+			//INFO: We need to use <filesystem> because the file can come from outside the paths we specified in PHYSFS
 			ImportModel(event.path);
-			//TODO: Show the model in assets folder
+			//TODO: Update assets tree
 		}
 		else if (extension == "dds" || extension == "png" || extension == "jpg")
 		{
 			//Import texture onto assets folder
 			App->texture->ImportTexture(event.path);
+			//TODO: Update assets tree
 		}
 		else
 		{
-			LOG("Can't load this type file");
+			LOG("This type of file is not supported.");
 			return;
 		}
 		LOG("File dropped %s", event.path);

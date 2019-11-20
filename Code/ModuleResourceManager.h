@@ -52,6 +52,7 @@ private:
 	Dir * asset_dir = nullptr;
 
 	friend class PanelAssets;
+	friend class PanelResources;
 };
 
 
