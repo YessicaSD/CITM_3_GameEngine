@@ -128,7 +128,7 @@ void ModuleScene::CreateOctree()
 
 void ModuleScene::GetStaticObjects(std::vector<ComponentTransform*>& static_objects)
 {
-	
+	root_gameobject->transform->GetStaticObjects(static_objects);
 }
 
 

@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include <list>
+#include <map>
 
 #define MAX_BUCKET_SIZE 1
 #define MAX_SUBDIVISION 15
@@ -37,6 +38,10 @@ public:
 	void Insert(ComponentTransform* transform);
 	void Erase(ComponentTransform* transform);
 	
+	template<typename TYPE>
+	void CollectIntersections(std::vector<GameObject*>& objects, const TYPE& primitive) const;
+	template<typename TYPE>
+	void CollectIntersections(std::map<float, GameObject*>& objects, const TYPE& primitive) const;
 
 private:
 	AABB limits;
@@ -63,7 +68,75 @@ public:
 	void Erase(ComponentTransform* go);
 	void Clear();
 	void Draw();
+
+	template<typename TYPE>
+	void CollectIntersections(std::vector<GameObject*>& objects, const TYPE& primitive) const;
+	
+	//This funtion is thought to be used with raycasting
+	template<typename TYPE>
+	void CollectIntersections(std::map<float, GameObject*>& objects, const TYPE& primitive) const;
 private:
 	OctreeNode* root_node = nullptr;
 };
+
+template<typename TYPE>
+inline void Octree::CollectIntersections(std::vector<GameObject*>& objects, const TYPE & primitive) const
+{
+	if (root_node  != nullptr)
+	{
+		root_node->CollectIntersections(objects, primitive);
+	}
+}
+
+template<typename TYPE>
+inline void Octree::CollectIntersections(std::map<float, GameObject*>& objects, const TYPE & primitive) const
+{
+	if (root_node != nullptr)
+	{
+		root_node->CollectIntersections(objects, primitive);
+	}
+}
+
+template<typename TYPE>
+inline void OctreeNode::CollectIntersections(std::vector<GameObject*>& objects, const TYPE & primitive) const
+{
+	if (primitive.Intersects(limits))
+	{
+		for (std::list<ComponentTransform*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
+		{
+			if (primitive.Intersects((*it)->bounding_box.obb))
+			{
+				objects.push_back(*it);
+			}
+		}
+		for (int i = 0; i < 8; ++i)
+		{
+			if (childs[i] != nullptr) childs[i]->CollectIntersections(objects, primitive);
+		}
+	}
+}
+
+template<typename TYPE>
+inline void OctreeNode::CollectIntersections(std::map<float, GameObject*>& objects, const TYPE & primitive) const
+{
+	if (primitive.Intersects(limits))
+	{
+		float hit_near, hit_far;
+		for (std::list<ComponentTransform*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
+		{
+			if (primitive.Intersects((*it)->bounding_box.obb, hit_near, hit_far))
+				objects[hit_near] = *it;
+		}
+		if (is_divided)
+		{
+			for (uint i = 0u; i < 8; i++)
+			{
+				childs[i]->CollectIntersections(objects, primitive);
+			}
+		}
+	}
+}
+
+
 #endif // !OCTREE_H_
+
