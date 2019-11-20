@@ -328,7 +328,7 @@ AABB ComponentTransform::GetAABB()
 	return bounding_box.GetAABB();
 }
 
-void ComponentTransform::GetStaticObjects(std::vector<ComponentTransform*> static_objects)
+void ComponentTransform::GetStaticObjects(std::vector<ComponentTransform*>& static_objects)
 {
 	if (is_static)
 	{

@@ -58,7 +58,7 @@ public:
 	void DrawAxis();
 	AABB GetAABB();
 
-	void GetStaticObjects(std::vector<ComponentTransform*> static_objects);
+	void GetStaticObjects(std::vector<ComponentTransform*>& static_objects);
 
 	bool open_in_hierarchy = false;
 	bool is_static = false;

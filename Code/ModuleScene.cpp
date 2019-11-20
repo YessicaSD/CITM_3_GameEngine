@@ -35,7 +35,7 @@ bool ModuleScene::Start(JSONFile * config)
 {
 	//LOG("Loading Intro assets");
 	root_gameobject = new GameObject("Root", nullptr);
-	octree.SetLimits(AABB(float3(-100, 0, -100), float3(100, 30, 100)));
+	CreateOctree();
 
 	bool ret = true;
 	camera = new GameObject("Camera", root_gameobject->transform);
