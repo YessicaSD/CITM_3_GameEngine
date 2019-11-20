@@ -39,9 +39,9 @@ public:
 	void Erase(ComponentTransform* transform);
 	
 	template<typename TYPE>
-	void CollectIntersections(std::vector<GameObject*>& objects, const TYPE& primitive) const;
+	void CollectIntersections(std::vector<ComponentTransform*>& objects, const TYPE& primitive) const;
 	template<typename TYPE>
-	void CollectIntersections(std::map<float, GameObject*>& objects, const TYPE& primitive) const;
+	void CollectIntersections(std::map<float, ComponentTransform*>& objects, const TYPE& primitive) const;
 
 private:
 	AABB limits;
@@ -70,17 +70,17 @@ public:
 	void Draw();
 
 	template<typename TYPE>
-	void CollectIntersections(std::vector<GameObject*>& objects, const TYPE& primitive) const;
+	void CollectIntersections(std::vector<ComponentTransform*>& objects, const TYPE& primitive) const;
 	
 	//This funtion is thought to be used with raycasting
 	template<typename TYPE>
-	void CollectIntersections(std::map<float, GameObject*>& objects, const TYPE& primitive) const;
+	void CollectIntersections(std::map<float, ComponentTransform*>& objects, const TYPE& primitive) const;
 private:
 	OctreeNode* root_node = nullptr;
 };
 
 template<typename TYPE>
-inline void Octree::CollectIntersections(std::vector<GameObject*>& objects, const TYPE & primitive) const
+inline void Octree::CollectIntersections(std::vector<ComponentTransform*>& objects, const TYPE & primitive) const
 {
 	if (root_node  != nullptr)
 	{
@@ -89,7 +89,7 @@ inline void Octree::CollectIntersections(std::vector<GameObject*>& objects, cons
 }
 
 template<typename TYPE>
-inline void Octree::CollectIntersections(std::map<float, GameObject*>& objects, const TYPE & primitive) const
+inline void Octree::CollectIntersections(std::map<float, ComponentTransform*>& objects, const TYPE & primitive) const
 {
 	if (root_node != nullptr)
 	{
@@ -98,26 +98,30 @@ inline void Octree::CollectIntersections(std::map<float, GameObject*>& objects, 
 }
 
 template<typename TYPE>
-inline void OctreeNode::CollectIntersections(std::vector<GameObject*>& objects, const TYPE & primitive) const
+inline void OctreeNode::CollectIntersections(std::vector<ComponentTransform*>& objects, const TYPE & primitive) const
 {
 	if (primitive.Intersects(limits))
 	{
 		for (std::list<ComponentTransform*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
 		{
-			if (primitive.Intersects((*it)->bounding_box.obb))
+			if (primitive.Intersects((*it)->bounding_box.GetOBB()))
 			{
 				objects.push_back(*it);
 			}
 		}
-		for (int i = 0; i < 8; ++i)
+		if (is_divided)
 		{
-			if (childs[i] != nullptr) childs[i]->CollectIntersections(objects, primitive);
+			for (int i = 0; i < 8; ++i)
+			{
+				childs[i]->CollectIntersections(objects, primitive);
+			}
 		}
+		
 	}
 }
 
 template<typename TYPE>
-inline void OctreeNode::CollectIntersections(std::map<float, GameObject*>& objects, const TYPE & primitive) const
+inline void OctreeNode::CollectIntersections(std::map<float, ComponentTransform*>& objects, const TYPE & primitive) const
 {
 	if (primitive.Intersects(limits))
 	{

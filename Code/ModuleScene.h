@@ -43,6 +43,9 @@ private:
 	void GetIntersectBox(ComponentTransform * object, LineSegment* ray, std::vector<RaycastHit>& out_objects);
 	bool TestWithTriangles(LineSegment * ray, std::vector<RaycastHit>& out_objects, RaycastHit& hit_out);
 	void LoadStaticObjects();
+	void DrawObjects();
+
+	void DrawWithFrustrum();
 
 	LineSegment ray;
 	

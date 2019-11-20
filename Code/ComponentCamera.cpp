@@ -175,6 +175,11 @@ float4x4 ComponentCamera::GetProjectionMatrix()
 	return frustum.ProjectionMatrix();
 }
 
+Frustum ComponentCamera::GetFrustrum()
+{
+	return frustum;
+}
+
 
 
 

@@ -28,6 +28,7 @@ private:
 	ImGuizmo::MODE      guizmo_mode = ImGuizmo::LOCAL;
 	bool is_over_gizmo = false;
 	bool update_octree_when_stop_moving = false;
+	bool is_being_used;
 	friend class ModuleScene;
 	friend class ModuleCamera3D;
 };

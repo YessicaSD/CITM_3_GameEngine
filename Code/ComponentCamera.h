@@ -32,6 +32,7 @@ public:
 
 	float4x4 GetViewMatrix();
 	float4x4 GetProjectionMatrix();
+	Frustum  GetFrustrum();
 
 	bool update_project_matrix = false;
 private:

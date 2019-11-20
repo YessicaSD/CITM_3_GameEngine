@@ -56,18 +56,22 @@ bool ModuleScene::CleanUp()
 // Update: draw background
 update_status ModuleScene::Update(float dt)
 {
-	if(App->input->GetKey(SDL_SCANCODE_W))
+	if (!App->gui->panel_scene->is_being_used)
 	{
-		App->gui->panel_scene->guizmo_op = ImGuizmo::TRANSLATE;
+		if (App->input->GetKey(SDL_SCANCODE_W))
+		{
+			App->gui->panel_scene->guizmo_op = ImGuizmo::TRANSLATE;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_E))
+		{
+			App->gui->panel_scene->guizmo_op = ImGuizmo::SCALE;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_R))
+		{
+			App->gui->panel_scene->guizmo_op = ImGuizmo::ROTATE;
+		}
 	}
-	if (App->input->GetKey(SDL_SCANCODE_E))
-	{
-		App->gui->panel_scene->guizmo_op = ImGuizmo::SCALE ;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_R))
-	{
-		App->gui->panel_scene->guizmo_op = ImGuizmo::ROTATE;
-	}
+	
 	//TODO: Turn into a shortcut
 	if (App->input->GetKey(SDL_SCANCODE_DELETE))
 	{
@@ -83,8 +87,6 @@ update_status ModuleScene::Update(float dt)
 
 void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
 {
-	object->OnPostUpdate();
-//	if (component_camera->gameobject->transform == object || !component_camera->frustum_culling || component_camera->IsInFrustum(object->bounding_box.GetOBB()))
 		object->gameobject->OnPostUpdate();
 	for (std::vector<ComponentTransform *>::iterator iter = object->children.begin();
 		iter != object->children.end();
@@ -204,6 +206,30 @@ void ModuleScene::LoadStaticObjects()
 	}
 }
 
+void ModuleScene::DrawObjects()
+{
+	if (component_camera->frustum_culling)
+	{
+		DrawWithFrustrum();
+	}
+	else
+	{
+		GameObjectPostUpdateRecursive(root_gameobject->transform);
+	}
+
+}
+
+void ModuleScene::DrawWithFrustrum()
+{
+	std::vector<ComponentTransform*> objects;
+	octree.CollectIntersections(objects, component_camera->GetFrustrum());
+	root_gameobject->transform->GetIntersectNonStatics(objects, component_camera->GetFrustrum());
+	for (std::vector<ComponentTransform*>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
+	{
+		(*iter)->gameobject->OnPostUpdate();
+	}
+}
+
 
 update_status ModuleScene::PostUpdate()
 {
@@ -215,10 +241,8 @@ update_status ModuleScene::PostUpdate()
 	p.axis = true;
 	//p.wire = false;
 	p.Render();
-
-	//App->camera->scene_camera->OnPostUpdate();
-
-	GameObjectPostUpdateRecursive(root_gameobject->transform);
+	DrawObjects();
+	
 
 	glPushMatrix();
 	glMultMatrixf((const GLfloat*)& float4x4::identity.Inverted());
