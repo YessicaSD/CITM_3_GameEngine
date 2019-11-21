@@ -66,14 +66,6 @@ void PanelScene::Draw()
 	}
 
 	ImGui::End();
-	/*if(ImGui::BeginMenuBar())
-	{
-		if (ImGui::BeginMenu("Menu"))
-		{
-			ImGui::EndMenu();
-		}
-		ImGui::EndMenuBar();
-	}*/
 	ImGui::PopStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding);
 }
 
