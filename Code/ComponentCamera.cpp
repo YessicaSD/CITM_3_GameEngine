@@ -4,7 +4,8 @@
 #include "GameObject.h"
 #include "Globals.h"
 #include "MathGeoLib/include/Geometry/Plane.h"
-
+#include "ModuleScene.h"
+#include "Application.h"
 
 ComponentCamera::ComponentCamera(GameObject* gameobject):Component(gameobject)
 {
@@ -24,6 +25,14 @@ ComponentCamera::ComponentCamera(GameObject* gameobject):Component(gameobject)
 	float3 corners[8];
 	frustum.GetCornerPoints(corners);
 	frustum_render.SetVetices((float*)&corners);
+}
+
+ComponentCamera::~ComponentCamera()
+{
+	if (App->scene->game_camera == this)
+	{
+		App->scene->game_camera = nullptr;
+	}
 }
 
 void ComponentCamera::OnPostUpdate()

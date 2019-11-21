@@ -3,13 +3,12 @@
 #include "imgui/imgui.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
+#include "ComponentCamera.h"
 #include "Globals.h"
 
 #include "glew/include/GL/glew.h"
 #include "Application.h"
 #include "ModuleScene.h"
-
-
 
 CLASS_DEFINITION(Component, ComponentTransform)
 
@@ -300,7 +299,7 @@ void ComponentTransform::DeleteChildren()
 		for (std::vector<ComponentTransform *>::iterator iter = gameobject->transform->children.begin(); iter != gameobject->transform->children.end(); ++iter)
 		{
 			(*iter)->DeleteChildren();
-			delete (*iter);
+			delete (*iter)->gameobject;
 		}
 		gameobject->transform->children.clear();
 	}

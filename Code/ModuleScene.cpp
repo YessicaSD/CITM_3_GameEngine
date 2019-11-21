@@ -248,7 +248,10 @@ update_status ModuleScene::PostUpdate()
 	glEnd();
 	App->renderer3D->scene_fbo.EndRender();
 	App->renderer3D->game_fbo.StartRender(App->gui->panel_game->current_viewport_size);
-	DrawObjects(game_camera);
+	if (game_camera != nullptr)
+	{
+		DrawObjects(game_camera);
+	}
 	App->renderer3D->game_fbo.EndRender();
 	return UPDATE_CONTINUE;
 }

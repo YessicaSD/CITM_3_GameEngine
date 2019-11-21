@@ -13,6 +13,7 @@ public:
 	bool frustum_culling = true;
 
 	ComponentCamera(GameObject* gameobject);
+	~ComponentCamera();
 	void OnPostUpdate() override;
 	void PropertiesEditor() override;
 	void TransformHaveChanged() override;
