@@ -110,7 +110,7 @@ void ModuleCamera3D::DrawConfigurationUi()
 			break;
 			case 1:
 			{
-				current_camera = App->scene->component_camera;
+				current_camera = App->scene->game_camera;
 			}
 			break;
 		default:

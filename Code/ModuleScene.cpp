@@ -40,8 +40,8 @@ bool ModuleScene::Start(JSONFile * config)
 	CreateOctree();
 
 	bool ret = true;
-	camera = new GameObject("Camera", root_gameobject->transform);
-	component_camera = camera->CreateComponent<ComponentCamera>();
+	GameObject* object_camera = new GameObject("Camera", root_gameobject->transform);
+	game_camera = object_camera->CreateComponent<ComponentCamera>();
 	App->import->LoadMesh("Assets/BakerHouse.fbx");
 	return ret;
 }
@@ -203,29 +203,29 @@ void ModuleScene::LoadStaticObjects()
 	}
 }
 
-void ModuleScene::DrawObjects()
+void ModuleScene::DrawObjects(ComponentCamera * camera)
 {
-	if (component_camera->frustum_culling)
+	if (camera->frustum_culling)
 	{
-		DrawWithFrustrum();
+		DrawWithFrustrum(camera);
 	}
 	else
 	{
 		GameObjectPostUpdateRecursive(root_gameobject->transform);
 	}
-
 }
 
-void ModuleScene::DrawWithFrustrum()
+void ModuleScene::DrawWithFrustrum(ComponentCamera * camera)
 {
 	std::vector<ComponentTransform*> objects;
-	octree.CollectIntersections(objects, component_camera->GetFrustrum());
-	root_gameobject->transform->GetIntersectNonStatics(objects, component_camera->GetFrustrum());
+	octree.CollectIntersections(objects, camera->GetFrustrum());
+	root_gameobject->transform->GetIntersectNonStatics(objects, camera->GetFrustrum());
 	for (std::vector<ComponentTransform*>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
 	{
 		(*iter)->gameobject->OnPostUpdate();
 	}
 }
+
 
 
 update_status ModuleScene::PostUpdate()
@@ -238,9 +238,7 @@ update_status ModuleScene::PostUpdate()
 	p.axis = true;
 	//p.wire = false;
 	p.Render();
-	DrawObjects();
-	
-
+	DrawObjects(App->camera->scene_camera);
 
 	glLineWidth(10);
 	glColor4f(255, 0, 0, 1);
@@ -249,10 +247,8 @@ update_status ModuleScene::PostUpdate()
 	glVertex3f(ray.b.x, ray.b.y, ray.b.z);
 	glEnd();
 	App->renderer3D->scene_fbo.EndRender();
-
-
 	App->renderer3D->game_fbo.StartRender(App->gui->panel_game->current_viewport_size);
-	DrawObjects();
+	DrawObjects(game_camera);
 	App->renderer3D->game_fbo.EndRender();
 	return UPDATE_CONTINUE;
 }
