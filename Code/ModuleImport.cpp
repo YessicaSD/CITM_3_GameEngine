@@ -164,7 +164,7 @@ void ModuleImport::EventRequest(const Event &event)
 		{
 			LoadMesh(event.path);
 		}
-		else if (extension == "dds" || extension == "png" || extension == "jpg")
+		else if (extension == "dds" || extension == "png" || extension == "jpg" || extension == "tga" )
 		{
 			App->texture->LoadTexture(event.path);
 		}
