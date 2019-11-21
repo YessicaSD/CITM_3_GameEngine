@@ -233,6 +233,18 @@ bool ComponentTransform::IsSelected()
 	return is_selected;
 }
 
+bool ComponentTransform::IsInChilds(ComponentTransform * object)
+{
+	for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
+	{
+		if (object == (*iter))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 bool ComponentTransform::Intersect(LineSegment ray)
 {
 	AABB box = bounding_box.GetAABB();
@@ -281,6 +293,11 @@ float4x4 ComponentTransform::GetGlobalMatrix() const
 	return global_matrix;
 }
 
+float4x4 ComponentTransform::GetLocalMatrix() const
+{
+	return local_matrix;
+}
+
 void ComponentTransform::Reset()
 {
 	SetTransform(float3(0, 0, 0), float3(1, 1, 1), float3(0, 0, 0));
@@ -296,13 +313,35 @@ void ComponentTransform::DeleteChildren()
 {
 	if (gameobject->transform->children.size() > 0)
 	{
-		for (std::vector<ComponentTransform *>::iterator iter = gameobject->transform->children.begin(); iter != gameobject->transform->children.end(); ++iter)
+		for (std::vector<ComponentTransform *>::iterator iter = children.begin(); iter != children.end(); ++iter)
 		{
 			(*iter)->DeleteChildren();
 			delete (*iter)->gameobject;
 		}
-		gameobject->transform->children.clear();
+		children.clear();
 	}
+}
+
+void ComponentTransform::DeleteFromChildrens(ComponentTransform * object)
+{
+	if (gameobject->transform->children.size() > 0)
+	{
+		for (std::vector<ComponentTransform *>::iterator iter = gameobject->transform->children.begin(); iter != gameobject->transform->children.end(); ++iter)
+		{
+			if((*iter)==object)
+				{
+					(*iter)->parent = nullptr;
+					children.erase(iter);
+					return;
+				}
+		}
+	}
+}
+
+void ComponentTransform::AddChild(ComponentTransform * new_object)
+{
+	children.push_back(new_object);
+	new_object->parent = this;
 }
 
 void ComponentTransform::DrawAxis()

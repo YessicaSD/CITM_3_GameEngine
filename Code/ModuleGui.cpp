@@ -25,6 +25,7 @@
 //TODO: Frame Buffer Object remove
 #include "par/par_shapes.h"
 #include "ModuleImport.h"
+#include "Event.h"
 
 #define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
 #define IMGUI_GREY ImVec4(0.6f,0.6f,0.6f,1.f)
@@ -233,6 +234,14 @@ bool ModuleGui::Log(const char *sentence)
 		return true;
 	}
 	return false;
+}
+
+void ModuleGui::EventRequest(const Event & event)
+{
+	if (event.type == Event::CHANGE_HIERARCHY)
+	{
+		panel_hierarchy->ChangeHierarchy();
+	}
 }
 
 void ModuleGui::SetSelectedGameObjec(ComponentTransform * gameobject)

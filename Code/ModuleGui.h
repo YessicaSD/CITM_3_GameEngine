@@ -8,6 +8,7 @@
 #include "MenuCreateShape.h"
 #include "ComponentMesh.h"
 #include "ModuleRenderer3D.h"//Delete when we change FrameBufferObject to anther window
+#include "Event.h"
 
 class Timer;
 class Panel;
@@ -55,11 +56,15 @@ public:
 	~ModuleGui();
 	bool Init(JSONFile * module_file) override;
 	bool Start(JSONFile * module_file) override;
+	
 	update_status PreUpdate() override;
 	update_status PostUpdate() override;
-	void CreateDockspace(ImGuiIO& io);
 	bool CleanUp() override;
+
+	void CreateDockspace(ImGuiIO& io);
 	bool Log(const char*);
+	
+	void EventRequest(const Event& event);
 
 	void ModifyShortcut(SDL_Scancode key);
 
