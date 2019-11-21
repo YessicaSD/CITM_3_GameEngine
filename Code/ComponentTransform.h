@@ -35,6 +35,7 @@ public:
 	void SetScale(const float3 & scale);
 	void SetLocalMatrix(const float4x4& matrix);
 	void SetGlobalMatrix(const float4x4& matrix);
+	
 	void SetSelected(bool state);
 	
 	bool IsSelected();
@@ -48,6 +49,7 @@ public:
 	float3   GetRotationEuler() const;
 	float3   GetScale() const;
 	float4x4 GetGlobalMatrix() const;
+	float4x4 GetLocalMatrix() const;
 
 	void Reset();
 	void UpdateDisplayValues();

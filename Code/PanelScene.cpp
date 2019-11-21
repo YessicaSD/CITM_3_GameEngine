@@ -96,7 +96,8 @@ void PanelScene::DrawGizmo(ComponentCamera* camera, ComponentTransform* go)
 		{
 			update_octree_when_stop_moving = true;
 		}
-		go->SetGlobalMatrix(model.Transposed());
+		float4x4 parent = go->GetParent()->GetGlobalMatrix();
+		go->SetGlobalMatrix(parent.Inverted() * model.Transposed());
 	}
 	else
 	{

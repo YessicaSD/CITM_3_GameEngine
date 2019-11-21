@@ -293,6 +293,11 @@ float4x4 ComponentTransform::GetGlobalMatrix() const
 	return global_matrix;
 }
 
+float4x4 ComponentTransform::GetLocalMatrix() const
+{
+	return local_matrix;
+}
+
 void ComponentTransform::Reset()
 {
 	SetTransform(float3(0, 0, 0), float3(1, 1, 1), float3(0, 0, 0));
