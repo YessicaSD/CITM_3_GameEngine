@@ -35,7 +35,7 @@ public:
 
 public:
 	float3 reference;
-
+	bool see_frustrum_culling = false;
 private:
 	float camera_move_speed = 150.f;
 	float camera_rotate_speed = 20.f;

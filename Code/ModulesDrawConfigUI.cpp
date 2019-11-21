@@ -93,7 +93,8 @@ void ModuleCamera3D::DrawConfigurationUi()
 	ImGui::InputFloat("Move speed", &camera_move_speed);
 	ImGui::InputFloat("Roate speed", &camera_rotate_speed);
 	
-	
+	ImGui::Checkbox("See frustrum culling", &see_frustrum_culling);
+
 	scene_camera->PropertiesEditor();
 	const char * view_nodes[] = {
 		"scene_camera",

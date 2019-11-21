@@ -46,6 +46,10 @@ void ComponentCamera::PropertiesEditor()
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
+		if (ImGui::Button("Set main camera"))
+		{
+			App->scene->SetMainCamera(this);
+		}
 		bool changed_near_plane, changed_far_plane, changed_field_of_view, changed_aspect_ratio;
 		
 		
@@ -77,6 +81,8 @@ void ComponentCamera::PropertiesEditor()
 		}
 		if(changed_near_plane || changed_far_plane || changed_field_of_view || changed_aspect_ratio)
 			UpdateDrawingRepresentation();
+
+		
 
 	}
 }

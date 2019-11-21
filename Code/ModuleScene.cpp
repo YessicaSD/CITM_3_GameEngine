@@ -40,8 +40,11 @@ bool ModuleScene::Start(JSONFile * config)
 	CreateOctree();
 
 	bool ret = true;
-	GameObject* object_camera = new GameObject("Camera", root_gameobject->transform);
+	GameObject* object_camera = new GameObject("Main camera", root_gameobject->transform);
 	game_camera = object_camera->CreateComponent<ComponentCamera>();
+
+	object_camera = new GameObject("Camera", root_gameobject->transform);
+	object_camera->CreateComponent<ComponentCamera>();
 	App->import->LoadMesh("Assets/BakerHouse.fbx");
 	return ret;
 }
@@ -132,6 +135,15 @@ void ModuleScene::GetStaticObjects(std::vector<ComponentTransform*>& static_obje
 	root_gameobject->transform->GetStaticObjects(static_objects);
 }
 
+void ModuleScene::SetMainCamera(ComponentCamera * main_camera)
+{
+	if (main_camera != nullptr)
+	{
+		game_camera = main_camera;
+		App->renderer3D->game_fbo.camera = game_camera;
+	}
+}
+
 
 
 void ModuleScene::DeleteGameObject(GameObject * gameobject)
@@ -146,7 +158,6 @@ void ModuleScene::DeleteGameObject(GameObject * gameobject)
 				gameobject->transform->parent->children.erase(iter);
 				break;
 			}
-			
 		}
 		
 	}
@@ -238,7 +249,15 @@ update_status ModuleScene::PostUpdate()
 	p.axis = true;
 	//p.wire = false;
 	p.Render();
-	DrawObjects(App->camera->scene_camera);
+	if (App->camera->see_frustrum_culling)
+	{
+		DrawObjects(game_camera);
+	}
+	else
+	{
+		DrawObjects(App->camera->scene_camera);
+	}
+	
 
 	glLineWidth(10);
 	glColor4f(255, 0, 0, 1);
@@ -247,6 +266,7 @@ update_status ModuleScene::PostUpdate()
 	glVertex3f(ray.b.x, ray.b.y, ray.b.z);
 	glEnd();
 	App->renderer3D->scene_fbo.EndRender();
+
 	App->renderer3D->game_fbo.StartRender(App->gui->panel_game->current_viewport_size);
 	if (game_camera != nullptr)
 	{

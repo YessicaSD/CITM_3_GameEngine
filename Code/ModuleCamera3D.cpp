@@ -49,6 +49,7 @@ bool ModuleCamera3D::Start(JSONFile* config)
 	navigate_down = new Shortcut("Move camera right", {SDL_SCANCODE_E});
 	navigate_fast = new Shortcut("Move camera faster", {SDL_SCANCODE_LSHIFT});
 	focus_object = new Shortcut("Focus to object", {SDL_SCANCODE_F});
+
 	App->renderer3D->scene_fbo.camera = scene_camera;
 	App->renderer3D->game_fbo.camera = App->scene->game_camera;
 	return ret;

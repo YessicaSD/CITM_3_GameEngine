@@ -18,11 +18,13 @@
 #include "imGuizmo/ImGuizmo.h"
 struct ImVec4;
 struct Event;
-class ComponentCamera;
+#include "ComponentCamera.h"
 
 class ModuleScene : public Module
 {	
 public:
+	Octree octree;
+
 	ModuleScene(bool start_enabled = true);
 	~ModuleScene();
 
@@ -35,7 +37,7 @@ public:
 	bool IntersectRay(LineSegment* ray, RaycastHit& hit);
 	void RecreateOctree();
 	void GetStaticObjects(std::vector<ComponentTransform*>& static_objects);
-	Octree octree;
+	void SetMainCamera(ComponentCamera* main_camera);
 
 private:
 	void CreateOctree();
