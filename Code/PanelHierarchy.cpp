@@ -22,6 +22,8 @@ void PanelHierarchy::Draw()
 	ImGui::End();
 }
 
+
+
 void PanelHierarchy::DisplayChildren(ComponentTransform * transform)
 {
 	for (std::vector<ComponentTransform*>::iterator iter = transform->children.begin();
@@ -48,7 +50,7 @@ void PanelHierarchy::DisplayChildren(ComponentTransform * transform)
 			(*iter)->open_in_hierarchy = false;
 		}
 		is_open = ImGui::TreeNodeEx((*iter)->gameobject->GetName(), node_flags);
-
+		SetDragAndDrop((*iter));
 		if (is_selected)
 		{
 			ImGui::PopStyleColor();
@@ -60,8 +62,55 @@ void PanelHierarchy::DisplayChildren(ComponentTransform * transform)
 		}
 		if (is_open)
 		{
+			
 			DisplayChildren((*iter));
 			ImGui::TreePop();
 		}
 	}
+}
+
+void PanelHierarchy::SetDragAndDrop(ComponentTransform * object)
+{
+	DragObject(object);
+	DropObject(object);
+}
+
+void PanelHierarchy::DragObject(ComponentTransform * object)
+{
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		ImGui::SetDragDropPayload("object", &object, sizeof(ComponentTransform*));
+		ImGui::EndDragDropSource();
+	}
+}
+
+void PanelHierarchy::DropObject(ComponentTransform * object)
+{
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("object"))
+		{
+			ComponentTransform* payload_n = *(ComponentTransform**)payload->Data;
+			
+			if (!payload_n->IsInChilds(object))
+			{
+				drag_object = payload_n;
+				target_object = object;
+				//math::float4x4 globalMatrix = payload_n->transform->GetGlobalMatrix();
+				App->AddEvent(Event(Event::CHANGE_HIERARCHY));
+				//payload_n->transform->SetMatrixFromGlobal(globalMatrix);
+			}
+			else
+			{
+				LOG("ERROR: Invalid Target. Don't be so badass ;)"); 
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+}
+
+void PanelHierarchy::ChangeHierarchy()
+{
+	drag_object->parent->DeleteFromChildrens(drag_object);
+	target_object->AddChild(drag_object);
 }

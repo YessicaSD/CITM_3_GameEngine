@@ -36,8 +36,9 @@ public:
 	void SetLocalMatrix(const float4x4& matrix);
 	void SetGlobalMatrix(const float4x4& matrix);
 	void SetSelected(bool state);
-
+	
 	bool IsSelected();
+	bool IsInChilds(ComponentTransform*);
 	bool Intersect(LineSegment ray);
 
 	float3   GetZAxis();
@@ -51,6 +52,8 @@ public:
 	void Reset();
 	void UpdateDisplayValues();
 	void DeleteChildren();
+	void DeleteFromChildrens(ComponentTransform* );
+	void AddChild(ComponentTransform* ne_object);
 	void DrawAxis();
 	AABB GetAABB();
 
