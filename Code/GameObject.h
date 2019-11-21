@@ -13,12 +13,15 @@ class PanelHierarchy;
 class GameObject
 {
 public:
+
+
 	GameObject(std::string name, ComponentTransform * parent);
 	~GameObject();
 	bool OnStart();
 	bool OnUpdate(float dt);
 	bool OnPostUpdate();
 	void SetActive(bool value);
+	
 
 	template <class ComponentClass>
 	ComponentClass * CreateComponent()
@@ -59,12 +62,6 @@ public:
 	
 		return false;
 	}
-	//TODO: GetComponent method (in .h)
-	//template <class ComponentClass>
-	//ComponentClass * GetComponent()
-	//{
-	//return
-	//}
 
 	const char * GetName();
 

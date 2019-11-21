@@ -11,6 +11,7 @@
 #include "ComponentTransform.h"
 
 #include <algorithm>
+#include "Event.h"
 
 PanelScene::PanelScene(std::string name, bool active, std::vector<SDL_Scancode> shortcuts) :
 	Panel(name, active, shortcuts)
@@ -21,7 +22,6 @@ PanelScene::PanelScene(std::string name, bool active, std::vector<SDL_Scancode> 
 //By doing it in this order we can get the image of this frame
 void PanelScene::Draw()
 {
-	
 	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
 	ImGui::Begin("Scene",NULL, ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar);
 	if (ImGui::BeginMenuBar())
@@ -95,13 +95,29 @@ void PanelScene::DrawGizmo(ComponentCamera* camera, ComponentTransform* go)
 	ImGuizmo::Manipulate((const float*)& view, (const float*)& proj.Transposed(), guizmo_op, guizmo_mode, (float*)& model);
 	if (ImGuizmo::IsOver())
 	{
-		is_using_gizmo = true;
+		is_over_gizmo = true;
 	}
 	if (ImGuizmo::IsUsing())
 	{
-		
-		go->SetLocalMatrix(model.Transposed());
+		is_being_used = true;
+		if (go->is_static == true)
+		{
+			update_octree_when_stop_moving = true;
+		}
+		go->SetGlobalMatrix(model.Transposed());
 	}
+	else
+	{
+		is_being_used = false;
+		if (update_octree_when_stop_moving)
+		{
+			
+			update_octree_when_stop_moving = false;
+			App->AddEvent(Event(Event::UPDATE_OCTREE));
+		}
+	}
+
+
 
 }
 

@@ -4,7 +4,8 @@
 #include "GameObject.h"
 #include "Globals.h"
 #include "MathGeoLib/include/Geometry/Plane.h"
-
+#include "ModuleScene.h"
+#include "Application.h"
 
 ComponentCamera::ComponentCamera(GameObject* gameobject):Component(gameobject)
 {
@@ -26,6 +27,14 @@ ComponentCamera::ComponentCamera(GameObject* gameobject):Component(gameobject)
 	frustum_render.SetVetices((float*)&corners);
 }
 
+ComponentCamera::~ComponentCamera()
+{
+	if (App->scene->game_camera == this)
+	{
+		App->scene->game_camera = nullptr;
+	}
+}
+
 void ComponentCamera::OnPostUpdate()
 {
 	frustum_render.Draw();
@@ -37,6 +46,10 @@ void ComponentCamera::PropertiesEditor()
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
+		if (ImGui::Button("Set main camera"))
+		{
+			App->scene->SetMainCamera(this);
+		}
 		bool changed_near_plane, changed_far_plane, changed_field_of_view, changed_aspect_ratio;
 		
 		
@@ -68,6 +81,8 @@ void ComponentCamera::PropertiesEditor()
 		}
 		if(changed_near_plane || changed_far_plane || changed_field_of_view || changed_aspect_ratio)
 			UpdateDrawingRepresentation();
+
+		
 
 	}
 }
@@ -173,6 +188,11 @@ float4x4 ComponentCamera::GetViewMatrix()
 float4x4 ComponentCamera::GetProjectionMatrix()
 {
 	return frustum.ProjectionMatrix();
+}
+
+Frustum ComponentCamera::GetFrustrum()
+{
+	return frustum;
 }
 
 

@@ -22,6 +22,7 @@ class PanelAbout;
 class PanelAssets;
 class PanelScene;
 class ComponentTransform;
+class PanelGame;
 
 enum KEY_STATE;
 
@@ -33,6 +34,7 @@ class ModuleGui : public Module
 public:
 	MenuCreateShape * create_menu = nullptr;
 	PanelScene * panel_scene = nullptr;
+	PanelGame* panel_game = nullptr;
 
 private:
 	bool showMenuImGui = false;
@@ -44,6 +46,7 @@ private:
 	PanelAbout* panel_about = nullptr;
 	PanelHierarchy * panel_hierarchy = nullptr;
 	PanelAssets* panel_assets = nullptr;
+	
 	std::vector<Shortcut *> shortcuts;
 	ComponentTransform* selected_transform = nullptr;
 

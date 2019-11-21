@@ -6,6 +6,7 @@
 #include "ModuleGui.h"
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
+#include "ModuleRenderer3D.h"
 
 #include "Shortcut.h"
 #include "PanelProperties.h"
@@ -49,6 +50,8 @@ bool ModuleCamera3D::Start(JSONFile* config)
 	navigate_fast = new Shortcut("Move camera faster", {SDL_SCANCODE_LSHIFT});
 	focus_object = new Shortcut("Focus to object", {SDL_SCANCODE_F});
 
+	App->renderer3D->scene_fbo.camera = scene_camera;
+	App->renderer3D->game_fbo.camera = App->scene->game_camera;
 	return ret;
 }
 
@@ -130,7 +133,7 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 	
 
-	if (App->gui->panel_scene->mouse_is_hovering && !App->gui->panel_scene->is_using_gizmo && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->gui->panel_scene->mouse_is_hovering && !App->gui->panel_scene->is_over_gizmo && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		float width = App->gui->panel_scene->width;
 		float height = App->gui->panel_scene->height;
@@ -146,7 +149,7 @@ update_status ModuleCamera3D::Update(float dt)
 		}
 		
 	}
-	App->gui->panel_scene->is_using_gizmo = false;
+	App->gui->panel_scene->is_over_gizmo = false;
 	//current_camera->UpdateDrawingRepresentation();
 
 	return UPDATE_CONTINUE;

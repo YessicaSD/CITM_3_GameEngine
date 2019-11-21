@@ -605,6 +605,12 @@
     <ClInclude Include="RaycastHit.h">
       <Filter>Sources\ECS</Filter>
     </ClInclude>
+    <ClInclude Include="Octree.h">
+      <Filter>Sources\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelGame.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -883,6 +889,12 @@
     </ClCompile>
     <ClCompile Include="ImguiShortFuntions.cpp">
       <Filter>Sources\Tools\imguiShortFuntions</Filter>
+    </ClCompile>
+    <ClCompile Include="Octree.cpp">
+      <Filter>Sources\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelGame.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,7 @@
 #include "PanelHierarchy.h"
 #include "PanelAssets.h"
 #include "PanelScene.h"
+#include "PanelGame.h"
 
 //TODO: Frame Buffer Object remove
 #include "par/par_shapes.h"
@@ -81,7 +82,7 @@ bool ModuleGui::Start(JSONFile * module_file)
 	panel_assets		= CreatePanel<PanelAssets>("Assets", true);
 	panel_about			= CreatePanel<PanelAbout>("About", true);
 	panel_scene			= CreatePanel<PanelScene>("Scene", true);
-
+	panel_game			= CreatePanel<PanelGame>("Game", true);
 	create_menu = new MenuCreateShape();
 
 	return true;
@@ -295,6 +296,11 @@ void ModuleGui::MainMenuBar(update_status &ret)
 		{
 			panel_shortcuts->SetActive(panel_shortcuts->active);
 		}
+		if (ImGui::MenuItem("Game", NULL, &panel_game->active))
+		{
+			panel_game->SetActive(panel_game->active);
+		}
+
 		ImGui::EndMenu();
 	}
 	
