@@ -6,6 +6,7 @@
 #include "ModuleGui.h"
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
+#include "ModuleRenderer3D.h"
 
 #include "Shortcut.h"
 #include "PanelProperties.h"
@@ -49,6 +50,8 @@ bool ModuleCamera3D::Start(JSONFile* config)
 	navigate_fast = new Shortcut("Move camera faster", {SDL_SCANCODE_LSHIFT});
 	focus_object = new Shortcut("Focus to object", {SDL_SCANCODE_F});
 
+	App->renderer3D->scene_fbo.camera = scene_camera;
+	App->renderer3D->game_fbo.camera = App->scene->game_camera;
 	return ret;
 }
 
@@ -76,34 +79,34 @@ update_status ModuleCamera3D::Update(float dt)
 	float3 new_pos(0, 0, 0);
 	float move_speed = camera_move_speed * dt;
 
-	if (navigate_fast->Held())
+	if (navigate_fast->Held() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		move_speed *= 2.f;
 	}
 
-	if (navigate_up->Held())
+	if (navigate_up->Held() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		new_pos += move_speed * current_camera->frustum.up;
 	}
-	if (navigate_down->Held())
+	if (navigate_down->Held() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		new_pos -= move_speed * current_camera->frustum.up;
 	}
 
-	if (navigate_forward->Held())
+	if (navigate_forward->Held() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		new_pos += current_camera->frustum.front * move_speed;
 	}
-	if (navigate_backward->Held())
+	if (navigate_backward->Held() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		new_pos -= current_camera->frustum.front * move_speed;
 	}
 
-	if (navigate_left->Held())
+	if (navigate_left->Held() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		new_pos -= current_camera->frustum.WorldRight() * move_speed;
 	}
-	if (navigate_right->Held())
+	if (navigate_right->Held() && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		new_pos += current_camera->frustum.WorldRight() * move_speed;
 	}
@@ -130,7 +133,7 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 	
 
-	if (App->gui->panel_scene->mouse_is_hovering && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->gui->panel_scene->mouse_is_hovering && !App->gui->panel_scene->is_over_gizmo && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		float width = App->gui->panel_scene->width;
 		float height = App->gui->panel_scene->height;
@@ -144,9 +147,10 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			App->gui->SetSelectedGameObjec(hit.transform);
 		}
-
+		
 	}
-	current_camera->UpdateDrawingRepresentation();
+	App->gui->panel_scene->is_over_gizmo = false;
+	//current_camera->UpdateDrawingRepresentation();
 
 	return UPDATE_CONTINUE;
 }
@@ -247,6 +251,11 @@ bool ModuleCamera3D::LoadConfiguration(JSONFile * module_file)
 float3 ModuleCamera3D::GetPos()
 {
 	return scene_camera->frustum.pos;
+}
+
+ComponentCamera* ModuleCamera3D::GetCurrentCamera()
+{
+	return current_camera;
 }
 
 

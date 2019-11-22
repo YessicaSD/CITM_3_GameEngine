@@ -8,6 +8,7 @@
 #include "MenuCreateShape.h"
 #include "ComponentMesh.h"
 #include "ModuleRenderer3D.h"//Delete when we change FrameBufferObject to anther window
+#include "Event.h"
 
 class Timer;
 class Panel;
@@ -23,6 +24,7 @@ class PanelAssets;
 class PanelScene;
 class PanelResources;
 class ComponentTransform;
+class PanelGame;
 
 enum KEY_STATE;
 
@@ -34,6 +36,7 @@ class ModuleGui : public Module
 public:
 	MenuCreateShape * create_menu = nullptr;
 	PanelScene * panel_scene = nullptr;
+	PanelGame* panel_game = nullptr;
 
 private:
 	bool showMenuImGui = false;
@@ -46,6 +49,7 @@ private:
 	PanelHierarchy * panel_hierarchy = nullptr;
 	PanelAssets* panel_assets = nullptr;
 	PanelResources * panel_resources = nullptr;
+	
 	std::vector<Shortcut *> shortcuts;
 	ComponentTransform* selected_transform = nullptr;
 
@@ -54,11 +58,15 @@ public:
 	~ModuleGui();
 	bool Init(JSONFile * module_file) override;
 	bool Start(JSONFile * module_file) override;
+	
 	update_status PreUpdate() override;
 	update_status PostUpdate() override;
-	void CreateDockspace(ImGuiIO& io);
 	bool CleanUp() override;
+
+	void CreateDockspace(ImGuiIO& io);
 	bool Log(const char*);
+	
+	void EventRequest(const Event& event);
 
 	void ModifyShortcut(SDL_Scancode key);
 
@@ -82,6 +90,8 @@ private:
 	bool dockspace_active = true;
 
 	RenderMode render_mode_all;
+
+	void OpenInHierarchy(ComponentTransform* gameobject);
 
 	friend class Shortcut;
 	friend class Panel;

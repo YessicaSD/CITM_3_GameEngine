@@ -13,6 +13,7 @@ public:
 	bool frustum_culling = true;
 
 	ComponentCamera(GameObject* gameobject);
+	~ComponentCamera();
 	void OnPostUpdate() override;
 	void PropertiesEditor() override;
 	void TransformHaveChanged() override;
@@ -32,16 +33,17 @@ public:
 
 	float4x4 GetViewMatrix();
 	float4x4 GetProjectionMatrix();
+	Frustum  GetFrustrum();
 
 	bool update_project_matrix = false;
 private:
-	float near_plane;
-	float far_plane;
-	float v_fov;
-	float aspect_ratio;
+	float near_plane = 0.0f;
+	float far_plane = 0.0f;
+	float v_fov = 0.0f;
+	float aspect_ratio = 0.0f;
 	Frustum frustum;
 	CubeLine frustum_render;
-	float4 background_color;
+	float4 background_color= float4::zero;
 
 	friend class ModuleCamera3D;
 };

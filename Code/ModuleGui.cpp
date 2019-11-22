@@ -8,6 +8,7 @@
 
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "imGuizmo/ImGuizmo.h"
 
 #include "Timer.h"
 #include "Panel.h"
@@ -20,10 +21,12 @@
 #include "PanelAssets.h"
 #include "PanelScene.h"
 #include "PanelResources.h"
+#include "PanelGame.h"
 
 //TODO: Frame Buffer Object remove
 #include "par/par_shapes.h"
 #include "ModuleImport.h"
+#include "Event.h"
 
 #define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
 #define IMGUI_GREY ImVec4(0.6f,0.6f,0.6f,1.f)
@@ -82,7 +85,7 @@ bool ModuleGui::Start(JSONFile * module_file)
 	panel_about			= CreatePanel<PanelAbout>("About", true);
 	panel_scene			= CreatePanel<PanelScene>("Scene", true);
 	panel_resources		= CreatePanel<PanelResources>("Resources", true);
-
+	panel_game			= CreatePanel<PanelGame>("Game", true);
 	create_menu = new MenuCreateShape();
 
 	return true;
@@ -109,6 +112,7 @@ update_status ModuleGui::PostUpdate()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
+	
 
 	ImGuiIO& io = ImGui::GetIO();
 
@@ -127,7 +131,7 @@ update_status ModuleGui::PostUpdate()
 	}
 	if (showMenuImGui)
 	{
-		ImGui::ShowDemoWindow();
+		ImGui::ShowDemoWindow(&showMenuImGui);
 	}
 
 	ImGui::Render();
@@ -234,19 +238,32 @@ bool ModuleGui::Log(const char *sentence)
 	return false;
 }
 
+void ModuleGui::EventRequest(const Event & event)
+{
+	if (event.type == Event::CHANGE_HIERARCHY)
+	{
+		panel_hierarchy->ChangeHierarchy();
+	}
+}
+
 void ModuleGui::SetSelectedGameObjec(ComponentTransform * gameobject)
 {
 	if (selected_transform != nullptr)
 	{
 		selected_transform->SetSelected(false);
 	}
+
 	selected_transform = gameobject;
 	panel_properties->selected_transform = gameobject;
 
 	if (gameobject != nullptr)
 	{
 		gameobject->SetSelected(true);
+		OpenInHierarchy(gameobject);
 	}
+
+	
+
 }
 
 void ModuleGui::MainMenuBar(update_status &ret)
@@ -294,6 +311,11 @@ void ModuleGui::MainMenuBar(update_status &ret)
 		{
 			panel_resources->SetActive(panel_resources->active);
 		}
+		if (ImGui::MenuItem("Game", NULL, &panel_game->active))
+		{
+			panel_game->SetActive(panel_game->active);
+		}
+
 		ImGui::EndMenu();
 	}
 	
@@ -342,6 +364,16 @@ void ModuleGui::MainMenuBar(update_status &ret)
 		ImGui::EndMenu();
 	}
 	ImGui::EndMainMenuBar();
+}
+
+void ModuleGui::OpenInHierarchy(ComponentTransform * gameobject)
+{
+	ComponentTransform* parent = gameobject->GetParent();
+	if (parent != nullptr)
+	{
+		parent->open_in_hierarchy = true;
+		OpenInHierarchy(parent);
+	}
 }
 
 

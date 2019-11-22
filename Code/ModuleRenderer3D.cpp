@@ -117,10 +117,6 @@ bool ModuleRenderer3D::Init(JSONFile * module_file)
 		glEnable(GL_TEXTURE_2D);
 	}
 
-	background_col[0] = 1.0f;
-	background_col[1] = 0.0f;
-	background_col[2] = 0.2f;
-
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -132,19 +128,20 @@ bool ModuleRenderer3D::Init(JSONFile * module_file)
 	texture_2d = glIsEnabled(GL_TEXTURE_2D) == GL_TRUE;
 
 	scene_fbo.GenerateFrameBuffer();
+	game_fbo.GenerateFrameBuffer();
 	
 	return ret;
 }
 
 void ModuleRenderer3D::UpdateProjectionMatrix()
 {
+	//TODO: MAKE IT USE THE SAME MATRIX AS RENDER TEXTURE 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
 	glLoadMatrixf((GLfloat*)&App->camera->current_camera->GetProjectionMatrix().Transposed());
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+
 }
 
 bool ModuleRenderer3D::Start(JSONFile * module_file)
@@ -197,19 +194,12 @@ bool ModuleRenderer3D::CleanUp()
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
 
-	projection_matrix = perspective(fov, (float)width / (float)height, camera_near, camera_far);
-	glLoadMatrixf(&projection_matrix);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
 }
 
 bool ModuleRenderer3D::SaveConfiguration(JSONFile * module_file)
 {
-	module_file->SaveFloatArray("background color", background_col, 3u);
+	
 	module_file->SaveBool("depth test", depth_test);
 	module_file->SaveBool("cull faces", cull_face);
 	module_file->SaveBool("lightning", lighting);
@@ -221,8 +211,8 @@ bool ModuleRenderer3D::SaveConfiguration(JSONFile * module_file)
 
 bool ModuleRenderer3D::LoadConfiguration(JSONFile * module_file)
 {
-	module_file->LoadFloatArray("background color", background_col, 3u);
-	glClearColor(background_col[0], background_col[1], background_col[2], 1);
+	
+	
 
 	depth_test = module_file->LoadBool("depth test");
 	if (depth_test)

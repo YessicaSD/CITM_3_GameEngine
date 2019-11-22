@@ -280,7 +280,7 @@ void ModuleImport::EventRequest(const Event &event)
 				//TODO: Update assets tree
 			}
 		}
-		else if (extension == "dds" || extension == "png" || extension == "jpg")
+		else if (extension == "dds" || extension == "png" || extension == "jpg" || extension == "tga" )
 		{
 			//INFO: Copy the texture onto the assets folder
 			if (App->file_system->CopyFromOutsideFS(event.path, dst_path.c_str()))

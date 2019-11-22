@@ -120,6 +120,8 @@ public:
 	void Log(const char* sentece);
 	void EventRequest(const Event& event);
 	void DrawModulesConfigUi();
+	void AddEvent(const Event& event);
+
 private:
 
 	void AddModule(Module* mod);
@@ -136,7 +138,9 @@ private:
 	void UpateMsGraph(uint32 curr_frame_ms);
 	void DrawMsGraph(char * titleGraph, const ImVec2 &size);
 
+	void PopEventsInQueue();
 
+	std::vector<Event> event_queue;
 	std::string config_path;
 };
 

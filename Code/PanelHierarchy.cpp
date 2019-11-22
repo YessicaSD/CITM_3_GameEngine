@@ -6,6 +6,7 @@
 #include "ComponentTransform.h"
 #include "ModuleGui.h"
 #include "PanelProperties.h"
+#include "imgui/imgui_internal.h"
 
 PanelHierarchy::PanelHierarchy(std::string name, bool active, std::vector<SDL_Scancode> shortcuts) :
 	Panel(name, active, shortcuts),
@@ -19,70 +20,10 @@ void PanelHierarchy::Draw()
 	hover_color = ImGui::GetStyleColorVec4(ImGuiCol_::ImGuiCol_ButtonActive);//TODO: Put in constructor
 	ImGui::Begin("Hierarchy");
 	DisplayChildren(App->scene->root_gameobject->transform);
-	//for (std::vector<ComponentTransform*>::iterator iter = App->scene->root_gameobject.transform.children.begin();
-	//	iter != App->scene->root_gameobject.transform.children.end();
-	//	++iter)
-	//{
-	//	TreeEntry((*iter));
-	//}
-	//App->gui->panel_properties->SetGameObject(selected_object);
-	//selected_object = nullptr;
 	ImGui::End();
-
-	//if (("Advanced, with Selectable nodes"))
-	//{
-	//	static bool align_label_with_current_x_position = false;
-	//	ImGui::Checkbox("Align label with current X position)", &align_label_with_current_x_position);
-	//	ImGui::Text("Hello!");
-	//	if (align_label_with_current_x_position)
-	//		ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
-
-	//	static int selection_mask = (1 << 2); // Dumb representation of what may be user-side selection state. You may carry selection state inside or outside your objects in whatever format you see fit.
-	//	int node_clicked = -1;                // Temporary storage of what node we have clicked to process selection at the end of the loop. May be a pointer to your own node type, etc.
-	//	ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, ImGui::GetFontSize() * 3); // Increase spacing to differentiate leaves from expanded contents.
-	//	for (int i = 0; i < 6; i++)
-	//	{
-	//		// Disable the default open on single-click behavior and pass in Selected flag according to our selection state.
-	//		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
-	//		if (selection_mask & (1 << i))
-	//			node_flags |= ImGuiTreeNodeFlags_Selected;
-	//		if (i < 3)
-	//		{
-	//			// Items 0..2 are Tree Node
-	//			bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)i, node_flags, "Selectable Node %d", i);
-	//			if (ImGui::IsItemClicked())
-	//				node_clicked = i;
-	//			if (node_open)
-	//			{
-	//				ImGui::Text("Blah blah\nBlah Blah");
-	//				ImGui::TreePop();
-	//			}
-	//		}
-	//		else
-	//		{
-	//			// Items 3..5 are Tree Leaves
-	//			// The only reason we use TreeNode at all is to allow selection of the leaf.
-	//			// Otherwise we can use BulletText() or advance the cursor by GetTreeNodeToLabelSpacing() and call Text().
-	//			node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
-	//			ImGui::TreeNodeEx((void*)(intptr_t)i, node_flags, "Selectable Leaf %d", i);
-	//			if (ImGui::IsItemClicked())
-	//				node_clicked = i;
-	//		}
-	//	}
-	//	if (node_clicked != -1)
-	//	{
-	//		// Update selection state. Process outside of tree loop to avoid visual inconsistencies during the clicking-frame.
-	//		if (ImGui::GetIO().KeyCtrl)
-	//			selection_mask ^= (1 << node_clicked);          // CTRL+click to toggle
-	//		else //if (!(selection_mask & (1 << node_clicked))) // Depending on selection behavior you want, this commented bit preserve selection when clicking on item that is part of the selection
-	//			selection_mask = (1 << node_clicked);           // Click to single-select
-	//	}
-	//	ImGui::PopStyleVar();
-	//	if (align_label_with_current_x_position)
-	//		ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
-	//	ImGui::TreePop();
-	//}
 }
+
+
 
 void PanelHierarchy::DisplayChildren(ComponentTransform * transform)
 {
@@ -104,7 +45,13 @@ void PanelHierarchy::DisplayChildren(ComponentTransform * transform)
 			node_flags |= ImGuiTreeNodeFlags_Selected;
 			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, hover_color);
 		}
+		if ((*iter)->open_in_hierarchy)
+		{
+			ImGui::SetNextItemOpen(true);
+			(*iter)->open_in_hierarchy = false;
+		}
 		is_open = ImGui::TreeNodeEx((*iter)->gameobject->GetName(), node_flags);
+		SetDragAndDrop((*iter));
 		if (is_selected)
 		{
 			ImGui::PopStyleColor();
@@ -116,8 +63,76 @@ void PanelHierarchy::DisplayChildren(ComponentTransform * transform)
 		}
 		if (is_open)
 		{
+			
 			DisplayChildren((*iter));
 			ImGui::TreePop();
 		}
 	}
+}
+
+void PanelHierarchy::SetDragAndDrop(ComponentTransform * object)
+{
+	DragObject(object);
+	DropObject(object);
+}
+
+void PanelHierarchy::DragObject(ComponentTransform * object)
+{
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		ImGui::SetDragDropPayload("object", &object, sizeof(ComponentTransform*));
+		ImGui::EndDragDropSource();
+	}
+}
+
+void PanelHierarchy::DropObject(ComponentTransform * object)
+{
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("object"))
+		{
+			ComponentTransform* payload_n = *(ComponentTransform**)payload->Data;
+			
+			if (!payload_n->IsInChilds(object))
+			{
+				drag_object = payload_n;
+				target_object = object;
+				App->AddEvent(Event(Event::CHANGE_HIERARCHY));	
+			}
+			else
+			{
+				LOG("ERROR: Invalid Target."); 
+			}
+		}
+		
+		ImGui::EndDragDropTarget();
+	}
+
+	if (ImGui::BeginDragDropTargetCustom(ImGui::GetCurrentWindow()->Rect(), ImGui::GetID("Hierarchy")))
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("object"))
+		{
+			ComponentTransform* payload_n = *(ComponentTransform**)payload->Data;
+
+			if (!payload_n->IsInChilds(App->scene->root_gameobject->transform))
+			{
+				drag_object = payload_n;
+				target_object = App->scene->root_gameobject->transform;
+				App->AddEvent(Event(Event::CHANGE_HIERARCHY));
+			}
+			else
+			{
+				LOG("ERROR: Invalid Target.");
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+}
+
+void PanelHierarchy::ChangeHierarchy()
+{
+	drag_object->parent->DeleteFromChildrens(drag_object);
+	target_object->AddChild(drag_object);
+	drag_object->SetGlobalMatrix(target_object->global_matrix *  drag_object->local_matrix);
+
 }

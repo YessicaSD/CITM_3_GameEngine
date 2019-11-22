@@ -31,11 +31,11 @@ public:
 	bool SaveConfiguration(JSONFile* module_file) override;
 	bool LoadConfiguration(JSONFile* module_file) override;
 	float3 GetPos();
-	
+	ComponentCamera* GetCurrentCamera();
 
 public:
 	float3 reference;
-
+	bool see_frustrum_culling = false;
 private:
 	float camera_move_speed = 150.f;
 	float camera_rotate_speed = 20.f;
@@ -49,8 +49,8 @@ private:
 	Shortcut * navigate_fast = nullptr;
 	Shortcut * focus_object = nullptr;
 
-	ComponentCamera* scene_camera = nullptr;
-	ComponentCamera* current_camera = nullptr;
+	ComponentCamera * scene_camera = nullptr;
+	ComponentCamera * current_camera = nullptr;
 
 	LineSegment picking;
 	int camera_combo;

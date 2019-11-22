@@ -20,10 +20,13 @@ public:
 	//Create 
 
 	void SetParent(ComponentTransform * parent);
-	//void SetChildren(std::vector<Transform*> children);
+	ComponentTransform* GetParent();
 	
 	void OnPostUpdate() override;
 	void PropertiesEditor() override;
+
+	void SwitchedStatic();
+
 	void SetTransform(float3& position, float3& scale, float3 & rotation);
 	void SetTransform(float3& position, float3& scale, Quat & qrotation);
 	void SetTransform(const float4x4 & local_matrix);
@@ -31,24 +34,40 @@ public:
 	void SetRotation(const float3 & euler_rotation);
 	void SetRotation(const Quat & qrotation);
 	void SetScale(const float3 & scale);
+	void SetLocalMatrix(const float4x4& matrix);
+	void SetGlobalMatrix(const float4x4& matrix);
+	
 	void SetSelected(bool state);
+	
 	bool IsSelected();
+	bool IsInChilds(ComponentTransform*);
 	bool Intersect(LineSegment ray);
-	float3 GetZAxis();
 
-	float3 GetYAxis();
-
-	float3 GetPosition() const;
-	Quat GetRotation() const;
-	float3 GetRotationEuler() const;
-	float3 GetScale() const;
+	float3   GetZAxis();
+	float3   GetYAxis();
+	float3   GetPosition() const;
+	Quat     GetRotation() const;
+	float3   GetRotationEuler() const;
+	float3   GetScale() const;
 	float4x4 GetGlobalMatrix() const;
+	float4x4 GetLocalMatrix() const;
 
 	void Reset();
 	void UpdateDisplayValues();
 	void DeleteChildren();
+	void DeleteFromChildrens(ComponentTransform* );
+	void AddChild(ComponentTransform* ne_object);
 	void DrawAxis();
 	AABB GetAABB();
+
+	void GetStaticObjects(std::vector<ComponentTransform*>& static_objects);
+	
+	template<typename TYPE>
+	void GetIntersectNonStatics(std::vector<ComponentTransform*>& static_objects, const TYPE & primitive);
+
+	bool open_in_hierarchy = false;
+	bool is_static = false;
+	BoundingBox bounding_box;
 private:
 	void RecalculateMatrices();
 	void UpdateChildrenMatrices();
@@ -68,7 +87,7 @@ private:
 
 	ComponentTransform * parent = nullptr;
 	std::vector<ComponentTransform*> children;
-	BoundingBox bounding_box;
+	
 
 	bool is_selected = false;
 
@@ -76,6 +95,23 @@ private:
 	friend class ModuleImport;
 	friend class PanelHierarchy;
 	friend class ModuleScene;
+	
 };
+
+template<typename TYPE>
+inline void ComponentTransform::GetIntersectNonStatics(std::vector<ComponentTransform*>& static_objects, const TYPE & primitive)
+{
+	if (!is_static)
+	{
+		if (primitive.Intersects(bounding_box.GetOBB()))
+		{
+			static_objects.push_back(this);
+		}
+	}
+	for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
+	{
+		(*iter)->GetIntersectNonStatics(static_objects, primitive);
+	}
+}
 #endif // !TRANSFORM_H_
 

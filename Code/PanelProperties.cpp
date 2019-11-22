@@ -39,3 +39,5 @@ const ComponentTransform * PanelProperties::GetSelecteTransform()
 {
 	return selected_transform;
 }
+
+

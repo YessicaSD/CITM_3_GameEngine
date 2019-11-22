@@ -3,11 +3,12 @@
 #include "imgui/imgui.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
+#include "ComponentCamera.h"
 #include "Globals.h"
 
 #include "glew/include/GL/glew.h"
-
-
+#include "Application.h"
+#include "ModuleScene.h"
 
 CLASS_DEFINITION(Component, ComponentTransform)
 
@@ -37,6 +38,11 @@ void ComponentTransform::SetParent(ComponentTransform *parent)
 	//TODO: This should update the position, rotation and scale so that it remains intact in world space but it displays relative to the parent
 }
 
+ComponentTransform * ComponentTransform::GetParent()
+{
+	return parent;
+}
+
 void ComponentTransform::OnPostUpdate()
 {
 	DrawAxis();
@@ -45,25 +51,50 @@ void ComponentTransform::OnPostUpdate()
 
 void ComponentTransform::PropertiesEditor()
 {
-	bool position_changed = false,
-		 rotation_changed = false,
-		 scale_changed = false;
+	ImGui::SameLine();
+	if (ImGui::Checkbox("Static", &is_static))
+	{
+		SwitchedStatic();
+	}
+	
+		bool position_changed = false,
+			rotation_changed = false,
+			scale_changed = false;
 
-	if (ImGui::InputFloat3("Position", (float *)&position, "%.2f"))
+		if (ImGui::Button("Reset"))
+		{
+			Reset();
+		}
+		if (ImGui::InputFloat3("Position", (float *)&position, "%.2f"))
+		{
+			position_changed = true;
+		}
+		if (ImGui::InputFloat3("Rotation", (float *)&euler_rotation, "%.2f"))
+		{
+			rotation_changed = true;
+		}
+		if (ImGui::InputFloat3("Scale", (float *)&scale, "%.2f"))
+		{
+			scale_changed = true;
+		}
+		if (position_changed || rotation_changed || scale_changed)
+		{
+			SetTransform(position, scale, euler_rotation);
+		}
+	
+	
+	
+}
+
+void ComponentTransform::SwitchedStatic()
+{
+	if (is_static)
 	{
-		position_changed = true;
+		App->scene->octree.Insert(this);
 	}
-	if (ImGui::InputFloat3("Rotation", (float *)&euler_rotation, "%.2f"))
+	else
 	{
-		rotation_changed = true;
-	}
-	if (ImGui::InputFloat3("Scale", (float *)&scale, "%.2f"))
-	{
-		scale_changed = true;
-	}
-	if (position_changed || rotation_changed || scale_changed)
-	{
-		SetTransform(position, scale, euler_rotation);
+		App->scene->RecreateOctree();
 	}
 }
 
@@ -192,6 +223,30 @@ void ComponentTransform::SetScale(const float3 &scale)
 	RecalculateMatrices();
 }
 
+void ComponentTransform::SetGlobalMatrix(const float4x4& matrix)
+{
+	float3 position, scale;
+	Quat rotation;
+	matrix.Decompose(position, rotation, scale);
+	this->SetTransform(position, scale, rotation);
+}
+
+void ComponentTransform::SetLocalMatrix(const float4x4 & matrix)
+{
+	if (parent != nullptr)
+	{
+		math::float4x4 new_matrix = parent->global_matrix.Inverted();
+		new_matrix = new_matrix * matrix;
+
+		float3 aux_position, aux_scale;
+		Quat aux_rotation;
+
+		new_matrix.Decompose(aux_position, aux_rotation, aux_scale);
+
+		SetTransform(position, scale, aux_rotation);
+	}
+}
+
 void ComponentTransform::SetSelected(bool state)
 {
 	is_selected = state;
@@ -204,6 +259,18 @@ void ComponentTransform::SetSelected(bool state)
 bool ComponentTransform::IsSelected()
 {
 	return is_selected;
+}
+
+bool ComponentTransform::IsInChilds(ComponentTransform * object)
+{
+	for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
+	{
+		if (object == (*iter))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 bool ComponentTransform::Intersect(LineSegment ray)
@@ -254,6 +321,11 @@ float4x4 ComponentTransform::GetGlobalMatrix() const
 	return global_matrix;
 }
 
+float4x4 ComponentTransform::GetLocalMatrix() const
+{
+	return local_matrix;
+}
+
 void ComponentTransform::Reset()
 {
 	SetTransform(float3(0, 0, 0), float3(1, 1, 1), float3(0, 0, 0));
@@ -269,13 +341,35 @@ void ComponentTransform::DeleteChildren()
 {
 	if (gameobject->transform->children.size() > 0)
 	{
-		for (std::vector<ComponentTransform *>::iterator iter = gameobject->transform->children.begin(); iter != gameobject->transform->children.end(); ++iter)
+		for (std::vector<ComponentTransform *>::iterator iter = children.begin(); iter != children.end(); ++iter)
 		{
 			(*iter)->DeleteChildren();
-			delete (*iter);
+			delete (*iter)->gameobject;
 		}
-		gameobject->transform->children.clear();
+		children.clear();
 	}
+}
+
+void ComponentTransform::DeleteFromChildrens(ComponentTransform * object)
+{
+	if (gameobject->transform->children.size() > 0)
+	{
+		for (std::vector<ComponentTransform *>::iterator iter = gameobject->transform->children.begin(); iter != gameobject->transform->children.end(); ++iter)
+		{
+			if((*iter)==object)
+				{
+					(*iter)->parent = nullptr;
+					children.erase(iter);
+					return;
+				}
+		}
+	}
+}
+
+void ComponentTransform::AddChild(ComponentTransform * new_object)
+{
+	children.push_back(new_object);
+	new_object->parent = this;
 }
 
 void ComponentTransform::DrawAxis()
@@ -302,4 +396,20 @@ void ComponentTransform::DrawAxis()
 AABB ComponentTransform::GetAABB()
 {
 	return bounding_box.GetAABB();
+}
+
+void ComponentTransform::GetStaticObjects(std::vector<ComponentTransform*>& static_objects)
+{
+	if (is_static)
+	{
+		static_objects.push_back(this);
+	}
+
+	if (children.size())
+	{
+		for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
+		{
+			(*iter)->GetStaticObjects(static_objects);
+		}
+	}
 }
