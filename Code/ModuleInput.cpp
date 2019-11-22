@@ -43,10 +43,10 @@ update_status ModuleInput::PreUpdate()
 	SDL_PumpEvents();
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
-	
-	for(int i = 0; i < MAX_KEYS; ++i)
+
+	for (int i = 0; i < MAX_KEYS; ++i)
 	{
-		if(keys[i] == 1)
+		if (keys[i] == 1)
 		{
 			if (keyboard[i] == KEY_IDLE)
 			{
@@ -79,9 +79,9 @@ update_status ModuleInput::PreUpdate()
 	mouse_y /= SCREEN_SIZE;
 	mouse_wheel = 0;
 
-	for(int i = 0; i < 5; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
-		if(buttons & SDL_BUTTON(i))
+		if (buttons & SDL_BUTTON(i))
 		{
 			if (mouse_buttons[i] == KEY_IDLE)
 			{
@@ -114,6 +114,7 @@ update_status ModuleInput::PreUpdate()
 		ImGui_ImplSDL2_ProcessEvent(&e);
 		switch (e.type)
 		{
+
 		case SDL_MOUSEWHEEL: {
 			mouse_wheel = e.wheel.y;
 		} break;
@@ -143,9 +144,11 @@ update_status ModuleInput::PreUpdate()
 			Event new_event(Event::EVENT_TYPE::DROPPED_FILE, e.drop.file);
 			App->EventRequest(new_event);
 		} break;
+
+		}
 	}
 
-	if(quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
+	if (quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
 		return UPDATE_STOP;
 
 	return UPDATE_CONTINUE;
@@ -158,6 +161,7 @@ bool ModuleInput::CleanUp()
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }
+
 void ModuleInput::AddInputLog(SDL_Scancode key, std::string state)
 {
 	std::string scancode_name = SDL_GetScancodeName(key);

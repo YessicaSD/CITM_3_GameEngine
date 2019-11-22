@@ -96,9 +96,9 @@ update_status ModuleScene::Update(float dt)
 
 void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * transform)
 {
-	object->gameobject->OnPostUpdate();
-	for (std::vector<ComponentTransform *>::iterator iter = object->children.begin();
-		iter != object->children.end();
+	transform->gameobject->OnPostUpdate();
+	for (std::vector<ComponentTransform *>::iterator iter = transform->children.begin();
+		iter != transform->children.end();
 		++iter)
 	{
 		GameObjectPostUpdateRecursive((*iter));
