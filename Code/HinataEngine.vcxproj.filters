@@ -601,6 +601,19 @@
     <ClInclude Include="PanelGame.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="AssimpIO.h" />
+    <ClInclude Include="BassIO.h" />
+    <ClInclude Include="ModuleResourceManager.h" />
+    <ClInclude Include="PanelResources.h" />
+    <ClInclude Include="PhysFS\include\physfs.h" />
+    <ClInclude Include="RenderTexture.h" />
+    <ClInclude Include="ResourceMesh.h" />
+    <ClInclude Include="MenuCreateShape.h" />
+    <ClInclude Include="PerfTimer.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceModel.h" />
+    <ClInclude Include="ResourceTexture.h" />
+    <ClInclude Include="PanelImport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -877,6 +890,16 @@
     <ClCompile Include="PanelGame.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
+    <ClCompile Include="PanelResources.cpp" />
+    <ClCompile Include="ResourceMesh.cpp" />
+    <ClCompile Include="AssimpIO.cpp" />
+    <ClCompile Include="BassIO.cpp" />
+    <ClCompile Include="ModuleResourceManager.cpp" />
+    <ClCompile Include="PerfTimer.cpp" />
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceModel.cpp" />
+    <ClCompile Include="ResourceTexture.cpp" />
+    <ClCompile Include="PanelImport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">

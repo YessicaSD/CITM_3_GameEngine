@@ -277,6 +277,10 @@ void ModuleImport::EventRequest(const Event &event)
 			{
 				//INFO: Import model with our own custom format
 				ImportModel(event.path);
+				//INFO Create .meta
+				JSONFile meta_file;
+				meta_file.CreateJSONFile();
+				
 				//TODO: Update assets tree
 			}
 		}

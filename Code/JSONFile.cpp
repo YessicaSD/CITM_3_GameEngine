@@ -27,13 +27,13 @@ void JSONFile::CloseFile()
 	value = nullptr;
 }
 
-void JSONFile::CreateJSONFile(const std::string & path)
+void JSONFile::CreateJSONFile()
 {
 	value = json_value_init_object();
 	object = json_value_get_object(value);
 	if (value == nullptr || object == nullptr)
 	{
-		LOG("Error creating JSON with path %s", path.data());
+		LOG("Error creating JSON with path");
 	}
 }
 
