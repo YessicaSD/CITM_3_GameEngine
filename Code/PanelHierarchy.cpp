@@ -97,9 +97,7 @@ void PanelHierarchy::DropObject(ComponentTransform * object)
 			{
 				drag_object = payload_n;
 				target_object = object;
-				//math::float4x4 globalMatrix = payload_n->transform->GetGlobalMatrix();
-				App->AddEvent(Event(Event::CHANGE_HIERARCHY));
-				//payload_n->transform->SetMatrixFromGlobal(globalMatrix);
+				App->AddEvent(Event(Event::CHANGE_HIERARCHY));	
 			}
 			else
 			{
