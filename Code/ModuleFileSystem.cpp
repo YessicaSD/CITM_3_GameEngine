@@ -290,7 +290,8 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char * full_path, const char * de
 	// Only place we acces non virtual filesystem
 	bool ret = false;
 
-	char buf[8192];
+	const uint buf_size = 8192;
+	char buf[buf_size];
 	size_t size;
 
 	FILE* source = nullptr;
@@ -299,7 +300,7 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char * full_path, const char * de
 
 	if (source && dest)
 	{
-		while (size = fread_s(buf, 8192, 1, 8192, source))
+		while (size = fread_s(buf, buf_size, 1, buf_size, source))
 		{
 			PHYSFS_write(dest, buf, 1, size);
 		}
@@ -308,11 +309,11 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char * full_path, const char * de
 		PHYSFS_close(dest);
 		ret = true;
 
-		LOG("File System copied file [%s] to [%s]", full_path, destination);
+		LOG("Success copying file %s to %s.", full_path, destination);
 	}
 	else
 	{
-		LOG("File System error while copy from [%s] to [%s]", full_path, destination);
+		LOG("Error copying file %s to %s.", full_path, destination);
 	}
 
 	return ret;

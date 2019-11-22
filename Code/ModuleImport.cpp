@@ -77,7 +77,15 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path)
 				aiMaterial * material = scene->mMaterials[i];
 				ResourceTexture * resource_texture = ImportFBXTexture(material);
 				fbx_textures.push_back(resource_texture);
-				resource_model->textures_uid.push_back(resource_texture->GetUID());
+				//TODO: Remove this if when we separate ResourceMaterials from ResourceTextures
+				if (resource_texture == nullptr)
+				{
+					resource_model->textures_uid.push_back(INVALID_RESOURCE_UID);
+				}
+				else
+				{
+					resource_model->textures_uid.push_back(resource_texture->GetUID());
+				}
 			}
 		}
 
@@ -256,20 +264,28 @@ void ModuleImport::EventRequest(const Event &event)
 
 		std::string extension;
 		App->file_system->GetExtension(event.path, extension);
+
+		std::string file;
+		App->file_system->SplitFilePath(event.path, nullptr, &file, nullptr);
+		//TODO: Change it so that you can drag onto an specific folder on the assets
+		std::string dst_path = std::string(ASSETS_FOLDER) + std::string("/") + file;
+
 		if (extension == "fbx" || extension == "FBX")
 		{
-			//TODO: Copy mesh to assets folder
-			ImportModel(event.path);
-			//TODO: Update assets tree
+			//TODO: Copy model to assets folder
+			if (App->file_system->CopyFromOutsideFS(event.path, dst_path.c_str()))
+			{
+				//INFO: Import model with our own custom format
+				ImportModel(event.path);
+				//TODO: Update assets tree
+			}
 		}
 		else if (extension == "dds" || extension == "png" || extension == "jpg")
 		{
 			//INFO: Copy the texture onto the assets folder
-			std::string file;
-			App->file_system->SplitFilePath(event.path, nullptr, &file, nullptr);
-			if (App->file_system->CopyFromOutsideFS(event.path, (std::string(ASSETS_FOLDER) + std::string("/") + file).c_str()))
+			if (App->file_system->CopyFromOutsideFS(event.path, dst_path.c_str()))
 			{
-				//Import the texture with our custom format
+				//INFO: Import the texture with our custom format
 				App->texture->ImportTexture(event.path);
 				//TODO: Update assets tree
 			}
