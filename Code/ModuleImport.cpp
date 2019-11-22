@@ -22,12 +22,11 @@
 #include "ResourceModel.h"
 
 #include "ModuleFileSystem.h"
+#include "PhysFS/include/physfs.h"
 
 #define PAR_SHAPES_IMPLEMENTATION
 #include "par\par_shapes.h"
 #include "BoundingBox.h"
-
-#include <filesystem>
 
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
 
@@ -260,15 +259,20 @@ void ModuleImport::EventRequest(const Event &event)
 		if (extension == "fbx" || extension == "FBX")
 		{
 			//TODO: Copy mesh to assets folder
-			//INFO: We need to use <filesystem> because the file can come from outside the paths we specified in PHYSFS
 			ImportModel(event.path);
 			//TODO: Update assets tree
 		}
 		else if (extension == "dds" || extension == "png" || extension == "jpg")
 		{
-			//Import texture onto assets folder
-			App->texture->ImportTexture(event.path);
-			//TODO: Update assets tree
+			//INFO: Copy the texture onto the assets folder
+			std::string file;
+			App->file_system->SplitFilePath(event.path, nullptr, &file, nullptr);
+			if (App->file_system->CopyFromOutsideFS(event.path, (std::string(ASSETS_FOLDER) + std::string("/") + file).c_str()))
+			{
+				//Import the texture with our custom format
+				App->texture->ImportTexture(event.path);
+				//TODO: Update assets tree
+			}
 		}
 		else
 		{

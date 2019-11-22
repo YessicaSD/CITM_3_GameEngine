@@ -21,6 +21,10 @@ public:
 	const char * GetBasePath() const;
 	void GetFilesAndDirs(const char * directory, std::vector<std::string>& file_list, std::vector<std::string>& dir_list) const;
 
+	void SplitFilePath(const char * full_path, std::string * path, std::string * file, std::string * extension) const;
+
+	bool CopyFromOutsideFS(const char * full_path, const char * destination);
+
 private:
 	void CreateAssimpIO();
 	aiFileIO * GetAssimpIO();

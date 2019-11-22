@@ -238,3 +238,82 @@ void ModuleFileSystem::GetFilesAndDirs(const char* directory, std::vector<std::s
 	PHYSFS_freeList(rc);
 }
 
+void ModuleFileSystem::SplitFilePath(const char * full_path, std::string * path, std::string * file, std::string * extension) const
+{
+	if (full_path != nullptr)
+	{
+		std::string full(full_path);
+		//NormalizePath(full);
+		size_t pos_separator = full.find_last_of("\\/");
+		size_t pos_dot = full.find_last_of(".");
+
+		if (path != nullptr)
+		{
+			if (pos_separator < full.length())
+			{
+				*path = full.substr(0, pos_separator + 1);
+			}
+			else
+			{
+				path->clear();
+			}
+		}
+
+		if (file != nullptr)
+		{
+			if (pos_separator < full.length())
+			{
+				*file = full.substr(pos_separator + 1);
+			}
+			else
+			{
+				*file = full;
+			}
+		}
+
+		if (extension != nullptr)
+		{
+			if (pos_dot < full.length())
+			{
+				*extension = full.substr(pos_dot + 1);
+			}
+			else
+			{
+				extension->clear();
+			}
+		}
+	}
+}
+
+bool ModuleFileSystem::CopyFromOutsideFS(const char * full_path, const char * destination)
+{
+	// Only place we acces non virtual filesystem
+	bool ret = false;
+
+	char buf[8192];
+	size_t size;
+
+	FILE* source = nullptr;
+	fopen_s(&source, full_path, "rb");
+	PHYSFS_file* dest = PHYSFS_openWrite(destination);
+
+	if (source && dest)
+	{
+		while (size = fread_s(buf, 8192, 1, 8192, source))
+		{
+			PHYSFS_write(dest, buf, 1, size);
+		}
+
+		fclose(source);
+		PHYSFS_close(dest);
+		ret = true;
+
+		LOG("File System copied file [%s] to [%s]", full_path, destination);
+	}
+	else
+	{
+		LOG("File System error while copy from [%s] to [%s]", full_path, destination);
+	}
+
+	return ret;
+}
