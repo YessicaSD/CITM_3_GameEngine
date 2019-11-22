@@ -59,7 +59,7 @@ void PanelScene::Draw()
 		ImVec2(min.x + width,  min.y + height),
 		ImVec2(0, 1),
 		ImVec2(1, 0));
-	ComponentTransform* go = App->gui->GetSelecteTransform();
+	ComponentTransform* go = App->gui->GetSelectedTransform();
 	if ( go != nullptr)
 	{
 		DrawGizmo(App->camera->GetCurrentCamera(), go);

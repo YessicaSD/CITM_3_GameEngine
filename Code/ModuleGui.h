@@ -22,6 +22,7 @@ class PanelHierarchy;
 class PanelAbout;
 class PanelAssets;
 class PanelScene;
+class PanelResources;
 class ComponentTransform;
 class PanelGame;
 
@@ -47,6 +48,7 @@ private:
 	PanelAbout* panel_about = nullptr;
 	PanelHierarchy * panel_hierarchy = nullptr;
 	PanelAssets* panel_assets = nullptr;
+	PanelResources * panel_resources = nullptr;
 	
 	std::vector<Shortcut *> shortcuts;
 	ComponentTransform* selected_transform = nullptr;
@@ -76,7 +78,7 @@ public:
 		return new_panel;
 	}
 
-	ComponentTransform* GetSelecteTransform()
+	ComponentTransform* GetSelectedTransform()
 	{
 		return selected_transform;
 	}

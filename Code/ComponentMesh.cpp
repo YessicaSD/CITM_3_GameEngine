@@ -3,8 +3,7 @@
 
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
-
-#include "AssetMesh.h"
+#include "ResourceMesh.h"
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
@@ -29,14 +28,13 @@ ComponentMesh::ComponentMesh(GameObject *gameobject) : Component(gameobject)
 	fill_color[0] = fill_color[1] = fill_color[2] = fill_color[3] = 1.f;
 	line_color[0] = line_color[1] = line_color[2] = line_color[3] = 1.f;
 	point_color[0] = point_color[1] = point_color[2] = point_color[3] = 1.f;
-	material = new ComponentMaterial(gameobject, this);
-	gameobject->components.push_back(material);
-	
+	material = gameobject->CreateComponent<ComponentMaterial>();
+	material->SetMeshComponent(this);
 }
 
 ComponentMesh::~ComponentMesh()
 {
-	CleanUp();
+	gameobject->RemoveComponent<ComponentMaterial>();
 }
 
 void ComponentMesh::OnPostUpdate()
@@ -47,9 +45,8 @@ void ComponentMesh::OnPostUpdate()
 		glStencilFunc(GL_ALWAYS, 1, -1);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	}
-	
 
-	if (mesh->UVCoord)
+	if (mesh->uv_coord != nullptr)
 	{
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	}
@@ -71,22 +68,22 @@ void ComponentMesh::OnPostUpdate()
 		DrawNormals();
 	}
 
-	if (mesh->UVCoord)
+	if (mesh->uv_coord != nullptr)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
-		glTexCoordPointer(mesh->uv_num_components, GL_FLOAT, 0, NULL);
+		glTexCoordPointer(mesh->uv_dimensions, GL_FLOAT, 0, NULL);
 	}
 
 	if (render_mode.fill)
 	{
-		if (mesh->vertex_normals)
+		if (mesh->vertex_normals != nullptr)
 		{
 			glEnableClientState(GL_NORMAL_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex_normals);
 			glNormalPointer(GL_FLOAT, 0, NULL);
 		}
-		if (material)
+		if (material != nullptr)
 		{
 			material->RenderTexture();
 		}
@@ -120,8 +117,11 @@ void ComponentMesh::OnPostUpdate()
 
 	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
 	material->DisableGLModes();
-	if (mesh->UVCoord)
+
+	if (mesh->uv_coord != nullptr)
+	{
 		glDisable(GL_TEXTURE_COORD_ARRAY);
+	}
 	glPopMatrix();
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -196,12 +196,12 @@ void ComponentMesh::CleanUp()
 {
 	gameobject->RemoveComponent<ComponentMaterial>();
 
-	if (mesh)
+	if (mesh != nullptr)
 	{
-		delete mesh;
+		mesh->StopUsingResource();
 		mesh = nullptr;
 	}
-	
+	//TODO: Go to the gameobject and remove this component
 }
 
 void ComponentMesh::DrawOutline()
@@ -265,5 +265,28 @@ bool ComponentMesh::Intersect(LineSegment * ray, RaycastHit& hit)
 		}
 
 	}
+	return ret;
+}
+
+bool ComponentMesh::SetMesh(ResourceMesh * mesh)
+{
+	bool ret = false;
+
+	if (this->mesh != nullptr)
+	{
+		this->mesh->StopUsingResource();
+	}
+
+	if (mesh != nullptr)
+	{
+		this->mesh = mesh;
+		mesh->StartUsingResource();
+		ret = true;
+	}
+	else
+	{
+		LOG("Can't set the mesh to this GameObject.");
+	}
+
 	return ret;
 }

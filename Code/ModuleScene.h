@@ -23,9 +23,7 @@ struct Event;
 class ModuleScene : public Module
 {	
 public:
-	Octree octree;
-
-	ModuleScene(bool start_enabled = true);
+	ModuleScene(const char * name, bool start_enabled = true);
 	~ModuleScene();
 
 	bool Start(JSONFile* config) override;
@@ -53,6 +51,7 @@ private:
 	
 
 public:
+	Octree octree;
 	//All gameobjects are children of the root gameobject
 	GameObject* root_gameobject = nullptr;
 	ComponentCamera* game_camera = nullptr;

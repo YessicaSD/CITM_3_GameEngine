@@ -29,6 +29,7 @@ class ModuleCamera3D;
 class ModuleScene;
 class ModuleGui;
 class ModuleRandom;
+class ModuleResourceManager;
 
 struct ImVec2;
 
@@ -49,6 +50,7 @@ public:
 	ModuleFileSystem* file_system = nullptr;
 	ModuleAudio* audio = nullptr;
 	ModuleHardware* hardware = nullptr;
+	ModuleResourceManager * resource_manager = nullptr;
 
 	std::string application_name;
 	std::string organization_name;

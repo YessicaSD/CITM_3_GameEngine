@@ -540,14 +540,8 @@
     <ClInclude Include="ComponentTransform.h">
       <Filter>Sources\ECS\Components</Filter>
     </ClInclude>
-    <ClInclude Include="AssetMesh.h">
-      <Filter>Sources\ECS</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleTexture.h">
       <Filter>Sources\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Sources\Containers</Filter>
     </ClInclude>
     <ClInclude Include="Event.h">
       <Filter>Sources\Containers</Filter>
@@ -567,7 +561,6 @@
     <ClInclude Include="gpudetect\DeviceId.h">
       <Filter>Sources\Tools\gpudetect</Filter>
     </ClInclude>
-    <ClInclude Include="MenuCreateShape.h" />
     <ClInclude Include="PanelScene.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
@@ -577,8 +570,6 @@
     <ClInclude Include="mmgr\nommgr.h">
       <Filter>Sources\Tools\mmgr</Filter>
     </ClInclude>
-    <ClInclude Include="PerfTimer.h" />
-    <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="BoundingBox.h">
       <Filter>Sources\3DPrimitive</Filter>
     </ClInclude>
@@ -589,7 +580,6 @@
     <ClInclude Include="CubeLine.h">
       <Filter>Sources\3DPrimitive</Filter>
     </ClInclude>
-    <ClInclude Include="JSONFile.h" />
     <ClInclude Include="imGuizmo\ImCurveEdit.h">
       <Filter>Sources\Tools\imGuizmo</Filter>
     </ClInclude>
@@ -823,14 +813,8 @@
     <ClCompile Include="ComponentTransform.cpp">
       <Filter>Sources\ECS\Components</Filter>
     </ClCompile>
-    <ClCompile Include="AssetMesh.cpp">
-      <Filter>Sources\ECS</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleTexture.cpp">
       <Filter>Sources\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Sources\Containers</Filter>
     </ClCompile>
     <ClCompile Include="PanelAssets.cpp">
       <Filter>Sources\Editor\Panels</Filter>
@@ -847,7 +831,6 @@
     <ClCompile Include="gpudetect\DeviceId.cpp">
       <Filter>Sources\Tools\gpudetect</Filter>
     </ClCompile>
-    <ClCompile Include="MenuCreateShape.cpp" />
     <ClCompile Include="PanelScene.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
@@ -863,7 +846,6 @@
     <ClCompile Include="RenderTexture.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="PerfTimer.cpp" />
     <ClCompile Include="BoundingBox.cpp">
       <Filter>Sources\3DPrimitive</Filter>
     </ClCompile>
@@ -874,7 +856,6 @@
     <ClCompile Include="CubeLine.cpp">
       <Filter>Sources\3DPrimitive</Filter>
     </ClCompile>
-    <ClCompile Include="JSONFile.cpp" />
     <ClCompile Include="imGuizmo\ImCurveEdit.cpp">
       <Filter>Sources\Tools\imGuizmo</Filter>
     </ClCompile>

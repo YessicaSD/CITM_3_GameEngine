@@ -9,7 +9,7 @@
 #include "RaycastHit.h"
 #include "BoundingBox.h"
 
-class AssetMesh;
+class ResourceMesh;
 class ComponentMaterial;
 
 struct RenderMode
@@ -24,8 +24,11 @@ struct RenderMode
 class ComponentMesh : public Component
 {
 	CLASS_DECLARATION(ComponentMesh)
-public:
+
+private:
 	ComponentMesh(GameObject *gameobject);
+
+public:
 	~ComponentMesh();
 	void OnPostUpdate() override;
 	void DrawVertexNormal();
@@ -34,10 +37,11 @@ public:
 	void CleanUp() override;
 	void DrawOutline();
 	bool Intersect(LineSegment* ray, RaycastHit& out_hit);
+	bool SetMesh(ResourceMesh* mesh);
 
 private:
-	AssetMesh *mesh = nullptr;
-
+	ResourceMesh *mesh = nullptr;
+	BoundingBox *bounding_box;
 	ComponentMaterial *material = nullptr;
 	RenderMode render_mode;
 
@@ -51,7 +55,9 @@ private:
 	//Point
 	float point_color[4];
 	float point_size = 1.f;
-	friend class ModuleImport;
+
+	friend class GameObject;
+	friend class MenuCreateShape;
 	friend class ComponentMaterial;
 };
 

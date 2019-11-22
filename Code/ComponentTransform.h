@@ -29,6 +29,7 @@ public:
 
 	void SetTransform(float3& position, float3& scale, float3 & rotation);
 	void SetTransform(float3& position, float3& scale, Quat & qrotation);
+	void SetTransform(const float4x4 & local_matrix);
 	void SetPosition(const float3 & position);
 	void SetRotation(const float3 & euler_rotation);
 	void SetRotation(const Quat & qrotation);
@@ -90,6 +91,7 @@ private:
 
 	bool is_selected = false;
 
+	friend class MenuCreateShape;
 	friend class ModuleImport;
 	friend class PanelHierarchy;
 	friend class ModuleScene;

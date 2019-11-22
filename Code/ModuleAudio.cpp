@@ -62,6 +62,6 @@ bool ModuleAudio::SaveConfiguration(JSONFile * module_file)
 bool ModuleAudio::LoadConfiguration(JSONFile * module_file)
 {
 	general_volume = module_file->LoadNumber("general volume");
-	SetVolume(general_volume);
+	//SetVolume(general_volume);
 	return true;
 }
