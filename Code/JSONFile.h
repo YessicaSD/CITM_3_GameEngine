@@ -2,6 +2,7 @@
 #define __JSON_FILE_H__
 
 #include<string>
+#include<vector>
 #include "parson/parson.h"
 
 typedef unsigned int uint;
@@ -30,6 +31,7 @@ public:
 	bool SaveNumber(const char * variable_name, double value);
 	bool SaveText(const char * variable_name, const char * value);
 	bool SaveFloatArray(const char* name, const float* arr, const uint size);
+	bool SaveLLUArray(const char * name, const std::vector<long long unsigned int> & vec);
 
 
 private:

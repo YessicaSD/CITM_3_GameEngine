@@ -51,7 +51,7 @@ void PanelAssets::FillAssetTreeRecursive(Dir * dir)
 	//Add files
 	for (auto iter = file_list.begin(); iter != file_list.end(); ++iter)
 	{
-		Asset * new_asset = new Asset();
+		AssetFile * new_asset = new AssetFile();
 		new_asset->name = (*iter);
 		dir->assets.push_back(new_asset);
 	}
@@ -92,7 +92,10 @@ void PanelAssets::DisplayFolderAssetsRecursive(Dir * dir)
 	ImGuiTreeNodeFlags asset_tree_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_Leaf;
 	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
 	{
-		if (ImGui::TreeNodeEx((*iter)->name.c_str(), asset_tree_flags))
+		bool open = ImGui::TreeNodeEx((*iter)->name.c_str(), asset_tree_flags);
+		//TODO: Check if this asset is a model
+		DragAsset((*iter));
+		if (open)
 		{
 			ImGui::TreePop();
 		}
@@ -112,6 +115,33 @@ void PanelAssets::DisplayFolderAssetsRecursive(Dir * dir)
 			ImGui::TreePop();
 		}
 	}
+}
+
+void PanelAssets::DragAsset(AssetFile * asset)
+{
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		ImGui::SetDragDropPayload("asset", &asset, sizeof(AssetFile*));
+		ImGui::EndDragDropSource();
+	}
+}
+
+void PanelAssets::DropObject(AssetFile * asset)
+{
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("asset"))
+		{
+			AssetFile* payload_n = *(AssetFile**)payload->Data;
+			App->AddEvent(Event(Event::DROPPED_MODEL_TO_SCENE));
+		}
+		ImGui::EndDragDropTarget();
+	}
+}
+
+AssetFile PanelAssets::GetAssetFile()
+{
+	return *selected_asset;
 }
 
 //float num_colum = ImGui::GetWindowWidth() / image_size;

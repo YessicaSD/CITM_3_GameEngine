@@ -27,6 +27,7 @@
 #define PAR_SHAPES_IMPLEMENTATION
 #include "par\par_shapes.h"
 #include "BoundingBox.h"
+#include <sys/stat.h>
 
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
 
@@ -104,12 +105,10 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path)
 				fbx_meshes_textures.push_back(assimp_mesh->mMaterialIndex);
 			}
 		}
-
 		ImportFBXNodes(resource_model, new ResourceModelNode(), scene->mRootNode, resource_model->meshes_uid, resource_model->textures_uid, fbx_meshes_textures, INVALID_MODEL_ARRAY_INDEX);
 		aiReleaseImport(scene);
-
 		resource_model->SaveFileData();
-
+		SaveModelMeta(resource_model, asset_path);
 		//Delete all the data from the Resource (when it has just been imported, there is no object referencing it)
 		resource_model->ReleaseData();
 
@@ -123,6 +122,25 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path)
 	import_timer.ReadSec();
 
 	return resource_model;
+}
+
+void ModuleImport::SaveModelMeta(ResourceModel * resource_model, const char * asset_path)
+{
+	//INFO Create .meta
+	JSONFile meta_file;
+	meta_file.CreateJSONFile();
+	//TODO: Write default import options
+	struct stat file_stat;
+	meta_file.SaveNumber("resourceUID", resource_model->GetUID());
+	if (stat(asset_path, &file_stat) == 0)
+	{
+		meta_file.SaveNumber("dateModified", file_stat.st_atime);
+	}
+	meta_file.SaveLLUArray("exportedTextures", resource_model->textures_uid);
+	meta_file.SaveLLUArray("exportedMeshes", resource_model->meshes_uid);
+	//TODO: Add import options
+	meta_file.SaveFile(std::string(asset_path) + std::string(".meta"));
+	meta_file.CloseFile();
 }
 
 bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index)
@@ -276,11 +294,8 @@ void ModuleImport::EventRequest(const Event &event)
 			if (App->file_system->CopyFromOutsideFS(event.path, dst_path.c_str()))
 			{
 				//INFO: Import model with our own custom format
-				ImportModel(event.path);
-				//INFO Create .meta
-				JSONFile meta_file;
-				meta_file.CreateJSONFile();
-				
+				//INFO: Save a .meta with default import options and uid of related resources
+				ImportModel(dst_path.c_str());
 				//TODO: Update assets tree
 			}
 		}
@@ -290,7 +305,7 @@ void ModuleImport::EventRequest(const Event &event)
 			if (App->file_system->CopyFromOutsideFS(event.path, dst_path.c_str()))
 			{
 				//INFO: Import the texture with our custom format
-				App->texture->ImportTexture(event.path);
+				App->texture->ImportTexture(dst_path.c_str());
 				//TODO: Update assets tree
 			}
 		}

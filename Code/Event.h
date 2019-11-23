@@ -9,6 +9,7 @@ public:
 		DROPPED_FILE,
 		UPDATE_OCTREE,
 		CHANGE_HIERARCHY,
+		DROPPED_MODEL_TO_SCENE,
 	}type;
 	const char* path;
 	Event(EVENT_TYPE type) : type(type)

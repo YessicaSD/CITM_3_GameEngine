@@ -7,6 +7,8 @@
 #include "ModuleScene.h"
 #include "Application.h"
 
+CLASS_DEFINITION(Component, ComponentCamera);
+
 ComponentCamera::ComponentCamera(GameObject* gameobject):Component(gameobject)
 {
 	name = "Camera";

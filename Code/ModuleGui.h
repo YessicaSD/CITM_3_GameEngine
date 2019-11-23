@@ -13,6 +13,7 @@
 class Timer;
 class Panel;
 class Shortcut;
+class ComponentTransform;
 class PanelConfiguration;
 class PanelConsole;
 class PanelShortcuts;
@@ -23,8 +24,8 @@ class PanelAbout;
 class PanelAssets;
 class PanelScene;
 class PanelResources;
-class ComponentTransform;
 class PanelGame;
+class PanelImport;
 
 enum KEY_STATE;
 
@@ -49,6 +50,7 @@ private:
 	PanelHierarchy * panel_hierarchy = nullptr;
 	PanelAssets* panel_assets = nullptr;
 	PanelResources * panel_resources = nullptr;
+	PanelImport * panel_import = nullptr;
 	
 	std::vector<Shortcut *> shortcuts;
 	ComponentTransform* selected_transform = nullptr;
@@ -99,7 +101,6 @@ private:
 	friend class PanelHierarchy;
 	friend class ModuleCamera3D;
 	friend class PanelProperties;
-
 };
 
 #endif // !MODULEGUI_H_

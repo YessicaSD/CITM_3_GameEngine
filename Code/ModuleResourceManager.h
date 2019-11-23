@@ -11,7 +11,7 @@
 class ResourceTexture;
 
 //Used to display the assets in the PanelAssets
-struct Asset
+struct AssetFile
 {
 	//type (used to get the appropiate icon)
 	std::string name;
@@ -19,7 +19,7 @@ struct Asset
 
 struct Dir {
 	std::string name;
-	std::vector<Asset*>assets;
+	std::vector<AssetFile*>assets;
 	std::vector<Dir*>dirs;
 };
 

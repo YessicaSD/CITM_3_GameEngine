@@ -22,6 +22,7 @@
 #include "PanelScene.h"
 #include "PanelResources.h"
 #include "PanelGame.h"
+#include "PanelImport.h"
 
 //TODO: Frame Buffer Object remove
 #include "par/par_shapes.h"
@@ -86,6 +87,7 @@ bool ModuleGui::Start(JSONFile * module_file)
 	panel_scene			= CreatePanel<PanelScene>("Scene", true);
 	panel_resources		= CreatePanel<PanelResources>("Resources", true);
 	panel_game			= CreatePanel<PanelGame>("Game", true);
+	panel_import		= CreatePanel<PanelImport>("Import", true);
 	create_menu = new MenuCreateShape();
 
 	return true;

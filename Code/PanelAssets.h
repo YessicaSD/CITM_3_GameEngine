@@ -5,6 +5,7 @@
 #include <string>
 
 struct Dir;
+struct AssetFile;
 
 class PanelAssets : public Panel
 {
@@ -20,6 +21,15 @@ public:
 	void DeleteTreeRecursive(Dir * dir);
 
 	void DisplayFolderAssetsRecursive(Dir * dir);
+
+	void DragAsset(AssetFile * asset);
+
+	void DropObject(AssetFile * asset);
+
+	AssetFile GetAssetFile();
+
+private:
+	AssetFile * selected_asset = nullptr;
 
 	friend class ModuleGui;
 };

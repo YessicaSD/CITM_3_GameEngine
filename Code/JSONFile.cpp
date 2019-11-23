@@ -108,12 +108,27 @@ bool JSONFile::SaveText(const char * variable_name, const char * value)
 
 bool JSONFile::SaveFloatArray(const char* name, const float* arr, const uint size)
 {
+	bool ret = true;
 	JSON_Value* json_value = json_value_init_array();
 	JSON_Array* json_array = json_value_get_array(json_value);
 	json_object_set_value(object, name, json_value);
-	for (uint i = 0u; i < size; ++i)
+	for (uint i = 0u; i < size && ret; ++i)
 	{
-		json_array_append_number(json_array, arr[i]);
+		ret = json_array_append_number(json_array, arr[i]) == JSONSuccess;
 	}
-	return true;
+	return ret;
+}
+
+//Long long unsigned int
+bool JSONFile::SaveLLUArray(const char * name, const std::vector<long long unsigned int> & vec)
+{
+	bool ret = true;
+	JSON_Value* json_value = json_value_init_array();
+	JSON_Array* json_array = json_value_get_array(json_value);
+	json_object_set_value(object, name, json_value);
+	for (uint i = 0u; i < vec.size() && ret; ++i)
+	{
+		ret = json_array_append_number(json_array, vec[i]) == JSONSuccess;
+	}
+	return ret;
 }

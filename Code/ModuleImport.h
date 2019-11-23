@@ -18,6 +18,12 @@ class ComponentTransform;
 class ResourceModel;
 
 typedef struct par_shapes_mesh_s par_shapes_mesh;
+enum aiPostProcessSteps;
+
+struct ModelImportOptions
+{
+	aiPostProcessSteps post_process_steps;
+};
 
 //Module responsible for importing assets into the engine
 class ModuleImport : public Module
@@ -26,6 +32,7 @@ public:
 	ModuleImport(const char * name);
 	bool Start(JSONFile * module_file) override;
 	ResourceModel * ImportModel(const char* path);
+	void SaveModelMeta(ResourceModel * resource_model, const char * asset_path);
 	bool ImportFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index);
 	bool CleanUp() override;
 

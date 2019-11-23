@@ -3,7 +3,14 @@
 
 #include "Module.h"
 #include <map>
+#include "DevIL/include/il.h"
+
 class ResourceTexture;
+
+struct TextureImportOptions
+{
+	ILint compression = IL_DXT5;
+};
 
 class ModuleTexture : public Module
 {
