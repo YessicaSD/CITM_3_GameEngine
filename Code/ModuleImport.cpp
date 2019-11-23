@@ -128,10 +128,21 @@ void ModuleImport::SaveModelMeta(ResourceModel * resource_model, const char * as
 {
 	JSONFile meta_file;
 	meta_file.CreateJSONFile();
-	resource_model->SaveUID(&meta_file);
+	App->resource_manager->SaveUID(&meta_file, resource_model->uid);
 	resource_model->SaveModifiedDate(&meta_file, asset_path);
-	meta_file.SaveLLUArray("exportedTextures", resource_model->textures_uid);
-	meta_file.SaveLLUArray("exportedMeshes", resource_model->meshes_uid);
+	std::vector<char *>textures_uid_string;
+	for (auto iter = resource_model->textures_uid.begin();
+		iter != resource_model->textures_uid.end();
+		++iter)
+	{
+		char buffer[UID_DIGITS];
+		sprintf_s(buffer, "%20llu", (*iter));
+		textures_uid_string.push_back(buffer);
+	}
+	//TODO: Debug if their values are being lost due to being out of scope
+	meta_file.SaveTextArray("exportedTextures", textures_uid_string);
+	//meta_file.SaveLLUArray("exportedMeshes", resource_model->meshes_uid);
+	
 	//TODO: Add import options
 	meta_file.SaveFile(std::string(asset_path) + std::string(".") + std::string(META_EXTENSION));
 	meta_file.CloseFile();
@@ -143,7 +154,8 @@ void ModuleImport::LoadModelMeta(ResourceModel * model, const char * meta_path)
 	meta_file.LoadFile(meta_path);
 
 	//INFO: Load UID
-	model->LoadUID(&meta_file);
+
+	model->uid = App->resource_manager->LoadUID(&meta_file);
 
 	//TODO: Cretate objects forcing their uids
 	//App->resource_manager->CreateResource<ResourceModel>(uid);

@@ -3,6 +3,8 @@
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h"
 
+CLASS_DEFINITION(Resource, ResourceModel);
+
 ResourceModel::~ResourceModel()
 {
 	for (auto iter = nodes.begin(); iter != nodes.end(); ++iter)

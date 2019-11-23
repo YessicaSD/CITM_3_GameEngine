@@ -36,6 +36,8 @@ struct ResourceModelNode {
 
 class ResourceModel : public Resource
 {
+	CLASS_DECLARATION(ResourceModel);
+
 public:
 	~ResourceModel();
 

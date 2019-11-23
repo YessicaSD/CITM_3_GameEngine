@@ -8,6 +8,7 @@
 #define INVALID_RESOURCE_UID 0
 
 //18446744073709551615 is the maximum unsigned long long integer, which has 20 characters
+//we need +1 for the terminating null character \0
 #define UID_DIGITS 20 + 1
 #define TO_STRING( x ) #x
 
@@ -51,8 +52,6 @@ public:
 	bool StartUsingResource();
 	uint GetReferenceCount() const;
 	bool StopUsingResource();
-	void LoadUID(JSONFile * meta_file);
-	void SaveUID(JSONFile * meta_file) const;
 	void SaveModifiedDate(JSONFile * meta_file, const char * asset_path);
 	UID GetUID() const;
 

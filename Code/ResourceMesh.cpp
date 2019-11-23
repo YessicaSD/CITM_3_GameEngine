@@ -13,6 +13,8 @@
 #include "BoundingBox.h"
 #include "ModuleFileSystem.h"
 
+CLASS_DEFINITION(Resource, ResourceMesh);
+
 ResourceMesh::ResourceMesh() : Resource()
 {
 }

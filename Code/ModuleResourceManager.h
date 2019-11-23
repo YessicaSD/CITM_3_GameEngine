@@ -32,6 +32,10 @@ public:
 
 	void ImportAssetsRecursively(AssetDir * dir, std::string curr_dir);
 
+	bool IsFileModified(JSONFile &meta_file, const char * file);
+
+	bool MissingResources(JSONFile & meta_file, uint type);
+
 	template<class ResourceType>
 	ResourceType * CreateResource(UID uid = 0u)
 	{
@@ -53,6 +57,9 @@ public:
 
 	Resource * GetResource(UID uid);
 	uint GetResourceTypeFromExtension(const std::string & extension);
+
+	UID LoadUID(JSONFile * meta_file);
+	void SaveUID(JSONFile * meta_file, const UID & uid) const;
 
 private:
 	UID GenerateNewUID();

@@ -24,14 +24,14 @@ public:
 	bool LoadBool(const char * variable_name, bool default = false) const;
 	double LoadNumber(const char * variable_name, double default = 0.0) const;
 	const char * LoadText(const char * variable_name, const char * default = "") const;
-	bool LoadFloatArray(const char* name, float* values, const uint size);
+	bool LoadFloatArray(const char* name, float* values, const uint count);
 
 	//Write document
 	bool SaveBool(const char * variable_name, bool value);
 	bool SaveNumber(const char * variable_name, double value);
 	bool SaveText(const char * variable_name, const char * value);
 	bool SaveFloatArray(const char* name, const float* arr, const uint size);
-	bool SaveLLUArray(const char * name, const std::vector<long long unsigned int> & vec);
+	bool SaveTextArray(const char * name, const char ** array, const uint count);
 
 
 private:

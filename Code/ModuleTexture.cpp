@@ -66,7 +66,7 @@ void ModuleTexture::SaveTextureMeta(ResourceTexture * resource_texture, const ch
 	//INFO Create .meta
 	JSONFile meta_file;
 	meta_file.CreateJSONFile();
-	resource_texture->SaveUID(&meta_file);
+	App->resource_manager->SaveUID(&meta_file, resource_texture->uid);
 	resource_texture->SaveModifiedDate(&meta_file, asset_path);
 	//TODO: Add import options
 	meta_file.SaveFile(std::string(asset_path) + std::string(".") + std::string(META_EXTENSION));

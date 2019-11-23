@@ -106,29 +106,28 @@ bool JSONFile::SaveText(const char * variable_name, const char * value)
 	return json_object_set_string(object, variable_name, value) == JSONSuccess;
 }
 
-bool JSONFile::SaveFloatArray(const char* name, const float* arr, const uint size)
+bool JSONFile::SaveFloatArray(const char* name, const float* arr, const uint count)
 {
 	bool ret = true;
 	JSON_Value* json_value = json_value_init_array();
 	JSON_Array* json_array = json_value_get_array(json_value);
 	json_object_set_value(object, name, json_value);
-	for (uint i = 0u; i < size && ret; ++i)
+	for (uint i = 0u; i < count && ret; ++i)
 	{
 		ret = json_array_append_number(json_array, arr[i]) == JSONSuccess;
 	}
 	return ret;
 }
 
-//Long long unsigned int
-bool JSONFile::SaveLLUArray(const char * name, const std::vector<long long unsigned int> & vec)
+bool JSONFile::SaveTextArray(const char * name, const char ** arr, const uint count)
 {
 	bool ret = true;
 	JSON_Value* json_value = json_value_init_array();
 	JSON_Array* json_array = json_value_get_array(json_value);
 	json_object_set_value(object, name, json_value);
-	for (uint i = 0u; i < vec.size() && ret; ++i)
+	for (uint i = 0u; i < count && ret; ++i)
 	{
-		ret = json_array_append_number(json_array, vec[i]) == JSONSuccess;
+		ret = json_array_append_string(json_array, arr[i]) == JSONSuccess;
 	}
 	return ret;
 }

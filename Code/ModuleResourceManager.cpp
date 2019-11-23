@@ -47,24 +47,28 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 		//Check if it has a .meta. That means it has been imported already.
 		if (App->file_system->FileExists(meta_path.c_str()))
 		{
-			//Check that the modified date of the .meta and the file match. That means the file hasn't been modified while the engine was closed.
 			JSONFile meta_file;
 			meta_file.LoadFile(meta_path);
-			int meta_file_dateModified = meta_file.LoadNumber("dateModified");
 
-			int asset_file_dateModified = 0;
-			struct stat file_stat;
-			if (stat((*iter)->name.c_str(), &file_stat) == 0)
-			{
-				asset_file_dateModified = file_stat.st_atime;
-			}
-
-			if (asset_file_dateModified != meta_file_dateModified)
+			if (IsFileModified(meta_file, (*iter)->name.c_str())
+				|| MissingResources(meta_file, type))
 			{
 				//Import the file. Resources force the previous uid.
-			}
+				if (type == ResourceModel::type)
+				{
+					//meta_file.LoadText
+					//TODO: Delete the previous resources. Delete resources from the map too
+					//TODO: Generate new resources using the previous uids
+				}
+				else if (type == ResourceTexture::type)
+				{
 
-			//OR if there is a .meta but there isn't a RESOURCES_FOLDER
+				}
+				else
+				{
+
+				}
+			}
 		}
 		else
 		{
@@ -79,7 +83,7 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 			}
 			else
 			{
-				LOG("This format cannot be imported.");
+				LOG("This format is unsupported.");
 			}
 		}
 	}
@@ -87,6 +91,49 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 	{
 		ImportAssetsRecursively((*iter), curr_dir + (*iter)->name);
 	}
+}
+
+//Check that the modified date of the .meta and the file match. That means the file hasn't been modified while the engine was closed.
+bool ModuleResourceManager::IsFileModified(JSONFile &meta_file, const char * file)
+{
+	int meta_file_dateModified = meta_file.LoadNumber("dateModified");
+	int asset_file_dateModified = 0;
+	struct stat file_stat;
+	if (stat(file, &file_stat) == 0)
+	{
+		asset_file_dateModified = file_stat.st_atime;
+	}
+	return asset_file_dateModified != meta_file_dateModified;
+}
+
+bool ModuleResourceManager::MissingResources(JSONFile &meta_file, uint type)
+{
+	bool ret = false;
+	//Check that the resources specified in the .meta are indeed created in the Resources folder.
+
+	UID resource_uid = LoadUID(&meta_file);
+	char buffer[UID_DIGITS];
+	sprintf_s(buffer, "%020llu", resource_uid);
+
+	if (type == ResourceModel::type)
+	{
+		if (!App->file_system->FileExists((std::string(RESOURCES_MODEL_FOLDER) + std::string(buffer)).c_str()))
+		{
+			ret = true;
+		}
+	}
+	else if (type == ResourceTexture::type)
+	{
+		if (!App->file_system->FileExists((std::string(RESOURCES_TEXTURES_FOLDER) + std::string(buffer)).c_str()))
+		{
+			ret = true;
+		}
+	}
+	else
+	{
+		LOG("This format is unsupported.");
+	}
+	return ret;
 }
 
 //ModuleGUI
@@ -182,4 +229,17 @@ uint ModuleResourceManager::GetResourceTypeFromExtension(const std::string & ext
 	{
 		return ResourceTexture::type;
 	}
+}
+
+UID ModuleResourceManager::LoadUID(JSONFile * meta_file)
+{
+	const char * aux_uid = meta_file->LoadText("resourceUID", "0");
+	return strtoull(aux_uid, nullptr, 10);
+}
+
+void ModuleResourceManager::SaveUID(JSONFile * meta_file, const UID & uid) const
+{
+	char buffer[UID_DIGITS];
+	sprintf_s(buffer, "%020llu", uid);
+	meta_file->SaveText("resourceUID", buffer);
 }
