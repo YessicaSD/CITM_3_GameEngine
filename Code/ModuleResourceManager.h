@@ -58,8 +58,9 @@ public:
 	Resource * GetResource(UID uid);
 	uint GetResourceTypeFromExtension(const std::string & extension);
 
-	UID LoadUID(JSONFile * meta_file);
+	UID LoadUID(JSONFile * meta_file) const;
 	void SaveUID(JSONFile * meta_file, const UID & uid) const;
+	void SaveUIDArray(const std::vector<UID>& uid_vector, char * name, JSONFile * meta_file) const;
 
 private:
 	UID GenerateNewUID();

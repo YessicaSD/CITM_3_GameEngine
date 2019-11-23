@@ -24,6 +24,8 @@ public:
 	bool CopyFromOutsideFS(const char * full_path, const char * destination);
 	bool FileExists(const char * file) const;
 
+	bool Remove(const char * file);
+
 private:
 	void CreateAssimpIO();
 	aiFileIO * GetAssimpIO();

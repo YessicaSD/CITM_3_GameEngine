@@ -56,8 +56,15 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 				//Import the file. Resources force the previous uid.
 				if (type == ResourceModel::type)
 				{
-					//meta_file.LoadText
-					//TODO: Delete the previous resources. Delete resources from the map too
+					//INFO: Delete the previous resources
+					//TODO: If executed during execution, remove them from the map too
+					const char * uid = meta_file.LoadText("resourceUID", "0");
+					std::string resource_model_path = std::string(RESOURCES_MODEL_FOLDER) + uid + "." + MODEL_EXTENSION;
+					App->file_system->Remove(resource_model_path.c_str());
+
+					//std::vector<const char *>meshes_uids;
+					//const char * texture_uids = meta_file.LoadTextVector("exportedMeshes", meshes_uids);
+					
 					//TODO: Generate new resources using the previous uids
 				}
 				else if (type == ResourceTexture::type)
@@ -231,7 +238,7 @@ uint ModuleResourceManager::GetResourceTypeFromExtension(const std::string & ext
 	}
 }
 
-UID ModuleResourceManager::LoadUID(JSONFile * meta_file)
+UID ModuleResourceManager::LoadUID(JSONFile * meta_file) const
 {
 	const char * aux_uid = meta_file->LoadText("resourceUID", "0");
 	return strtoull(aux_uid, nullptr, 10);
@@ -242,4 +249,23 @@ void ModuleResourceManager::SaveUID(JSONFile * meta_file, const UID & uid) const
 	char buffer[UID_DIGITS];
 	sprintf_s(buffer, "%020llu", uid);
 	meta_file->SaveText("resourceUID", buffer);
+}
+
+void ModuleResourceManager::SaveUIDArray(const std::vector<UID> & uid_vector, char * name, JSONFile * meta_file) const
+{
+	uint count = uid_vector.size();
+	const char ** uid_string_vector = new const char*[count];
+	for (int i = 0; i < count; ++i)
+	{
+		char * buffer = new char[UID_DIGITS];
+		sprintf_s(buffer, UID_DIGITS, "%20llu", uid_vector[i]);
+		uid_string_vector[i] = buffer;
+	}
+	meta_file->SaveTextArray(name, uid_string_vector, count);
+	for (int i = count - 1; i >= 0; --i)
+	{
+		delete[]uid_string_vector[i];
+	}
+	delete[]uid_string_vector;
+
 }

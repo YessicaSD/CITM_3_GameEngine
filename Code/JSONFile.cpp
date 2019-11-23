@@ -119,6 +119,28 @@ bool JSONFile::SaveFloatArray(const char* name, const float* arr, const uint cou
 	return ret;
 }
 
+bool JSONFile::LoadTextArray(const char* name, const char ** values, const uint size)
+{
+	JSON_Array* arr = json_object_get_array(object, name);
+	for (int i = 0u; i < size; ++i)
+	{
+		JSON_Value* json_value = json_array_get_value(arr, i);
+		values[i] = json_value_get_string(json_value);
+	}
+	return true;
+}
+
+bool JSONFile::LoadTextVector(const char* name, std::vector<const char *> &values, const uint size)
+{
+	JSON_Array* arr = json_object_get_array(object, name);
+	for (int i = 0u; i < size; ++i)
+	{
+		JSON_Value* json_value = json_array_get_value(arr, i);
+		values.push_back(json_value_get_string(json_value));
+	}
+	return true;
+}
+
 bool JSONFile::SaveTextArray(const char * name, const char ** arr, const uint count)
 {
 	bool ret = true;

@@ -323,3 +323,22 @@ bool ModuleFileSystem::FileExists(const char* file) const
 {
 	return PHYSFS_exists(file) != 0;
 }
+
+bool ModuleFileSystem::Remove(const char * file)
+{
+	bool ret = false;
+
+	if (file != nullptr)
+	{
+		if (PHYSFS_delete(file) == 0)
+		{
+			LOG("Success deleting file: [%s]", file);
+			ret = true;
+		}
+		else
+		{
+			LOG("Error deleting file: [%s], %s", file, PHYSFS_getLastError());
+		}
+	}
+	return ret;
+}

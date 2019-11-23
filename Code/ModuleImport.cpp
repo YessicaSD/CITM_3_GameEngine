@@ -128,41 +128,10 @@ void ModuleImport::SaveModelMeta(ResourceModel * resource_model, const char * as
 {
 	JSONFile meta_file;
 	meta_file.CreateJSONFile();
-
 	App->resource_manager->SaveUID(&meta_file, resource_model->uid);
-
 	resource_model->SaveModifiedDate(&meta_file, asset_path);
-
-	uint textures_count = resource_model->textures_uid.size();
-	const char ** textures_uid_string = new const char* [textures_count];
-	for (int i = 0; i < textures_count; ++i)
-	{
-		char * buffer = new char [UID_DIGITS];
-		sprintf_s(buffer, UID_DIGITS, "%20llu", resource_model->textures_uid[i]);
-		textures_uid_string[i] = buffer;
-	}
-	meta_file.SaveTextArray("exportedTextures", textures_uid_string, textures_count);
-	for (int i = textures_count - 1; i >= 0; --i)
-	{
-		delete[]textures_uid_string[i];
-	}
-	delete[]textures_uid_string;
-
-	uint meshes_count = resource_model->meshes_uid.size();
-	const char ** meshes_uid_string = new const char*[meshes_count];
-	for (int i = 0; i < meshes_count; ++i)
-	{
-		char * buffer = new char[UID_DIGITS];
-		sprintf_s(buffer, UID_DIGITS, "%20llu", resource_model->meshes_uid[i]);
-		meshes_uid_string[i] = buffer;
-	}
-	meta_file.SaveTextArray("exportedMeshes", meshes_uid_string, meshes_count);
-	for (int i = meshes_count - 1; i >= 0; --i)
-	{
-		delete[]meshes_uid_string[i];
-	}
-	delete[]meshes_uid_string;
-	
+	App->resource_manager->SaveUIDArray(resource_model->textures_uid, "exportedTextures", &meta_file);
+	App->resource_manager->SaveUIDArray(resource_model->meshes_uid, "exportedMeshes", &meta_file);
 	//TODO: Add import options
 	meta_file.SaveFile(std::string(asset_path) + std::string(".") + std::string(META_EXTENSION));
 	meta_file.CloseFile();
