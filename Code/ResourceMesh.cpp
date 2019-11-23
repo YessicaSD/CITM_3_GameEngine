@@ -64,7 +64,7 @@ bool ResourceMesh::SaveFileData()
 	//SaveFile
 	uint path_size = 250u;
 	char * path = new char[path_size];
-	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, "mesh", uid, MESH_EXTENSION);
+	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, uid, MESH_EXTENSION);
 	ret = App->file_system->SaveFile((const void *)data, size, &path);
 	RELEASE_ARRAY(path);
 	return ret;
@@ -78,7 +78,7 @@ bool ResourceMesh::LoadFileData()
 	char * data = nullptr;
 	uint path_size = 250u;
 	char * path = new char[path_size];
-	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, "mesh", uid, MESH_EXTENSION);
+	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, uid, MESH_EXTENSION);
 
 	bool ret = App->file_system->LoadFile(path, &data);
 	if (ret)

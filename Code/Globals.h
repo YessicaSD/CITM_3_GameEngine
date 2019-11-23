@@ -75,7 +75,8 @@ enum update_status
 
 #define META_EXTENSION "hinata_meta"
 #define MESH_EXTENSION "hinata_mesh"
-#define TEXTURE_EXTENSION "hinata_texture"
+#define MODEL_EXTENSION "hinata_model"
+#define TEXTURE_EXTENSION "dds"
 #define MATERIAL_EXTENSION "hinata_material"
 
 #define SCREEN_WIDTH 1920 * 0.75f //TODO: Remove when releasing the game

@@ -46,7 +46,7 @@ bool ResourceModel::SaveFileData()
 
 	uint path_size = 250u;
 	char * path = new char[path_size];
-	App->file_system->CreatePath(path, path_size, RESOURCES_MODEL_FOLDER, "model", uid, "hinata_model");
+	App->file_system->CreatePath(path, path_size, RESOURCES_MODEL_FOLDER, uid, MODEL_EXTENSION);
 	App->file_system->SaveFile(data, total_size, &path);
 
 	return false;
@@ -59,7 +59,7 @@ bool ResourceModel::LoadFileData()
 	char * data = nullptr;
 	uint path_size = 250u;
 	char * path = new char[path_size];
-	App->file_system->CreatePath(path, path_size, RESOURCES_MODEL_FOLDER, "model", uid, "hinata_model");
+	App->file_system->CreatePath(path, path_size, RESOURCES_MODEL_FOLDER, uid, MODEL_EXTENSION);
 	App->file_system->LoadFile(path, &data);
 	char * cursor = data;
 

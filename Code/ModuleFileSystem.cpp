@@ -104,7 +104,7 @@ void ModuleFileSystem::GetExtension(const char * full_path, std::string & extens
 	}
 }
 
-void ModuleFileSystem::CreatePath(char * path, uint path_size, const char * folder, const char * name, const UID & uid, const char * extension)
+void ModuleFileSystem::CreatePath(char * path, uint path_size, const char * folder, const UID & uid, const char * extension)
 {
 	sprintf_s(path, path_size, "%s%020llu_%s.%s", folder, uid, name, extension);
 }

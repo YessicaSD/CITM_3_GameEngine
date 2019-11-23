@@ -22,7 +22,7 @@ bool ResourceTexture::SaveFileData()
 	//Create path
 	uint path_size = 250u;
 	char * path = new char[path_size];
-	App->file_system->CreatePath(path, path_size, RESOURCES_TEXTURES_FOLDER, "texture", uid, "dds");
+	App->file_system->CreatePath(path, path_size, RESOURCES_TEXTURES_FOLDER, uid, TEXTURE_EXTENSION);
 
 	//Save the image as .dds (quicker format)
 	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
@@ -51,7 +51,7 @@ bool ResourceTexture::LoadFileData()
 	//Create path
 	uint path_size = 250u;
 	char * custom_format_path = new char[path_size];
-	App->file_system->CreatePath(custom_format_path, path_size, RESOURCES_TEXTURES_FOLDER, "texture", uid, "dds");
+	App->file_system->CreatePath(custom_format_path, path_size, RESOURCES_TEXTURES_FOLDER, uid, TEXTURE_EXTENSION);
 
 	//Import data from path first
 	uint image_id = 0u;
