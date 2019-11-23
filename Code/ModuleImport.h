@@ -9,7 +9,7 @@
 #include "ResourceTexture.h"
 
 class ResourceMesh;
-class ResourceModelNode;
+class ModelNode;
 class ResourceTexture;
 struct aiMesh;
 struct aiMaterial;
@@ -32,15 +32,18 @@ public:
 	ModuleImport(const char * name);
 	bool Start(JSONFile * module_file) override;
 	ResourceModel * ImportModel(const char* path, UID model_uid = INVALID_RESOURCE_UID, std::vector<UID> & meshes_uids = std::vector<UID>(), std::vector<UID> & textures_uids = std::vector<UID>());
-	void SaveModelMeta(ResourceModel * resource_model, const char * asset_path);
-	void LoadModelMeta(ResourceModel * model, const char * meta_path);
-	bool ImportFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index);
 	bool CleanUp() override;
 	void EventRequest(const Event& event) override;
-	ResourceMesh* ImportAssimpMesh(aiMesh * assimp_mesh);
-	ResourceTexture * ImportFBXTexture(const  aiMaterial * material);
+	ResourceMesh* ImportAssimpMesh(aiMesh * assimp_mesh, UID uid);
 	ResourceMesh* ImportParShapeMesh(par_shapes_mesh * mesh);
 	void CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent);
+
+private:
+	void SaveModelMeta(ResourceModel * resource_model, const char * asset_path);
+	bool ImportFBXNodes(ResourceModel * resource_model, ModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index);
+	ResourceTexture * ImportFBXTexture(const  aiMaterial * material, UID uid);
+	void LoadModelMeta(ResourceModel * model, const char * meta_path);
+	UID PopFirst(std::vector<UID>& vector);
 
 	friend ModuleScene;
 };

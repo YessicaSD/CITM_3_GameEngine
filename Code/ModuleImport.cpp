@@ -76,7 +76,7 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 			for (uint i = 0u; i < scene->mNumMaterials; ++i)
 			{
 				aiMaterial * material = scene->mMaterials[i];
-				ResourceTexture * resource_texture = ImportFBXTexture(material);
+				ResourceTexture * resource_texture = ImportFBXTexture(material, PopFirst(prev_textures_uids));
 				fbx_textures.push_back(resource_texture);
 				//TODO: Remove this if when we separate ResourceMaterials from ResourceTextures
 				if (resource_texture == nullptr)
@@ -99,13 +99,13 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 			for (uint i = 0u; i < scene->mNumMeshes; ++i)
 			{
 				aiMesh *assimp_mesh = scene->mMeshes[i];
-				ResourceMesh * resource_mesh = ImportAssimpMesh(assimp_mesh);
+				ResourceMesh * resource_mesh = ImportAssimpMesh(assimp_mesh, PopFirst(prev_meshes_uids));
 				fbx_meshes.push_back(resource_mesh);
 				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
 				fbx_meshes_textures.push_back(assimp_mesh->mMaterialIndex);
 			}
 		}
-		ImportFBXNodes(resource_model, new ResourceModelNode(), scene->mRootNode, resource_model->meshes_uid, resource_model->textures_uid, fbx_meshes_textures, INVALID_MODEL_ARRAY_INDEX);
+		ImportFBXNodes(resource_model, new ModelNode(), scene->mRootNode, resource_model->meshes_uid, resource_model->textures_uid, fbx_meshes_textures, INVALID_MODEL_ARRAY_INDEX);
 		aiReleaseImport(scene);
 		resource_model->SaveFileData();
 		SaveModelMeta(resource_model, asset_path);
@@ -151,7 +151,7 @@ void ModuleImport::LoadModelMeta(ResourceModel * model, const char * meta_path)
 	//meta_file.CloseFile();
 }
 
-bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index)
+bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index)
 {
 	uint curr_index = resource_model->nodes.size();
 
@@ -177,13 +177,13 @@ bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ResourceModelN
 
 	for (uint i = 0u; i < node->mNumChildren; ++i)
 	{
-		ImportFBXNodes(resource_model, new ResourceModelNode(), node->mChildren[i], meshes, materials, mesh_texture_idxs, curr_index);
+		ImportFBXNodes(resource_model, new ModelNode(), node->mChildren[i], meshes, materials, mesh_texture_idxs, curr_index);
 	}
 
 	return true;
 }
 
-ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material)
+ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, UID uid)
 {
 	ResourceTexture * ret = nullptr;
 
@@ -193,21 +193,21 @@ ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material)
 		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &aipath, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
 			std::string path = ASSETS_FOLDER + std::string(aipath.data);
-			ret = App->texture->ImportTexture(path.c_str());
+			ret = App->texture->ImportTexture(path.c_str(), uid);
 		}
 		else
 		{
-			LOG("Texture path note found");
+			LOG("Error: Texture path not found");
 		}
 	}
 	return ret;
 }
 
-ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh)
+ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh, UID uid)
 {
 	Timer import_timer;
 
-	ResourceMesh *resource_mesh = App->resource_manager->CreateResource<ResourceMesh>();
+	ResourceMesh *resource_mesh = App->resource_manager->CreateResource<ResourceMesh>(uid);
 	//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
 	resource_mesh->ImportVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
 	resource_mesh->CreateBoundingBox();
@@ -317,4 +317,15 @@ void ModuleImport::EventRequest(const Event &event)
 		}
 		LOG("File dropped %s", event.path);
 	}
+}
+
+UID ModuleImport::PopFirst(std::vector<UID> & vector)
+{
+	if (vector.size() > 0u)
+	{
+		UID uid = (*vector.begin());
+		vector.erase(vector.begin());
+		return uid;
+	}
+	return INVALID_RESOURCE_UID;
 }

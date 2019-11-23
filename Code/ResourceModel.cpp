@@ -78,7 +78,7 @@ bool ResourceModel::LoadFileData()
 	//Load nodes
 	for (uint i = 0u; i < header[0u]; ++i)
 	{
-		ResourceModelNode * node = new ResourceModelNode();
+		ModelNode * node = new ModelNode();
 		node->name = new char[NODE_NAME_SIZE];
 		//INFO: Clear the name
 		//TODO: See if it's necessary if we're copy info from a file with the same name length and which has \0 character at the end
