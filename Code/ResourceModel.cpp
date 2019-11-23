@@ -3,6 +3,8 @@
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h"
 
+RESOURCE_DEFINITION(Resource, ResourceModel);
+
 ResourceModel::~ResourceModel()
 {
 	for (auto iter = nodes.begin(); iter != nodes.end(); ++iter)
@@ -46,7 +48,7 @@ bool ResourceModel::SaveFileData()
 
 	uint path_size = 250u;
 	char * path = new char[path_size];
-	App->file_system->CreatePath(path, path_size, RESOURCES_MODEL_FOLDER, "model", uid, "hinata_model");
+	App->file_system->CreatePath(path, path_size, RESOURCES_MODEL_FOLDER, uid, MODEL_EXTENSION);
 	App->file_system->SaveFile(data, total_size, &path);
 
 	return false;
@@ -59,7 +61,7 @@ bool ResourceModel::LoadFileData()
 	char * data = nullptr;
 	uint path_size = 250u;
 	char * path = new char[path_size];
-	App->file_system->CreatePath(path, path_size, RESOURCES_MODEL_FOLDER, "model", uid, "hinata_model");
+	App->file_system->CreatePath(path, path_size, RESOURCES_MODEL_FOLDER, uid, MODEL_EXTENSION);
 	App->file_system->LoadFile(path, &data);
 	char * cursor = data;
 
@@ -76,7 +78,7 @@ bool ResourceModel::LoadFileData()
 	//Load nodes
 	for (uint i = 0u; i < header[0u]; ++i)
 	{
-		ResourceModelNode * node = new ResourceModelNode();
+		ModelNode * node = new ModelNode();
 		node->name = new char[NODE_NAME_SIZE];
 		//INFO: Clear the name
 		//TODO: See if it's necessary if we're copy info from a file with the same name length and which has \0 character at the end

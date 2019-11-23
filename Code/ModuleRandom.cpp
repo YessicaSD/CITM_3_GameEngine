@@ -26,13 +26,19 @@ int ModuleRandom::RandomInt(int from, int to)
 
 float ModuleRandom::RandomFloat0to1()
 {
-	std::uniform_int_distribution<uint> uniform_dist(0, INT_MAX);
-	return (float)uniform_dist(rng) / (float)INT_MAX;
+	std::uniform_real_distribution<float> uniform_dist(0.f, 1.f);
+	return uniform_dist(rng);
+}
+
+UID ModuleRandom::RandomUID()
+{
+	//INFO: We don't use 0 because we consider it INVALID_RESOURCE_UID and INVALID_GAMEOBJECT_UID
+	std::uniform_int_distribution<UID> uniform_dist(1, ULLONG_MAX);
+	return uniform_dist(rng);
 }
 
 float ModuleRandom::RandomFloat(float from, float to)
 {
-	//We may be able to get more precision by using something different than INT_MAX
-	std::uniform_int_distribution<uint> uniform_dist(0, INT_MAX);
-	return ((float)uniform_dist(rng) / (float)INT_MAX) * (to - from) + from;
+	std::uniform_real_distribution<float> uniform_dist(from, to);
+	return uniform_dist(rng);
 };

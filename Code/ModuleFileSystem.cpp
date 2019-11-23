@@ -104,9 +104,9 @@ void ModuleFileSystem::GetExtension(const char * full_path, std::string & extens
 	}
 }
 
-void ModuleFileSystem::CreatePath(char * path, uint path_size, const char * folder, const char * name, const UID & uid, const char * extension)
+void ModuleFileSystem::CreatePath(char * path, uint path_size, const char * folder, const UID & uid, const char * extension)
 {
-	sprintf_s(path, path_size, "%s%s_%llu.%s", folder, name, uid, extension);
+	sprintf_s(path, path_size, "%s%020llu.%s", folder, uid, extension);
 }
 
 //Saves the data into the PHYSFS directory
@@ -316,5 +316,29 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char * full_path, const char * de
 		LOG("Error copying file %s to %s.", full_path, destination);
 	}
 
+	return ret;
+}
+
+bool ModuleFileSystem::FileExists(const char* file) const
+{
+	return PHYSFS_exists(file) != 0;
+}
+
+bool ModuleFileSystem::Remove(const char * file)
+{
+	bool ret = false;
+
+	if (file != nullptr)
+	{
+		if (PHYSFS_delete(file) == 0)
+		{
+			LOG("Success deleting file: [%s]", file);
+			ret = true;
+		}
+		else
+		{
+			LOG("Error deleting file: [%s], %s", file, PHYSFS_getLastError());
+		}
+	}
 	return ret;
 }

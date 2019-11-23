@@ -42,8 +42,12 @@ bool ModuleScene::Start(JSONFile * config)
 
 	bool ret = true;
 
+	float a = App->random->RandomFloat0to1();
+
 	ResourceModel * resource_model = App->import->ImportModel("Assets/BakerHouse.fbx");
 	App->import->CreateGameObjectFromModel(resource_model, App->scene->root_gameobject->transform);
+
+	App->import->LoadModelMeta(resource_model, "Assets/BakerHouse.fbx.meta");
 
 	GameObject* object_camera = new GameObject("Main camera", root_gameobject->transform);
 	game_camera = object_camera->CreateComponent<ComponentCamera>();
@@ -73,11 +77,11 @@ update_status ModuleScene::Update(float dt)
 		}
 		if (App->input->GetKey(SDL_SCANCODE_E))
 		{
-			App->gui->panel_scene->guizmo_op = ImGuizmo::SCALE;
+			App->gui->panel_scene->guizmo_op = ImGuizmo::ROTATE;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_R))
 		{
-			App->gui->panel_scene->guizmo_op = ImGuizmo::ROTATE;
+			App->gui->panel_scene->guizmo_op = ImGuizmo::SCALE;
 		}
 	}
 	
@@ -285,5 +289,9 @@ void ModuleScene::EventRequest(const Event & event)
 	if (event.type == Event::UPDATE_OCTREE)
 	{
 		RecreateOctree();
+	}
+	else if (event.type == Event::DROPPED_MODEL_TO_SCENE)
+	{
+		App->import->CreateGameObjectFromModel(event.drop_model_data.model, App->scene->root_gameobject->transform);
 	}
 }

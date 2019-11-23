@@ -12,6 +12,8 @@
 
 #include <algorithm>
 #include "Event.h"
+#include "ModuleResourceManager.h"
+#include "imgui/imgui_internal.h"
 
 PanelScene::PanelScene(std::string name, bool active, std::vector<SDL_Scancode> shortcuts) :
 	Panel(name, active, shortcuts)
@@ -24,6 +26,7 @@ void PanelScene::Draw()
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
 	ImGui::Begin("Scene",NULL, ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar);
+	DropObject();
 	if (ImGui::BeginMenuBar())
 	{
 		if (ImGui::Button("World"))
@@ -109,9 +112,6 @@ void PanelScene::DrawGizmo(ComponentCamera* camera, ComponentTransform* go)
 			App->AddEvent(Event(Event::UPDATE_OCTREE));
 		}
 	}
-
-
-
 }
 
 void PanelScene::GetSizeWithAspectRatio(int current_width, int current_height, int wanted_width, int wanted_height, int & new_width, int & new_height)
@@ -123,4 +123,25 @@ void PanelScene::GetSizeWithAspectRatio(int current_width, int current_height, i
 
 	new_width = current_width * scale;
 	new_height = current_height * scale;
+}
+
+void PanelScene::DropObject()
+{
+	if (ImGui::BeginDragDropTargetCustom(ImGui::GetCurrentWindow()->Rect(), ImGui::GetID("Scene")))
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("asset"))
+		{
+			AssetFile* asset = *(AssetFile**)payload->Data;
+			//Get the .meta associated with that file
+			JSONFile meta_file;
+			meta_file.LoadFile(std::string(ASSETS_FOLDER) + asset->name + "." + META_EXTENSION);
+			//TODO: Get the path of the asset + .META_EXTENSION (right now if we drop something that's on a folder it won't work)
+			UID uid = App->resource_manager->LoadUID(&meta_file);
+			//Get the id of that file
+			Event ev (Event::DROPPED_MODEL_TO_SCENE);
+			ev.drop_model_data.model = (ResourceModel*)App->resource_manager->GetResource(uid);
+			App->AddEvent(ev);
+		}
+		ImGui::EndDragDropTarget();
+	}
 }

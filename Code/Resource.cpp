@@ -1,5 +1,9 @@
 #include "Resource.h"
 #include "ModuleFileSystem.h"
+#include "JSONFile.h"
+#include <stdio.h>
+
+const uint Resource::type = std::hash<std::string>()(TO_STRING(Resource));
 
 UID Resource::GetUID() const
 {
@@ -24,6 +28,10 @@ bool Resource::ReleaseData()
 	bool ret = false;
 
 	return ret;
+}
+
+Resource::Resource()
+{
 }
 
 //INFO: Called each time a GameObject needs to use this resource
@@ -60,4 +68,13 @@ bool Resource::StopUsingResource()
 		ret = ReleaseData();
 	}
 	return ret;
+}
+
+void Resource::SaveModifiedDate(JSONFile * meta_file, const char * asset_path)
+{
+	struct stat file_stat;
+	if (stat(asset_path, &file_stat) == 0)
+	{
+		meta_file->SaveNumber("dateModified", file_stat.st_atime);
+	}
 }

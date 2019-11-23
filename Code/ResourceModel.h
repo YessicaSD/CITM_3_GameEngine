@@ -25,7 +25,7 @@
 //Best solution I can think of is to have another variable a bool or an int with different individual bytes
 //Where we specify if it has a mesh, a material or a parent
 
-struct ResourceModelNode {
+struct ModelNode {
 	char * name = nullptr;
 	float4x4 transform = float4x4::identity;
 	UID mesh_uid = INVALID_RESOURCE_UID;
@@ -36,6 +36,8 @@ struct ResourceModelNode {
 
 class ResourceModel : public Resource
 {
+	RESOURCE_DECLARATION(ResourceModel);
+
 public:
 	~ResourceModel();
 
@@ -46,7 +48,7 @@ private:
 	bool ReleaseData() override;
 
 public:
-	std::vector<ResourceModelNode*> nodes;
+	std::vector<ModelNode*> nodes;
 	std::vector<UID> meshes_uid;
 	std::vector<UID> textures_uid;
 
