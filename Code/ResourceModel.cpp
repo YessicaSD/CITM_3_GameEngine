@@ -3,7 +3,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h"
 
-CLASS_DEFINITION(Resource, ResourceModel);
+RESOURCE_DEFINITION(Resource, ResourceModel);
 
 ResourceModel::~ResourceModel()
 {

@@ -1,3 +1,3 @@
 #include "ResourceMaterial.h"
 
-CLASS_DEFINITION(Resource, ResourceMaterial);
+RESOURCE_DEFINITION(Resource, ResourceMaterial);

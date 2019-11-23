@@ -14,7 +14,7 @@ struct aiScene;
 
 class ResourceMesh : public Resource
 {
-	CLASS_DECLARATION(ResourceMesh);
+	RESOURCE_DECLARATION(ResourceMesh);
 
 private:
 	ResourceMesh();//Constructor is private because Resources need to be created from ModuleResourceManager

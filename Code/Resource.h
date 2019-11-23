@@ -21,7 +21,7 @@ typedef unsigned int uint;
 // This macro must be included in the declaration of any subclass of Component.
 // It declares variables used in type checking.
 //****************
-#define CLASS_DECLARATION( classname )                                                      \
+#define RESOURCE_DECLARATION( classname )                                                      \
 public:                                                                                     \
     static const uint type;                                                          \
     virtual bool IsClassType( const std::size_t classType ) const override;                 \
@@ -34,7 +34,7 @@ public:                                                                         
 // proper parentclass is indicated or the run-time type information will be
 // incorrect. Only works on single-inheritance RTTI.
 //****************
-#define CLASS_DEFINITION( parentclass, childclass )                                         \
+#define RESOURCE_DEFINITION( parentclass, childclass )                                         \
 const uint childclass::type = std::hash< std::string >()( TO_STRING( childclass ) ); \
 bool childclass::IsClassType( const uint classType ) const {                         \
         if ( classType == childclass::type )                                                \

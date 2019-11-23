@@ -5,7 +5,7 @@
 
 class ResourceMaterial : public Resource
 {
-	CLASS_DECLARATION(ResourceMaterial);
+	RESOURCE_DECLARATION(ResourceMaterial);
 
 public:
 	int i = 0;

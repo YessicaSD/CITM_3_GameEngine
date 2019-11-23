@@ -7,7 +7,7 @@
 #include "DevIL/include/ilu.h"
 #include "DevIL/include/ilut.h"
 
-CLASS_DEFINITION(Resource, ResourceTexture)
+RESOURCE_DEFINITION(Resource, ResourceTexture)
 
 ResourceTexture::~ResourceTexture()
 {
