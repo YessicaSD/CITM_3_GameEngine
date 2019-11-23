@@ -42,6 +42,8 @@ bool ModuleScene::Start(JSONFile * config)
 
 	bool ret = true;
 
+	float a = App->random->RandomFloat0to1();
+
 	ResourceModel * resource_model = App->import->ImportModel("Assets/BakerHouse.fbx");
 	App->import->CreateGameObjectFromModel(resource_model, App->scene->root_gameobject->transform);
 

@@ -1,5 +1,6 @@
 #include "Resource.h"
 #include "ModuleFileSystem.h"
+#include <stdio.h>
 
 UID Resource::GetUID() const
 {

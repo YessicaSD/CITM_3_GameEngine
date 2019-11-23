@@ -30,5 +30,5 @@ Resource * ModuleResourceManager::GetResource(UID uid)
 
 UID ModuleResourceManager::GenerateNewUID()
 {
-	return App->random->RandomInt(0, INT_MAX);
+	return App->random->RandomUID();
 }

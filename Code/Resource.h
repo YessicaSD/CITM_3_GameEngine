@@ -5,13 +5,15 @@
 
 #define INVALID_RESOURCE_UID 0
 
+//18446744073709551615 is the maximum unsigned long long integer, which has 20 characters
+#define UID_DIGITS 20 + 1
+
 class Resource
 {
 public:
 	bool StartUsingResource();
 	uint GetReferenceCount() const;
 	bool StopUsingResource();
-
 	UID GetUID() const;
 
 protected:

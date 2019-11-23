@@ -13,8 +13,9 @@ void PanelResources::Draw()
 	int space = 300;
 	for (auto iter = App->resource_manager->resources.begin(); iter != App->resource_manager->resources.end(); ++iter)
 	{
-		std::string name = std::to_string((*iter).first);
-		ImGui::Selectable(name.c_str(), false);
+		char buffer[UID_DIGITS];
+		sprintf_s(buffer, "%020llu", (*iter).first);
+		ImGui::Selectable(buffer, false);
 		ImGui::SameLine(space);
 		std::string count = std::to_string((*iter).second->GetReferenceCount());
 		ImGui::Text(count.c_str());
