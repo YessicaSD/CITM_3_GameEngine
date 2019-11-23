@@ -140,6 +140,7 @@ public:
 	bool IsPause();
 	bool IsStop();
 	bool IsPlay();
+
 	State GetState();
 private:
 

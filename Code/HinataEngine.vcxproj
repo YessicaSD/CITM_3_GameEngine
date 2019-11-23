@@ -134,6 +134,7 @@
     <ClInclude Include="imGuizmo\ImGuizmo.h" />
     <ClInclude Include="imGuizmo\ImSequencer.h" />
     <ClInclude Include="JSONFile.h" />
+    <ClInclude Include="ModuleTime.h" />
     <ClInclude Include="Octree.h" />
     <ClInclude Include="PanelGame.h" />
     <ClInclude Include="PanelTools.h" />
@@ -281,6 +282,7 @@
     <ClCompile Include="imGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="imGuizmo\ImSequencer.cpp" />
     <ClCompile Include="JSONFile.cpp" />
+    <ClCompile Include="ModuleTime.cpp" />
     <ClCompile Include="Octree.cpp" />
     <ClCompile Include="PanelGame.cpp" />
     <ClCompile Include="PanelTools.cpp" />

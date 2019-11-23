@@ -12,6 +12,7 @@ update_status ModuleTime::PreUpdate()
 	switch (App->GetState())
 	{
 	case Application::State::PLAY:
+		delta_time = real_time_delta_time;
 		time += delta_time;
 		break;
 	case Application::State::PAUSE:
@@ -30,4 +31,9 @@ void ModuleTime::EventRequest(const Event & event)
 	{
 		time = 0.f;
 	}
+}
+
+float ModuleTime::GetTime()
+{
+	return time;
 }
