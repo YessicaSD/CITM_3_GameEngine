@@ -17,10 +17,10 @@ struct AssetFile
 	std::string name;
 };
 
-struct Dir {
+struct AssetDir {
 	std::string name;
 	std::vector<AssetFile*>assets;
-	std::vector<Dir*>dirs;
+	std::vector<AssetDir*>dirs;
 };
 
 class ModuleResourceManager : public Module
@@ -29,6 +29,8 @@ public:
 	ModuleResourceManager(const char * name);
 
 	bool Start(JSONFile * module_file) override;
+
+	void ImportAssetsRecursively(AssetDir * dir, std::string curr_dir);
 
 	template<class ResourceType>
 	ResourceType * CreateResource(UID uid = 0u)
@@ -55,14 +57,14 @@ public:
 private:
 	UID GenerateNewUID();
 
-	void FillAssetTreeRecursive(Dir * dir);
-	void DeleteTreeRecursive(Dir * dir);
+	void FillAssetTreeRecursive(AssetDir * dir);
+	void DeleteTreeRecursive(AssetDir * dir);
 
 private:
 	std::map<UID, Resource*> resources;
 
 	//Used to diplay the assets in PanelAssets
-	Dir * asset_dir = nullptr;
+	AssetDir * asset_dir = nullptr;
 
 	friend class PanelAssets;
 	friend class PanelResources;

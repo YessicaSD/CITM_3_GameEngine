@@ -31,7 +31,7 @@ void PanelAssets::Draw()
 	ImGui::End();
 }
 
-void PanelAssets::DisplayFolderAssetsRecursive(Dir * dir)
+void PanelAssets::DisplayFolderAssetsRecursive(AssetDir * dir)
 {
 	ImGuiTreeNodeFlags asset_tree_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_Leaf;
 	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)

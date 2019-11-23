@@ -2,6 +2,8 @@
 #include "ModuleRandom.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
+#include "ModuleTexture.h"
+#include "ModuleImport.h"
 
 #include "ResourceModel.h"
 #include "ResourceTexture.h"
@@ -20,13 +22,27 @@ bool ModuleResourceManager::Start(JSONFile * module_file)
 
 	//Assets which cannot be opened show "cannot open this file" in preview window
 
-	asset_dir = new Dir();
-	name = ASSETS_FOLDER;
+	asset_dir = new AssetDir();
+	asset_dir->name = ASSETS_FOLDER;
 	FillAssetTreeRecursive(asset_dir);
-	for (auto iter = asset_dir->assets.begin(); iter != asset_dir->assets.end(); ++iter)
+	ImportAssetsRecursively(asset_dir, std::string(ASSETS_FOLDER));
+
+	//DeleteTreeRecursive(App->resource_manager->asset_dir);
+
+	return true;
+}
+
+//TODO: Make it not recursive
+void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string curr_dir)
+{
+	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
 	{
-		const char * meta_name = (std::string(ASSETS_FOLDER) + (*iter)->name + std::string(".meta")).c_str();
+		const char * meta_name = (curr_dir + (*iter)->name + std::string(".meta")).c_str();
 		//TODO: It must also get the name of the folder we're in
+
+		std::string extension;
+		App->file_system->GetExtension((*iter)->name.c_str(), extension);
+		uint type = GetResourceTypeFromExtension(extension);
 
 		//Check if it has a .meta. That means it has been imported already.
 		if (App->file_system->FileExists(meta_name))
@@ -53,13 +69,24 @@ bool ModuleResourceManager::Start(JSONFile * module_file)
 		else
 		{
 			//Import the file. Resources don't force uid
-			
+			if (type == ResourceModel::type)
+			{
+				App->import->ImportModel((curr_dir + (*iter)->name).c_str());
+			}
+			else if (type == ResourceTexture::type)
+			{
+				App->texture->ImportTexture((curr_dir + (*iter)->name).c_str());
+			}
+			else
+			{
+				LOG("This format cannot be imported.");
+			}
 		}
 	}
-
-	//DeleteTreeRecursive(App->resource_manager->asset_dir);
-
-	return true;
+	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
+	{
+		ImportAssetsRecursively((*iter), curr_dir + (*iter)->name);
+	}
 }
 
 //ModuleGUI
@@ -100,7 +127,7 @@ UID ModuleResourceManager::GenerateNewUID()
 
 //TODO: Make a function directly on file system that returns files without .meta and returns class AssetFiles and class Dir instead of std::string
 //don't abstract it over an existing one, we end up with 2 lists for each
-void ModuleResourceManager::FillAssetTreeRecursive(Dir * dir)
+void ModuleResourceManager::FillAssetTreeRecursive(AssetDir * dir)
 {
 	std::vector<std::string> file_list;
 	std::vector<std::string> dir_list;
@@ -124,14 +151,14 @@ void ModuleResourceManager::FillAssetTreeRecursive(Dir * dir)
 	//Add dirs
 	for (auto iter = dir_list.begin(); iter != dir_list.end(); ++iter)
 	{
-		Dir * new_dir = new Dir();
+		AssetDir * new_dir = new AssetDir();
 		new_dir->name = dir->name + (*iter);
 		FillAssetTreeRecursive(new_dir);
 		dir->dirs.push_back(new_dir);
 	}
 }
 
-void ModuleResourceManager::DeleteTreeRecursive(Dir * dir)
+void ModuleResourceManager::DeleteTreeRecursive(AssetDir * dir)
 {
 	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
 	{

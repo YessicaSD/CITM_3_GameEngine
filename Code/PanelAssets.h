@@ -4,7 +4,7 @@
 #include "Panel.h"
 #include <string>
 
-struct Dir;
+struct AssetDir;
 struct AssetFile;
 
 class PanelAssets : public Panel
@@ -15,7 +15,7 @@ public:
 	PanelAssets(std::string name, bool state, std::vector<SDL_Scancode> shortcuts = {});
 	void Draw();
 
-	void DisplayFolderAssetsRecursive(Dir * dir);
+	void DisplayFolderAssetsRecursive(AssetDir * dir);
 
 	void DragAsset(AssetFile * asset);
 
