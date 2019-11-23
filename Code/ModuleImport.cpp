@@ -133,7 +133,7 @@ void ModuleImport::SaveModelMeta(ResourceModel * resource_model, const char * as
 	meta_file.SaveLLUArray("exportedTextures", resource_model->textures_uid);
 	meta_file.SaveLLUArray("exportedMeshes", resource_model->meshes_uid);
 	//TODO: Add import options
-	meta_file.SaveFile(std::string(asset_path) + std::string(".meta"));
+	meta_file.SaveFile(std::string(asset_path) + std::string(".") + std::string(META_EXTENSION));
 	meta_file.CloseFile();
 }
 

@@ -37,7 +37,7 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 {
 	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
 	{
-		const char * meta_name = (curr_dir + (*iter)->name + std::string(".meta")).c_str();
+		std::string meta_path = curr_dir + (*iter)->name + std::string(".") + std::string(META_EXTENSION);
 		//TODO: It must also get the name of the folder we're in
 
 		std::string extension;
@@ -45,11 +45,11 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 		uint type = GetResourceTypeFromExtension(extension);
 
 		//Check if it has a .meta. That means it has been imported already.
-		if (App->file_system->FileExists(meta_name))
+		if (App->file_system->FileExists(meta_path.c_str()))
 		{
 			//Check that the modified date of the .meta and the file match. That means the file hasn't been modified while the engine was closed.
 			JSONFile meta_file;
-			meta_file.LoadFile(meta_name);
+			meta_file.LoadFile(meta_path);
 			int meta_file_dateModified = meta_file.LoadNumber("dateModified");
 
 			int asset_file_dateModified = 0;
@@ -140,7 +140,7 @@ void ModuleResourceManager::FillAssetTreeRecursive(AssetDir * dir)
 		std::string extension;
 		App->file_system->SplitFilePath((*iter).c_str(), nullptr, nullptr, &extension);
 		//Ignore .meta
-		if (extension != "meta")
+		if (extension != META_EXTENSION)
 		{
 			AssetFile * new_asset = new AssetFile();
 			new_asset->name = (*iter);

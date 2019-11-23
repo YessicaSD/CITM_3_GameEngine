@@ -1,6 +1,7 @@
 #include "DevIL/include/il.h"
 #include "DevIL/include/ilu.h"
 #include "DevIL/include/ilut.h"
+#include "Globals.h"
 
 #pragma comment (lib, "DevIL/lib/DevIL.lib")
 #pragma comment (lib, "DevIL/lib/ILU.lib")
@@ -68,7 +69,7 @@ void ModuleTexture::SaveTextureMeta(ResourceTexture * resource_texture, const ch
 	resource_texture->SaveUID(&meta_file);
 	resource_texture->SaveModifiedDate(&meta_file, asset_path);
 	//TODO: Add import options
-	meta_file.SaveFile(std::string(asset_path) + std::string(".meta"));
+	meta_file.SaveFile(std::string(asset_path) + std::string(".") + std::string(META_EXTENSION));
 	meta_file.CloseFile();
 }
 
