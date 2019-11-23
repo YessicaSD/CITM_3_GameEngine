@@ -310,7 +310,7 @@ bool Application::SaveModulesConfiguration()
 	bool ret = true;
 
 	//When saving we override the previous file
-	config.CreateJSONFile(config_path);
+	config.CreateJSONFile();
 	JSONFile *app_file = &config.AddSection("App");
 	SaveAppConfiguration(app_file);
 
