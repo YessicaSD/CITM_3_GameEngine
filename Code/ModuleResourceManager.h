@@ -50,6 +50,7 @@ public:
 	bool CleanUp() override;
 
 	Resource * GetResource(UID uid);
+	uint GetResourceTypeFromExtension(const std::string & extension);
 
 private:
 	UID GenerateNewUID();

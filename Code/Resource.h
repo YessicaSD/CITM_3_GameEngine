@@ -47,6 +47,7 @@ public:
 	static const uint type;
 
 public:
+	Resource();
 	bool StartUsingResource();
 	uint GetReferenceCount() const;
 	bool StopUsingResource();

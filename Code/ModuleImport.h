@@ -36,15 +36,11 @@ public:
 	void LoadModelMeta(ResourceModel * model, const char * meta_path);
 	bool ImportFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index);
 	bool CleanUp() override;
-
 	void EventRequest(const Event& event) override;
 	ResourceMesh* ImportAssimpMesh(aiMesh * assimp_mesh);
 	ResourceTexture * ImportFBXTexture(const  aiMaterial * material);
 	ResourceMesh* ImportParShapeMesh(par_shapes_mesh * mesh);
 	void CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent);
-
-private:
-	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<ResourceMesh*> loaded_meshes, std::vector<ResourceTexture*>& textures);
 
 	friend ModuleScene;
 };

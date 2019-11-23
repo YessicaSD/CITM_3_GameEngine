@@ -286,7 +286,6 @@ void ModuleImport::EventRequest(const Event &event)
 {
 	if (event.type == Event::EVENT_TYPE::DROPPED_FILE)
 	{
-
 		std::string extension;
 		App->file_system->GetExtension(event.path, extension);
 
@@ -294,24 +293,19 @@ void ModuleImport::EventRequest(const Event &event)
 		App->file_system->SplitFilePath(event.path, nullptr, &file, nullptr);
 		//TODO: Change it so that you can drag onto an specific folder on the assets
 		std::string dst_path = std::string(ASSETS_FOLDER) + std::string("/") + file;
-
-		if (extension == "fbx" || extension == "FBX")
+		uint resource_type = App->resource_manager->GetResourceTypeFromExtension(extension);
+		if (resource_type == ResourceTexture::type)
 		{
-			//TODO: Copy model to assets folder
 			if (App->file_system->CopyFromOutsideFS(event.path, dst_path.c_str()))
 			{
-				//INFO: Import model with our own custom format
-				//INFO: Save a .meta with default import options and uid of related resources
 				ImportModel(dst_path.c_str());
 				//TODO: Update assets tree
 			}
 		}
-		else if (extension == "dds" || extension == "png" || extension == "jpg" || extension == "tga" )
+		else if (resource_type == ResourceModel::type)
 		{
-			//INFO: Copy the texture onto the assets folder
 			if (App->file_system->CopyFromOutsideFS(event.path, dst_path.c_str()))
 			{
-				//INFO: Import the texture with our custom format
 				App->texture->ImportTexture(dst_path.c_str());
 				//TODO: Update assets tree
 			}
@@ -319,7 +313,6 @@ void ModuleImport::EventRequest(const Event &event)
 		else
 		{
 			LOG("This type of file is not supported.");
-			return;
 		}
 		LOG("File dropped %s", event.path);
 	}

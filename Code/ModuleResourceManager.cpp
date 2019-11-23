@@ -3,6 +3,9 @@
 #include "Application.h"
 #include "ModuleFileSystem.h"
 
+#include "ResourceModel.h"
+#include "ResourceTexture.h"
+
 ModuleResourceManager::ModuleResourceManager(const char * name) : Module(true, name)
 {
 }
@@ -44,10 +47,13 @@ bool ModuleResourceManager::Start(JSONFile * module_file)
 			{
 				//Import the file. Resources force the previous uid.
 			}
+
+			//OR if there is a .meta but there isn't a RESOURCES_FOLDER
 		}
 		else
 		{
 			//Import the file. Resources don't force uid
+			
 		}
 	}
 
@@ -137,4 +143,16 @@ void ModuleResourceManager::DeleteTreeRecursive(Dir * dir)
 		DeleteTreeRecursive((*iter));
 	}
 	delete(dir);
+}
+
+uint ModuleResourceManager::GetResourceTypeFromExtension(const std::string & extension)
+{
+	if (extension == "fbx" || extension == "FBX")
+	{
+		return ResourceModel::type;
+	}
+	else if (extension == "dds" || extension == "png" || extension == "jpg" || extension == "tga")
+	{
+		return ResourceTexture::type;
+	}
 }

@@ -13,6 +13,10 @@ ResourceTexture::~ResourceTexture()
 {
 }
 
+ResourceTexture::ResourceTexture() : Resource()
+{
+}
+
 bool ResourceTexture::SaveFileData()
 {
 	//Create path

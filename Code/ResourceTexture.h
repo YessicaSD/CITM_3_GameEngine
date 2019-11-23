@@ -14,8 +14,7 @@ public:
 	~ResourceTexture();
 
 private:
-	ResourceTexture() {
-	};
+	ResourceTexture();
 
 	bool SaveFileData() override;
 	bool LoadFileData() override;

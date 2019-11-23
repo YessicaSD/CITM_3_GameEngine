@@ -3,6 +3,8 @@
 #include "JSONFile.h"
 #include <stdio.h>
 
+const uint Resource::type = std::hash<std::string>()(TO_STRING(Resource));
+
 UID Resource::GetUID() const
 {
 	return uid;
@@ -26,6 +28,10 @@ bool Resource::ReleaseData()
 	bool ret = false;
 
 	return ret;
+}
+
+Resource::Resource()
+{
 }
 
 //INFO: Called each time a GameObject needs to use this resource
