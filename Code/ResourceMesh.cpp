@@ -15,6 +15,7 @@
 
 ResourceMesh::ResourceMesh() : Resource()
 {
+	aabb.SetNegativeInfinity();
 }
 
 ResourceMesh::~ResourceMesh()

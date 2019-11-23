@@ -67,7 +67,7 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path)
 		aiProcess_GenUVCoords | \
 		aiProcess_SortByPType | \
 		aiProcess_FindDegenerates | \
-		aiProcess_FindInvalidData |
+		aiProcess_FindInvalidData | \
 		aiProcess_FlipUVs | \
 		0;
 	ResourceModel * resource_model = nullptr;
@@ -237,13 +237,14 @@ void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, Com
 	{
 		GameObject * new_gameobject = new GameObject(resource_model->nodes[i]->name, nullptr);
 		new_gameobject->transform->SetTransform(resource_model->nodes[i]->transform);
-		// new_gameobject->transform->bounding_box.SetLocalAABB(loaded_meshes[index]->GetAABB());
-		// new_gameobject->transform->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
+		
 		if (resource_model->nodes[i]->mesh_uid != INVALID_RESOURCE_UID)
 		{
 			ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
-			component_mesh->SetMesh((ResourceMesh*)App->resource_manager->GetResource(resource_model->nodes[i]->mesh_uid));
-
+			ResourceMesh* resource_mesh = (ResourceMesh*)App->resource_manager->GetResource(resource_model->nodes[i]->mesh_uid);
+			component_mesh->SetMesh(resource_mesh);
+			new_gameobject->transform->bounding_box.SetLocalAABB(resource_mesh->aabb);
+			new_gameobject->transform->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
 			//INFO: component mesh creates a material component inside its constructor
 			ComponentMaterial * component_material = new_gameobject->GetComponent<ComponentMaterial>();
 			component_material->SetTexture((ResourceTexture*)App->resource_manager->GetResource(resource_model->nodes[i]->material_uid));
