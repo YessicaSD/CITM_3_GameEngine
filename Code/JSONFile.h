@@ -24,9 +24,9 @@ public:
 	bool LoadBool(const char * variable_name, bool default = false) const;
 	double LoadNumber(const char * variable_name, double default = 0.0) const;
 	const char * LoadText(const char * variable_name, const char * default = "") const;
-	bool LoadFloatArray(const char* name, float* values, const uint count);
-	bool LoadTextArray(const char * name, const char ** arr, const uint size);
-	bool LoadTextVector(const char * name, std::vector<const char*>& values, const uint size);
+	bool LoadFloatArray(const char* name, float* values);
+	bool LoadTextArray(const char * name, const char ** arr);
+	bool LoadTextVector(const char * name, std::vector<const char*>& values);
 
 	//Write document
 	bool SaveBool(const char * variable_name, bool value);

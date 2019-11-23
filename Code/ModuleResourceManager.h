@@ -63,6 +63,8 @@ public:
 	void SaveUIDArray(const std::vector<UID>& uid_vector, char * name, JSONFile * meta_file) const;
 
 private:
+	void DeleteDependantResources(std::vector<UID> uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension);
+	
 	UID GenerateNewUID();
 
 	void FillAssetTreeRecursive(AssetDir * dir);

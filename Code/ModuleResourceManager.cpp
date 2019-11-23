@@ -62,10 +62,14 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 					std::string resource_model_path = std::string(RESOURCES_MODEL_FOLDER) + uid + "." + MODEL_EXTENSION;
 					App->file_system->Remove(resource_model_path.c_str());
 
-					//std::vector<const char *>meshes_uids;
-					//const char * texture_uids = meta_file.LoadTextVector("exportedMeshes", meshes_uids);
+					std::vector<UID>meshes_uids;
+					DeleteDependantResources(meshes_uids, "exportedMeshes", &meta_file, RESOURCES_MESH_FOLDER, MESH_EXTENSION);
+
+					std::vector<UID>textures_uids;
+					DeleteDependantResources(textures_uids, "exportedTextures", &meta_file, RESOURCES_TEXTURES_FOLDER, TEXTURE_EXTENSION);
 					
-					//TODO: Generate new resources using the previous uids
+					//INFO: Generate new resources using the previous uids
+					App->import->ImportModel((curr_dir + (*iter)->name).c_str());
 				}
 				else if (type == ResourceTexture::type)
 				{
@@ -73,8 +77,12 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 				}
 				else
 				{
-
+					LOG("This format is unsupported.");
 				}
+			}
+			else
+			{
+				//TODO: Load its resources to the map
 			}
 		}
 		else
@@ -128,6 +136,7 @@ bool ModuleResourceManager::MissingResources(JSONFile &meta_file, uint type)
 		{
 			ret = true;
 		}
+		//TODO: Check if it lacks meshes or textures
 	}
 	else if (type == ResourceTexture::type)
 	{
@@ -170,7 +179,7 @@ Resource * ModuleResourceManager::GetResource(UID uid)
 	}
 	else
 	{
-		LOG("Error: The uid specified is not in the resources map.");
+LOG("Error: The uid specified is not in the resources map.");
 	}
 	return resource;
 }
@@ -268,5 +277,22 @@ void ModuleResourceManager::SaveUIDArray(const std::vector<UID> & uid_vector, ch
 		delete[]uid_string_vector[i];
 	}
 	delete[]uid_string_vector;
+}
 
+void ModuleResourceManager::DeleteDependantResources(std::vector<UID> uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension)
+{
+	std::vector<const char *>meshes_uids_string;
+	meta_file->LoadTextVector(name, meshes_uids_string);
+	uint size = meshes_uids_string.size();
+	std::vector<UID>meshes_uids;
+	meshes_uids.reserve(size);
+	for (int i = 0; i < size; ++i)
+	{
+		meshes_uids.push_back(strtoull(meshes_uids_string[i], nullptr, 10));
+	}
+	for (int i = 0; i < size; ++i)
+	{
+		App->file_system->Remove((std::string(folder) + meshes_uids_string[i] + "." + extension).c_str());
+		resources.erase(meshes_uids[i]);
+	}
 }

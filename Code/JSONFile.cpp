@@ -79,10 +79,10 @@ const char * JSONFile::LoadText(const char * variable_name, const char * default
 	return default;
 }
 
-bool JSONFile::LoadFloatArray(const char* name, float* values, const uint size)
+bool JSONFile::LoadFloatArray(const char* name, float* values)
 {
 	JSON_Array* arr = json_object_get_array(object, name);
-	for (int i = 0u; i < size; ++i)
+	for (int i = 0u; i < json_array_get_count(arr); ++i)
 	{
 		JSON_Value* json_value = json_array_get_value(arr, i);
 		values[i] = (float)json_value_get_number(json_value);
@@ -119,10 +119,10 @@ bool JSONFile::SaveFloatArray(const char* name, const float* arr, const uint cou
 	return ret;
 }
 
-bool JSONFile::LoadTextArray(const char* name, const char ** values, const uint size)
+bool JSONFile::LoadTextArray(const char* name, const char ** values)
 {
 	JSON_Array* arr = json_object_get_array(object, name);
-	for (int i = 0u; i < size; ++i)
+	for (int i = 0u; i < json_array_get_count(arr); ++i)
 	{
 		JSON_Value* json_value = json_array_get_value(arr, i);
 		values[i] = json_value_get_string(json_value);
@@ -130,10 +130,10 @@ bool JSONFile::LoadTextArray(const char* name, const char ** values, const uint 
 	return true;
 }
 
-bool JSONFile::LoadTextVector(const char* name, std::vector<const char *> &values, const uint size)
+bool JSONFile::LoadTextVector(const char* name, std::vector<const char *> &values)
 {
 	JSON_Array* arr = json_object_get_array(object, name);
-	for (int i = 0u; i < size; ++i)
+	for (int i = 0u; i < json_array_get_count(arr); ++i)
 	{
 		JSON_Value* json_value = json_array_get_value(arr, i);
 		values.push_back(json_value_get_string(json_value));
