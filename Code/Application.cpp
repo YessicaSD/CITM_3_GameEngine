@@ -5,7 +5,6 @@
 #include "Event.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_stdlib.h"
-#include "JSONFile.h"
 
 #include "ModuleImport.h"
 #include "ModuleTexture.h"
@@ -19,6 +18,10 @@
 #include "ModuleGui.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleResourceManager.h"
+#include "ModuleTime.h"
+
+#include "JSONFile.h"
+#include "Timer.h"
 
 Application::Application()
 {
@@ -33,13 +36,13 @@ Application::Application()
 	AddModule(hardware = new ModuleHardware("Hardware"));
 	AddModule(input = new ModuleInput("Input"));
 	AddModule(texture = new ModuleTexture("Textures"));
+	AddModule(time = new ModuleTime("Time"));
 	AddModule(scene = new ModuleScene("Scene"));
 	AddModule(import = new ModuleImport("Import"));
 	AddModule(camera = new ModuleCamera3D("Camera 3D"));
 	//AddModule(audio = new ModuleAudio("Audio"));
 	AddModule(gui = new ModuleGui("Gui"));
 	AddModule(resource_manager = new ModuleResourceManager("Resource Manager"));
-
 	// Renderer last!
 	AddModule(renderer3D = new ModuleRenderer3D("Render"));
 
@@ -50,7 +53,7 @@ Application::Application()
 
 Application::~Application()
 {
-	std::vector<Module*>::reverse_iterator item = modules.rbegin();
+	std::vector<Module *>::reverse_iterator item = modules.rbegin();
 
 	while (item != modules.rend())
 	{
@@ -74,7 +77,7 @@ bool Application::Init()
 	//max fps
 
 	// Call Init() in all modules
-	std::vector<Module*>::iterator item = modules.begin();
+	std::vector<Module *>::iterator item = modules.begin();
 
 	while (item != modules.end() && ret == true)
 	{
@@ -121,8 +124,8 @@ void Application::PrepareUpdate()
 		if (gui)
 		{
 			for (std::list<std::string>::iterator iter = log_strings.begin();
-				iter != log_strings.end();
-				++iter)
+				 iter != log_strings.end();
+				 ++iter)
 			{
 				if (!gui->Log((*iter).c_str()))
 				{
@@ -131,6 +134,27 @@ void Application::PrepareUpdate()
 			}
 			log_strings.clear();
 		}
+	}
+	switch (state)
+	{
+	case Application::WAITING_PLAY:
+		EventRequest(Event(Event::EVENT_TYPE::PLAY));
+		state = Application::PLAY;
+		break;
+	case Application::WAITING_STOP:
+		EventRequest(Event(Event::EVENT_TYPE::STOP));
+		state = Application::STOP;
+		break;
+	case Application::WAITING_PAUSE:
+		EventRequest(Event(Event::EVENT_TYPE::PAUSE));
+		state = Application::PAUSE;
+		break;
+	case Application::WAITING_UNPAUSE:
+		EventRequest(Event(Event::EVENT_TYPE::UNPAUSE));
+		state = Application::PLAY;
+		break;
+	default:
+		break;
 	}
 }
 
@@ -168,9 +192,8 @@ update_status Application::Update()
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 
-
 	PopEventsInQueue();
-	std::vector<Module*>::iterator item = modules.begin();
+	std::vector<Module *>::iterator item = modules.begin();
 	while (item != modules.end() && ret == UPDATE_CONTINUE)
 	{
 		if ((*item)->IsActive())
@@ -219,7 +242,7 @@ bool Application::DrawAppConfigUI()
 		}
 	}
 
-	ImVec2 size = { 310,100 };
+	ImVec2 size = {310, 100};
 	char titleGraph[GRAPH_TITLE_SIZE];
 	DrawFPSGraph(titleGraph, size);
 	DrawMsGraph(titleGraph, size);
@@ -238,7 +261,7 @@ void Application::UpdateFPSGraph(uint32 last_second_fps)
 	}
 }
 
-void Application::DrawFPSGraph(char * titleGraph, const ImVec2 &size)
+void Application::DrawFPSGraph(char *titleGraph, const ImVec2 &size)
 {
 	uint32 last_index = fps_graph_index - 1;
 	if (last_index == -1)
@@ -261,7 +284,7 @@ void Application::UpateMsGraph(uint32 curr_frame_ms)
 	}
 }
 
-void Application::DrawMsGraph(char * titleGraph, const ImVec2 &size)
+void Application::DrawMsGraph(char *titleGraph, const ImVec2 &size)
 {
 	uint32 last_index = ms_graph_index - 1;
 	if (last_index == -1)
@@ -287,15 +310,15 @@ bool Application::SaveModulesConfiguration()
 	bool ret = true;
 
 	//When saving we override the previous file
-	config.CreateJSONFile();
-	JSONFile * app_file = &config.AddSection("App");
+	config.CreateJSONFile(config_path);
+	JSONFile *app_file = &config.AddSection("App");
 	SaveAppConfiguration(app_file);
 
-	for (std::vector<Module*>::iterator item = modules.begin();
-		item != modules.end() && ret;
-		item = ++item)
+	for (std::vector<Module *>::iterator item = modules.begin();
+		 item != modules.end() && ret;
+		 item = ++item)
 	{
-		JSONFile * module_file = &config.AddSection((*item)->name);
+		JSONFile *module_file = &config.AddSection((*item)->name);
 		if (module_file != nullptr)
 		{
 			ret = (*item)->SaveConfiguration(module_file);
@@ -320,11 +343,11 @@ bool Application::LoadModulesConfigurationWithOpenFile()
 
 	LoadAppConfiguration(&config);
 
-	for (std::vector<Module*>::iterator item = modules.begin();
-		item != modules.end() && ret == true;
-		++item)
+	for (std::vector<Module *>::iterator item = modules.begin();
+		 item != modules.end() && ret == true;
+		 ++item)
 	{
-		JSONFile * module_file = &config.GetSection((*item)->name);
+		JSONFile *module_file = &config.GetSection((*item)->name);
 		if (module_file != nullptr)
 		{
 			ret = (*item)->LoadConfiguration(module_file);
@@ -334,7 +357,7 @@ bool Application::LoadModulesConfigurationWithOpenFile()
 	return ret;
 }
 
-bool Application::LoadAppConfiguration(JSONFile * app_file)
+bool Application::LoadAppConfiguration(JSONFile *app_file)
 {
 	if (app_file != nullptr)
 	{
@@ -346,7 +369,7 @@ bool Application::LoadAppConfiguration(JSONFile * app_file)
 	return true;
 }
 
-bool Application::SaveAppConfiguration(JSONFile * app_file)
+bool Application::SaveAppConfiguration(JSONFile *app_file)
 {
 	if (app_file != nullptr)
 	{
@@ -378,7 +401,7 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	std::vector<Module*>::reverse_iterator item = modules.rbegin();
+	std::vector<Module *>::reverse_iterator item = modules.rbegin();
 	while (item != modules.rend() && ret == true)
 	{
 
@@ -390,7 +413,7 @@ bool Application::CleanUp()
 	return ret;
 }
 
-void Application::RequestBrowser(const char* path)
+void Application::RequestBrowser(const char *path)
 {
 	ShellExecuteA(
 		0,
@@ -398,18 +421,17 @@ void Application::RequestBrowser(const char* path)
 		path,
 		0,
 		0,
-		0
-	);
+		0);
 }
 
-void Application::Log(const char * sentece)
+void Application::Log(const char *sentece)
 {
 	log_strings.push_back(sentece);
 }
 
-void Application::EventRequest(const Event & event)
+void Application::EventRequest(const Event &event)
 {
-	for (std::vector<Module*>::iterator iter = modules.begin(); iter != modules.end(); ++iter)
+	for (std::vector<Module *>::iterator iter = modules.begin(); iter != modules.end(); ++iter)
 	{
 		(*iter)->EventRequest(event);
 	}
@@ -417,7 +439,7 @@ void Application::EventRequest(const Event & event)
 
 void Application::DrawModulesConfigUi()
 {
-	for (std::vector<Module*>::iterator iter = modules.begin(); iter != modules.end(); ++iter)
+	for (std::vector<Module *>::iterator iter = modules.begin(); iter != modules.end(); ++iter)
 	{
 		if ((*iter)->name != "")
 		{
@@ -429,12 +451,58 @@ void Application::DrawModulesConfigUi()
 	}
 }
 
-void Application::AddEvent(const Event & event)
+void Application::AddEvent(const Event &event)
 {
 	event_queue.push_back(event);
 }
 
-void Application::AddModule(Module* mod)
+float Application::GetDt()
+{
+	return dt;
+}
+
+void Application::Play()
+{
+	if (state == State::STOP)
+		state = State::WAITING_PLAY;
+}
+void Application::Pause()
+{
+	if (state == State::PLAY)
+		state = State::WAITING_PAUSE;
+}
+
+void Application::UnPause()
+{
+	if (state == State::PAUSE)
+		state = State::WAITING_UNPAUSE;
+}
+void Application::Stop()
+{
+	if (state == State::PLAY || state == State::PAUSE)
+		state = State::WAITING_STOP;
+}
+
+bool Application::IsPause()
+{
+	return state == State::PAUSE;
+}
+
+bool Application::IsStop()
+{
+	return state == State::STOP;
+}
+
+bool Application::IsPlay()
+{
+	return state == State::PLAY;
+}
+
+Application::State Application::GetState()
+{
+	return state;
+}
+void Application::AddModule(Module *mod)
 {
 	modules.push_back(mod);
 }

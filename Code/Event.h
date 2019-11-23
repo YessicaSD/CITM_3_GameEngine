@@ -12,6 +12,10 @@ public:
 		UPDATE_OCTREE,
 		CHANGE_HIERARCHY,
 		DROPPED_MODEL_TO_SCENE,
+		PLAY,
+		STOP,
+		PAUSE,
+		UNPAUSE,
 	}type;
 
 	union 

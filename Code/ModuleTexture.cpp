@@ -3,9 +3,9 @@
 #include "DevIL/include/ilut.h"
 #include "Globals.h"
 
-#pragma comment (lib, "DevIL/lib/DevIL.lib")
-#pragma comment (lib, "DevIL/lib/ILU.lib")
-#pragma comment (lib, "DevIL/lib/ILUT.lib")
+#pragma comment(lib, "DevIL/lib/DevIL.lib")
+#pragma comment(lib, "DevIL/lib/ILU.lib")
+#pragma comment(lib, "DevIL/lib/ILUT.lib")
 
 #include "ModuleTexture.h"
 #include "ResourceTexture.h"
@@ -16,10 +16,11 @@
 #define checkImageHeight 512
 static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
 
-ModuleTexture::ModuleTexture(const char * name) : Module(true, name)
-{}
+ModuleTexture::ModuleTexture(const char *name) : Module(true, name)
+{
+}
 
-bool ModuleTexture::Init(JSONFile * module_file)
+bool ModuleTexture::Init(JSONFile *module_file)
 {
 	//Initialize DevIL libraries
 	LOG("Initializing DevIl libraries");
@@ -45,6 +46,12 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path, UID force
 
 	if (ilLoadImage(asset_path) == IL_TRUE)
 	{
+		ILinfo ImageInfo;
+		iluGetImageInfo(&ImageInfo);
+		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		{
+			iluFlipImage();
+		}
 		resource_texture->SaveFileData();
 		SaveTextureMeta(resource_texture, asset_path);
 		ilDeleteImages(1, &resource_texture->buffer_id);
@@ -79,8 +86,10 @@ void ModuleTexture::CreateCheckerTexture()
 
 	int i, j, c;
 
-	for (i = 0; i < checkImageHeight; i++) {
-		for (j = 0; j < checkImageWidth; j++) {
+	for (i = 0; i < checkImageHeight; i++)
+	{
+		for (j = 0; j < checkImageWidth; j++)
+		{
 			c = ((((i & 0x8) == 0) ^ ((j & 0x8)) == 0)) * 255;
 			checkImage[i][j][0] = (GLubyte)c;
 			checkImage[i][j][1] = (GLubyte)c;
@@ -92,18 +101,18 @@ void ModuleTexture::CreateCheckerTexture()
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	uint buffer = 0;
-	
-	glGenTextures(1, (uint*)&((*new_texture).buffer_id));
+
+	glGenTextures(1, (uint *)&((*new_texture).buffer_id));
 	glBindTexture(GL_TEXTURE_2D, ((*new_texture).buffer_id));
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-		GL_NEAREST);
+					GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-		GL_NEAREST);
+					GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, checkImageWidth,
-		checkImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-		checkImage);
+				 checkImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+				 checkImage);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
