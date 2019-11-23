@@ -35,7 +35,7 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path)
 {
 	Timer import_timer;
 
-	ResourceTexture* resource_texture = App->resource_manager->CreateNewResource<ResourceTexture>();
+	ResourceTexture* resource_texture = App->resource_manager->CreateResource<ResourceTexture>();
 
 	//Import data from path first
 	ilGenImages(1, &resource_texture->buffer_id);
@@ -61,7 +61,7 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path)
 
 void ModuleTexture::CreateCheckerTexture()
 {
-	ResourceTexture* new_texture = App->resource_manager->CreateNewResource<ResourceTexture>();
+	ResourceTexture* new_texture = App->resource_manager->CreateResource<ResourceTexture>();
 
 	int i, j, c;
 

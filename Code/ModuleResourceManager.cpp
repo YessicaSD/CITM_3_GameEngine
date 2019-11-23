@@ -1,4 +1,6 @@
 #include "ModuleResourceManager.h"
+#include "ModuleRandom.h"
+#include "Application.h"
 
 ModuleResourceManager::ModuleResourceManager(const char * name) : Module(true, name)
 {
@@ -28,6 +30,5 @@ Resource * ModuleResourceManager::GetResource(UID uid)
 
 UID ModuleResourceManager::GenerateNewUID()
 {
-	++last_uid;
-	return last_uid;
+	return App->random->RandomInt(0, INT_MAX);
 }

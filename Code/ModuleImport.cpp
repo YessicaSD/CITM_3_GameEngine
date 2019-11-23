@@ -63,7 +63,7 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path)
 	const aiScene *scene = aiImportFile(asset_path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
-		resource_model = App->resource_manager->CreateNewResource<ResourceModel>();
+		resource_model = App->resource_manager->CreateResource<ResourceModel>();
 		std::vector<ResourceTexture *> fbx_textures;
 		std::vector<ResourceMesh *> fbx_meshes;
 		std::vector<uint> fbx_meshes_textures;
@@ -199,7 +199,7 @@ ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh)
 {
 	Timer import_timer;
 
-	ResourceMesh *resource_mesh = App->resource_manager->CreateNewResource<ResourceMesh>();
+	ResourceMesh *resource_mesh = App->resource_manager->CreateResource<ResourceMesh>();
 	//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
 	resource_mesh->ImportVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
 	resource_mesh->CreateBoundingBox();
@@ -217,7 +217,7 @@ ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh)
 
 ResourceMesh *ModuleImport::ImportParShapeMesh(par_shapes_mesh *mesh)
 {
-	ResourceMesh *resource_mesh = App->resource_manager->CreateNewResource<ResourceMesh>();
+	ResourceMesh *resource_mesh = App->resource_manager->CreateResource<ResourceMesh>();
 
 	resource_mesh->ImportVertices(mesh->npoints, mesh->points);
 	resource_mesh->CreateBoundingBox();

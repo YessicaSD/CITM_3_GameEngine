@@ -29,13 +29,18 @@ public:
 	ModuleResourceManager(const char * name);
 
 	template<class ResourceType>
-	ResourceType * CreateNewResource()
+	ResourceType * CreateResource(UID uid = 0u)
 	{
 		ResourceType * resource = new ResourceType();
-		resource->uid = GenerateNewUID();
-		//TODO: Remove, only for testing purposes
-		//Ideally resources would be in the map already and we would just need to load their data or not depending on if there is an / some object/s refecencing them or not
-		resources[resource->GetUID()] = resource;
+		if (uid == INVALID_RESOURCE_UID)
+		{
+			resource->uid = GenerateNewUID();
+		}
+		else
+		{
+			resource->uid = uid;
+		}
+		resources[resource->uid] = resource;
 		return resource;
 	}
 
@@ -45,7 +50,6 @@ private:
 	UID GenerateNewUID();
 
 private:
-	UID last_uid = 0u;
 	std::map<UID, Resource*> resources;
 
 	//Used to diplay the assets in PanelAssets
