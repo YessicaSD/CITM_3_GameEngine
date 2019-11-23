@@ -30,6 +30,7 @@ class ModuleScene;
 class ModuleGui;
 class ModuleRandom;
 class ModuleTime;
+class ModuleResourceManager;
 
 struct ImVec2;
 
@@ -37,7 +38,7 @@ struct Event;
 
 class Application
 {
-public : 
+public:
 	enum State
 	{
 		PLAY,
@@ -48,26 +49,28 @@ public :
 		WAITING_PAUSE,
 		WAITING_UNPAUSE
 	};
+
 public:
-	ModuleWindow* window = nullptr;
-	ModuleInput* input = nullptr;
-	ModuleRenderer3D* renderer3D = nullptr;
-	ModuleCamera3D* camera = nullptr;
-	ModuleScene* scene = nullptr;
-	ModuleGui* gui = nullptr;
-	ModuleRandom * random = nullptr;
-	ModuleImport* import = nullptr;
-	ModuleTexture* texture = nullptr;
-	ModuleFileSystem* file_system = nullptr;
-	ModuleAudio* audio = nullptr;
-	ModuleHardware* hardware = nullptr;
-	ModuleTime* time = nullptr;
+	ModuleWindow *window = nullptr;
+	ModuleInput *input = nullptr;
+	ModuleRenderer3D *renderer3D = nullptr;
+	ModuleCamera3D *camera = nullptr;
+	ModuleScene *scene = nullptr;
+	ModuleGui *gui = nullptr;
+	ModuleRandom *random = nullptr;
+	ModuleImport *import = nullptr;
+	ModuleTexture *texture = nullptr;
+	ModuleFileSystem *file_system = nullptr;
+	ModuleAudio *audio = nullptr;
+	ModuleHardware *hardware = nullptr;
+	ModuleTime *time = nullptr;
+	ModuleResourceManager *resource_manager = nullptr;
 
 	std::string application_name;
 	std::string organization_name;
 
 private:
-	std::vector<Module*> modules;
+	std::vector<Module *> modules;
 
 	JSONFile config;
 
@@ -113,7 +116,6 @@ private:
 	float ram_history[FPS_GRAPH_SAMPLES];
 
 public:
-
 	Application();
 	~Application();
 
@@ -126,12 +128,12 @@ public:
 	bool LoadModulesConfigurationWithOpenFile();
 	bool CleanUp();
 
-	void RequestBrowser(const char* path);
+	void RequestBrowser(const char *path);
 
-	void Log(const char* sentece);
-	void EventRequest(const Event& event);
+	void Log(const char *sentece);
+	void EventRequest(const Event &event);
 	void DrawModulesConfigUi();
-	void AddEvent(const Event& event);
+	void AddEvent(const Event &event);
 	float GetDt();
 	void Play();
 	void Pause();
@@ -142,21 +144,21 @@ public:
 	bool IsPlay();
 
 	State GetState();
-private:
 
-	void AddModule(Module* mod);
+private:
+	void AddModule(Module *mod);
 	void PrepareUpdate();
 	void FinishUpdate();
 
 	//Config
-	bool LoadAppConfiguration(JSONFile * app_file);
-	bool SaveAppConfiguration(JSONFile * app_file);
+	bool LoadAppConfiguration(JSONFile *app_file);
+	bool SaveAppConfiguration(JSONFile *app_file);
 
 	void UpdateFPSGraph(uint32 last_second_fps);
-	void DrawFPSGraph(char * titleGraph, const ImVec2 &size);
+	void DrawFPSGraph(char *titleGraph, const ImVec2 &size);
 
 	void UpateMsGraph(uint32 curr_frame_ms);
-	void DrawMsGraph(char * titleGraph, const ImVec2 &size);
+	void DrawMsGraph(char *titleGraph, const ImVec2 &size);
 
 	void PopEventsInQueue();
 
@@ -165,6 +167,6 @@ private:
 	State state = State::STOP;
 };
 
-extern Application * App;
+extern Application *App;
 
 #endif

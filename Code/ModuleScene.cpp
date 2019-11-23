@@ -16,18 +16,19 @@
 #include "ModuleGui.h"
 #include "ModuleInput.h"
 #include "ModuleImport.h"
-
 #include "RaycastHit.h"
+
 #include "imGuizmo/ImGuizmo.h"
 #include "Event.h"
 #include <map>
-ModuleScene::ModuleScene(bool start_enabled) :
-	Module(start_enabled)
-{
-	
-	
 
-}
+
+//TODO: Remove, only for testing purposes
+#include "ResourceModel.h"
+
+ModuleScene::ModuleScene(const char * name, bool start_enabled) :
+	Module(start_enabled, name)
+{}
 
 ModuleScene::~ModuleScene()
 {}
@@ -40,12 +41,16 @@ bool ModuleScene::Start(JSONFile * config)
 	CreateOctree();
 
 	bool ret = true;
+
+	ResourceModel * resource_model = App->import->ImportModel("Assets/BakerHouse.fbx");
+	App->import->CreateGameObjectFromModel(resource_model, App->scene->root_gameobject->transform);
+
 	GameObject* object_camera = new GameObject("Main camera", root_gameobject->transform);
 	game_camera = object_camera->CreateComponent<ComponentCamera>();
 
 	object_camera = new GameObject("Camera", root_gameobject->transform);
 	object_camera->CreateComponent<ComponentCamera>();
-	App->import->LoadMesh("Assets/BakerHouse.fbx");
+
 	return ret;
 }
 
@@ -79,7 +84,7 @@ update_status ModuleScene::Update(float dt)
 	//TODO: Turn into a shortcut
 	if (App->input->GetKey(SDL_SCANCODE_DELETE))
 	{
-		if (ComponentTransform* selected_object = App->gui->GetSelecteTransform())
+		if (ComponentTransform* selected_object = App->gui->GetSelectedTransform())
 		{
 			App->gui->SetSelectedGameObjec(nullptr);
 			DeleteGameObject(selected_object->gameobject);
@@ -89,11 +94,11 @@ update_status ModuleScene::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * object)
+void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * transform)
 {
-		object->gameobject->OnPostUpdate();
-	for (std::vector<ComponentTransform *>::iterator iter = object->children.begin();
-		iter != object->children.end();
+	transform->gameobject->OnPostUpdate();
+	for (std::vector<ComponentTransform *>::iterator iter = transform->children.begin();
+		iter != transform->children.end();
 		++iter)
 	{
 		GameObjectPostUpdateRecursive((*iter));
@@ -159,7 +164,6 @@ void ModuleScene::DeleteGameObject(GameObject * gameobject)
 				break;
 			}
 		}
-		
 	}
 	delete gameobject;
 }

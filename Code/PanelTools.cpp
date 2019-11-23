@@ -2,11 +2,13 @@
 #include "Application.h"
 #include "ModuleTexture.h"
 #include "imgui/imgui.h"
-#include "Texture.h"
+#include "ResourceTexture.h"
+
 #include "ModuleTime.h"
 PanelTools::PanelTools(std::string name, bool active, std::vector<SDL_Scancode> shortcuts):Panel(name, active, shortcuts)
 {
-	atlas = App->texture->LoadTexture("Atlas.png");
+	atlas = App->texture->ImportTexture("Atlas.png");
+	atlas->StartUsingResource();
 	button_width = 72.0f / (float)atlas->width;
 	button_height = 72.0f / (float)atlas->height;
 }

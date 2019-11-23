@@ -5,7 +5,7 @@
 #include "ModuleGui.h"
 #include "ModuleImport.h"
 #include "Globals.h"
-#include "AssetMesh.h"
+#include "ResourceMesh.h"
 
 MenuCreateShape::MenuCreateShape()
 {
@@ -166,9 +166,9 @@ void PanelCreateShape::Draw()
 	if (App->gui->create_menu->preview_shape_gameobject == nullptr)
 	{
 		par_shapes_mesh* mesh = mesh_function();
-		App->gui->create_menu->preview_shape_mesh = App->import->LoadParShapeMesh(mesh);
+		App->gui->create_menu->preview_shape_mesh = App->import->ImportParShapeMesh(mesh);
 		par_shapes_free_mesh(mesh);
-		App->gui->create_menu->preview_shape_gameobject = App->import->CreateGameObjectWithMesh("Preview Shape", nullptr, App->gui->create_menu->preview_shape_mesh);
+		App->gui->create_menu->preview_shape_gameobject = App->gui->create_menu->CreateGameObjectWithParShape("Preview Shape", nullptr, App->gui->create_menu->preview_shape_mesh);
 	}
 
 	App->gui->create_menu->preview_shapes_fbo.StartRender(*App->gui->create_menu->preview_shapes_fbo.panel_size);
@@ -209,9 +209,9 @@ void PanelCreateShape::Draw()
 		RELEASE(App->gui->create_menu->preview_shape_mesh);
 		//Create new shape with the new values
 		par_shapes_mesh* mesh = mesh_function();
-		App->gui->create_menu->preview_shape_mesh = App->import->LoadParShapeMesh(mesh);
+		App->gui->create_menu->preview_shape_mesh = App->import->ImportParShapeMesh(mesh);
 		par_shapes_free_mesh(mesh);
-		App->gui->create_menu->preview_shape_gameobject = App->import->CreateGameObjectWithMesh("Preview Shape", nullptr, App->gui->create_menu->preview_shape_mesh);
+		App->gui->create_menu->preview_shape_gameobject = App->gui->create_menu->CreateGameObjectWithParShape("Preview Shape", nullptr, App->gui->create_menu->preview_shape_mesh);
 	}
 
 	CreateMultiple();
@@ -224,7 +224,8 @@ void PanelCreateShape::Draw()
 	ImGui::SameLine();
 	if (ImGui::Button("Create"))
 	{
-		App->import->AddMesh(App->gui->create_menu->preview_shape_mesh);
+		//TODO: Add resource to the resource manager
+		//App->import->AddMesh(App->gui->create_menu->preview_shape_mesh);
 		float3 position = {0.f, 0.f, 0.f};
 		if (copies[X_COORD] != 0)
 		{
@@ -293,7 +294,7 @@ void PanelCreateShape::CreateCopiesZ(float3 & position)
 
 void PanelCreateShape::CreateCopyAtPosition(float3 position)
 {
-	GameObject * obj = App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
+	GameObject * obj = App->gui->create_menu->CreateGameObjectWithParShape(shape_name, App->scene->root_gameobject->transform, App->gui->create_menu->preview_shape_mesh);
 	obj->transform->SetPosition(position);
 }
 
@@ -322,10 +323,11 @@ void PanelCreateShape::MenuItem(const float button_height, const float button_sp
 	if (selectable_clicked && !button_clicked)
 	{
 		par_shapes_mesh* mesh = mesh_function();
-		AssetMesh* asset_mesh = App->import->LoadParShapeMesh(mesh);
+		ResourceMesh* asset_mesh = App->import->ImportParShapeMesh(mesh);
 		par_shapes_free_mesh(mesh);
-		App->import->AddMesh(asset_mesh);
-		App->import->CreateGameObjectWithMesh(shape_name, App->scene->root_gameobject->transform, asset_mesh);
+		//TODO: Add mesh to the resources map
+		//App->import->AddMesh(asset_mesh);
+		App->gui->create_menu->CreateGameObjectWithParShape(shape_name, App->scene->root_gameobject->transform, asset_mesh);
 
 	}
 	if (button_clicked)
@@ -339,3 +341,17 @@ ShapeValue::ShapeValue(std::string name, ImGuiDataType data_type, void * value_p
 	data_type(data_type),
 	value_ptr(value_ptr)
 {}
+
+GameObject *MenuCreateShape::CreateGameObjectWithParShape(std::string name, ComponentTransform *parent, ResourceMesh *asset_mesh)
+{
+	GameObject *new_gameobject = new GameObject(name, parent);
+	ComponentMesh *component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
+	component_mesh->mesh = asset_mesh;
+	new_gameobject->transform->UpdateDisplayValues();
+	if (parent != nullptr)
+	{
+		parent->bounding_box.SetLocalAABB(asset_mesh->GetAABB());
+		parent->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
+	}
+	return new_gameobject;
+}

@@ -10,7 +10,9 @@ A 3D game engine created in the third year of our Videogame Design and Developme
 
 ## Assignment 2:
 - Create multiple shapes at one by pressing the circle button on the create menu.
-
+- Event system to notify multiple modules. It has two systems, one that works with a queue and the other that lets you send events immediately to all modules.
+- Game panel separate from the scene window.
+- Virtual File System using PhysFs
 
 # Credits:
 

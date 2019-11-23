@@ -43,10 +43,10 @@ update_status ModuleInput::PreUpdate()
 	SDL_PumpEvents();
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
-	
-	for(int i = 0; i < MAX_KEYS; ++i)
+
+	for (int i = 0; i < MAX_KEYS; ++i)
 	{
-		if(keys[i] == 1)
+		if (keys[i] == 1)
 		{
 			if (keyboard[i] == KEY_IDLE)
 			{
@@ -79,9 +79,9 @@ update_status ModuleInput::PreUpdate()
 	mouse_y /= SCREEN_SIZE;
 	mouse_wheel = 0;
 
-	for(int i = 0; i < 5; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
-		if(buttons & SDL_BUTTON(i))
+		if (buttons & SDL_BUTTON(i))
 		{
 			if (mouse_buttons[i] == KEY_IDLE)
 			{
@@ -109,44 +109,46 @@ update_status ModuleInput::PreUpdate()
 
 	bool quit = false;
 	SDL_Event e;
-	while(SDL_PollEvent(&e))
+	while (SDL_PollEvent(&e))
 	{
 		ImGui_ImplSDL2_ProcessEvent(&e);
-		switch(e.type)
+		switch (e.type)
 		{
-			case SDL_MOUSEWHEEL:
-			mouse_wheel = e.wheel.y;
-			break;
 
-			case SDL_MOUSEMOTION:
+		case SDL_MOUSEWHEEL: {
+			mouse_wheel = e.wheel.y;
+		} break;
+
+		case SDL_MOUSEMOTION: {
 			mouse_x = e.motion.x / SCREEN_SIZE;
 			mouse_y = e.motion.y / SCREEN_SIZE;
 
 			mouse_x_motion = e.motion.xrel / SCREEN_SIZE;
 			mouse_y_motion = e.motion.yrel / SCREEN_SIZE;
-			break;
+		} break;
 
-			case SDL_QUIT:
+		case SDL_QUIT: {
 			quit = true;
-			break;
+		}  break;
 
-			case SDL_WINDOWEVENT:
+		case SDL_WINDOWEVENT:
+		{
+			if (e.window.event == SDL_WINDOWEVENT_RESIZED)
 			{
-				if (e.window.event == SDL_WINDOWEVENT_RESIZED)
-				{
-					App->renderer3D->OnResize(e.window.data1, e.window.data2);
-				}
+				App->renderer3D->OnResize(e.window.data1, e.window.data2);
 			}
-			break;
+		} break;
 
-			case SDL_DROPFILE:
-				Event new_event(Event::EVENT_TYPE::DROPPED_FILE, e.drop.file);
-				App->EventRequest(new_event);
-				break;
+		case SDL_DROPFILE:
+		{
+			Event new_event(Event::EVENT_TYPE::DROPPED_FILE, e.drop.file);
+			App->EventRequest(new_event);
+		} break;
+
 		}
 	}
 
-	if(quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
+	if (quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
 		return UPDATE_STOP;
 
 	return UPDATE_CONTINUE;
@@ -159,6 +161,7 @@ bool ModuleInput::CleanUp()
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }
+
 void ModuleInput::AddInputLog(SDL_Scancode key, std::string state)
 {
 	std::string scancode_name = SDL_GetScancodeName(key);

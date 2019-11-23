@@ -3,21 +3,30 @@
 
 #include "Component.h"
 #include "ComponentMesh.h"
-#include "Texture.h"
+
+class ResourceTexture;
+
 class ComponentMaterial : public Component
 {
 	CLASS_DECLARATION(ComponentMaterial)
+
 private:
-	Texture* texture = nullptr;
-	ComponentMesh * component_mesh = nullptr;
-public:
 	ComponentMaterial(GameObject * gameobject, ComponentMesh* component_mesh );
-	
-	void SetTexture(Texture* texture);
+	ComponentMaterial(GameObject * gameobject);
+
+public:
+	void CleanUp() override;
+	bool SetTexture(ResourceTexture* texture);
 	void DisableGLModes();
 	void RenderTexture();
 	void PropertiesEditor() override;
+	void SetMeshComponent(ComponentMesh * component_mesh);
 
+private:
+	ResourceTexture* texture = nullptr;
+	ComponentMesh * component_mesh = nullptr;
+
+	friend class GameObject;
 };
 
 #endif

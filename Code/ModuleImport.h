@@ -6,11 +6,16 @@
 #define INVALID_MATERIAL 0xFFFFFFFF
 #include "Assimp/include/assimp/cimport.h"
 #include "ModuleScene.h"
-#include "Texture.h"
-class AssetMesh;
+#include "ResourceTexture.h"
+
+class ResourceMesh;
+class ResourceModelNode;
+class ResourceTexture;
 struct aiMesh;
+struct aiMaterial;
 struct aiNode;
 class ComponentTransform;
+class ResourceModel;
 
 typedef struct par_shapes_mesh_s par_shapes_mesh;
 
@@ -20,23 +25,18 @@ class ModuleImport : public Module
 public:
 	ModuleImport(const char * name);
 	bool Start(JSONFile * module_file) override;
-	bool LoadMesh(const char* path);
+	ResourceModel * ImportModel(const char* path);
+	bool ImportFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index);
 	bool CleanUp() override;
 
 	void EventRequest(const Event& event) override;
-	AssetMesh* LoadAssimpMesh(aiMesh * assimp_mesh, const aiScene* scene_fbx, std::vector<Texture*>& textures);
-	AssetMesh* LoadParShapeMesh(par_shapes_mesh * mesh);
-	GameObject * CreateGameObjectWithMesh(std::string name, ComponentTransform * parent, AssetMesh * asset_mesh);
-	bool AddMesh(AssetMesh * asset_mesh);
-private:
-	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<AssetMesh*> loaded_meshes, std::vector<Texture*>& textures);
-	
-public:
-	Texture * lenna_img_id = nullptr;
+	ResourceMesh* ImportAssimpMesh(aiMesh * assimp_mesh);
+	ResourceTexture * ImportFBXTexture(const  aiMaterial * material);
+	ResourceMesh* ImportParShapeMesh(par_shapes_mesh * mesh);
+	void CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent);
 
 private:
-	
-	std::vector<AssetMesh*> meshes;
+	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<ResourceMesh*> loaded_meshes, std::vector<ResourceTexture*>& textures);
 
 	friend ModuleScene;
 };

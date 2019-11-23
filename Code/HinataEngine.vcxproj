@@ -55,6 +55,7 @@
       <ExceptionHandling>false</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -85,6 +86,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="AssimpIO.h" />
     <ClInclude Include="assimp\include\ai_assert.h" />
     <ClInclude Include="assimp\include\anim.h" />
     <ClInclude Include="assimp\include\camera.h" />
@@ -122,6 +124,7 @@
     <ClInclude Include="assimp\include\vector2.h" />
     <ClInclude Include="assimp\include\vector3.h" />
     <ClInclude Include="assimp\include\version.h" />
+    <ClInclude Include="BassIO.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
@@ -135,6 +138,9 @@
     <ClInclude Include="imGuizmo\ImSequencer.h" />
     <ClInclude Include="JSONFile.h" />
     <ClInclude Include="ModuleTime.h" />
+    <ClInclude Include="ModuleResourceManager.h" />
+    <ClInclude Include="PanelResources.h" />
+    <ClInclude Include="PhysFS\include\physfs.h" />
     <ClInclude Include="Octree.h" />
     <ClInclude Include="PanelGame.h" />
     <ClInclude Include="PanelTools.h" />
@@ -220,7 +226,7 @@
     <ClInclude Include="MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="ComponentMesh.h" />
-    <ClInclude Include="AssetMesh.h" />
+    <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="MenuCreateShape.h" />
     <ClInclude Include="mmgr\mmgr.h" />
     <ClInclude Include="mmgr\nommgr.h" />
@@ -262,14 +268,19 @@
     <ClInclude Include="PerfTimer.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="ModuleRandom.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceModel.h" />
     <ClInclude Include="Shortcut.h" />
-    <ClInclude Include="Texture.h" />
+    <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="ComponentTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="AssetMesh.cpp" />
+    <ClCompile Include="PanelResources.cpp" />
+    <ClCompile Include="ResourceMesh.cpp" />
+    <ClCompile Include="AssimpIO.cpp" />
+    <ClCompile Include="BassIO.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -283,6 +294,7 @@
     <ClCompile Include="imGuizmo\ImSequencer.cpp" />
     <ClCompile Include="JSONFile.cpp" />
     <ClCompile Include="ModuleTime.cpp" />
+    <ClCompile Include="ModuleResourceManager.cpp" />
     <ClCompile Include="Octree.cpp" />
     <ClCompile Include="PanelGame.cpp" />
     <ClCompile Include="PanelTools.cpp" />
@@ -361,8 +373,10 @@
     <ClCompile Include="PerfTimer.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="ModuleRandom.cpp" />
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceModel.cpp" />
     <ClCompile Include="Shortcut.cpp" />
-    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
   </ItemGroup>

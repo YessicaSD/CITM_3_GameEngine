@@ -25,6 +25,7 @@ typedef unsigned int uint;
 typedef unsigned __int32 uint32;
 typedef unsigned __int64 uint64;
 typedef unsigned char uchar;
+typedef unsigned long long UID;
 
 enum update_status
 {
@@ -59,7 +60,19 @@ enum update_status
                               \
     }
 
-// Configuration -----------
+//Configuration
+#define ASSETS_FOLDER "Assets/"
+#define SETTINGS_FOLDER "Settings/"
+#define RESOURCES_FOLDER "Resources/"
+#define RESOURCES_AUDIO_FOLDER "Resources/Audio/"
+#define RESOURCES_TEXTURES_FOLDER "Resources/Textures/"
+#define RESOURCES_MESH_FOLDER "Resources/Meshes/"
+#define RESOURCES_ANIMATION_FOLDER "Resources/Animations/"
+#define RESOURCES_SCENE_FOLDER "Resources/Scenes/"
+#define RESOURCES_MODEL_FOLDER "Resources/Models/"
+#define RESOURCES_MATERIAL_FOLDER "Resources/Materials/"
+#define RESOURCES_STATE_MACHINE_FOLDER "Resources/StateMachines/"
+
 #define SCREEN_WIDTH 1920 * 0.75f //TODO: Remove when releasing the game
 #define SCREEN_HEIGHT 1080 * 0.75f //TODO: Remove when releasing the game
 #define SCREEN_SIZE 1
