@@ -57,9 +57,21 @@ bool ModuleImport::Start(JSONFile * config)
 ResourceModel * ModuleImport::ImportModel(const char *asset_path)
 {
 	Timer import_timer;
-
+	unsigned flags = aiProcess_CalcTangentSpace | \
+		aiProcess_GenSmoothNormals | \
+		aiProcess_JoinIdenticalVertices | \
+		aiProcess_ImproveCacheLocality | \
+		aiProcess_LimitBoneWeights | \
+		aiProcess_SplitLargeMeshes | \
+		aiProcess_Triangulate | \
+		aiProcess_GenUVCoords | \
+		aiProcess_SortByPType | \
+		aiProcess_FindDegenerates | \
+		aiProcess_FindInvalidData |
+		aiProcess_FlipUVs | \
+		0;
 	ResourceModel * resource_model = nullptr;
-	const aiScene *scene = aiImportFile(asset_path, aiProcessPreset_TargetRealtime_MaxQuality);
+	const aiScene *scene = aiImportFile(asset_path, flags);
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		resource_model = App->resource_manager->CreateNewResource<ResourceModel>();
