@@ -77,11 +77,11 @@ update_status ModuleScene::Update(float dt)
 		}
 		if (App->input->GetKey(SDL_SCANCODE_E))
 		{
-			App->gui->panel_scene->guizmo_op = ImGuizmo::SCALE;
+			App->gui->panel_scene->guizmo_op = ImGuizmo::ROTATE;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_R))
 		{
-			App->gui->panel_scene->guizmo_op = ImGuizmo::ROTATE;
+			App->gui->panel_scene->guizmo_op = ImGuizmo::SCALE;
 		}
 	}
 	
@@ -289,5 +289,9 @@ void ModuleScene::EventRequest(const Event & event)
 	if (event.type == Event::UPDATE_OCTREE)
 	{
 		RecreateOctree();
+	}
+	else if (event.type == Event::DROPPED_MODEL_TO_SCENE)
+	{
+		App->import->CreateGameObjectFromModel(event.drop_model_data.model, App->scene->root_gameobject->transform);
 	}
 }

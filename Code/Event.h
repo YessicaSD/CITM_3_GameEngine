@@ -1,6 +1,8 @@
 #ifndef  __EVENT_H__
 #define  __EVENT_H__
 
+class ResourceModel;
+
 struct Event
 {
 public:
@@ -11,6 +13,15 @@ public:
 		CHANGE_HIERARCHY,
 		DROPPED_MODEL_TO_SCENE,
 	}type;
+
+	union 
+	{
+		struct
+		{
+			ResourceModel * model = nullptr;
+		} drop_model_data;
+	};
+
 	const char* path;
 	Event(EVENT_TYPE type) : type(type)
 	{}

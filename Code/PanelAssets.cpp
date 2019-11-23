@@ -71,18 +71,19 @@ void PanelAssets::DragAsset(AssetFile * asset)
 	}
 }
 
-void PanelAssets::DropObject(AssetFile * asset)
-{
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("asset"))
-		{
-			AssetFile* payload_n = *(AssetFile**)payload->Data;
-			App->AddEvent(Event(Event::DROPPED_MODEL_TO_SCENE));
-		}
-		ImGui::EndDragDropTarget();
-	}
-}
+//TODO: Drop objects onto other directories on the assets and move their .meta files with them
+//void PanelAssets::DropObject(AssetFile * asset)
+//{
+//	if (ImGui::BeginDragDropTarget())
+//	{
+//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("asset"))
+//		{
+//			AssetFile* payload_n = *(AssetFile**)payload->Data;
+//			App->AddEvent(Event(Event::DROPPED_MODEL_TO_SCENE));
+//		}
+//		ImGui::EndDragDropTarget();
+//	}
+//}
 
 AssetFile PanelAssets::GetAssetFile()
 {

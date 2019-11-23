@@ -159,6 +159,7 @@ bool ModuleResourceManager::CleanUp()
 	return true;
 }
 
+//This could use a template too to avoid casting
 Resource * ModuleResourceManager::GetResource(UID uid)
 {
 	Resource * resource = nullptr;
