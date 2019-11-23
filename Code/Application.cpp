@@ -19,6 +19,7 @@
 #include "ModuleRenderer3D.h"
 #include "JSONFile.h"
 #include "Timer.h"
+#include "ModuleTime.h"
 
 Application::Application()
 {
@@ -33,6 +34,7 @@ Application::Application()
 	AddModule(hardware = new ModuleHardware("Hardware"));
 	AddModule(input = new ModuleInput("Input"));
 	AddModule(texture = new ModuleTexture("Textures"));
+	AddModule(time = new ModuleTime("Time"));
 	AddModule(scene = new ModuleScene("Scene"));
 	AddModule(import = new ModuleImport("Import"));
 	AddModule(camera = new ModuleCamera3D("Camera 3D"));
@@ -130,6 +132,27 @@ void Application::PrepareUpdate()
 			}
 			log_strings.clear();
 		}
+	}
+	switch (state)
+	{
+	case Application::WAITING_PLAY:
+		EventRequest(Event(Event::EVENT_TYPE::PLAY));
+		state = Application::PLAY;
+		break;
+	case Application::WAITING_STOP:
+		EventRequest(Event(Event::EVENT_TYPE::STOP));
+		state = Application::STOP;
+		break;
+	case Application::WAITING_PAUSE:
+		EventRequest(Event(Event::EVENT_TYPE::PAUSE));
+		state = Application::PAUSE;
+		break;
+	case Application::WAITING_UNPAUSE:
+		EventRequest(Event(Event::EVENT_TYPE::UNPAUSE));
+		state = Application::PLAY;
+		break;
+	default:
+		break;
 	}
 }
 
@@ -433,6 +456,36 @@ void Application::AddEvent(const Event & event)
 	event_queue.push_back(event);
 }
 
+float Application::GetDt()
+{
+	return dt;
+}
+
+void Application::Play()
+{
+	if (state == State::STOP)
+		state = State::WAITING_PLAY;
+}
+void Application::Pause()
+{
+	if (state == State::PLAY)
+		state = State::WAITING_PAUSE;
+}
+void Application::UnPause()
+{
+	if (state == State::PAUSE)
+		state = State::WAITING_UNPAUSE;
+}
+void Application::Stop()
+{
+	if (state == State::PLAY || state == State::PAUSE)
+		state = State::WAITING_STOP;
+}
+
+Application::State Application::GetState()
+{
+	return state;
+}
 void Application::AddModule(Module* mod)
 {
 	modules.push_back(mod);

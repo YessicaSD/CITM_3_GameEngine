@@ -40,13 +40,13 @@ class Application
 public : 
 	enum State
 	{
-		play,
-		stop,
-		pause,
-		waiting_play,
-		waiting_stop,
-		waiting_pause,
-		waiting_unpause
+		PLAY,
+		STOP,
+		PAUSE,
+		WAITING_PLAY,
+		WAITING_STOP,
+		WAITING_PAUSE,
+		WAITING_UNPAUSE
 	};
 public:
 	ModuleWindow* window = nullptr;
@@ -132,7 +132,9 @@ public:
 	void EventRequest(const Event& event);
 	void DrawModulesConfigUi();
 	void AddEvent(const Event& event);
-
+	float GetDt();
+	void Play();
+	State GetState();
 private:
 
 	void AddModule(Module* mod);
@@ -153,6 +155,7 @@ private:
 
 	std::vector<Event> event_queue;
 	std::string config_path;
+	State state = State::STOP;
 };
 
 extern Application * App;
