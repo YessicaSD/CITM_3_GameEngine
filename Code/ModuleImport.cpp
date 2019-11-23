@@ -49,7 +49,22 @@ bool ModuleImport::Start(JSONFile * config)
 
 bool ModuleImport::LoadMesh(const char *path)
 {
-	const aiScene *scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+
+	unsigned flags = aiProcess_CalcTangentSpace | \
+		aiProcess_GenSmoothNormals | \
+		aiProcess_JoinIdenticalVertices | \
+		aiProcess_ImproveCacheLocality | \
+		aiProcess_LimitBoneWeights | \
+		aiProcess_SplitLargeMeshes | \
+		aiProcess_Triangulate | \
+		aiProcess_GenUVCoords | \
+		aiProcess_SortByPType | \
+		aiProcess_FindDegenerates | \
+		aiProcess_FindInvalidData |
+		aiProcess_FlipUVs | \
+		0;
+
+	const aiScene *scene = aiImportFile(path, flags);
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		std::vector<AssetMesh *> object_meshes;

@@ -24,7 +24,7 @@ class PanelAssets;
 class PanelScene;
 class ComponentTransform;
 class PanelGame;
-
+class PanelTools;
 enum KEY_STATE;
 
 struct ImVec2;
@@ -40,6 +40,7 @@ public:
 private:
 	bool showMenuImGui = false;
 	std::vector<Panel*> panels;
+
 	PanelConfiguration* panel_configuration = nullptr;
 	PanelConsole* panel_console = nullptr;
 	PanelShortcuts * panel_shortcuts = nullptr;
@@ -47,7 +48,8 @@ private:
 	PanelAbout* panel_about = nullptr;
 	PanelHierarchy * panel_hierarchy = nullptr;
 	PanelAssets* panel_assets = nullptr;
-	
+	PanelTools* panel_tools;
+
 	std::vector<Shortcut *> shortcuts;
 	ComponentTransform* selected_transform = nullptr;
 

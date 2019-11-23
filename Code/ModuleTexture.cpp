@@ -55,12 +55,20 @@ Texture* ModuleTexture::LoadTexture(const char* path)
 		}
 		else
 		{
+			ILinfo ImageInfo;
+			iluGetImageInfo(&ImageInfo);
+			if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+			{
+				iluFlipImage();
+			}
 			new_texture = new Texture();
 			new_texture->path = path;
 			new_texture->buffer_id = ilutGLBindTexImage();
 			new_texture->height  = ilGetInteger(IL_IMAGE_HEIGHT);
 			new_texture->width = ilGetInteger(IL_IMAGE_WIDTH);
 			new_texture->size = ilGetInteger(IL_IMAGE_SIZE_OF_DATA);
+			
+			
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 			glBindTexture(GL_TEXTURE_2D, new_texture->buffer_id);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -70,7 +78,6 @@ Texture* ModuleTexture::LoadTexture(const char* path)
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 			textures[path] = new_texture;
-
 			glBindTexture(GL_TEXTURE_2D, 0);
 
 		}

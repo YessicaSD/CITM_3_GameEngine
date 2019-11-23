@@ -611,6 +611,9 @@
     <ClInclude Include="PanelGame.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="PanelTools.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -894,6 +897,9 @@
       <Filter>Sources\ECS</Filter>
     </ClCompile>
     <ClCompile Include="PanelGame.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelTools.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
   </ItemGroup>
