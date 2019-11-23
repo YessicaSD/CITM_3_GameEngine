@@ -11,16 +11,16 @@
 class ResourceTexture;
 
 //Used to display the assets in the PanelAssets
-struct Asset
+struct AssetFile
 {
 	//type (used to get the appropiate icon)
 	std::string name;
 };
 
-struct Dir {
+struct AssetDir {
 	std::string name;
-	std::vector<Asset*>assets;
-	std::vector<Dir*>dirs;
+	std::vector<AssetFile*>assets;
+	std::vector<AssetDir*>dirs;
 };
 
 class ModuleResourceManager : public Module
@@ -28,28 +28,53 @@ class ModuleResourceManager : public Module
 public:
 	ModuleResourceManager(const char * name);
 
+	bool Start(JSONFile * module_file) override;
+
+	void ImportAssetsRecursively(AssetDir * dir, std::string curr_dir);
+
+	bool IsFileModified(JSONFile &meta_file, const char * file);
+
+	bool MissingResources(JSONFile & meta_file, uint type);
+
 	template<class ResourceType>
-	ResourceType * CreateNewResource()
+	ResourceType * CreateResource(UID uid = INVALID_RESOURCE_UID)
 	{
 		ResourceType * resource = new ResourceType();
-		resource->uid = GenerateNewUID();
-		//TODO: Remove, only for testing purposes
-		//Ideally resources would be in the map already and we would just need to load their data or not depending on if there is an / some object/s refecencing them or not
-		resources[resource->GetUID()] = resource;
+		if (uid == INVALID_RESOURCE_UID)
+		{
+			resource->uid = GenerateNewUID();
+		}
+		else
+		{
+			resource->uid = uid;
+		}
+		resources[resource->uid] = resource;
 		return resource;
 	}
 
+	update_status PreUpdate() override;
+	bool CleanUp() override;
+
 	Resource * GetResource(UID uid);
+	uint GetResourceTypeFromExtension(const std::string & extension);
+
+	UID LoadUID(JSONFile * meta_file) const;
+	void SaveUID(JSONFile * meta_file, const UID & uid) const;
+	void SaveUIDArray(const std::vector<UID>& uid_vector, char * name, JSONFile * meta_file) const;
 
 private:
+	void DeleteDependantResources(std::vector<UID> uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension);
+	
 	UID GenerateNewUID();
 
+	void FillAssetTreeRecursive(AssetDir * dir);
+	void DeleteTreeRecursive(AssetDir * dir);
+
 private:
-	UID last_uid = 0u;
 	std::map<UID, Resource*> resources;
 
 	//Used to diplay the assets in PanelAssets
-	Dir * asset_dir = nullptr;
+	AssetDir * asset_dir = nullptr;
 
 	friend class PanelAssets;
 	friend class PanelResources;

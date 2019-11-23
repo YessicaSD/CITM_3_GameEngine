@@ -27,13 +27,13 @@ void JSONFile::CloseFile()
 	value = nullptr;
 }
 
-void JSONFile::CreateJSONFile(const std::string & path)
+void JSONFile::CreateJSONFile()
 {
 	value = json_value_init_object();
 	object = json_value_get_object(value);
 	if (value == nullptr || object == nullptr)
 	{
-		LOG("Error creating JSON with path %s", path.data());
+		LOG("Error creating JSON with path");
 	}
 }
 
@@ -79,10 +79,10 @@ const char * JSONFile::LoadText(const char * variable_name, const char * default
 	return default;
 }
 
-bool JSONFile::LoadFloatArray(const char* name, float* values, const uint size)
+bool JSONFile::LoadFloatArray(const char* name, float* values)
 {
 	JSON_Array* arr = json_object_get_array(object, name);
-	for (int i = 0u; i < size; ++i)
+	for (int i = 0u; i < json_array_get_count(arr); ++i)
 	{
 		JSON_Value* json_value = json_array_get_value(arr, i);
 		values[i] = (float)json_value_get_number(json_value);
@@ -106,14 +106,50 @@ bool JSONFile::SaveText(const char * variable_name, const char * value)
 	return json_object_set_string(object, variable_name, value) == JSONSuccess;
 }
 
-bool JSONFile::SaveFloatArray(const char* name, const float* arr, const uint size)
+bool JSONFile::SaveFloatArray(const char* name, const float* arr, const uint count)
 {
+	bool ret = true;
 	JSON_Value* json_value = json_value_init_array();
 	JSON_Array* json_array = json_value_get_array(json_value);
 	json_object_set_value(object, name, json_value);
-	for (uint i = 0u; i < size; ++i)
+	for (uint i = 0u; i < count && ret; ++i)
 	{
-		json_array_append_number(json_array, arr[i]);
+		ret = json_array_append_number(json_array, arr[i]) == JSONSuccess;
+	}
+	return ret;
+}
+
+bool JSONFile::LoadTextArray(const char* name, const char ** values)
+{
+	JSON_Array* arr = json_object_get_array(object, name);
+	for (int i = 0u; i < json_array_get_count(arr); ++i)
+	{
+		JSON_Value* json_value = json_array_get_value(arr, i);
+		values[i] = json_value_get_string(json_value);
 	}
 	return true;
+}
+
+bool JSONFile::LoadTextVector(const char* name, std::vector<const char *> &values)
+{
+	JSON_Array* arr = json_object_get_array(object, name);
+	for (int i = 0u; i < json_array_get_count(arr); ++i)
+	{
+		JSON_Value* json_value = json_array_get_value(arr, i);
+		values.push_back(json_value_get_string(json_value));
+	}
+	return true;
+}
+
+bool JSONFile::SaveTextArray(const char * name, const char ** arr, const uint count)
+{
+	bool ret = true;
+	JSON_Value* json_value = json_value_init_array();
+	JSON_Array* json_array = json_value_get_array(json_value);
+	json_object_set_value(object, name, json_value);
+	for (uint i = 0u; i < count && ret; ++i)
+	{
+		ret = json_array_append_string(json_array, arr[i]) == JSONSuccess;
+	}
+	return ret;
 }

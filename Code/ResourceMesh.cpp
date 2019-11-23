@@ -13,6 +13,8 @@
 #include "BoundingBox.h"
 #include "ModuleFileSystem.h"
 
+RESOURCE_DEFINITION(Resource, ResourceMesh);
+
 ResourceMesh::ResourceMesh() : Resource()
 {
 	aabb.SetNegativeInfinity();
@@ -65,7 +67,7 @@ bool ResourceMesh::SaveFileData()
 	//SaveFile
 	uint path_size = 250u;
 	char * path = new char[path_size];
-	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, "mesh", uid, "hinata_mesh");
+	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, uid, MESH_EXTENSION);
 	ret = App->file_system->SaveFile((const void *)data, size, &path);
 	RELEASE_ARRAY(path);
 	return ret;
@@ -79,7 +81,7 @@ bool ResourceMesh::LoadFileData()
 	char * data = nullptr;
 	uint path_size = 250u;
 	char * path = new char[path_size];
-	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, "mesh", uid, "hinata_mesh");
+	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, uid, MESH_EXTENSION);
 
 	bool ret = App->file_system->LoadFile(path, &data);
 	if (ret)

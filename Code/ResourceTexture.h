@@ -8,12 +8,13 @@ typedef unsigned int uint;
 
 class ResourceTexture : public Resource
 {
+	RESOURCE_DECLARATION(ResourceTexture)
+
 public:
 	~ResourceTexture();
 
 private:
-	ResourceTexture() {
-	};
+	ResourceTexture();
 
 	bool SaveFileData() override;
 	bool LoadFileData() override;

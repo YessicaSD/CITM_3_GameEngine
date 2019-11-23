@@ -68,6 +68,7 @@ public:
 	~MenuCreateShape();
 
 	void MenuBarTab();
+	void CreateEmpty();
 	GameObject * CreateGameObjectWithParShape(std::string name, ComponentTransform * parent, ResourceMesh * asset_mesh);
 	//TODO: Load variables with a function from ModuleGui
 

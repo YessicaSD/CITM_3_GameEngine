@@ -4,7 +4,8 @@
 #include "Panel.h"
 #include <string>
 
-struct Dir;
+struct AssetDir;
+struct AssetFile;
 
 class PanelAssets : public Panel
 {
@@ -14,12 +15,16 @@ public:
 	PanelAssets(std::string name, bool state, std::vector<SDL_Scancode> shortcuts = {});
 	void Draw();
 
-	//TODO: Remove this function
-	void FillAssetTreeRecursive(Dir * dir);
+	void DisplayFolderAssetsRecursive(AssetDir * dir);
 
-	void DeleteTreeRecursive(Dir * dir);
+	void DragAsset(AssetFile * asset);
 
-	void DisplayFolderAssetsRecursive(Dir * dir);
+	void DropObject(AssetFile * asset);
+
+	AssetFile GetAssetFile();
+
+private:
+	AssetFile * selected_asset = nullptr;
 
 	friend class ModuleGui;
 };

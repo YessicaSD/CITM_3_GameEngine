@@ -2,6 +2,7 @@
 #define __JSON_FILE_H__
 
 #include<string>
+#include<vector>
 #include "parson/parson.h"
 
 typedef unsigned int uint;
@@ -12,7 +13,7 @@ public:
 	//Manipulate document
 	JSONFile();
 	JSONFile(JSON_Object * object);
-	void CreateJSONFile(const std::string& path);
+	void CreateJSONFile();
 	JSONFile GetSection(const char * section_name);
 	JSONFile AddSection(const char * section_name);
 	void LoadFile(const std::string & path);
@@ -23,13 +24,16 @@ public:
 	bool LoadBool(const char * variable_name, bool default = false) const;
 	double LoadNumber(const char * variable_name, double default = 0.0) const;
 	const char * LoadText(const char * variable_name, const char * default = "") const;
-	bool LoadFloatArray(const char* name, float* values, const uint size);
+	bool LoadFloatArray(const char* name, float* values);
+	bool LoadTextArray(const char * name, const char ** arr);
+	bool LoadTextVector(const char * name, std::vector<const char*>& values);
 
 	//Write document
 	bool SaveBool(const char * variable_name, bool value);
 	bool SaveNumber(const char * variable_name, double value);
 	bool SaveText(const char * variable_name, const char * value);
 	bool SaveFloatArray(const char* name, const float* arr, const uint size);
+	bool SaveTextArray(const char * name, const char ** array, const uint count);
 
 
 private:

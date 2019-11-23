@@ -13,6 +13,7 @@
 class Timer;
 class Panel;
 class Shortcut;
+class ComponentTransform;
 class PanelConfiguration;
 class PanelConsole;
 class PanelShortcuts;
@@ -23,8 +24,8 @@ class PanelAbout;
 class PanelAssets;
 class PanelScene;
 class PanelResources;
-class ComponentTransform;
 class PanelGame;
+class PanelImport;
 class PanelTools;
 enum KEY_STATE;
 
@@ -39,19 +40,19 @@ public:
 
 private:
 	bool showMenuImGui = false;
-	std::vector<Panel *> panels;
 
-	PanelConfiguration *panel_configuration = nullptr;
-	PanelConsole *panel_console = nullptr;
-	PanelShortcuts *panel_shortcuts = nullptr;
-	PanelProperties *panel_properties = nullptr;
-	PanelAbout *panel_about = nullptr;
-	PanelHierarchy *panel_hierarchy = nullptr;
-	PanelAssets *panel_assets = nullptr;
+	std::vector<Panel*> panels;
+	PanelConfiguration* panel_configuration = nullptr;
+	PanelConsole* panel_console = nullptr;
+	PanelShortcuts * panel_shortcuts = nullptr;
+	PanelProperties* panel_properties = nullptr;
+	PanelAbout* panel_about = nullptr;
+	PanelHierarchy * panel_hierarchy = nullptr;
+	PanelAssets* panel_assets = nullptr;
+	PanelResources * panel_resources = nullptr;
+	PanelImport * panel_import = nullptr;
 	PanelTools *panel_tools;
-
-	PanelResources *panel_resources = nullptr;
-
+	
 	std::vector<Shortcut *> shortcuts;
 	ComponentTransform *selected_transform = nullptr;
 

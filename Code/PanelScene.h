@@ -7,6 +7,7 @@
 #include "imGuizmo/ImGuizmo.h"
 class ComponentCamera;
 class ComponentTransform;
+struct AssetFile;
 
 class PanelScene : public Panel
 {
@@ -23,6 +24,7 @@ public:
 
 private:
 	void GetSizeWithAspectRatio(int current_width, int current_height, int wanted_width, int wanted_height, int& new_width, int& new_height);
+	void DropObject();
 	ImGuizmo::OPERATION guizmo_op = ImGuizmo::TRANSLATE;
 	ImGuizmo::MODE      guizmo_mode = ImGuizmo::LOCAL;
 	bool is_over_gizmo = false;

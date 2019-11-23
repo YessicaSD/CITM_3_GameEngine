@@ -7,8 +7,10 @@
 #include "CubeLine.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
 #include "MathGeoLib/include/Geometry/OBB.h"
+
 class ComponentCamera : public Component
 {
+	CLASS_DECLARATION(ComponentCamera);
 public:
 	bool frustum_culling = true;
 

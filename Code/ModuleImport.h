@@ -9,7 +9,7 @@
 #include "ResourceTexture.h"
 
 class ResourceMesh;
-class ResourceModelNode;
+class ModelNode;
 class ResourceTexture;
 struct aiMesh;
 struct aiMaterial;
@@ -18,6 +18,12 @@ class ComponentTransform;
 class ResourceModel;
 
 typedef struct par_shapes_mesh_s par_shapes_mesh;
+enum aiPostProcessSteps;
+
+struct ModelImportOptions
+{
+	aiPostProcessSteps post_process_steps;
+};
 
 //Module responsible for importing assets into the engine
 class ModuleImport : public Module
@@ -25,18 +31,19 @@ class ModuleImport : public Module
 public:
 	ModuleImport(const char * name);
 	bool Start(JSONFile * module_file) override;
-	ResourceModel * ImportModel(const char* path);
-	bool ImportFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index);
+	ResourceModel * ImportModel(const char* path, UID model_uid = INVALID_RESOURCE_UID, std::vector<UID> & meshes_uids = std::vector<UID>(), std::vector<UID> & textures_uids = std::vector<UID>());
 	bool CleanUp() override;
-
 	void EventRequest(const Event& event) override;
-	ResourceMesh* ImportAssimpMesh(aiMesh * assimp_mesh);
-	ResourceTexture * ImportFBXTexture(const  aiMaterial * material);
+	ResourceMesh* ImportAssimpMesh(aiMesh * assimp_mesh, UID uid);
 	ResourceMesh* ImportParShapeMesh(par_shapes_mesh * mesh);
 	void CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent);
 
 private:
-	void CreateGameObjectsFromNodes(aiNode * node, ComponentTransform * parent, std::vector<ResourceMesh*> loaded_meshes, std::vector<ResourceTexture*>& textures);
+	void SaveModelMeta(ResourceModel * resource_model, const char * asset_path);
+	bool ImportFBXNodes(ResourceModel * resource_model, ModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index);
+	ResourceTexture * ImportFBXTexture(const  aiMaterial * material, UID uid);
+	void LoadModelMeta(ResourceModel * model, const char * meta_path);
+	UID PopFirst(std::vector<UID>& vector);
 
 	friend ModuleScene;
 };

@@ -1,6 +1,7 @@
 #include "DevIL/include/il.h"
 #include "DevIL/include/ilu.h"
 #include "DevIL/include/ilut.h"
+#include "Globals.h"
 
 #pragma comment(lib, "DevIL/lib/DevIL.lib")
 #pragma comment(lib, "DevIL/lib/ILU.lib")
@@ -32,11 +33,11 @@ bool ModuleTexture::Init(JSONFile *module_file)
 }
 
 //Saves the texture as DDS in the Library folder (faster to use)
-ResourceTexture *ModuleTexture::ImportTexture(const char *asset_path)
+ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path, UID forced_uid)
 {
 	Timer import_timer;
 
-	ResourceTexture *resource_texture = App->resource_manager->CreateNewResource<ResourceTexture>();
+	ResourceTexture* resource_texture = App->resource_manager->CreateResource<ResourceTexture>(forced_uid);
 
 	//Import data from path first
 	ilGenImages(1, &resource_texture->buffer_id);
@@ -52,6 +53,7 @@ ResourceTexture *ModuleTexture::ImportTexture(const char *asset_path)
 			iluFlipImage();
 		}
 		resource_texture->SaveFileData();
+		SaveTextureMeta(resource_texture, asset_path);
 		ilDeleteImages(1, &resource_texture->buffer_id);
 		resource_texture->buffer_id = 0u;
 		LOG("Success importing texture from: %s in: %i ms", asset_path, import_timer.Read());
@@ -66,9 +68,21 @@ ResourceTexture *ModuleTexture::ImportTexture(const char *asset_path)
 	return resource_texture;
 }
 
+void ModuleTexture::SaveTextureMeta(ResourceTexture * resource_texture, const char * asset_path)
+{
+	//INFO Create .meta
+	JSONFile meta_file;
+	meta_file.CreateJSONFile();
+	App->resource_manager->SaveUID(&meta_file, resource_texture->uid);
+	resource_texture->SaveModifiedDate(&meta_file, asset_path);
+	//TODO: Add import options
+	meta_file.SaveFile(std::string(asset_path) + std::string(".") + std::string(META_EXTENSION));
+	meta_file.CloseFile();
+}
+
 void ModuleTexture::CreateCheckerTexture()
 {
-	ResourceTexture *new_texture = App->resource_manager->CreateNewResource<ResourceTexture>();
+	ResourceTexture* new_texture = App->resource_manager->CreateResource<ResourceTexture>();
 
 	int i, j, c;
 

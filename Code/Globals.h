@@ -73,6 +73,13 @@ enum update_status
 #define RESOURCES_MATERIAL_FOLDER "Resources/Materials/"
 #define RESOURCES_STATE_MACHINE_FOLDER "Resources/StateMachines/"
 
+#define META_EXTENSION "hinata_meta"
+#define MESH_EXTENSION "hinata_mesh"
+#define MODEL_EXTENSION "hinata_model"
+#define TEXTURE_EXTENSION "dds"
+#define MATERIAL_EXTENSION "hinata_material"
+#define SCENE_EXTENSION "hinata_scene"
+
 #define SCREEN_WIDTH 1920 * 0.75f //TODO: Remove when releasing the game
 #define SCREEN_HEIGHT 1080 * 0.75f //TODO: Remove when releasing the game
 #define SCREEN_SIZE 1
