@@ -18,6 +18,7 @@
 #include "ModuleGui.h"
 #include "ModuleRenderer3D.h"
 #include "JSONFile.h"
+#include "Timer.h"
 
 Application::Application()
 {

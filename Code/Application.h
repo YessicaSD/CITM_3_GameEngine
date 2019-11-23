@@ -29,6 +29,7 @@ class ModuleCamera3D;
 class ModuleScene;
 class ModuleGui;
 class ModuleRandom;
+class ModuleTime;
 
 struct ImVec2;
 
@@ -36,6 +37,17 @@ struct Event;
 
 class Application
 {
+public : 
+	enum State
+	{
+		play,
+		stop,
+		pause,
+		waiting_play,
+		waiting_stop,
+		waiting_pause,
+		waiting_unpause
+	};
 public:
 	ModuleWindow* window = nullptr;
 	ModuleInput* input = nullptr;
@@ -49,6 +61,7 @@ public:
 	ModuleFileSystem* file_system = nullptr;
 	ModuleAudio* audio = nullptr;
 	ModuleHardware* hardware = nullptr;
+	ModuleTime* time = nullptr;
 
 	std::string application_name;
 	std::string organization_name;
