@@ -53,14 +53,14 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 			if (IsFileModified(meta_file, (*iter)->name.c_str())
 				|| MissingResources(meta_file, type))
 			{
+				const char * uid_string = meta_file.LoadText("resourceUID", "0");
+				UID uid = strtoull(uid_string, nullptr, 10);
 				//Import the file. Resources force the previous uid.
 				if (type == ResourceModel::type)
 				{
 					//INFO: Delete the previous resources
-					//TODO: If executed during execution, remove them from the map too
-					const char * uid = meta_file.LoadText("resourceUID", "0");
-					std::string resource_model_path = std::string(RESOURCES_MODEL_FOLDER) + uid + "." + MODEL_EXTENSION;
-					App->file_system->Remove(resource_model_path.c_str());
+					App->file_system->Remove((std::string(RESOURCES_MODEL_FOLDER) + uid_string + "." + MODEL_EXTENSION).c_str());
+					resources.erase(uid);
 
 					std::vector<UID>meshes_uids;
 					DeleteDependantResources(meshes_uids, "exportedMeshes", &meta_file, RESOURCES_MESH_FOLDER, MESH_EXTENSION);
@@ -69,11 +69,15 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 					DeleteDependantResources(textures_uids, "exportedTextures", &meta_file, RESOURCES_TEXTURES_FOLDER, TEXTURE_EXTENSION);
 					
 					//INFO: Generate new resources using the previous uids
-					App->import->ImportModel((curr_dir + (*iter)->name).c_str());
+					App->import->ImportModel((curr_dir + (*iter)->name).c_str(), uid, meshes_uids, textures_uids);
 				}
 				else if (type == ResourceTexture::type)
 				{
+					//INFO: Delete the previous resources
+					App->file_system->Remove((std::string(RESOURCES_TEXTURES_FOLDER) + uid_string + "." + TEXTURE_EXTENSION).c_str());
+					resources.erase(uid);
 
+					App->texture->ImportTexture((curr_dir + (*iter)->name).c_str(), uid);
 				}
 				else
 				{

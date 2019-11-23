@@ -31,7 +31,7 @@ class ModuleImport : public Module
 public:
 	ModuleImport(const char * name);
 	bool Start(JSONFile * module_file) override;
-	ResourceModel * ImportModel(const char* path);
+	ResourceModel * ImportModel(const char* path, UID model_uid = INVALID_RESOURCE_UID, std::vector<UID> & meshes_uids = std::vector<UID>(), std::vector<UID> & textures_uids = std::vector<UID>());
 	void SaveModelMeta(ResourceModel * resource_model, const char * asset_path);
 	void LoadModelMeta(ResourceModel * model, const char * meta_path);
 	bool ImportFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index);

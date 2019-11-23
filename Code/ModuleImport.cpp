@@ -55,7 +55,7 @@ bool ModuleImport::Start(JSONFile * config)
 }
 
 //INFO: Creates a .hinata_model (our custom format for 3d models) from an fbx
-ResourceModel * ModuleImport::ImportModel(const char *asset_path)
+ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid, std::vector<UID> & prev_meshes_uids, std::vector<UID> & prev_textures_uids)
 {
 	Timer import_timer;
 
@@ -63,7 +63,7 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path)
 	const aiScene *scene = aiImportFile(asset_path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
-		resource_model = App->resource_manager->CreateResource<ResourceModel>();
+		resource_model = App->resource_manager->CreateResource<ResourceModel>(model_uid);
 		std::vector<ResourceTexture *> fbx_textures;
 		std::vector<ResourceMesh *> fbx_meshes;
 		std::vector<uint> fbx_meshes_textures;

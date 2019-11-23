@@ -32,11 +32,11 @@ bool ModuleTexture::Init(JSONFile * module_file)
 }
 
 //Saves the texture as DDS in the Library folder (faster to use)
-ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path)
+ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path, UID forced_uid)
 {
 	Timer import_timer;
 
-	ResourceTexture* resource_texture = App->resource_manager->CreateResource<ResourceTexture>();
+	ResourceTexture* resource_texture = App->resource_manager->CreateResource<ResourceTexture>(forced_uid);
 
 	//Import data from path first
 	ilGenImages(1, &resource_texture->buffer_id);

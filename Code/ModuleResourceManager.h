@@ -37,7 +37,7 @@ public:
 	bool MissingResources(JSONFile & meta_file, uint type);
 
 	template<class ResourceType>
-	ResourceType * CreateResource(UID uid = 0u)
+	ResourceType * CreateResource(UID uid = INVALID_RESOURCE_UID)
 	{
 		ResourceType * resource = new ResourceType();
 		if (uid == INVALID_RESOURCE_UID)

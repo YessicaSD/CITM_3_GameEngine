@@ -4,6 +4,7 @@
 #include "Module.h"
 #include <map>
 #include "DevIL/include/il.h"
+#include "Resource.h"
 
 class ResourceTexture;
 
@@ -17,7 +18,7 @@ class ModuleTexture : public Module
 public:
 	ModuleTexture(const char * name);
 	bool Init(JSONFile * module_file) override;
-	ResourceTexture* ImportTexture(const char * path);
+	ResourceTexture* ImportTexture(const char * path, UID forced_uid = INVALID_RESOURCE_UID);
 	void SaveTextureMeta(ResourceTexture * resource_texture, const char * asset_path);
 	void CreateCheckerTexture();
 	
