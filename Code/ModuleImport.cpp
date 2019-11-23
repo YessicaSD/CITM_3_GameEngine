@@ -126,20 +126,39 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path)
 
 void ModuleImport::SaveModelMeta(ResourceModel * resource_model, const char * asset_path)
 {
-	//INFO Create .meta
 	JSONFile meta_file;
 	meta_file.CreateJSONFile();
-	//TODO: Write default import options
+
+	//INFO: Save UID
+	char buffer[UID_DIGITS];
+	sprintf_s(buffer, "%020llu", resource_model->uid);
+	meta_file.SaveText("resourceUID", buffer);
+
+	//INFO: SAVE DATE MODIFIED
 	struct stat file_stat;
-	meta_file.SaveNumber("resourceUID", resource_model->GetUID());
 	if (stat(asset_path, &file_stat) == 0)
 	{
 		meta_file.SaveNumber("dateModified", file_stat.st_atime);
 	}
+
 	meta_file.SaveLLUArray("exportedTextures", resource_model->textures_uid);
 	meta_file.SaveLLUArray("exportedMeshes", resource_model->meshes_uid);
 	//TODO: Add import options
 	meta_file.SaveFile(std::string(asset_path) + std::string(".meta"));
+	meta_file.CloseFile();
+}
+
+void ModuleImport::LoadModelMeta(ResourceModel * model, const char * meta_path)
+{
+	JSONFile meta_file;
+	meta_file.LoadFile(meta_path);
+
+	//INFO: Load UID
+	const char * aux_uid = meta_file.LoadText("resourceUID", "0");
+	UID uid = strtoull(aux_uid, nullptr, 10);
+
+	//TODO: Cretate objects forcing their uids
+	App->resource_manager->CreateResource<ResourceModel>(uid);
 	meta_file.CloseFile();
 }
 

@@ -47,6 +47,8 @@ bool ModuleScene::Start(JSONFile * config)
 	ResourceModel * resource_model = App->import->ImportModel("Assets/BakerHouse.fbx");
 	App->import->CreateGameObjectFromModel(resource_model, App->scene->root_gameobject->transform);
 
+	App->import->LoadModelMeta(resource_model, "Assets/BakerHouse.fbx.meta");
+
 	GameObject* object_camera = new GameObject("Main camera", root_gameobject->transform);
 	game_camera = object_camera->CreateComponent<ComponentCamera>();
 

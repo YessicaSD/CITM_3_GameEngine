@@ -67,7 +67,7 @@ bool Application::Init()
 
 	//Automatically load the config file if it exists
 	config.LoadFile(config_path);
-	config.AddSection("App");
+	config.GetSection("App");
 
 	//TODO: Load app values
 	//cap frames

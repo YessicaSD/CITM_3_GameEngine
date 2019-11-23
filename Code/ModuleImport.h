@@ -33,6 +33,7 @@ public:
 	bool Start(JSONFile * module_file) override;
 	ResourceModel * ImportModel(const char* path);
 	void SaveModelMeta(ResourceModel * resource_model, const char * asset_path);
+	void LoadModelMeta(ResourceModel * model, const char * meta_path);
 	bool ImportFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index);
 	bool CleanUp() override;
 

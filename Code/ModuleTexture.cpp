@@ -45,6 +45,7 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path)
 	if (ilLoadImage(asset_path) == IL_TRUE)
 	{
 		resource_texture->SaveFileData();
+		SaveTextureMeta(resource_texture, asset_path);
 		ilDeleteImages(1, &resource_texture->buffer_id);
 		resource_texture->buffer_id = 0u;
 		LOG("Success importing texture from: %s in: %i ms", asset_path, import_timer.Read());
@@ -57,6 +58,22 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path)
 	//free(lump);
 
 	return resource_texture;
+}
+
+void ModuleTexture::SaveTextureMeta(ResourceTexture * resource_texture, const char * asset_path)
+{
+	//INFO Create .meta
+	JSONFile meta_file;
+	meta_file.CreateJSONFile();
+	struct stat file_stat;
+	meta_file.SaveNumber("resourceUID", resource_texture->GetUID());
+	if (stat(asset_path, &file_stat) == 0)
+	{
+		meta_file.SaveNumber("dateModified", file_stat.st_atime);
+	}
+	//TODO: Add import options
+	meta_file.SaveFile(std::string(asset_path) + std::string(".meta"));
+	meta_file.CloseFile();
 }
 
 void ModuleTexture::CreateCheckerTexture()
