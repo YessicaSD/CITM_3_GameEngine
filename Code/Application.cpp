@@ -482,6 +482,21 @@ void Application::Stop()
 		state = State::WAITING_STOP;
 }
 
+bool Application::IsPause()
+{
+	return state==State::PAUSE;
+}
+
+bool Application::IsStop()
+{
+	return state == State::STOP;
+}
+
+bool Application::IsPlay()
+{
+	return state == State::PLAY;
+}
+
 Application::State Application::GetState()
 {
 	return state;

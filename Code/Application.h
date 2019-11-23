@@ -134,6 +134,12 @@ public:
 	void AddEvent(const Event& event);
 	float GetDt();
 	void Play();
+	void Pause();
+	void UnPause();
+	void Stop();
+	bool IsPause();
+	bool IsStop();
+	bool IsPlay();
 	State GetState();
 private:
 
