@@ -17,8 +17,7 @@ void PanelTools::Draw()
 		//PLAT BUTTON
 		ImGui::PushID("moveHovered");
 		
-		bool playbutton = ImGui::ImageButton((ImTextureID)atlas->buffer_id, ImVec2(15, 15), ImVec2(0, 0), ImVec2(button_width, button_height));
-		if (playbutton)
+		if(ImGui::ImageButton((ImTextureID)atlas->buffer_id, ImVec2(15, 15), ImVec2(0, 0), ImVec2(button_width, button_height)))
 		{
 			if (App->IsStop())
 			{
@@ -57,6 +56,7 @@ void PanelTools::Draw()
 		
 		}
 		ImGui::PopID();
+		ImGui::SameLine();
 		ImGui::Text("%f", App->time->GetTime());
 		
 	}
