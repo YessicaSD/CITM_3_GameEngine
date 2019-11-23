@@ -128,19 +128,8 @@ void ModuleImport::SaveModelMeta(ResourceModel * resource_model, const char * as
 {
 	JSONFile meta_file;
 	meta_file.CreateJSONFile();
-
-	//INFO: Save UID
-	char buffer[UID_DIGITS];
-	sprintf_s(buffer, "%020llu", resource_model->uid);
-	meta_file.SaveText("resourceUID", buffer);
-
-	//INFO: SAVE DATE MODIFIED
-	struct stat file_stat;
-	if (stat(asset_path, &file_stat) == 0)
-	{
-		meta_file.SaveNumber("dateModified", file_stat.st_atime);
-	}
-
+	resource_model->SaveUID(&meta_file);
+	resource_model->SaveModifiedDate(&meta_file, asset_path);
 	meta_file.SaveLLUArray("exportedTextures", resource_model->textures_uid);
 	meta_file.SaveLLUArray("exportedMeshes", resource_model->meshes_uid);
 	//TODO: Add import options
@@ -154,12 +143,11 @@ void ModuleImport::LoadModelMeta(ResourceModel * model, const char * meta_path)
 	meta_file.LoadFile(meta_path);
 
 	//INFO: Load UID
-	const char * aux_uid = meta_file.LoadText("resourceUID", "0");
-	UID uid = strtoull(aux_uid, nullptr, 10);
+	model->LoadUID(&meta_file);
 
 	//TODO: Cretate objects forcing their uids
-	App->resource_manager->CreateResource<ResourceModel>(uid);
-	meta_file.CloseFile();
+	//App->resource_manager->CreateResource<ResourceModel>(uid);
+	//meta_file.CloseFile();
 }
 
 bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ResourceModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index)

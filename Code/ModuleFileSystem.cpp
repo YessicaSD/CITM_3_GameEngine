@@ -318,3 +318,8 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char * full_path, const char * de
 
 	return ret;
 }
+
+bool ModuleFileSystem::FileExists(const char* file) const
+{
+	return PHYSFS_exists(file) != 0;
+}

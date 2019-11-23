@@ -8,6 +8,8 @@ typedef unsigned int uint;
 
 class ResourceTexture : public Resource
 {
+	CLASS_DECLARATION(ResourceTexture)
+
 public:
 	~ResourceTexture();
 

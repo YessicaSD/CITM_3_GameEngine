@@ -1,5 +1,6 @@
 #include "Resource.h"
 #include "ModuleFileSystem.h"
+#include "JSONFile.h"
 #include <stdio.h>
 
 UID Resource::GetUID() const
@@ -61,4 +62,26 @@ bool Resource::StopUsingResource()
 		ret = ReleaseData();
 	}
 	return ret;
+}
+
+void Resource::LoadUID(JSONFile * meta_file)
+{
+	const char * aux_uid = meta_file->LoadText("resourceUID", "0");
+	uid = strtoull(aux_uid, nullptr, 10);
+}
+
+void Resource::SaveUID(JSONFile * meta_file) const
+{
+	char buffer[UID_DIGITS];
+	sprintf_s(buffer, "%020llu", uid);
+	meta_file->SaveText("resourceUID", buffer);
+}
+
+void Resource::SaveModifiedDate(JSONFile * meta_file, const char * asset_path)
+{
+	struct stat file_stat;
+	if (stat(asset_path, &file_stat) == 0)
+	{
+		meta_file->SaveNumber("dateModified", file_stat.st_atime);
+	}
 }

@@ -28,6 +28,8 @@ class ModuleResourceManager : public Module
 public:
 	ModuleResourceManager(const char * name);
 
+	bool Start(JSONFile * module_file) override;
+
 	template<class ResourceType>
 	ResourceType * CreateResource(UID uid = 0u)
 	{
@@ -44,10 +46,16 @@ public:
 		return resource;
 	}
 
+	update_status PreUpdate() override;
+	bool CleanUp() override;
+
 	Resource * GetResource(UID uid);
 
 private:
 	UID GenerateNewUID();
+
+	void FillAssetTreeRecursive(Dir * dir);
+	void DeleteTreeRecursive(Dir * dir);
 
 private:
 	std::map<UID, Resource*> resources;

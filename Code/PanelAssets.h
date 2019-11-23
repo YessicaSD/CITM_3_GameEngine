@@ -15,11 +15,6 @@ public:
 	PanelAssets(std::string name, bool state, std::vector<SDL_Scancode> shortcuts = {});
 	void Draw();
 
-	//TODO: Remove this function
-	void FillAssetTreeRecursive(Dir * dir);
-
-	void DeleteTreeRecursive(Dir * dir);
-
 	void DisplayFolderAssetsRecursive(Dir * dir);
 
 	void DragAsset(AssetFile * asset);

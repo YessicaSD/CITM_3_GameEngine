@@ -6,9 +6,7 @@
 #include "ModuleGui.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
-#include "ComponentMaterial.h"
 #include "ModuleResourceManager.h"
-#include "ModuleFileSystem.h"
 //#include "mmgr/mmgr.h"
 
 #include "PhysFS/include/physfs.h"
@@ -28,63 +26,9 @@ void PanelAssets::Draw()
 		//Adds the new files to the asset list
 	}
 
-	//TODO: This shouldn't be done every frame
-	App->resource_manager->asset_dir = new Dir();
-	App->resource_manager->asset_dir->name = ASSETS_FOLDER;
-	FillAssetTreeRecursive(App->resource_manager->asset_dir);
-
 	DisplayFolderAssetsRecursive(App->resource_manager->asset_dir);
 
-	DeleteTreeRecursive(App->resource_manager->asset_dir);
-
 	ImGui::End();
-}
-
-//TODO: Fill asset tree the first time
-void PanelAssets::FillAssetTreeRecursive(Dir * dir)
-{
-	std::vector<std::string> file_list;
-	std::vector<std::string> dir_list;
-
-	App->file_system->GetFilesAndDirs(dir->name.c_str(), file_list, dir_list);
-
-	//Add files
-	for (auto iter = file_list.begin(); iter != file_list.end(); ++iter)
-	{
-		AssetFile * new_asset = new AssetFile();
-		new_asset->name = (*iter);
-		dir->assets.push_back(new_asset);
-	}
-
-	//Add dirs
-	for (auto iter = dir_list.begin(); iter != dir_list.end(); ++iter)
-	{
-		Dir * new_dir = new Dir();
-		new_dir->name = dir->name + (*iter);
-		FillAssetTreeRecursive(new_dir);
-		dir->dirs.push_back(new_dir);
-	}
-}
-
-//TODO: Compare
-
-//TODO: Delete for every new
-//Instead of adding, compare and import the new files
-
-//Delte tree recursively
-
-void PanelAssets::DeleteTreeRecursive(Dir * dir)
-{
-	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
-	{
-		delete((*iter));
-	}
-
-	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
-	{
-		DeleteTreeRecursive((*iter));
-	}
-	delete(dir);
 }
 
 void PanelAssets::DisplayFolderAssetsRecursive(Dir * dir)
@@ -97,6 +41,7 @@ void PanelAssets::DisplayFolderAssetsRecursive(Dir * dir)
 		DragAsset((*iter));
 		if (open)
 		{
+			selected_asset = (*iter);
 			ImGui::TreePop();
 		}
 	}
