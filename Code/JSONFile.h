@@ -32,6 +32,7 @@ public:
 	bool LoadFloatArray(const char* name, float* values);
 	bool LoadTextArray(const char * name, const char ** arr);
 	bool LoadTextVector(const char * name, std::vector<const char*>& values);
+	UID LoadUID() const;
 
 	//Write document
 	bool SaveBool(const char * variable_name, bool value);
@@ -39,9 +40,7 @@ public:
 	bool SaveText(const char * variable_name, const char * value);
 	bool SaveFloatArray(const char* name, const float* arr, const uint size);
 	bool SaveTextArray(const char * name, const char ** array, const uint count);
-
-	UID LoadUID(JSONFile * meta_file) const;
-	void SaveUID(const UID & uid);
+	bool SaveUID(const UID & uid);
 
 
 private:

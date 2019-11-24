@@ -41,8 +41,8 @@ Application::Application()
 	AddModule(import = new ModuleImport("Import"));
 	AddModule(camera = new ModuleCamera3D("Camera 3D"));
 	//AddModule(audio = new ModuleAudio("Audio"));
-	AddModule(gui = new ModuleGui("Gui"));
 	AddModule(resource_manager = new ModuleResourceManager("Resource Manager"));
+	AddModule(gui = new ModuleGui("Gui"));
 	// Renderer last!
 	AddModule(renderer3D = new ModuleRenderer3D("Render"));
 

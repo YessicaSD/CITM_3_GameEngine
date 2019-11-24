@@ -3,12 +3,17 @@
 #include "ModuleTexture.h"
 #include "imgui/imgui.h"
 #include "ResourceTexture.h"
-
+#include "ModuleResourceManager.h"
 #include "ModuleTime.h"
+
 PanelTools::PanelTools(std::string name, bool active, std::vector<SDL_Scancode> shortcuts):Panel(name, active, shortcuts)
 {
-	atlas = App->texture->ImportTexture("Atlas.png");
+	JSONFile atlas_meta;
+	atlas_meta.LoadFile(std::string("Assets/Atlas.png") + "." + META_EXTENSION);
+	UID atlas_uid = atlas_meta.LoadUID();
+	atlas = (ResourceTexture*)App->resource_manager->GetResource(atlas_uid);
 	atlas->StartUsingResource();
+
 	button_width = 72.0f / (float)atlas->width;
 	button_height = 72.0f / (float)atlas->height;
 }

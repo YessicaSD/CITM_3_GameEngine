@@ -15,10 +15,13 @@ struct AssetFile
 {
 	//type (used to get the appropiate icon)
 	std::string name;
+	std::string full_path;
 };
 
 struct AssetDir {
 	std::string name;
+	std::string full_path;
+
 	std::vector<AssetFile*>assets;
 	std::vector<AssetDir*>dirs;
 };
@@ -30,7 +33,7 @@ public:
 
 	bool Start(JSONFile * module_file) override;
 
-	void ImportAssetsRecursively(AssetDir * dir, std::string curr_dir);
+	void ImportAssetsRecursively(AssetDir * dir);
 
 	bool IsFileModified(JSONFile &meta_file, const char * file);
 

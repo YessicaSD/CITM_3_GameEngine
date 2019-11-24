@@ -154,15 +154,15 @@ bool JSONFile::SaveTextArray(const char * name, const char ** arr, const uint co
 	return ret;
 }
 
-UID JSONFile::LoadUID(JSONFile * meta_file) const
+UID JSONFile::LoadUID() const
 {
-	const char * aux_uid = meta_file->LoadText("resourceUID", "0");
+	const char * aux_uid = LoadText("resourceUID", "0");
 	return strtoull(aux_uid, nullptr, 10);
 }
 
-void JSONFile::SaveUID(const UID & uid) 
+bool JSONFile::SaveUID(const UID & uid) 
 {
 	char buffer[UID_DIGITS];
 	sprintf_s(buffer, "%020llu", uid);
-	SaveText("resourceUID", buffer);
+	return SaveText("resourceUID", buffer);
 }
