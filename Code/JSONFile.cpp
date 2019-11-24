@@ -37,6 +37,16 @@ void JSONFile::CreateJSONFile()
 	}
 }
 
+void JSONFile::CreateJSONFileArray()
+{
+	value = json_value_init_object();
+	array = json_value_get_array(value);
+	if (value == nullptr || object == nullptr)
+	{
+		LOG("Error creating JSON Array");
+	}
+}
+
 JSONFile JSONFile::GetSection(const char * section_name)
 {
 	return JSONFile(json_object_get_object(object, section_name));
@@ -160,11 +170,11 @@ UID JSONFile::LoadUID() const
 	return strtoull(aux_uid, nullptr, 10);
 }
 
-bool JSONFile::SaveUID(const UID & uid) 
+bool JSONFile::SaveUID(const char* name_variable, const UID & uid)
 {
 	char buffer[UID_DIGITS];
 	sprintf_s(buffer, "%020llu", uid);
-	return SaveText("resourceUID", buffer);
+	return SaveText(name_variable, buffer);
 }
 
 bool JSONFile::LoadUIDVector(const char * name, std::vector<UID> & values)

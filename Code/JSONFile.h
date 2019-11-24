@@ -19,6 +19,7 @@ public:
 	JSONFile();
 	JSONFile(JSON_Object * object);
 	void CreateJSONFile();
+	void CreateJSONFileArray();
 	JSONFile GetSection(const char * section_name);
 	JSONFile AddSection(const char * section_name);
 	void LoadFile(const std::string & path);
@@ -40,13 +41,15 @@ public:
 	bool SaveText(const char * variable_name, const char * value);
 	bool SaveFloatArray(const char* name, const float* arr, const uint size);
 	bool SaveTextArray(const char * name, const char ** array, const uint count);
-	bool SaveUID(const UID & uid);
+	bool SaveUID(const char* name_variable, const UID & uid);
 
 	bool LoadUIDVector(const char * name, std::vector<UID>& values);
 	bool IsValid();
 
 private:
 	JSON_Value* value = nullptr;
+	JSON_Array* array = nullptr;
 	JSON_Object* object = nullptr;
+
 };
 #endif

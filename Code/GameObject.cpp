@@ -112,7 +112,7 @@ void GameObject::OnSave(JSONFile * scene)
 {
 	JSONFile  this_gameobject = scene->AddSection("GameObject");
 	this_gameobject.SaveText("name", name.c_str());
-	this_gameobject.SaveUID(uid);
+	this_gameobject.SaveUID("UID",uid);
 	JSONFile* components_section =  &this_gameobject.AddSection("Components");
 
 	for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
