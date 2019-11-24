@@ -15,6 +15,9 @@ A 3D game engine created in the third year of our Videogame Design and Developme
 - Rotate and move the main camera
 (Note that you must have gameobjects with bounding boxes in the scene to see the effect of the frustrum culling).
 
+## Quadtree
+- Quadtree is always visible inside the "Scene" panel
+
 ## Time management
 - Press Play to play the game.
 - Press Pause to pause the game.
