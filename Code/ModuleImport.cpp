@@ -189,6 +189,7 @@ bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ModelNode * mo
 	return true;
 }
 
+//INFO: textures must be in the same folder as the fbx
 ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, std::vector<UID> & uids, const char * asset_path)
 {
 	ResourceTexture * ret = nullptr;
@@ -198,15 +199,16 @@ ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, s
 		aiString aipath;
 		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &aipath, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
-			std::string path = ASSETS_FOLDER + std::string(aipath.data);
-			App->file_system->NormalizePath(path);
-			std::string name_file, extension;
-			App->file_system->SplitFilePath(std::string(aipath.data), name_file, extension);
+			std::string name_file;
+			App->file_system->SplitFilePath(aipath.C_Str(), nullptr, &name_file, nullptr);
+			std::string file_path;
+			App->file_system->SplitFilePath(asset_path, &file_path, nullptr, nullptr);
+			std::string final_path = file_path + name_file;
 			//INFO: Because textures are stored as individual files outside the FBX we might have imported the texture earlier
-			std::string meta_path = (path + "." + META_EXTENSION);
+			std::string meta_path = (final_path + "." + META_EXTENSION);
 			if (App->file_system->FileExists(meta_path.c_str()))
 			{
-				ret = App->texture->ImportTexture(path.c_str(), PopFirst(uids));
+				ret = App->texture->ImportTexture(final_path.c_str(), PopFirst(uids));
 				ret->asset_source = asset_path;
 			}
 			else
