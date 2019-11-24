@@ -134,12 +134,12 @@ void MenuCreateShape::MenuBarTab()
 	if (ImGui::BeginMenu("Create"))
 	{
 		CreateEmpty();
-		for (std::vector<PanelCreateShape*>::iterator iter = panels_create_shape.begin();
-			iter != panels_create_shape.end();
-			++iter)
-		{
-			(*iter)->MenuItem(button_height, button_space, button_color, button_size);
-		}
+		//for (std::vector<PanelCreateShape*>::iterator iter = panels_create_shape.begin();
+		//	iter != panels_create_shape.end();
+		//	++iter)
+		//{
+		//	(*iter)->MenuItem(button_height, button_space, button_color, button_size);
+		//}
 		ImGui::EndMenu();
 	}
 }
