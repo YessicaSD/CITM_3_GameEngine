@@ -381,7 +381,7 @@ void ModuleResourceManager::SaveUIDArray(const std::vector<UID> & uid_vector, ch
 	for (int i = 0; i < count; ++i)
 	{
 		char * buffer = new char[UID_DIGITS];
-		sprintf_s(buffer, UID_DIGITS, "%20llu", uid_vector[i]);
+		sprintf_s(buffer, UID_DIGITS, "%020llu", uid_vector[i]);
 		uid_string_vector[i] = buffer;
 	}
 	meta_file->SaveTextArray(name, uid_string_vector, count);
