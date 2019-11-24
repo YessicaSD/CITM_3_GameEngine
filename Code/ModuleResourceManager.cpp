@@ -8,6 +8,7 @@
 #include "ResourceModel.h"
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
+#include "ResourceMaterial.h"
 
 ModuleResourceManager::ModuleResourceManager(const char * name) : Module(true, name)
 {
@@ -248,7 +249,7 @@ void ModuleResourceManager::FillAssetTreeRecursive(AssetDir * dir)
 	for (auto iter = dir_list.begin(); iter != dir_list.end(); ++iter)
 	{
 		AssetDir * new_dir = new AssetDir();
-		new_dir->name = dir->name + (*iter);
+		new_dir->name = (*iter);
 		new_dir->full_path = dir->full_path + (*iter) + "/";
 		FillAssetTreeRecursive(new_dir);
 		dir->dirs.push_back(new_dir);
@@ -279,6 +280,27 @@ uint ModuleResourceManager::GetResourceTypeFromExtension(const std::string & ext
 	{
 		return ResourceTexture::type;
 	}
+}
+
+const char * ModuleResourceManager::GetResourceTypeString(uint type)
+{
+	if (type == ResourceModel::type)
+	{
+		return "model";
+	}
+	else if (type == ResourceMesh::type)
+	{
+		return "mesh";
+	}
+	else if (type == ResourceTexture::type)
+	{
+		return "texture";
+	}
+	else if (type == ResourceMaterial::type)
+	{
+		return "material";
+	}
+	return "unsupported type";
 }
 
 UID ModuleResourceManager::LoadUID(JSONFile * meta_file) const

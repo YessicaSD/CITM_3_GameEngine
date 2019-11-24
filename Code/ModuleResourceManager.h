@@ -60,6 +60,7 @@ public:
 
 	Resource * GetResource(UID uid);
 	uint GetResourceTypeFromExtension(const std::string & extension);
+	const char * GetResourceTypeString(uint type);
 
 	UID LoadUID(JSONFile * meta_file) const;
 	void SaveUID(JSONFile * meta_file, const UID & uid) const;
