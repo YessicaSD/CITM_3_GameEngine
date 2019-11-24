@@ -20,7 +20,7 @@ public:
 	bool Init(JSONFile * module_file) override;
 	ResourceTexture* ImportTexture(const char * path, UID forced_uid = INVALID_RESOURCE_UID);
 	void SaveTextureMeta(ResourceTexture * resource_texture, const char * asset_path);
-	void CreateCheckerTexture();
+	//void ImportCheckerTexture();
 	
 	friend class PanelAssets;
 };
