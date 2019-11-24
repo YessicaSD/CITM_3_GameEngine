@@ -70,7 +70,7 @@ protected:
 	virtual void CleanUp() {};
 	virtual void OnSave(JSONFile*) {};
 	virtual void OnLoad(JSONFile*) {};
-
+	unsigned int GetType(const char*);
 	bool CollapsigHeaderWithCheckbox();
 
 public:

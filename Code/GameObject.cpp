@@ -135,6 +135,7 @@ void GameObject::OnSave(JSONFile * scene)
 
 void GameObject::OnLoad(JSONFile *)
 {
+
 }
 
 UID GameObject::GetUID()
