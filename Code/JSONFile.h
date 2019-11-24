@@ -4,6 +4,11 @@
 #include<string>
 #include<vector>
 #include "parson/parson.h"
+#include "Globals.h"
+
+//18446744073709551615 is the maximum unsigned long long integer, which has 20 characters
+//we need +1 for the terminating null character \0
+#define UID_DIGITS 20 + 1
 
 typedef unsigned int uint;
 
@@ -34,6 +39,9 @@ public:
 	bool SaveText(const char * variable_name, const char * value);
 	bool SaveFloatArray(const char* name, const float* arr, const uint size);
 	bool SaveTextArray(const char * name, const char ** array, const uint count);
+
+	UID LoadUID(JSONFile * meta_file) const;
+	void SaveUID(const UID & uid);
 
 
 private:

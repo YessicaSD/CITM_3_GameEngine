@@ -7,7 +7,7 @@
 #include <memory>
 #include <algorithm>
 #include <xstring>
-
+#include "JSONFile.h"
 
 typedef unsigned int uint;
 #define TO_STRING( x ) #x
@@ -69,6 +69,9 @@ protected:
 	virtual void OnEnable() {};
 	virtual void OnDisable() {};
 	virtual void CleanUp() {};
+	virtual void OnSave(JSONFile*) {};
+	virtual void OnLoad(JSONFile*) {};
+
 	bool CollapsigHeaderWithCheckbox();
 
 public:

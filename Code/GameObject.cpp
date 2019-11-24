@@ -1,13 +1,24 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentMesh.h"
+#include "Application.h"
+#include "ModuleRandom.h"
 
-GameObject::GameObject(std::string name, ComponentTransform * parent):
+
+GameObject::GameObject(std::string name, ComponentTransform * parent, UID uid):
 	name(name)
 {
 	transform = new ComponentTransform(this);
 	transform->SetParent(parent);
 	components.push_back(transform);
+	if (this->uid == INVALID_GAMEOBJECT_UID)
+	{
+		this->uid = App->random->RandomUID();
+	}
+	else
+	{
+		this->uid = uid;
+	}
 }
 
 GameObject::~GameObject()
@@ -95,6 +106,26 @@ bool GameObject::DeactivateComponents()
 void GameObject::SetActive(bool value)
 {
 	active = value;
+}
+
+void GameObject::OnSave(JSONFile * scene)
+{
+	JSONFile  this_gameobject = scene->AddSection(name.c_str());
+	this_gameobject.SaveUID(uid);
+	JSONFile* components_section =  &this_gameobject.AddSection("Components");
+
+	for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
+	{
+		(*iter)->OnSave(components_section);
+	}
+	for (std::vector<ComponentTransform*>::iterator iter = transform->children.begin(); iter != transform->children.end(); ++iter)
+	{
+		(*iter)->gameobject->OnSave(scene);
+	}
+}
+
+void GameObject::OnLoad(JSONFile *)
+{
 }
 
 

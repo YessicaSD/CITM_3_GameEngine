@@ -239,6 +239,14 @@ void ModuleScene::DrawWithFrustrum(ComponentCamera * camera)
 	}
 }
 
+void ModuleScene::SaveScene()
+{
+	current_scene.CreateJSONFile();
+	root_gameobject->OnSave(&current_scene);
+	current_scene.SaveFile("scene.json");
+	current_scene.CloseFile();
+}
+
 
 
 update_status ModuleScene::PostUpdate()
@@ -287,5 +295,9 @@ void ModuleScene::EventRequest(const Event & event)
 	else if (event.type == Event::DROPPED_MODEL_TO_SCENE)
 	{
 		App->import->CreateGameObjectFromModel(event.drop_model_data.model, App->scene->root_gameobject->transform);
+	}
+	else if (event.type == Event::SAVE_SCENE)
+	{
+		SaveScene();
 	}
 }
