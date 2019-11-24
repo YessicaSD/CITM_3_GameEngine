@@ -317,7 +317,7 @@ void ModuleImport::EventRequest(const Event &event)
 		{
 			if (App->file_system->CopyFromOutsideFS(event.path, dst_path.c_str()))
 			{
-				ImportModel(dst_path.c_str());
+				App->texture->ImportTexture(dst_path.c_str());
 				//TODO: Update assets tree
 			}
 		}
@@ -325,7 +325,7 @@ void ModuleImport::EventRequest(const Event &event)
 		{
 			if (App->file_system->CopyFromOutsideFS(event.path, dst_path.c_str()))
 			{
-				App->texture->ImportTexture(dst_path.c_str());
+				ImportModel(dst_path.c_str());
 				//TODO: Update assets tree
 			}
 		}
