@@ -224,6 +224,50 @@ ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, s
 			LOG("Error: Texture path not found");
 		}
 	}
+	else if (material->GetTextureCount(aiTextureType_SPECULAR) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_AMBIENT) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_EMISSIVE) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_HEIGHT) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_NORMALS) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_SHININESS) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_OPACITY) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_DISPLACEMENT) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_LIGHTMAP) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_REFLECTION) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_UNKNOWN) > 0)
+	{
+		LOG("texture type");
+	}
 	return ret;
 }
 
