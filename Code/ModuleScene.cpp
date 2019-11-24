@@ -22,10 +22,6 @@
 #include "Event.h"
 #include <map>
 
-
-//TODO: Remove, only for testing purposes
-#include "ResourceModel.h"
-
 ModuleScene::ModuleScene(const char * name, bool start_enabled) :
 	Module(start_enabled, name)
 {}
@@ -42,12 +38,10 @@ bool ModuleScene::Start(JSONFile * config)
 
 	bool ret = true;
 
-	float a = App->random->RandomFloat0to1();
+	//ResourceModel * resource_model = App->import->ImportModel("Assets/BakerHouse.fbx");
+	//App->import->CreateGameObjectFromModel(resource_model, App->scene->root_gameobject->transform);
 
-	ResourceModel * resource_model = App->import->ImportModel("Assets/BakerHouse.fbx");
-	App->import->CreateGameObjectFromModel(resource_model, App->scene->root_gameobject->transform);
-
-	App->import->LoadModelMeta(resource_model, "Assets/BakerHouse.fbx.meta");
+	//App->import->LoadModelMeta(resource_model, "Assets/BakerHouse.fbx.meta");
 
 	GameObject* object_camera = new GameObject("Main camera", root_gameobject->transform);
 	game_camera = object_camera->CreateComponent<ComponentCamera>();

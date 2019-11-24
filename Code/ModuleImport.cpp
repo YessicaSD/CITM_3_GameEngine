@@ -1,6 +1,5 @@
 #include "Application.h"
 #include "ModuleImport.h"
-#include "ModuleRenderer3D.h"
 
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -10,17 +9,17 @@
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
 
+#include "Resource.h"
+#include "ResourceMesh.h"
+#include "ResourceModel.h"
+
+#include "ModuleRenderer3D.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
-#include "ResourceMesh.h"
 #include "ModuleTexture.h"
 #include "ModuleResourceManager.h"
 #include "Event.h"
-
-#include "Resource.h"
-#include "ResourceModel.h"
-
 #include "ModuleFileSystem.h"
 #include "PhysFS/include/physfs.h"
 

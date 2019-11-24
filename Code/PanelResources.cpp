@@ -29,7 +29,7 @@ void PanelResources::Draw()
 		sprintf_s(buffer, "%020llu", (*iter).first);
 		ImGui::Selectable(buffer, false);
 		ImGui::SameLine(space_1);
-		ImGui::Text("%i", (*iter).second->type);
+		ImGui::Text("%i", (*iter).second->GetType());
 		ImGui::SameLine(space_2);
 		std::string count = std::to_string((*iter).second->GetReferenceCount());
 		ImGui::Text(count.c_str());

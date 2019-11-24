@@ -14,13 +14,7 @@ ModuleResourceManager::ModuleResourceManager(const char * name) : Module(true, n
 
 bool ModuleResourceManager::Start(JSONFile * module_file)
 {
-	//INFO: Scan assets folder
-	//1. See if they have a .meta
-		//else Create .meta for them
-	//2. See if they have been edited (dateModified is the same)
-		//else import a new resource
-
-	//Assets which cannot be opened show "cannot open this file" in preview window
+	//TODO: Assets which cannot be opened show "cannot open this file" in preview window
 
 	asset_dir = new AssetDir();
 	asset_dir->name = ASSETS_FOLDER;
@@ -168,7 +162,8 @@ update_status ModuleResourceManager::PreUpdate()
 
 bool ModuleResourceManager::CleanUp()
 {
-	RELEASE(asset_dir);
+	DeleteTreeRecursive(asset_dir);
+	//RELEASE(asset_dir);
 	return true;
 }
 
@@ -183,7 +178,7 @@ Resource * ModuleResourceManager::GetResource(UID uid)
 	}
 	else
 	{
-LOG("Error: The uid specified is not in the resources map.");
+		LOG("Error: The uid specified is not in the resources map.");
 	}
 	return resource;
 }
