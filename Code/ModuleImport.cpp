@@ -174,7 +174,7 @@ bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ModelNode * mo
 		{
 			uint index = node->mMeshes[i];
 			model_node->mesh_uid = meshes[index];
-			model_node->material_uid = materials[mesh_texture_idxs[i]];
+			model_node->material_uid = materials[mesh_texture_idxs[index]];
 		}
 		//TODO: Create a new ResourceModelNode for each mesh
 		//Right now this for allows that there is more than one mesh per gameobject
