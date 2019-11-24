@@ -10,16 +10,17 @@ PanelResources::PanelResources(std::string name, bool state, std::vector<SDL_Sca
 void PanelResources::Draw()
 {
 	ImGui::Begin(name.c_str());
-	int space_1 = 200;
-	int space_2 = 300;
+	int space_1 = 175;
+	int space_2 = 325;
+	int space_3 = 425;
 	
 	ImGui::Text("Resource UID");
 	ImGui::SameLine(space_1);
-	ImGui::Text("Type");
+	ImGui::Text("Source");
 	ImGui::SameLine(space_2);
+	ImGui::Text("Type");
+	ImGui::SameLine(space_3);
 	ImGui::Text("Reference count");
-
-	//TODO: Add file from which it was created
 
 	ImGui::Separator();
 
@@ -29,8 +30,10 @@ void PanelResources::Draw()
 		sprintf_s(buffer, "%020llu", (*iter).first);
 		ImGui::Selectable(buffer, false);
 		ImGui::SameLine(space_1);
-		ImGui::Text("%i", (*iter).second->type);
+		ImGui::Text((*iter).second->asset_source.c_str());
 		ImGui::SameLine(space_2);
+		ImGui::Text("%i", (*iter).second->type);
+		ImGui::SameLine(space_3);
 		std::string count = std::to_string((*iter).second->GetReferenceCount());
 		ImGui::Text(count.c_str());
 		//TODO: Add preview when you click it

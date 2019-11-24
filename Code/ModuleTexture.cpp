@@ -38,6 +38,7 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path, UID force
 	Timer import_timer;
 
 	ResourceTexture* resource_texture = App->resource_manager->CreateResource<ResourceTexture>(forced_uid);
+	resource_texture->asset_source = asset_path;
 
 	//Import data from path first
 	ilGenImages(1, &resource_texture->buffer_id);

@@ -74,6 +74,7 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		resource_model = App->resource_manager->CreateResource<ResourceModel>(model_uid);
+		resource_model->asset_source = asset_path;
 		std::vector<ResourceTexture *> fbx_textures;
 		std::vector<ResourceMesh *> fbx_meshes;
 		std::vector<uint> fbx_meshes_textures;
@@ -87,6 +88,7 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 			{
 				aiMaterial * material = scene->mMaterials[i];
 				ResourceTexture * resource_texture = ImportFBXTexture(material, PopFirst(prev_textures_uids));
+				resource_texture->asset_source = asset_path;
 				fbx_textures.push_back(resource_texture);
 				//TODO: Remove this if when we separate ResourceMaterials from ResourceTextures
 				if (resource_texture == nullptr)
@@ -110,6 +112,7 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 			{
 				aiMesh *assimp_mesh = scene->mMeshes[i];
 				ResourceMesh * resource_mesh = ImportAssimpMesh(assimp_mesh, PopFirst(prev_meshes_uids));
+				resource_mesh->asset_source = asset_path;
 				fbx_meshes.push_back(resource_mesh);
 				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
 				fbx_meshes_textures.push_back(assimp_mesh->mMaterialIndex);

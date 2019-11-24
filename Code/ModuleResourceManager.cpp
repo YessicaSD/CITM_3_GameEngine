@@ -81,6 +81,7 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 			else
 			{
 				//TODO: Load its resources to the map
+				//TODO: Put asset_path into the already created resources
 			}
 		}
 		else
@@ -163,7 +164,7 @@ update_status ModuleResourceManager::PreUpdate()
 bool ModuleResourceManager::CleanUp()
 {
 	DeleteTreeRecursive(asset_dir);
-	RELEASE(asset_dir);
+	//RELEASE(asset_dir);
 	return true;
 }
 
