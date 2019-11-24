@@ -247,7 +247,7 @@ void ModuleScene::SaveScene()
 {
 	current_scene.CreateJSONFileArray();
 	root_gameobject->OnSave(&current_scene);
-	current_scene.SaveFile(std::string(ASSETS_FOLDER) + current_scene_name + "." + SCENE_EXTENSION);
+	current_scene.SaveFile(std::string(ASSETS_FOLDER) + current_scene_name.c_str() + "." + SCENE_EXTENSION);
 	current_scene.CloseFile();
 	LOG("Saved scene");
 }

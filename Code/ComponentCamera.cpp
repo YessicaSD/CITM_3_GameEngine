@@ -197,6 +197,21 @@ Frustum ComponentCamera::GetFrustrum()
 	return frustum;
 }
 
+void ComponentCamera::OnSave(JSONFile * file)
+{
+	JSONFile tranform_file = file->AddSection("Camera");
+	file->SaveNumber("near_plane", near_plane);
+	file->SaveNumber("far_plane ", far_plane);
+	file->SaveNumber("aspect_ratio ", far_plane);
+	file->SaveNumber("verticalFov ", frustum.verticalFov);
+	file->SaveNumber("verticalFov ", frustum.horizontalFov);
+}
+
+void ComponentCamera::OnLoad(JSONFile * file)
+{
+
+}
+
 
 
 

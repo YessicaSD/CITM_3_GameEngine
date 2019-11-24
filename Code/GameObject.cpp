@@ -3,7 +3,7 @@
 #include "ComponentMesh.h"
 #include "Application.h"
 #include "ModuleRandom.h"
-
+#include "ComponentCamera.h"
 
 GameObject::GameObject(std::string name, ComponentTransform * parent, UID uid):
 	name(name)
@@ -141,6 +141,13 @@ void GameObject::OnLoad(JSONFile * file)
 	{
 		transform->OnLoad(&component_file);
 	}
+	component_file = file->GetSection("Camera");
+	if (component_file.IsValid())
+	{
+		ComponentCamera* component_camera = CreateComponent<ComponentCamera>();
+		component_camera->OnLoad(&component_file);
+	}
+
 }
 
 UID GameObject::GetUID()

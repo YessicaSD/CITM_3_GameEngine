@@ -37,6 +37,9 @@ public:
 	float4x4 GetProjectionMatrix();
 	Frustum  GetFrustrum();
 
+	void OnSave(JSONFile*) override;
+	void OnLoad(JSONFile*) override;
+
 	bool update_project_matrix = false;
 private:
 	float near_plane = 0.0f;
