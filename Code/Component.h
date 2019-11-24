@@ -58,6 +58,7 @@ public:
 	}
 
 	bool IsActive();
+
 protected:
 	bool enabled = true;
 	std::string name;

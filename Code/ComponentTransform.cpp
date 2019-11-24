@@ -9,7 +9,7 @@
 #include "glew/include/GL/glew.h"
 #include "Application.h"
 #include "ModuleScene.h"
-
+#include "ModuleGui.h"
 CLASS_DEFINITION(Component, ComponentTransform)
 
 ComponentTransform::ComponentTransform(GameObject *gameobject) : Component(gameobject)
@@ -25,7 +25,7 @@ ComponentTransform::ComponentTransform(GameObject *gameobject) : Component(gameo
 
 ComponentTransform::~ComponentTransform()
 {
-	
+	CleanUp();
 }
 
 void ComponentTransform::SetParent(ComponentTransform *parent)
@@ -119,6 +119,14 @@ void ComponentTransform::SwitchedStatic()
 	}
 }
 
+void ComponentTransform::CleanUp()
+{
+	if (App->gui->GetSelectedTransform() == this)
+	{
+		App->gui->SetSelectedGameObjec(nullptr);
+	}
+}
+
 void ComponentTransform::SetTransform(float3 &position, float3 &scale, float3 &euler_rotation)
 {
 	this->position = position;
@@ -144,27 +152,7 @@ void ComponentTransform::SetTransform(const float4x4 &local_matrix)
 {
 	this->local_matrix = local_matrix;
 
-	local_matrix.Decompose(position, qrotation, scale);
-	euler_rotation = qrotation.ToEulerXYX() * RADTODEG;
-
-	if (parent != nullptr)
-	{
-		global_matrix = parent->global_matrix * local_matrix;
-	}
-	else
-	{
-		global_matrix = local_matrix;
-	}
-
-	ComponentMesh *comp_mesh = gameobject->GetComponent<ComponentMesh>();
-
-
-	if (comp_mesh != nullptr)
-	{
-		//TODO: Update bounding box
-	}
-
-	UpdateChildrenMatrices();
+	RecalculateMatrices();
 }
 
 void ComponentTransform::RecalculateMatrices()
@@ -250,6 +238,7 @@ void ComponentTransform::SetGlobalMatrix(const float4x4& matrix)
 	Quat rotation;
 	matrix.Decompose(position, rotation, scale);
 	this->SetTransform(position, scale, rotation);
+
 }
 
 void ComponentTransform::SetLocalMatrix(const float4x4 & matrix)
@@ -395,6 +384,7 @@ void ComponentTransform::AddChild(ComponentTransform * new_object)
 	}
 	children.push_back(new_object);
 	new_object->parent = this;
+	new_object->SetGlobalMatrix(this->global_matrix.Inverted() * new_object->global_matrix);
 }
 
 void ComponentTransform::DrawAxis()

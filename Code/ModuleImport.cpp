@@ -319,7 +319,7 @@ void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, Com
 	for (uint i = 0u; i < resource_model->nodes.size(); ++i)
 	{
 		GameObject * new_gameobject = new GameObject(resource_model->nodes[i]->name, nullptr);
-		new_gameobject->transform->SetTransform(resource_model->nodes[i]->transform);
+		new_gameobject->transform->SetGlobalMatrix(resource_model->nodes[i]->transform);
 		
 		if (resource_model->nodes[i]->mesh_uid != INVALID_RESOURCE_UID)
 		{
