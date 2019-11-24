@@ -270,8 +270,30 @@ void ModuleScene::LoadScene(const char * scene_path)
 	for (int i = 0; i < number_of_objects; ++i)
 	{
 		JSONFile current_object(current_scene.GetObjectArray(i));
-		new GameObject(std::string(current_object.LoadText("name")), root_gameobject->transform, current_object.LoadUID("UID"));
+		GameObject* gameobject_ptr = new GameObject(std::string(current_object.LoadText("name")), root_gameobject->transform, current_object.LoadUID("UID"));
+		new_gameobjects[gameobject_ptr->uid] = gameobject_ptr;
 	}
+
+	for (int i = 0; i < number_of_objects; ++i)
+	{
+		JSONFile current_object(current_scene.GetObjectArray(i));
+		std::map<UID, GameObject*>::iterator gameobject_iter = new_gameobjects.find(current_object.LoadUID("UID"));
+		if(gameobject_iter!= new_gameobjects.end())
+		{
+			GameObject* gameobject_ptr = (*gameobject_iter).second;
+			UID parent_uid = current_object.LoadUID("Parent UID");
+			std::map<UID, GameObject*>::iterator parent_iter = new_gameobjects.find(parent_uid);
+			if (parent_iter != new_gameobjects.end())
+			{
+				GameObject* parent = (*parent_iter).second;
+				parent->transform->AddChild(gameobject_ptr->transform);
+			}
+		}
+		
+	}
+
+
+
 }
 
 update_status ModuleScene::PostUpdate()

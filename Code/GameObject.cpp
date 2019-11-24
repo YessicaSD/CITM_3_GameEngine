@@ -11,7 +11,7 @@ GameObject::GameObject(std::string name, ComponentTransform * parent, UID uid):
 	transform = new ComponentTransform(this);
 	transform->SetParent(parent);
 	components.push_back(transform);
-	if (this->uid == INVALID_GAMEOBJECT_UID)
+	if (uid == INVALID_GAMEOBJECT_UID)
 	{
 		this->uid = App->random->RandomUID();
 	}

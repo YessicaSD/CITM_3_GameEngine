@@ -181,10 +181,10 @@ void ModuleResourceManager::ImportResource(const uint type, const char * path)
 	{
 		App->texture->ImportTexture(path);
 	}
-	else
-	{
-		LOG("This format is unsupported.");
-	}
+	//else
+	//{
+	//	LOG("This format is unsupported.");
+	//}
 }
 
 //Check that the modified date of the .meta and the file match. That means the file hasn't been modified while the engine was closed.
