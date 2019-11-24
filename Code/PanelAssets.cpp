@@ -19,12 +19,15 @@ void PanelAssets::Draw()
 {
 	ImGui::Begin(name.c_str());
 
-	if (ImGui::Button("Refresh"))
-	{
-		//Checks for new assets
-		//Compares the previous asset list with the new list
-		//Adds the new files to the asset list
-	}
+	//if (ImGui::Button("Refresh"))
+	//{
+	//	//Checks for new assets
+	//	//Compares the previous asset list with the new list
+	//	//Adds the new files to the asset list
+	//}
+
+	//TODO: Deletes the whole Resources folder and creates all new files
+	//if(ImGui::Button("Reimport"))
 
 	DisplayFolderAssetsRecursive(App->resource_manager->asset_dir);
 
