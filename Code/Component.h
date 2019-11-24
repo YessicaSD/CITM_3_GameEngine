@@ -48,7 +48,6 @@ public:
 
 public:
 	Component(GameObject * gameobject);
-	
 
 	virtual void PropertiesEditor() {};
 	void EnableComponent(bool value);
