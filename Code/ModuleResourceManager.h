@@ -33,12 +33,6 @@ public:
 
 	bool Start(JSONFile * module_file) override;
 
-	void ImportAssetsRecursively(AssetDir * dir);
-
-	bool IsFileModified(JSONFile &meta_file, const char * file);
-
-	bool MissingResources(JSONFile & meta_file, uint type);
-
 	template<class ResourceType>
 	ResourceType * CreateResource(UID uid = INVALID_RESOURCE_UID)
 	{
@@ -67,12 +61,23 @@ public:
 	void SaveUIDArray(const std::vector<UID>& uid_vector, char * name, JSONFile * meta_file) const;
 
 private:
-	void DeleteDependantResources(std::vector<UID> uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension);
 	
-	UID GenerateNewUID();
-
+	//Checking assets helper functions
+	void ImportAssetsRecursively(AssetDir * dir);
 	void FillAssetTreeRecursive(AssetDir * dir);
 	void DeleteTreeRecursive(AssetDir * dir);
+
+	//Updating assets helper functions
+	void ImportResource(const uint type, const char * path);
+	void CreateResourcesInMap(const uint &type, JSONFile &meta_file, AssetFile * asset_file);
+	void ReImportResources(JSONFile &meta_file, const uint &type, AssetFile * asset_file);
+	
+	//Helpers to the functions to update assets
+	void DeleteDependantResources(std::vector<UID> uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension);
+	bool IsFileModified(JSONFile &meta_file, const char * file);
+	bool MissingResources(JSONFile & meta_file, uint type);
+
+	UID GenerateNewUID();
 
 private:
 	std::map<UID, Resource*> resources;

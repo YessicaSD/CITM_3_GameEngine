@@ -35,7 +35,6 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir)
 	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
 	{
 		std::string meta_path = (*iter)->full_path + std::string(".") + std::string(META_EXTENSION);
-		//TODO: It must also get the name of the folder we're in
 
 		std::string extension;
 		App->file_system->GetExtension((*iter)->name.c_str(), extension);
@@ -50,92 +49,108 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir)
 			if (IsFileModified(meta_file, (*iter)->full_path.c_str())
 				|| MissingResources(meta_file, type))
 			{
-				const char * uid_string = meta_file.LoadText("resourceUID", "0");
-				UID uid = strtoull(uid_string, nullptr, 10);
-				//Import the file. Resources force the previous uid.
-				if (type == ResourceModel::type)
-				{
-					//INFO: Delete the previous resources
-					App->file_system->Remove((std::string(RESOURCES_MODEL_FOLDER) + uid_string + "." + MODEL_EXTENSION).c_str());
-					resources.erase(uid);
-
-					std::vector<UID>meshes_uids;
-					DeleteDependantResources(meshes_uids, "exportedMeshes", &meta_file, RESOURCES_MESH_FOLDER, MESH_EXTENSION);
-
-					std::vector<UID>textures_uids;
-					DeleteDependantResources(textures_uids, "exportedTextures", &meta_file, RESOURCES_TEXTURES_FOLDER, TEXTURE_EXTENSION);
-					
-					//INFO: Generate new resources using the previous uids
-					App->import->ImportModel((*iter)->full_path.c_str(), uid, meshes_uids, textures_uids);
-				}
-				else if (type == ResourceTexture::type)
-				{
-					//INFO: Delete the previous resources
-					App->file_system->Remove((std::string(RESOURCES_TEXTURES_FOLDER) + uid_string + "." + TEXTURE_EXTENSION).c_str());
-					resources.erase(uid);
-
-					App->texture->ImportTexture((*iter)->full_path.c_str(), uid);
-				}
-				else
-				{
-					LOG("This format is unsupported.");
-				}
+				ReImportResources(meta_file, type, (*iter));
 			}
 			else
 			{
-				//INFO: Load its resources to the map
-				if (type == ResourceModel::type)
-				{
-					ResourceModel * resource_model = CreateResource<ResourceModel>(meta_file.LoadUID());
-					resource_model->asset_source = (*iter)->full_path;
-
-					std::vector<UID>meshes_uids;
-					meta_file.LoadUIDVector("exportedMeshes", meshes_uids);
-					for (auto mesh_iter = meshes_uids.begin(); mesh_iter != meshes_uids.end(); ++mesh_iter)
-					{
-						ResourceMesh * resource_mesh = CreateResource<ResourceMesh>((*mesh_iter));
-						resource_mesh->asset_source = (*iter)->full_path;
-					}
-
-					std::vector<UID>textures_uids;
-					meta_file.LoadUIDVector("exportedTextures", textures_uids);
-					for (auto texture_iter = textures_uids.begin(); texture_iter != textures_uids.end(); ++texture_iter)
-					{
-						ResourceTexture * resource_texture = CreateResource<ResourceTexture>((*texture_iter));
-						resource_texture->asset_source = (*iter)->full_path;
-					}
-				}
-				else if (type == ResourceTexture::type)
-				{
-					ResourceTexture * resource_texture = CreateResource<ResourceTexture>(meta_file.LoadUID());
-					resource_texture->asset_source = (*iter)->full_path;
-				}
-				else
-				{
-					LOG("This format is unsupported.");
-				}
+				CreateResourcesInMap(type, meta_file, (*iter));
 			}
 		}
 		else
 		{
-			//Import the file. Resources don't force uid
-			if (type == ResourceModel::type)
-			{
-				App->import->ImportModel((*iter)->full_path.c_str());
-			}
-			else if (type == ResourceTexture::type)
-			{
-				App->texture->ImportTexture((*iter)->full_path.c_str());
-			}
-			else
-			{
-				LOG("This format is unsupported.");
-			}
+			ImportResource(type, (*iter)->full_path.c_str());
 		}
 	}
 	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
 	{
 		ImportAssetsRecursively((*iter));
+	}
+}
+
+//Import resources which have changed or deleted their resources on the resources folder.
+//First delete the existing ones and then import them forcing the previous uids.
+void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &type, AssetFile * asset_file)
+{
+	const char * uid_string = meta_file.LoadText("resourceUID", "0");
+	UID uid = strtoull(uid_string, nullptr, 10);
+	//Import the file. Resources force the previous uid.
+	if (type == ResourceModel::type)
+	{
+		//INFO: Delete the previous resources
+		App->file_system->Remove((std::string(RESOURCES_MODEL_FOLDER) + uid_string + "." + MODEL_EXTENSION).c_str());
+		resources.erase(uid);
+
+		std::vector<UID>meshes_uids;
+		DeleteDependantResources(meshes_uids, "exportedMeshes", &meta_file, RESOURCES_MESH_FOLDER, MESH_EXTENSION);
+
+		std::vector<UID>textures_uids;
+		DeleteDependantResources(textures_uids, "exportedTextures", &meta_file, RESOURCES_TEXTURES_FOLDER, TEXTURE_EXTENSION);
+
+		//INFO: Generate new resources using the previous uids
+		App->import->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids);
+	}
+	else if (type == ResourceTexture::type)
+	{
+		//INFO: Delete the previous resources
+		App->file_system->Remove((std::string(RESOURCES_TEXTURES_FOLDER) + uid_string + "." + TEXTURE_EXTENSION).c_str());
+		resources.erase(uid);
+
+		App->texture->ImportTexture(asset_file->full_path.c_str(), uid);
+	}
+	else
+	{
+		LOG("This format is unsupported.");
+	}
+}
+
+void ModuleResourceManager::CreateResourcesInMap(const uint &type, JSONFile &meta_file, AssetFile * asset_file)
+{
+	if (type == ResourceModel::type)
+	{
+		ResourceModel * resource_model = CreateResource<ResourceModel>(meta_file.LoadUID());
+		resource_model->asset_source = asset_file->full_path;
+
+		std::vector<UID>meshes_uids;
+		meta_file.LoadUIDVector("exportedMeshes", meshes_uids);
+		for (auto mesh_iter = meshes_uids.begin(); mesh_iter != meshes_uids.end(); ++mesh_iter)
+		{
+			ResourceMesh * resource_mesh = CreateResource<ResourceMesh>((*mesh_iter));
+			resource_mesh->asset_source = asset_file->full_path;
+		}
+
+		std::vector<UID>textures_uids;
+		meta_file.LoadUIDVector("exportedTextures", textures_uids);
+		for (auto texture_iter = textures_uids.begin(); texture_iter != textures_uids.end(); ++texture_iter)
+		{
+			ResourceTexture * resource_texture = CreateResource<ResourceTexture>((*texture_iter));
+			resource_texture->asset_source = asset_file->full_path;
+		}
+	}
+	else if (type == ResourceTexture::type)
+	{
+		ResourceTexture * resource_texture = CreateResource<ResourceTexture>(meta_file.LoadUID());
+		resource_texture->asset_source = asset_file->full_path;
+	}
+	else
+	{
+		LOG("This format is unsupported.");
+	}
+}
+
+//Import resource without forcing the uid
+void ModuleResourceManager::ImportResource(const uint type, const char * path)
+{
+	if (type == ResourceModel::type)
+	{
+		App->import->ImportModel(path);
+	}
+	else if (type == ResourceTexture::type)
+	{
+		App->texture->ImportTexture(path);
+	}
+	else
+	{
+		LOG("This format is unsupported.");
 	}
 }
 
