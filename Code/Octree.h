@@ -7,7 +7,7 @@
 #include <list>
 #include <map>
 
-#define MAX_BUCKET_SIZE 1
+#define MAX_BUCKET_SIZE 6
 #define MAX_SUBDIVISION 15
 
 /*
