@@ -86,6 +86,19 @@ void ComponentTransform::PropertiesEditor()
 	
 }
 
+void ComponentTransform::OnSave(JSONFile * file)
+{
+	JSONFile tranform_file = file->AddSection("Transform");
+	tranform_file.SaveFloatArray("Position", (const float*)&position, 3);
+	tranform_file.SaveFloatArray("Rotation", (const float*)&euler_rotation, 3);
+	tranform_file.SaveFloatArray("Scale", (const float*)&scale, 3);
+}
+
+void ComponentTransform::OnLoad(JSONFile *)
+{
+
+}
+
 void ComponentTransform::SwitchedStatic()
 {
 	if (is_static)

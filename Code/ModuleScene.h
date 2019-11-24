@@ -48,6 +48,7 @@ private:
 	void DrawObjects(ComponentCamera* camera);
 	void DrawWithFrustrum(ComponentCamera* camera);
 	void SaveScene();
+	void LoadScene();
 	LineSegment ray;
 	JSONFile current_scene;
 
