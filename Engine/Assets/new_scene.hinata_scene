@@ -1,32 +1,38 @@
 [
     {
         "name": "Main camera",
-        "UID": "03177574598845163297",
-        "Parent UID": "03134906935860761087",
+        "UID": "01631215667704179359",
+        "Parent UID": "00404102095886916008",
         "Components": {
             "Transform": {
                 "Position": [
                     0,
                     0,
-                    -10.698959350585938
+                    0
                 ],
                 "Rotation": [
-                    -0,
                     0,
-                    -0
+                    0,
+                    0
                 ],
                 "Scale": [
                     1,
                     1,
                     1
                 ]
+            },
+            "Camera": {
+                "near_plane": 0.10000000149011612,
+                "far_plane ": 500,
+                "aspect_ratio ": 500,
+                "verticalFov ": 2.1822185516357422
             }
         }
     },
     {
         "name": "Camera",
-        "UID": "09697521465144077570",
-        "Parent UID": "03134906935860761087",
+        "UID": "08395712690424763407",
+        "Parent UID": "00404102095886916008",
         "Components": {
             "Transform": {
                 "Position": [
@@ -44,6 +50,12 @@
                     1,
                     1
                 ]
+            },
+            "Camera": {
+                "near_plane": 0.10000000149011612,
+                "far_plane ": 500,
+                "aspect_ratio ": 500,
+                "verticalFov ": 1.2877128124237061
             }
         }
     }
