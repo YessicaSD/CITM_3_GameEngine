@@ -42,6 +42,8 @@ public:
 	bool SaveTextArray(const char * name, const char ** array, const uint count);
 	bool SaveUID(const UID & uid);
 
+	bool LoadUIDVector(const char * name, std::vector<UID>& values);
+
 
 private:
 	JSON_Value* value = nullptr;
