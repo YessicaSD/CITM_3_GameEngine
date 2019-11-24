@@ -120,7 +120,8 @@ bool ResourceMesh::LoadFileData()
 		uv_coord = new float[num_uv];
 		CopyToMemory(uv_coord, &cursor, sizeof(float) * num_uv);
 		GenerateUVsBuffer();
-
+		aabb.SetNegativeInfinity();
+		aabb.Enclose(vertices, num_vertices);
 		LOG("Success loading mesh from: %s in: %i ms.", path, load_timer.Read());
 	}
 

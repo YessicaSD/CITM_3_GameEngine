@@ -40,6 +40,10 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::OnPostUpdate()
 {
+	
+	if (mesh == nullptr)
+		return;
+
 	if (gameobject->transform->IsSelected())
 	{
 		glEnable(GL_STENCIL_TEST);
@@ -91,11 +95,14 @@ void ComponentMesh::OnPostUpdate()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glColor4f(fill_color[0], fill_color[1], fill_color[2], fill_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
-		glBindTexture(GL_TEXTURE_2D, 0);
+		if (material != nullptr)
+		{
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
 		
 		
 	}
-
+	
 	if (render_mode.wireframe)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
