@@ -307,6 +307,8 @@ update_status ModuleScene::PostUpdate()
 {
 	App->renderer3D->scene_fbo.StartRender(App->gui->panel_scene->current_viewport_size);
 
+	glLineWidth(5);
+	glColor4f(0, 0, 255, 1);
 	octree.Draw();
 
 	PPlane p(0, 1, 0, 0);

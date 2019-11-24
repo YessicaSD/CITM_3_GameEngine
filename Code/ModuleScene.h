@@ -1,9 +1,9 @@
 #ifndef MODULESCENE_H_
 #define MODULESCENE_H_
 
-#define OCTREE_X_SIZE 200.0f
-#define OCTREE_Y_SIZE 100.0f
-#define OCTREE_Z_SIZE 200.0f
+#define OCTREE_X_SIZE 500.0f
+#define OCTREE_Y_SIZE 200.0f
+#define OCTREE_Z_SIZE 500.0f
 
 #include <map>
 #include <string>
