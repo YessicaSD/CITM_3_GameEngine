@@ -17,6 +17,7 @@ public:
 		PAUSE,
 		UNPAUSE,
 		SAVE_SCENE,
+		LOAD_SCENE,
 	}type;
 
 	union 

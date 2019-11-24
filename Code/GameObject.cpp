@@ -110,7 +110,8 @@ void GameObject::SetActive(bool value)
 
 void GameObject::OnSave(JSONFile * scene)
 {
-	JSONFile  this_gameobject = scene->AddSection(name.c_str());
+	JSONFile  this_gameobject = scene->AddSection("GameObject");
+	this_gameobject.SaveText("name", name.c_str());
 	this_gameobject.SaveUID(uid);
 	JSONFile* components_section =  &this_gameobject.AddSection("Components");
 

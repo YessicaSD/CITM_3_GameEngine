@@ -89,8 +89,11 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 			{
 				aiMaterial * material = scene->mMaterials[i];
 				ResourceTexture * resource_texture = ImportFBXTexture(material, PopFirst(prev_textures_uids));
-				resource_texture->asset_source = asset_path;
-				fbx_textures.push_back(resource_texture);
+				//if (resource_texture != nullptr)
+				//{
+				//	resource_texture->asset_source = asset_path;
+				//	fbx_textures.push_back(resource_texture);
+				//}
 				//TODO: Remove this if when we separate ResourceMaterials from ResourceTextures
 				if (resource_texture == nullptr)
 				{

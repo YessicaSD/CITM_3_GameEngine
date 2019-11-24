@@ -48,10 +48,10 @@ private:
 	void DrawObjects(ComponentCamera* camera);
 	void DrawWithFrustrum(ComponentCamera* camera);
 	void SaveScene();
-	void LoadScene();
+	void LoadScene(const char* scene_path);
 	LineSegment ray;
 	JSONFile current_scene;
-
+	std::string current_scene_name;
 public:
 	Octree octree;
 	

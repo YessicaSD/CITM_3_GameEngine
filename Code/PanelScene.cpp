@@ -135,7 +135,7 @@ void PanelScene::DropObject()
 			AssetFile* asset = *(AssetFile**)payload->Data;
 			std::string extension;
 			App->file_system->GetExtension(asset->full_path.c_str(), extension);
-			if(extension == MODEL_EXTENSION)
+			if(extension == "fbx")
 			{
 				//Get the .meta associated with that file
 				JSONFile meta_file;
@@ -146,6 +146,10 @@ void PanelScene::DropObject()
 				Event ev(Event::DROPPED_MODEL_TO_SCENE);
 				ev.drop_model_data.model = (ResourceModel*)App->resource_manager->GetResource(uid);
 				App->AddEvent(ev);
+			}
+			else if (extension == SCENE_EXTENSION)
+			{
+				App->AddEvent(Event(Event::LOAD_SCENE, asset->full_path.c_str()));
 			}
 			
 		}
