@@ -32,12 +32,11 @@ void PanelResources::Draw()
 		ImGui::SameLine(space_1);
 		ImGui::Text((*iter).second->asset_source.c_str());
 		ImGui::SameLine(space_2);
-		ImGui::Text("%i", (*iter).second->type);
+		ImGui::Text("%i", (*iter).second->GetType());
 		ImGui::SameLine(space_3);
 		std::string count = std::to_string((*iter).second->GetReferenceCount());
 		ImGui::Text(count.c_str());
 		//TODO: Add preview when you click it
-		//TODO: Add type
 	}
 	ImGui::End();
 }
