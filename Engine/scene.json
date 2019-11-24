@@ -1,0 +1,14 @@
+{
+    "Root": {
+        "resourceUID": "18170963631439414101",
+        "Components": {}
+    },
+    "Main camera": {
+        "resourceUID": "10474670432985277361",
+        "Components": {}
+    },
+    "Camera": {
+        "resourceUID": "15327469511211301450",
+        "Components": {}
+    }
+}

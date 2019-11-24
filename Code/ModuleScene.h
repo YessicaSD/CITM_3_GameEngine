@@ -47,9 +47,10 @@ private:
 
 	void DrawObjects(ComponentCamera* camera);
 	void DrawWithFrustrum(ComponentCamera* camera);
-
+	void SaveScene();
 	LineSegment ray;
-	JSONFile* current_scene;
+	JSONFile current_scene;
+
 public:
 	Octree octree;
 	

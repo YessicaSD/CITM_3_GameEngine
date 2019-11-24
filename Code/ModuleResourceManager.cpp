@@ -280,18 +280,17 @@ void ModuleResourceManager::SaveUIDArray(const std::vector<UID> & uid_vector, ch
 
 void ModuleResourceManager::DeleteDependantResources(std::vector<UID> uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension)
 {
-	std::vector<const char *>meshes_uids_string;
-	meta_file->LoadTextVector(name, meshes_uids_string);
-	uint size = meshes_uids_string.size();
-	std::vector<UID>meshes_uids;
-	meshes_uids.reserve(size);
+	std::vector<const char *>uids_string;
+	meta_file->LoadTextVector(name, uids_string);
+	uint size = uids_string.size();
+	uids.reserve(size);
 	for (int i = 0; i < size; ++i)
 	{
-		meshes_uids.push_back(strtoull(meshes_uids_string[i], nullptr, 10));
+		uids.push_back(strtoull(uids_string[i], nullptr, 10));
 	}
 	for (int i = 0; i < size; ++i)
 	{
-		App->file_system->Remove((std::string(folder) + meshes_uids_string[i] + "." + extension).c_str());
-		resources.erase(meshes_uids[i]);
+		App->file_system->Remove((std::string(folder) + uids_string[i] + "." + extension).c_str());
+		resources.erase(uids[i]);
 	}
 }

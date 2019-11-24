@@ -6,6 +6,9 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "JSONFile.h"
+#include "Globals.h"
+
+#define INVALID_GAMEOBJECT_UID 0
 
 class Component;
 class PanelProperties;
@@ -16,7 +19,7 @@ class GameObject
 public:
 
 
-	GameObject(std::string name, ComponentTransform * parent);
+	GameObject(std::string name, ComponentTransform * parent, UID uid = INVALID_GAMEOBJECT_UID);
 	~GameObject();
 	bool OnStart();
 	bool OnUpdate(float dt);
@@ -81,7 +84,7 @@ private:
 	bool active = true;
 	std::string name;
 	std::vector<Component*> components;
-
+	UID uid = INVALID_GAMEOBJECT_UID;
 	friend class ComponentTransform;
 	friend PanelProperties;
 	friend PanelHierarchy;

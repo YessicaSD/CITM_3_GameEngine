@@ -61,12 +61,6 @@
     <Filter Include="Sources\Tools\MathGeoLib\Time">
       <UniqueIdentifier>{6c8f5628-375f-477c-95b0-590a97c5e528}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\ECS">
-      <UniqueIdentifier>{7581464b-c13e-4a63-a400-a23cc832aa55}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\ECS\Components">
-      <UniqueIdentifier>{87a2bc02-65ef-4e81-980a-345c47e52872}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\Tools\gpudetect">
       <UniqueIdentifier>{3a1c84d6-c8c1-4cc2-aa19-aebbb537a881}</UniqueIdentifier>
     </Filter>
@@ -75,6 +69,15 @@
     </Filter>
     <Filter Include="Sources\Tools\imguiShortFuntions">
       <UniqueIdentifier>{738d4f33-3987-4525-a2c5-ee9ebf5dbe17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\EntityComponentSystem">
+      <UniqueIdentifier>{7581464b-c13e-4a63-a400-a23cc832aa55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\EntityComponentSystem\Components">
+      <UniqueIdentifier>{87a2bc02-65ef-4e81-980a-345c47e52872}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Resources">
+      <UniqueIdentifier>{20ac4e08-bde6-46b5-b29b-070a97e2fac1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -520,10 +523,10 @@
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
-      <Filter>Sources\ECS\Components</Filter>
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Sources\ECS</Filter>
+      <Filter>Sources\EntityComponentSystem</Filter>
     </ClInclude>
     <ClInclude Include="ModuleImport.h">
       <Filter>Sources\Modules</Filter>
@@ -532,13 +535,13 @@
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
     <ClInclude Include="ComponentMaterial.h">
-      <Filter>Sources\ECS\Components</Filter>
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClInclude>
     <ClInclude Include="ComponentMesh.h">
-      <Filter>Sources\ECS\Components</Filter>
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClInclude>
     <ClInclude Include="ComponentTransform.h">
-      <Filter>Sources\ECS\Components</Filter>
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClInclude>
     <ClInclude Include="ModuleTexture.h">
       <Filter>Sources\Modules</Filter>
@@ -575,7 +578,7 @@
     </ClInclude>
     <ClInclude Include="JSONFile.h" />
     <ClInclude Include="ComponentCamera.h">
-      <Filter>Sources\ECS\Components</Filter>
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClInclude>
     <ClInclude Include="CubeLine.h">
       <Filter>Sources\3DPrimitive</Filter>
@@ -593,10 +596,10 @@
       <Filter>Sources\Tools\imGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="RaycastHit.h">
-      <Filter>Sources\ECS</Filter>
+      <Filter>Sources\EntityComponentSystem</Filter>
     </ClInclude>
     <ClInclude Include="Octree.h">
-      <Filter>Sources\ECS</Filter>
+      <Filter>Sources\EntityComponentSystem</Filter>
     </ClInclude>
     <ClInclude Include="PanelGame.h">
       <Filter>Sources\Editor\Panels</Filter>
@@ -606,6 +609,36 @@
     </ClInclude>
     <ClInclude Include="ModuleTime.h">
       <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="AssimpIO.h" />
+    <ClInclude Include="BassIO.h" />
+    <ClInclude Include="PhysFS\include\physfs.h" />
+    <ClInclude Include="RenderTexture.h" />
+    <ClInclude Include="MenuCreateShape.h" />
+    <ClInclude Include="PerfTimer.h" />
+    <ClInclude Include="ModuleResourceManager.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceMaterial.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceMesh.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceModel.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceTexture.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelResources.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelImport.h">
+      <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -799,7 +832,7 @@
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Sources\ECS</Filter>
+      <Filter>Sources\EntityComponentSystem</Filter>
     </ClCompile>
     <ClCompile Include="ModuleImport.cpp">
       <Filter>Sources\Modules</Filter>
@@ -808,16 +841,16 @@
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
-      <Filter>Sources\ECS\Components</Filter>
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClCompile>
     <ClCompile Include="ComponentMaterial.cpp">
-      <Filter>Sources\ECS\Components</Filter>
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClCompile>
     <ClCompile Include="ComponentMesh.cpp">
-      <Filter>Sources\ECS\Components</Filter>
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClCompile>
     <ClCompile Include="ComponentTransform.cpp">
-      <Filter>Sources\ECS\Components</Filter>
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClCompile>
     <ClCompile Include="ModuleTexture.cpp">
       <Filter>Sources\Modules</Filter>
@@ -857,7 +890,7 @@
     </ClCompile>
     <ClCompile Include="JSONFile.cpp" />
     <ClCompile Include="ComponentCamera.cpp">
-      <Filter>Sources\ECS\Components</Filter>
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClCompile>
     <ClCompile Include="CubeLine.cpp">
       <Filter>Sources\3DPrimitive</Filter>
@@ -878,7 +911,7 @@
       <Filter>Sources\Tools\imguiShortFuntions</Filter>
     </ClCompile>
     <ClCompile Include="Octree.cpp">
-      <Filter>Sources\ECS</Filter>
+      <Filter>Sources\EntityComponentSystem</Filter>
     </ClCompile>
     <ClCompile Include="PanelGame.cpp">
       <Filter>Sources\Editor\Panels</Filter>
@@ -888,6 +921,33 @@
     </ClCompile>
     <ClCompile Include="ModuleTime.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="AssimpIO.cpp" />
+    <ClCompile Include="BassIO.cpp" />
+    <ClCompile Include="PerfTimer.cpp" />
+    <ClCompile Include="ModuleResourceManager.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceMaterial.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceMesh.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceModel.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceTexture.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelImport.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelResources.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
