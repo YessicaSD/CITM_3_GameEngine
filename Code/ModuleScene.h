@@ -38,6 +38,9 @@ public:
 	void GetStaticObjects(std::vector<ComponentTransform*>& static_objects);
 	void SetMainCamera(ComponentCamera* main_camera);
 
+	const char * GetComponentType(const uint type);
+	uint GetComponentType(const char * type);
+
 private:
 	void CreateOctree();
 	void DeleteGameObject(GameObject* gameobject);
