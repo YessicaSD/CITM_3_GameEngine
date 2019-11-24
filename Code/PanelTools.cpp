@@ -10,9 +10,10 @@ PanelTools::PanelTools(std::string name, bool active, std::vector<SDL_Scancode> 
 {
 	JSONFile atlas_meta;
 	atlas_meta.LoadFile(std::string("Assets/Atlas.png") + "." + META_EXTENSION);
-	
-	//UID atlas_uid = App->resource_manager->GetResource();
+	UID atlas_uid = atlas_meta.LoadUID();
+	atlas = (ResourceTexture*)App->resource_manager->GetResource(atlas_uid);
 	atlas->StartUsingResource();
+
 	button_width = 72.0f / (float)atlas->width;
 	button_height = 72.0f / (float)atlas->height;
 }
