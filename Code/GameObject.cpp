@@ -26,11 +26,13 @@ GameObject::~GameObject()
 	for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); iter++)
 	{
 		Component* aux = (*iter);
+		(*iter) = nullptr;
 		aux->CleanUp();
 		if (aux)
 		{
 			delete aux;
 		}
+		
 	}
 	components.clear();
 }
