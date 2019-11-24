@@ -18,6 +18,7 @@
 #include "ModuleImport.h"
 #include "ModuleFileSystem.h"
 #include "RaycastHit.h"
+#include "ComponentMaterial.h"
 
 #include "imGuizmo/ImGuizmo.h"
 #include "Event.h"
@@ -351,5 +352,45 @@ void ModuleScene::EventRequest(const Event & event)
 	else if (event.type == Event::LOAD_SCENE)
 	{
 		LoadScene(event.path);
+	}
+}
+
+const char * ModuleScene::GetComponentType(const uint type)
+{
+	if (type == ComponentTransform::type)
+	{
+		return "Transform";
+	}
+	else if (type == ComponentMesh::type)
+	{
+		return "Mesh";
+	}
+	else if (type == ComponentMaterial::type)
+	{
+		return "Material";
+	}
+	else if (type == ComponentCamera::type)
+	{
+		return "Camera";
+	}
+}
+
+uint ModuleScene::GetComponentType(const char * type)
+{
+	if (strcmp(type, "Transform") == 0)
+	{
+		return ComponentTransform::type;
+	}
+	else if (strcmp(type, "Mesh") == 0)
+	{
+		return ComponentMesh::type;
+	}
+	else if (strcmp(type, "Material") == 0)
+	{
+		return ComponentMaterial::type;
+	}
+	else if (strcmp(type, "Camera") == 0)
+	{
+		return ComponentCamera::type;
 	}
 }
