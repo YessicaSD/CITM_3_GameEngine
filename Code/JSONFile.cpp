@@ -39,7 +39,7 @@ void JSONFile::CreateJSONFile()
 
 void JSONFile::CreateJSONFileArray()
 {
-	value = json_value_init_object();
+	value = json_value_init_array();
 	array = json_value_get_array(value);
 	if (value == nullptr || object == nullptr)
 	{
@@ -56,6 +56,11 @@ JSONFile JSONFile::AddSection(const char * section_name)
 {
 	json_object_set_value(object, section_name, json_value_init_object());
 	return JSONFile(json_object_get_object(object, section_name));
+}
+
+JSON_Value * JSONFile::GetValue()
+{
+	return value;
 }
 
 //Load document
@@ -149,6 +154,14 @@ bool JSONFile::LoadTextVector(const char* name, std::vector<const char *> &value
 		values.push_back(json_value_get_string(json_value));
 	}
 	return true;
+}
+
+void JSONFile::AddArrayValue(JSON_Value * newValue)
+{
+	if (newValue != nullptr)
+	{
+		json_array_append_value(array, newValue);
+	}
 }
 
 bool JSONFile::SaveTextArray(const char * name, const char ** arr, const uint count)

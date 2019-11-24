@@ -110,23 +110,36 @@ void GameObject::SetActive(bool value)
 
 void GameObject::OnSave(JSONFile * scene)
 {
-	JSONFile  this_gameobject = scene->AddSection("GameObject");
-	this_gameobject.SaveText("name", name.c_str());
-	this_gameobject.SaveUID("UID",uid);
-	JSONFile* components_section =  &this_gameobject.AddSection("Components");
-
-	for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
+	if (transform->parent != nullptr)
 	{
-		(*iter)->OnSave(components_section);
+		JSONFile  this_gameobject;
+		this_gameobject.CreateJSONFile();
+		this_gameobject.SaveText("name", name.c_str());
+		this_gameobject.SaveUID("UID", uid);
+		this_gameobject.SaveUID("Parent UID", transform->parent->gameobject->GetUID());
+		JSONFile* components_section = &this_gameobject.AddSection("Components");
+		for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
+		{
+			(*iter)->OnSave(components_section);
+		}
+
+		scene->AddArrayValue(this_gameobject.GetValue());
 	}
 	for (std::vector<ComponentTransform*>::iterator iter = transform->children.begin(); iter != transform->children.end(); ++iter)
 	{
 		(*iter)->gameobject->OnSave(scene);
 	}
+	
+	
 }
 
 void GameObject::OnLoad(JSONFile *)
 {
+}
+
+UID GameObject::GetUID()
+{
+	return uid;
 }
 
 

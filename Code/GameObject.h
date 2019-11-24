@@ -27,14 +27,11 @@ public:
 	void SetActive(bool value);
 	void OnSave(JSONFile*);
 	void OnLoad(JSONFile*);
+	UID GetUID();
 
 	template <class ComponentClass>
-	ComponentClass * CreateComponent()
-	{
-		ComponentClass * new_component = new ComponentClass(this);
-		components.push_back(new_component);
-		return new_component;
-	}
+	ComponentClass * CreateComponent();
+
 
 	template< class ComponentClass >
 	ComponentClass* GetComponent()
@@ -91,6 +88,12 @@ private:
 	friend class ModuleScene;
 	friend class ComponentMesh;
 };
-
+template<class ComponentClass>
+inline ComponentClass * GameObject::CreateComponent()
+{
+	ComponentClass * new_component = new ComponentClass(this);
+	components.push_back(new_component);
+	return new_component;
+}
 #endif // !GAMEOBJECT_H_
 

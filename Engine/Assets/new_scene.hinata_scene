@@ -1,7 +1,32 @@
-{
-    "GameObject": {
+[
+    {
+        "name": "Main camera",
+        "UID": "14963918063581434373",
+        "Parent UID": "11692694535337095996",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
         "name": "Camera",
-        "UID": "05549294535335246097",
+        "UID": "11374546428539966688",
+        "Parent UID": "11692694535337095996",
         "Components": {
             "Transform": {
                 "Position": [
@@ -22,4 +47,4 @@
             }
         }
     }
-}
+]
