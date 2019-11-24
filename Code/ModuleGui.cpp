@@ -275,6 +275,10 @@ void ModuleGui::MainMenuBar(update_status &ret)
 	ImGui::BeginMainMenuBar();
 	if (ImGui::BeginMenu("File"))
 	{
+		if (ImGui::MenuItem("Save Scene"))
+		{
+			App->AddEvent(Event(Event::SAVE_SCENE));
+		}
 		if (ImGui::MenuItem("Quit"))
 		{
 			ret = UPDATE_STOP;
@@ -290,7 +294,7 @@ void ModuleGui::MainMenuBar(update_status &ret)
 		if (ImGui::MenuItem("Hierarchy", NULL, &panel_hierarchy->active))
 		{
 			panel_console->SetActive(panel_hierarchy->active);
-		}
+		} 
 		if(ImGui::MenuItem("Properties", NULL, &panel_properties->active))
 		{
 			panel_properties->SetActive(panel_properties->active);

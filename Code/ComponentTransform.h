@@ -95,7 +95,7 @@ private:
 	friend class ModuleImport;
 	friend class PanelHierarchy;
 	friend class ModuleScene;
-	
+	friend class GameObject;
 };
 
 template<typename TYPE>
