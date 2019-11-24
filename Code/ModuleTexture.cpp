@@ -28,7 +28,7 @@ bool ModuleTexture::Init(JSONFile *module_file)
 	iluInit();
 	ilutInit();
 	ilutRenderer(ILUT_OPENGL);
-	CreateCheckerTexture();
+	ImportCheckerTexture();
 	return true;
 }
 
@@ -81,9 +81,10 @@ void ModuleTexture::SaveTextureMeta(ResourceTexture * resource_texture, const ch
 	meta_file.CloseFile();
 }
 
-void ModuleTexture::CreateCheckerTexture()
+void ModuleTexture::ImportCheckerTexture()
 {
 	ResourceTexture* new_texture = App->resource_manager->CreateResource<ResourceTexture>();
+	new_texture->asset_source = "checker texture";
 
 	int i, j, c;
 
@@ -116,4 +117,5 @@ void ModuleTexture::CreateCheckerTexture()
 				 checkImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,
 				 checkImage);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	//Save as dds
 }
