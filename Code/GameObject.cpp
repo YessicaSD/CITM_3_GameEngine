@@ -133,9 +133,14 @@ void GameObject::OnSave(JSONFile * scene)
 	
 }
 
-void GameObject::OnLoad(JSONFile *)
+void GameObject::OnLoad(JSONFile * file)
 {
-
+	JSONFile component_file;
+	component_file = file->GetSection("Transform");
+	if (component_file.IsValid())
+	{
+		transform->OnLoad(&component_file);
+	}
 }
 
 UID GameObject::GetUID()

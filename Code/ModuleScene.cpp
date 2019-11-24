@@ -271,7 +271,7 @@ void ModuleScene::LoadScene(const char * scene_path)
 	{
 		JSONFile current_object(current_scene.GetObjectArray(i));
 		GameObject* gameobject_ptr = new GameObject(std::string(current_object.LoadText("name")), root_gameobject->transform, current_object.LoadUID("UID"));
-		gameobject_ptr->OnLoad(&current_object);
+		gameobject_ptr->OnLoad(&current_object.GetSection("Components"));
 		new_gameobjects[gameobject_ptr->uid] = gameobject_ptr;
 	}
 

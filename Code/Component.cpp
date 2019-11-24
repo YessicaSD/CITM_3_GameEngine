@@ -29,6 +29,7 @@ bool Component::IsActive()
 	return enabled;
 }
 
+
 bool Component::CollapsigHeaderWithCheckbox()
 {
 	ImGui::PushID(name.c_str());//Because we don't want to display any label, the header can get confused with other headers without name and we need to push an id

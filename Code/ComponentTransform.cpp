@@ -94,10 +94,18 @@ void ComponentTransform::OnSave(JSONFile * file)
 	tranform_file.SaveFloatArray("Scale", (const float*)&scale, 3);
 }
 
-void ComponentTransform::OnLoad(JSONFile *)
+void ComponentTransform::OnLoad(JSONFile * file)
 {
-
+	
+	float3 aux_pos= float3::zero;
+	file->LoadFloatArray("Position", (float*)&aux_pos);
+	float3 aux_rot = float3::zero;
+	file->LoadFloatArray("Rotation", (float*)&aux_rot);
+	float3 aux_scale = float3::zero;
+	file->LoadFloatArray("Scale", (float*)&aux_scale);
+	this->SetTransform(aux_pos, aux_scale, aux_rot);
 }
+
 
 void ComponentTransform::SwitchedStatic()
 {
