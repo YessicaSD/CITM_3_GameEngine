@@ -76,11 +76,11 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 	{
 		resource_model = App->resource_manager->CreateResource<ResourceModel>(model_uid);
 		resource_model->asset_source = asset_path;
-		std::vector<uint> fbx_meshes_textures;
+		std::vector<uint> mesh_texture_indices;
 
 		if (scene->HasMaterials())
 		{
-			resource_model->textures_uid.reserve(scene->mNumTextures);
+			resource_model->textures_uid.reserve(scene->mNumMaterials);
 
 			for (uint i = 0u; i < scene->mNumMaterials; ++i)
 			{
@@ -101,17 +101,17 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 		if (scene->HasMeshes())
 		{
 			resource_model->meshes_uid.reserve(scene->mNumMeshes);
-			fbx_meshes_textures.reserve(scene->mNumTextures);
+			mesh_texture_indices.reserve(scene->mNumMeshes);
 
 			for (uint i = 0u; i < scene->mNumMeshes; ++i)
 			{
 				aiMesh *assimp_mesh = scene->mMeshes[i];
 				ResourceMesh * resource_mesh = ImportAssimpMesh(assimp_mesh, PopFirst(prev_meshes_uids), asset_path);
 				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
-				fbx_meshes_textures.push_back(assimp_mesh->mMaterialIndex);
+				mesh_texture_indices.push_back(assimp_mesh->mMaterialIndex);
 			}
 		}
-		ImportFBXNodes(resource_model, new ModelNode(), scene->mRootNode, resource_model->meshes_uid, resource_model->textures_uid, fbx_meshes_textures, INVALID_MODEL_ARRAY_INDEX);
+		ImportFBXNodes(resource_model, new ModelNode(), scene->mRootNode, resource_model->meshes_uid, resource_model->textures_uid, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX);
 		aiReleaseImport(scene);
 		resource_model->SaveFileData();
 		SaveModelMeta(resource_model, asset_path);
@@ -174,7 +174,7 @@ bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ModelNode * mo
 		{
 			uint index = node->mMeshes[i];
 			model_node->mesh_uid = meshes[index];
-			model_node->material_uid = materials[mesh_texture_idxs[i]];
+			model_node->material_uid = materials[mesh_texture_idxs[index]];
 		}
 		//TODO: Create a new ResourceModelNode for each mesh
 		//Right now this for allows that there is more than one mesh per gameobject
@@ -189,6 +189,7 @@ bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ModelNode * mo
 	return true;
 }
 
+//INFO: textures must be in the same folder as the fbx
 ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, std::vector<UID> & uids, const char * asset_path)
 {
 	ResourceTexture * ret = nullptr;
@@ -198,26 +199,74 @@ ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, s
 		aiString aipath;
 		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &aipath, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
-			std::string path = ASSETS_FOLDER + std::string(aipath.data);
+			std::string name_file;
+			App->file_system->SplitFilePath(aipath.C_Str(), nullptr, &name_file, nullptr);
+			std::string file_path;
+			App->file_system->SplitFilePath(asset_path, &file_path, nullptr, nullptr);
+			std::string final_path = file_path + name_file;
 			//INFO: Because textures are stored as individual files outside the FBX we might have imported the texture earlier
-			const char * meta_path = (path + "." + META_EXTENSION).c_str();
-			if (App->file_system->FileExists(meta_path))
-			{
-				ret = App->texture->ImportTexture(path.c_str(), PopFirst(uids));
-				ret->asset_source = asset_path;
-			}
-			else
+			std::string meta_path = (final_path + "." + META_EXTENSION);
+			if (App->file_system->FileExists(meta_path.c_str()))
 			{
 				JSONFile file;
 				file.LoadFile(meta_path);
 				UID uid = file.LoadUID("resourceUID");
 				ret = (ResourceTexture*)App->resource_manager->GetResource(uid);
 			}
+			else
+			{
+				ret = App->texture->ImportTexture(final_path.c_str(), PopFirst(uids));
+				ret->asset_source = asset_path;
+			}
 		}
 		else
 		{
 			LOG("Error: Texture path not found");
 		}
+	}
+	else if (material->GetTextureCount(aiTextureType_SPECULAR) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_AMBIENT) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_EMISSIVE) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_HEIGHT) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_NORMALS) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_SHININESS) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_OPACITY) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_DISPLACEMENT) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_LIGHTMAP) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_REFLECTION) > 0)
+	{
+		LOG("texture type");
+	}
+	else if (material->GetTextureCount(aiTextureType_UNKNOWN) > 0)
+	{
+		LOG("texture type");
 	}
 	return ret;
 }

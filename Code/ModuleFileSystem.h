@@ -26,6 +26,10 @@ public:
 
 	bool Remove(const char * file);
 
+	void NormalizePath(char * full_path) const;
+
+	void NormalizePath(std::string & full_path) const;
+
 private:
 	void CreateAssimpIO();
 	aiFileIO * GetAssimpIO();
