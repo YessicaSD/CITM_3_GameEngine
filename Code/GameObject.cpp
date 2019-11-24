@@ -97,4 +97,16 @@ void GameObject::SetActive(bool value)
 	active = value;
 }
 
+void GameObject::OnSave(JSONFile * scene)
+{
+	for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
+	{
+		(*iter)->OnSave(scene);
+	}
+}
+
+void GameObject::OnLoad(JSONFile *)
+{
+}
+
 

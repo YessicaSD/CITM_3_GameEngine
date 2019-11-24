@@ -16,6 +16,7 @@
 
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "imGuizmo/ImGuizmo.h"
+class JSONFile;
 struct ImVec4;
 struct Event;
 #include "ComponentCamera.h"
@@ -48,10 +49,10 @@ private:
 	void DrawWithFrustrum(ComponentCamera* camera);
 
 	LineSegment ray;
-	
-
+	JSONFile* current_scene;
 public:
 	Octree octree;
+	
 	//All gameobjects are children of the root gameobject
 	GameObject* root_gameobject = nullptr;
 	ComponentCamera* game_camera = nullptr;

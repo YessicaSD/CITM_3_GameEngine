@@ -5,6 +5,7 @@
 #include <string>
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
+#include "JSONFile.h"
 
 class Component;
 class PanelProperties;
@@ -21,7 +22,8 @@ public:
 	bool OnUpdate(float dt);
 	bool OnPostUpdate();
 	void SetActive(bool value);
-	
+	void OnSave(JSONFile*);
+	void OnLoad(JSONFile*);
 
 	template <class ComponentClass>
 	ComponentClass * CreateComponent()
