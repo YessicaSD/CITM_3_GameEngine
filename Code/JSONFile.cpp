@@ -166,3 +166,14 @@ bool JSONFile::SaveUID(const UID & uid)
 	sprintf_s(buffer, "%020llu", uid);
 	return SaveText("resourceUID", buffer);
 }
+
+bool JSONFile::LoadUIDVector(const char * name, std::vector<UID> & values)
+{
+	JSON_Array* arr = json_object_get_array(object, name);
+	for (int i = 0u; i < json_array_get_count(arr); ++i)
+	{
+		JSON_Value* json_value = json_array_get_value(arr, i);
+		values.push_back(strtoull(json_value_get_string(json_value), nullptr, 10));
+	}
+	return true;
+}

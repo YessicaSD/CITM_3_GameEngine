@@ -6,6 +6,7 @@
 #include "ModuleImport.h"
 
 #include "ResourceModel.h"
+#include "ResourceMesh.h"
 #include "ResourceTexture.h"
 
 ModuleResourceManager::ModuleResourceManager(const char * name) : Module(true, name)
@@ -81,8 +82,37 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir)
 			}
 			else
 			{
-				//TODO: Load its resources to the map
-				//TODO: Put asset_path into the already created resources
+				//INFO: Load its resources to the map
+				if (type == ResourceModel::type)
+				{
+					ResourceModel * resource_model = CreateResource<ResourceModel>(meta_file.LoadUID());
+					resource_model->asset_source = (*iter)->full_path;
+
+					std::vector<UID>meshes_uids;
+					meta_file.LoadUIDVector("exportedMeshes", meshes_uids);
+					for (auto mesh_iter = meshes_uids.begin(); mesh_iter != meshes_uids.end(); ++mesh_iter)
+					{
+						ResourceMesh * resource_mesh = CreateResource<ResourceMesh>((*mesh_iter));
+						resource_mesh->asset_source = (*iter)->full_path;
+					}
+
+					std::vector<UID>textures_uids;
+					meta_file.LoadUIDVector("exportedTextures", textures_uids);
+					for (auto texture_iter = textures_uids.begin(); texture_iter != textures_uids.end(); ++texture_iter)
+					{
+						ResourceTexture * resource_texture = CreateResource<ResourceTexture>((*texture_iter));
+						resource_texture->asset_source = (*iter)->full_path;
+					}
+				}
+				else if (type == ResourceTexture::type)
+				{
+					ResourceTexture * resource_texture = CreateResource<ResourceTexture>(meta_file.LoadUID());
+					resource_texture->asset_source = (*iter)->full_path;
+				}
+				else
+				{
+					LOG("This format is unsupported.");
+				}
 			}
 		}
 		else
@@ -132,7 +162,7 @@ bool ModuleResourceManager::MissingResources(JSONFile &meta_file, uint type)
 
 	if (type == ResourceModel::type)
 	{
-		if (!App->file_system->FileExists((std::string(RESOURCES_MODEL_FOLDER) + std::string(buffer)).c_str()))
+		if (!App->file_system->FileExists((std::string(RESOURCES_MODEL_FOLDER) + buffer + "." + MODEL_EXTENSION).c_str()))
 		{
 			ret = true;
 		}
@@ -140,7 +170,7 @@ bool ModuleResourceManager::MissingResources(JSONFile &meta_file, uint type)
 	}
 	else if (type == ResourceTexture::type)
 	{
-		if (!App->file_system->FileExists((std::string(RESOURCES_TEXTURES_FOLDER) + std::string(buffer)).c_str()))
+		if (!App->file_system->FileExists((std::string(RESOURCES_TEXTURES_FOLDER) + buffer + "." + TEXTURE_EXTENSION).c_str()))
 		{
 			ret = true;
 		}
