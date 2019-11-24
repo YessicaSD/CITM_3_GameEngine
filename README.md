@@ -3,7 +3,7 @@ A 3D game engine created in the third year of our Videogame Design and Developme
 
 # Instructions:
 
-- Drag an fbx to the scene to create a hirearchy of gameobjects that represents it.
+- Drag an fbx from the "Assets" panel to the "Scene" panel to create the hirearchy of gameobjects that represents it.
 
 ## Mouse picking
 - Click on any object with a mehs
@@ -24,7 +24,7 @@ A 3D game engine created in the third year of our Videogame Design and Developme
 - You can see the resource count of each resource in the "Resources" panel.
 
 ## Scene serialization
-- Drag a scene from the Assets panel to the Scene panel to load it.
+- Drag a scene from the "Assets" panel to the "Scene" panel to load it.
 - Go to File > Save Scene to save scenes.
 
 # Innovation
