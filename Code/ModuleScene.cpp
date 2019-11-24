@@ -18,10 +18,12 @@
 #include "ModuleImport.h"
 #include "ModuleFileSystem.h"
 #include "RaycastHit.h"
+#include "ComponentMaterial.h"
 
 #include "imGuizmo/ImGuizmo.h"
 #include "Event.h"
 #include <map>
+#include "parson\parson.h"
 
 ModuleScene::ModuleScene(const char * name, bool start_enabled) :
 	Module(start_enabled, name)
@@ -244,9 +246,9 @@ void ModuleScene::DrawWithFrustrum(ComponentCamera * camera)
 
 void ModuleScene::SaveScene()
 {
-	current_scene.CreateJSONFile();
+	current_scene.CreateJSONFileArray();
 	root_gameobject->OnSave(&current_scene);
-	current_scene.SaveFile(std::string(ASSETS_FOLDER) + current_scene_name + "." + SCENE_EXTENSION);
+	current_scene.SaveFile(std::string(ASSETS_FOLDER) + current_scene_name.c_str() + "." + SCENE_EXTENSION);
 	current_scene.CloseFile();
 	LOG("Saved scene");
 }
@@ -257,13 +259,43 @@ void ModuleScene::LoadScene(const char * scene_path)
 	App->file_system->SplitFilePath(scene_path, nullptr, &scene_name, nullptr);
 	current_scene_name = scene_name;
 	current_scene.LoadFile(scene_path);
-
-	for (JSONFile current_gameobject = current_scene.GetSection("GameObject");
-		current_gameobject.IsValid();
-		current_gameobject  = current_gameobject.GetSection("GameObject"))
+	if (json_value_get_type(current_scene.GetValue()) != JSONArray)
 	{
-
+		LOG("Could not load this scene");
+		return;
 	}
+	current_scene.LoadArray();
+	std::map<UID, GameObject*> new_gameobjects;
+	int number_of_objects = current_scene.GetNumberOfElement();
+	root_gameobject->transform->DeleteChildren();
+	for (int i = 0; i < number_of_objects; ++i)
+	{
+		JSONFile current_object(current_scene.GetObjectArray(i));
+		GameObject* gameobject_ptr = new GameObject(std::string(current_object.LoadText("name")), root_gameobject->transform, current_object.LoadUID("UID"));
+		gameobject_ptr->OnLoad(&current_object.GetSection("Components"));
+		new_gameobjects[gameobject_ptr->uid] = gameobject_ptr;
+	}
+
+	for (int i = 0; i < number_of_objects; ++i)
+	{
+		JSONFile current_object(current_scene.GetObjectArray(i));
+		std::map<UID, GameObject*>::iterator gameobject_iter = new_gameobjects.find(current_object.LoadUID("UID"));
+		if(gameobject_iter!= new_gameobjects.end())
+		{
+			GameObject* gameobject_ptr = (*gameobject_iter).second;
+			UID parent_uid = current_object.LoadUID("Parent UID");
+			std::map<UID, GameObject*>::iterator parent_iter = new_gameobjects.find(parent_uid);
+			if (parent_iter != new_gameobjects.end())
+			{
+				GameObject* parent = (*parent_iter).second;
+				parent->transform->AddChild(gameobject_ptr->transform);
+			}
+		}
+		
+	}
+
+
+
 }
 
 update_status ModuleScene::PostUpdate()
@@ -320,5 +352,45 @@ void ModuleScene::EventRequest(const Event & event)
 	else if (event.type == Event::LOAD_SCENE)
 	{
 		LoadScene(event.path);
+	}
+}
+
+const char * ModuleScene::GetComponentType(const uint type)
+{
+	if (type == ComponentTransform::type)
+	{
+		return "Transform";
+	}
+	else if (type == ComponentMesh::type)
+	{
+		return "Mesh";
+	}
+	else if (type == ComponentMaterial::type)
+	{
+		return "Material";
+	}
+	else if (type == ComponentCamera::type)
+	{
+		return "Camera";
+	}
+}
+
+uint ModuleScene::GetComponentType(const char * type)
+{
+	if (strcmp(type, "Transform") == 0)
+	{
+		return ComponentTransform::type;
+	}
+	else if (strcmp(type, "Mesh") == 0)
+	{
+		return ComponentMesh::type;
+	}
+	else if (strcmp(type, "Material") == 0)
+	{
+		return ComponentMaterial::type;
+	}
+	else if (strcmp(type, "Camera") == 0)
+	{
+		return ComponentCamera::type;
 	}
 }

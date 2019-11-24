@@ -8,6 +8,11 @@ JSONFile::JSONFile(JSON_Object * object) :
 	object(object)
 {}
 
+void JSONFile::LoadArray()
+{
+	array = json_value_get_array(value);
+}
+
 void JSONFile::LoadFile(const std::string & path)
 {
 	value = json_parse_file(path.c_str());
@@ -37,6 +42,16 @@ void JSONFile::CreateJSONFile()
 	}
 }
 
+void JSONFile::CreateJSONFileArray()
+{
+	value = json_value_init_array();
+	array = json_value_get_array(value);
+	if (value == nullptr || object == nullptr)
+	{
+		LOG("Error creating JSON Array");
+	}
+}
+
 JSONFile JSONFile::GetSection(const char * section_name)
 {
 	return JSONFile(json_object_get_object(object, section_name));
@@ -46,6 +61,26 @@ JSONFile JSONFile::AddSection(const char * section_name)
 {
 	json_object_set_value(object, section_name, json_value_init_object());
 	return JSONFile(json_object_get_object(object, section_name));
+}
+
+JSON_Value * JSONFile::GetValue()
+{
+	return value;
+}
+
+JSON_Array * JSONFile::GetArray()
+{
+	return array;
+}
+
+JSON_Object * JSONFile::GetObjectArray(int index)
+{
+	return json_array_get_object(array, index);
+}
+
+int JSONFile::GetNumberOfElement()
+{
+	return json_array_get_count(array);
 }
 
 //Load document
@@ -141,6 +176,14 @@ bool JSONFile::LoadTextVector(const char* name, std::vector<const char *> &value
 	return true;
 }
 
+void JSONFile::AddArrayValue(JSON_Value * newValue)
+{
+	if (newValue != nullptr)
+	{
+		json_array_append_value(array, newValue);
+	}
+}
+
 bool JSONFile::SaveTextArray(const char * name, const char ** arr, const uint count)
 {
 	bool ret = true;
@@ -154,17 +197,17 @@ bool JSONFile::SaveTextArray(const char * name, const char ** arr, const uint co
 	return ret;
 }
 
-UID JSONFile::LoadUID() const
+UID JSONFile::LoadUID(const char* name) const
 {
-	const char * aux_uid = LoadText("resourceUID", "0");
+	const char * aux_uid = LoadText(name, "0");
 	return strtoull(aux_uid, nullptr, 10);
 }
 
-bool JSONFile::SaveUID(const UID & uid) 
+bool JSONFile::SaveUID(const char* name_variable, const UID & uid)
 {
 	char buffer[UID_DIGITS];
 	sprintf_s(buffer, "%020llu", uid);
-	return SaveText("resourceUID", buffer);
+	return SaveText(name_variable, buffer);
 }
 
 bool JSONFile::LoadUIDVector(const char * name, std::vector<UID> & values)

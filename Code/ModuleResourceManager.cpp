@@ -140,7 +140,7 @@ void ModuleResourceManager::CreateResourcesInMap(const uint &type, JSONFile &met
 {
 	if (type == ResourceModel::type)
 	{
-		ResourceModel * resource_model = CreateResource<ResourceModel>(meta_file.LoadUID());
+		ResourceModel * resource_model = CreateResource<ResourceModel>(meta_file.LoadUID("resourceUID"));
 		resource_model->asset_source = asset_file->full_path;
 
 		std::vector<UID>meshes_uids;
@@ -161,7 +161,7 @@ void ModuleResourceManager::CreateResourcesInMap(const uint &type, JSONFile &met
 	}
 	else if (type == ResourceTexture::type)
 	{
-		ResourceTexture * resource_texture = CreateResource<ResourceTexture>(meta_file.LoadUID());
+		ResourceTexture * resource_texture = CreateResource<ResourceTexture>(meta_file.LoadUID("resourceUID"));
 		resource_texture->asset_source = asset_file->full_path;
 	}
 	else
@@ -181,10 +181,10 @@ void ModuleResourceManager::ImportResource(const uint type, const char * path)
 	{
 		App->texture->ImportTexture(path);
 	}
-	else
-	{
-		LOG("This format is unsupported.");
-	}
+	//else
+	//{
+	//	LOG("This format is unsupported.");
+	//}
 }
 
 //Check that the modified date of the .meta and the file match. That means the file hasn't been modified while the engine was closed.

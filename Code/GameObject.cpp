@@ -3,7 +3,7 @@
 #include "ComponentMesh.h"
 #include "Application.h"
 #include "ModuleRandom.h"
-
+#include "ComponentCamera.h"
 
 GameObject::GameObject(std::string name, ComponentTransform * parent, UID uid):
 	name(name)
@@ -11,7 +11,7 @@ GameObject::GameObject(std::string name, ComponentTransform * parent, UID uid):
 	transform = new ComponentTransform(this);
 	transform->SetParent(parent);
 	components.push_back(transform);
-	if (this->uid == INVALID_GAMEOBJECT_UID)
+	if (uid == INVALID_GAMEOBJECT_UID)
 	{
 		this->uid = App->random->RandomUID();
 	}
@@ -110,23 +110,49 @@ void GameObject::SetActive(bool value)
 
 void GameObject::OnSave(JSONFile * scene)
 {
-	JSONFile  this_gameobject = scene->AddSection("GameObject");
-	this_gameobject.SaveText("name", name.c_str());
-	this_gameobject.SaveUID(uid);
-	JSONFile* components_section =  &this_gameobject.AddSection("Components");
-
-	for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
+	if (transform->parent != nullptr)
 	{
-		(*iter)->OnSave(components_section);
+		JSONFile  this_gameobject;
+		this_gameobject.CreateJSONFile();
+		this_gameobject.SaveText("name", name.c_str());
+		this_gameobject.SaveUID("UID", uid);
+		this_gameobject.SaveUID("Parent UID", transform->parent->gameobject->GetUID());
+		JSONFile* components_section = &this_gameobject.AddSection("Components");
+		for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
+		{
+			(*iter)->OnSave(components_section);
+		}
+
+		scene->AddArrayValue(this_gameobject.GetValue());
 	}
 	for (std::vector<ComponentTransform*>::iterator iter = transform->children.begin(); iter != transform->children.end(); ++iter)
 	{
 		(*iter)->gameobject->OnSave(scene);
 	}
+	
+	
 }
 
-void GameObject::OnLoad(JSONFile *)
+void GameObject::OnLoad(JSONFile * file)
 {
+	JSONFile component_file;
+	component_file = file->GetSection("Transform");
+	if (component_file.IsValid())
+	{
+		transform->OnLoad(&component_file);
+	}
+	component_file = file->GetSection("Camera");
+	if (component_file.IsValid())
+	{
+		ComponentCamera* component_camera = CreateComponent<ComponentCamera>();
+		component_camera->OnLoad(&component_file);
+	}
+
+}
+
+UID GameObject::GetUID()
+{
+	return uid;
 }
 
 

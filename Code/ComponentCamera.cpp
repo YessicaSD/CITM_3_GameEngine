@@ -24,9 +24,7 @@ ComponentCamera::ComponentCamera(GameObject* gameobject):Component(gameobject)
 	aspect_ratio = 1.3f;
 	v_fov = frustum.verticalFov = 60.0f * DEGTORAD;
 	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * aspect_ratio);
-	float3 corners[8];
-	frustum.GetCornerPoints(corners);
-	frustum_render.SetVetices((float*)&corners);
+	UpdateDrawingRepresentation();
 }
 
 ComponentCamera::~ComponentCamera()
@@ -163,14 +161,14 @@ void ComponentCamera::SetFarPlane(const float & value)
 
 }
 
-void ComponentCamera::SetFieldOfView(float & angle)
+void ComponentCamera::SetFieldOfView(const float & angle)
 {
 	 frustum.verticalFov = angle;
 	 frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * aspect_ratio);
 	 update_project_matrix = true;
 }
 
-void ComponentCamera::SetAspectRatio(float & ratio)
+void ComponentCamera::SetAspectRatio(const float & ratio)
 {
 	aspect_ratio = ratio;
 	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * aspect_ratio);
@@ -195,6 +193,27 @@ float4x4 ComponentCamera::GetProjectionMatrix()
 Frustum ComponentCamera::GetFrustrum()
 {
 	return frustum;
+}
+
+void ComponentCamera::OnSave(JSONFile * file)
+{
+	JSONFile camera_file = file->AddSection("Camera");
+	camera_file.SaveNumber("near_plane", near_plane);
+	camera_file.SaveNumber("far_plane ", far_plane);
+	camera_file.SaveNumber("aspect_ratio ", far_plane);
+	camera_file.SaveNumber("verticalFov ", frustum.verticalFov);
+	camera_file.SaveNumber("horizontalFov ", frustum.horizontalFov);
+}
+
+void ComponentCamera::OnLoad(JSONFile * file)
+{
+	SetPos(gameobject->transform->GetPosition());
+	SetNearPlane(file->LoadNumber("near_plane",0.1));
+	SetFarPlane(file->LoadNumber("far_plane", 500.0f));
+	SetAspectRatio(file->LoadNumber("aspect_ratio", 1.3f));
+	SetFieldOfView(file->LoadNumber("verticalFov", 60.0f * DEGTORAD));
+	UpdateDrawingRepresentation();
+
 }
 
 

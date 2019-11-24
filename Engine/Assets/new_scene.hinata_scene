@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Main camera",
+        "UID": "01631215667704179359",
+        "Parent UID": "00404102095886916008",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Camera": {
+                "near_plane": 0.10000000149011612,
+                "far_plane ": 500,
+                "aspect_ratio ": 500,
+                "verticalFov ": 2.1822185516357422
+            }
+        }
+    },
+    {
+        "name": "Camera",
+        "UID": "08395712690424763407",
+        "Parent UID": "00404102095886916008",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Camera": {
+                "near_plane": 0.10000000149011612,
+                "far_plane ": 500,
+                "aspect_ratio ": 500,
+                "verticalFov ": 1.2877128124237061
+            }
+        }
+    }
+]

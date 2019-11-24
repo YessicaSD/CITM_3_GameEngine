@@ -29,13 +29,16 @@ public:
 
 	void SetNearPlane(const float& value);
 	void SetFarPlane(const float& value);
-	void SetFieldOfView(float& angle);
-	void SetAspectRatio(float& ratio);
+	void SetFieldOfView(const float& angle);
+	void SetAspectRatio(const float& ratio);
 	void SetPos(float3& new_pos);
 
 	float4x4 GetViewMatrix();
 	float4x4 GetProjectionMatrix();
 	Frustum  GetFrustrum();
+
+	void OnSave(JSONFile*) override;
+	void OnLoad(JSONFile*) override;
 
 	bool update_project_matrix = false;
 private:
