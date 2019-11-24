@@ -199,9 +199,12 @@ ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, s
 		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &aipath, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
 			std::string path = ASSETS_FOLDER + std::string(aipath.data);
+			App->file_system->NormalizePath(path);
+			std::string name_file, extension;
+			App->file_system->SplitFilePath(std::string(aipath.data), name_file, extension);
 			//INFO: Because textures are stored as individual files outside the FBX we might have imported the texture earlier
-			const char * meta_path = (path + "." + META_EXTENSION).c_str();
-			if (App->file_system->FileExists(meta_path))
+			std::string meta_path = (path + "." + META_EXTENSION);
+			if (App->file_system->FileExists(meta_path.c_str()))
 			{
 				ret = App->texture->ImportTexture(path.c_str(), PopFirst(uids));
 				ret->asset_source = asset_path;
