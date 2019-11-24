@@ -12,9 +12,9 @@
 #include "Application.h"
 #include "ModuleResourceManager.h"
 
-#define checkImageWidth 512
-#define checkImageHeight 512
-static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
+//#define checkImageWidth 512
+//#define checkImageHeight 512
+//static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
 
 ModuleTexture::ModuleTexture(const char *name) : Module(true, name)
 {
@@ -28,7 +28,6 @@ bool ModuleTexture::Init(JSONFile *module_file)
 	iluInit();
 	ilutInit();
 	ilutRenderer(ILUT_OPENGL);
-	CreateCheckerTexture();
 	return true;
 }
 
@@ -38,6 +37,7 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path, UID force
 	Timer import_timer;
 
 	ResourceTexture* resource_texture = App->resource_manager->CreateResource<ResourceTexture>(forced_uid);
+	resource_texture->asset_source = asset_path;
 
 	//Import data from path first
 	ilGenImages(1, &resource_texture->buffer_id);
@@ -80,39 +80,41 @@ void ModuleTexture::SaveTextureMeta(ResourceTexture * resource_texture, const ch
 	meta_file.CloseFile();
 }
 
-void ModuleTexture::CreateCheckerTexture()
-{
-	ResourceTexture* new_texture = App->resource_manager->CreateResource<ResourceTexture>();
-
-	int i, j, c;
-
-	for (i = 0; i < checkImageHeight; i++)
-	{
-		for (j = 0; j < checkImageWidth; j++)
-		{
-			c = ((((i & 0x8) == 0) ^ ((j & 0x8)) == 0)) * 255;
-			checkImage[i][j][0] = (GLubyte)c;
-			checkImage[i][j][1] = (GLubyte)c;
-			checkImage[i][j][2] = (GLubyte)c;
-			checkImage[i][j][3] = (GLubyte)255;
-		}
-	}
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-	uint buffer = 0;
-
-	glGenTextures(1, (uint *)&((*new_texture).buffer_id));
-	glBindTexture(GL_TEXTURE_2D, ((*new_texture).buffer_id));
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-					GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-					GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, checkImageWidth,
-				 checkImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-				 checkImage);
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
+//void ModuleTexture::ImportCheckerTexture()
+//{
+//	ResourceTexture* new_texture = App->resource_manager->CreateResource<ResourceTexture>();
+//	new_texture->asset_source = "checker texture";
+//
+//	int i, j, c;
+//
+//	for (i = 0; i < checkImageHeight; i++)
+//	{
+//		for (j = 0; j < checkImageWidth; j++)
+//		{
+//			c = ((((i & 0x8) == 0) ^ ((j & 0x8)) == 0)) * 255;
+//			checkImage[i][j][0] = (GLubyte)c;
+//			checkImage[i][j][1] = (GLubyte)c;
+//			checkImage[i][j][2] = (GLubyte)c;
+//			checkImage[i][j][3] = (GLubyte)255;
+//		}
+//	}
+//
+//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+//
+//	uint buffer = 0;
+//
+//	glGenTextures(1, (uint *)&((*new_texture).buffer_id));
+//	glBindTexture(GL_TEXTURE_2D, ((*new_texture).buffer_id));
+//
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+//					GL_NEAREST);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+//					GL_NEAREST);
+//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, checkImageWidth,
+//				 checkImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+//				 checkImage);
+//	glBindTexture(GL_TEXTURE_2D, 0);
+//	//Save as dds
+//}

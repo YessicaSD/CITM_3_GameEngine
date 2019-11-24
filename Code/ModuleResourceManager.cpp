@@ -81,6 +81,7 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 			else
 			{
 				//TODO: Load its resources to the map
+				//TODO: Put asset_path into the already created resources
 			}
 		}
 		else

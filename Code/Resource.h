@@ -79,6 +79,9 @@ protected:
 protected:
 	UID uid = 0u;
 	uint reference_count = 0u;//How many GameObjects are currently using this resource
+
+public:
+	std::string asset_source;//The path to the asset that this resource was generated from
 };
 
 #endif
