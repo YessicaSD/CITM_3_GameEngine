@@ -34,14 +34,14 @@ public:
 	ResourceModel * ImportModel(const char* path, UID model_uid = INVALID_RESOURCE_UID, std::vector<UID> & meshes_uids = std::vector<UID>(), std::vector<UID> & textures_uids = std::vector<UID>());
 	bool CleanUp() override;
 	void EventRequest(const Event& event) override;
-	ResourceMesh* ImportAssimpMesh(aiMesh * assimp_mesh, UID uid);
+	ResourceMesh* ImportAssimpMesh(aiMesh * assimp_mesh, UID uid, const char * asset_path);
 	ResourceMesh* ImportParShapeMesh(par_shapes_mesh * mesh);
 	void CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent);
 
 private:
 	void SaveModelMeta(ResourceModel * resource_model, const char * asset_path);
 	bool ImportFBXNodes(ResourceModel * resource_model, ModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index);
-	ResourceTexture * ImportFBXTexture(const  aiMaterial * material, UID uid);
+	ResourceTexture * ImportFBXTexture(const  aiMaterial * material, std::vector<UID> & uids, const char * asset_path);
 	void LoadModelMeta(ResourceModel * model, const char * meta_path);
 	UID PopFirst(std::vector<UID>& vector);
 

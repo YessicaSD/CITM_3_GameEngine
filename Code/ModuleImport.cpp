@@ -76,24 +76,16 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 	{
 		resource_model = App->resource_manager->CreateResource<ResourceModel>(model_uid);
 		resource_model->asset_source = asset_path;
-		std::vector<ResourceTexture *> fbx_textures;
-		std::vector<ResourceMesh *> fbx_meshes;
 		std::vector<uint> fbx_meshes_textures;
 
 		if (scene->HasMaterials())
 		{
-			fbx_textures.reserve(scene->mNumTextures);
 			resource_model->textures_uid.reserve(scene->mNumTextures);
 
 			for (uint i = 0u; i < scene->mNumMaterials; ++i)
 			{
 				aiMaterial * material = scene->mMaterials[i];
-				ResourceTexture * resource_texture = ImportFBXTexture(material, PopFirst(prev_textures_uids));
-				//if (resource_texture != nullptr)
-				//{
-				//	resource_texture->asset_source = asset_path;
-				//	fbx_textures.push_back(resource_texture);
-				//}
+				ResourceTexture * resource_texture = ImportFBXTexture(material, prev_textures_uids, asset_path);
 				//TODO: Remove this if when we separate ResourceMaterials from ResourceTextures
 				if (resource_texture == nullptr)
 				{
@@ -108,16 +100,13 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 
 		if (scene->HasMeshes())
 		{
-			fbx_meshes.reserve(scene->mNumMeshes);
 			resource_model->meshes_uid.reserve(scene->mNumMeshes);
 			fbx_meshes_textures.reserve(scene->mNumTextures);
 
 			for (uint i = 0u; i < scene->mNumMeshes; ++i)
 			{
 				aiMesh *assimp_mesh = scene->mMeshes[i];
-				ResourceMesh * resource_mesh = ImportAssimpMesh(assimp_mesh, PopFirst(prev_meshes_uids));
-				resource_mesh->asset_source = asset_path;
-				fbx_meshes.push_back(resource_mesh);
+				ResourceMesh * resource_mesh = ImportAssimpMesh(assimp_mesh, PopFirst(prev_meshes_uids), asset_path);
 				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
 				fbx_meshes_textures.push_back(assimp_mesh->mMaterialIndex);
 			}
@@ -200,7 +189,7 @@ bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ModelNode * mo
 	return true;
 }
 
-ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, UID uid)
+ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, std::vector<UID> & uids, const char * asset_path)
 {
 	ResourceTexture * ret = nullptr;
 
@@ -210,7 +199,20 @@ ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, U
 		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &aipath, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
 			std::string path = ASSETS_FOLDER + std::string(aipath.data);
-			ret = App->texture->ImportTexture(path.c_str(), uid);
+			//INFO: Because textures are stored as individual files outside the FBX we might have imported the texture earlier
+			const char * meta_path = (path + "." + META_EXTENSION).c_str();
+			if (App->file_system->FileExists(meta_path))
+			{
+				ret = App->texture->ImportTexture(path.c_str(), PopFirst(uids));
+				ret->asset_source = asset_path;
+			}
+			else
+			{
+				JSONFile file;
+				file.LoadFile(meta_path);
+				UID uid = file.LoadUID();
+				ret = (ResourceTexture*)App->resource_manager->GetResource(uid);
+			}
 		}
 		else
 		{
@@ -220,11 +222,12 @@ ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, U
 	return ret;
 }
 
-ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh, UID uid)
+ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh, UID uid, const char * asset_path)
 {
 	Timer import_timer;
 
 	ResourceMesh *resource_mesh = App->resource_manager->CreateResource<ResourceMesh>(uid);
+	resource_mesh->asset_source = asset_path;
 	//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
 	resource_mesh->ImportVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
 	resource_mesh->CreateBoundingBox();
