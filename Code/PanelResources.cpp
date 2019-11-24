@@ -11,8 +11,8 @@ void PanelResources::Draw()
 {
 	ImGui::Begin(name.c_str());
 	int space_1 = 175;
-	int space_2 = 375;
-	int space_3 = 475;
+	int space_2 = 425;
+	int space_3 = 525;
 	
 	ImGui::Text("Resource UID");
 	ImGui::SameLine(space_1);
