@@ -238,7 +238,6 @@ update_status ModuleResourceManager::PreUpdate()
 {
 	if (check_assets_timer.ReadSec() > check_assets_interval)
 	{
-		LOG("upadted assets folder");
 		DeleteAssetTree(asset_dir);
 		asset_dir = new AssetDir();
 		asset_dir->name = ASSETS_FOLDER;
