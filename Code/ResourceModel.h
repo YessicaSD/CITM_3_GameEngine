@@ -14,8 +14,8 @@
 #include <string>
 #include <vector>
 
-#include "MathGeoLib/include/Math/float4x4.h"
 #include "Resource.h"
+#include "MathGeoLib/include/Math/float4x4.h"
 #include "Globals.h"
 
 #include "limits.h"
