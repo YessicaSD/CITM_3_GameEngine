@@ -16,21 +16,22 @@ ModuleResourceManager::ModuleResourceManager(const char * name) : Module(true, n
 
 bool ModuleResourceManager::Start(JSONFile * module_file)
 {
+	check_assets_interval = 1.f;
 	//TODO: Assets which cannot be opened show "cannot open this file" in preview window
 
 	asset_dir = new AssetDir();
 	asset_dir->name = ASSETS_FOLDER;
 	asset_dir->full_path = ASSETS_FOLDER;
-	FillAssetTreeRecursive(asset_dir);
-	ImportAssetsRecursively(asset_dir);
-
-	//DeleteTreeRecursive(App->resource_manager->asset_dir);
+	CreateAssetTree(asset_dir);
+	StartCheckAssets(asset_dir);
+	check_assets_timer.Start();
 
 	return true;
 }
 
+//INFO: Only executed when the engine starts. It's recursive function.
 //TODO: Make it not recursive
-void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir)
+void ModuleResourceManager::StartCheckAssets(AssetDir* dir)
 {
 	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
 	{
@@ -46,7 +47,7 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir)
 			JSONFile meta_file;
 			meta_file.LoadFile(meta_path);
 
-			if (IsFileModified(meta_file, (*iter)->full_path.c_str())
+			if (HasBeenModified(meta_file, (*iter)->full_path.c_str())
 				|| MissingResources(meta_file, type))
 			{
 				ReImportResources(meta_file, type, (*iter));
@@ -63,7 +64,39 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir)
 	}
 	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
 	{
-		ImportAssetsRecursively((*iter));
+		StartCheckAssets((*iter));
+	}
+}
+
+void ModuleResourceManager::UpdateCheckAssets(AssetDir* dir)
+{
+	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
+	{
+		std::string meta_path = (*iter)->full_path + std::string(".") + std::string(META_EXTENSION);
+
+		std::string extension;
+		App->file_system->GetExtension((*iter)->name.c_str(), extension);
+		uint type = GetResourceTypeFromExtension(extension);
+
+		//Check if it has a .meta. That means it has been imported already.
+		if (App->file_system->FileExists(meta_path.c_str()))
+		{
+			JSONFile meta_file;
+			meta_file.LoadFile(meta_path);
+
+			if (HasBeenModified(meta_file, (*iter)->full_path.c_str()))
+			{
+				ReImportResources(meta_file, type, (*iter));
+			}
+		}
+		else
+		{
+			ImportResource(type, (*iter)->full_path.c_str());
+		}
+	}
+	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
+	{
+		UpdateCheckAssets((*iter));
 	}
 }
 
@@ -155,7 +188,7 @@ void ModuleResourceManager::ImportResource(const uint type, const char * path)
 }
 
 //Check that the modified date of the .meta and the file match. That means the file hasn't been modified while the engine was closed.
-bool ModuleResourceManager::IsFileModified(JSONFile &meta_file, const char * file)
+bool ModuleResourceManager::HasBeenModified(JSONFile &meta_file, const char * file)
 {
 	int meta_file_dateModified = meta_file.LoadNumber("dateModified");
 	int asset_file_dateModified = 0;
@@ -203,14 +236,23 @@ bool ModuleResourceManager::MissingResources(JSONFile &meta_file, uint type)
 
 update_status ModuleResourceManager::PreUpdate()
 {
-	//TODO: Every second check for new assets and import them
-	//TODO: Also check for changes
+	if (check_assets_timer.ReadSec() > check_assets_interval)
+	{
+		LOG("upadted assets folder");
+		DeleteAssetTree(asset_dir);
+		asset_dir = new AssetDir();
+		asset_dir->name = ASSETS_FOLDER;
+		asset_dir->full_path = ASSETS_FOLDER;
+		CreateAssetTree(asset_dir);
+		UpdateCheckAssets(asset_dir);
+		check_assets_timer.Start();
+	}
 	return UPDATE_CONTINUE;
 }
 
 bool ModuleResourceManager::CleanUp()
 {
-	DeleteTreeRecursive(asset_dir);
+	DeleteAssetTree(asset_dir);
 	//RELEASE(asset_dir);
 	return true;
 }
@@ -238,7 +280,8 @@ UID ModuleResourceManager::GenerateNewUID()
 
 //TODO: Make a function directly on file system that returns files without .meta and returns class AssetFiles and class Dir instead of std::string
 //don't abstract it over an existing one, we end up with 2 lists for each
-void ModuleResourceManager::FillAssetTreeRecursive(AssetDir * dir)
+//INFO: Recursive function
+void ModuleResourceManager::CreateAssetTree(AssetDir * dir)
 {
 	std::vector<std::string> file_list;
 	std::vector<std::string> dir_list;
@@ -266,12 +309,13 @@ void ModuleResourceManager::FillAssetTreeRecursive(AssetDir * dir)
 		AssetDir * new_dir = new AssetDir();
 		new_dir->name = (*iter);
 		new_dir->full_path = dir->full_path + (*iter) + "/";
-		FillAssetTreeRecursive(new_dir);
+		CreateAssetTree(new_dir);
 		dir->dirs.push_back(new_dir);
 	}
 }
 
-void ModuleResourceManager::DeleteTreeRecursive(AssetDir * dir)
+//INFO: Recursive function
+void ModuleResourceManager::DeleteAssetTree(AssetDir * dir)
 {
 	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
 	{
@@ -280,7 +324,7 @@ void ModuleResourceManager::DeleteTreeRecursive(AssetDir * dir)
 
 	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
 	{
-		DeleteTreeRecursive((*iter));
+		DeleteAssetTree((*iter));
 	}
 	delete(dir);
 }

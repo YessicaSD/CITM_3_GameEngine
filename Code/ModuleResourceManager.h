@@ -7,10 +7,11 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Resource.h"
+#include "Timer.h"
 
 class ResourceTexture;
 
-//Used to display the assets in the PanelAssets
+//Used to create the hirearchy of assets
 struct AssetFile
 {
 	//type (used to get the appropiate icon)
@@ -63,9 +64,10 @@ public:
 private:
 	
 	//Checking assets helper functions
-	void ImportAssetsRecursively(AssetDir * dir);
-	void FillAssetTreeRecursive(AssetDir * dir);
-	void DeleteTreeRecursive(AssetDir * dir);
+	void StartCheckAssets(AssetDir * dir);
+	void UpdateCheckAssets(AssetDir * dir);
+	void CreateAssetTree(AssetDir * dir);
+	void DeleteAssetTree(AssetDir * dir);
 
 	//Updating assets helper functions
 	void ImportResource(const uint type, const char * path);
@@ -74,7 +76,7 @@ private:
 	
 	//Helpers to the functions to update assets
 	void DeleteDependantResources(std::vector<UID> uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension);
-	bool IsFileModified(JSONFile &meta_file, const char * file);
+	bool HasBeenModified(JSONFile &meta_file, const char * file);
 	bool MissingResources(JSONFile & meta_file, uint type);
 
 	UID GenerateNewUID();
@@ -84,6 +86,8 @@ private:
 
 	//Used to diplay the assets in PanelAssets
 	AssetDir * asset_dir = nullptr;
+	Timer check_assets_timer;
+	float check_assets_interval = 0;
 
 	friend class PanelAssets;
 	friend class PanelResources;
