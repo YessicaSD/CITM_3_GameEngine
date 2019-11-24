@@ -43,7 +43,7 @@ public:
 	bool SaveUID(const UID & uid);
 
 	bool LoadUIDVector(const char * name, std::vector<UID>& values);
-
+	bool IsValid();
 
 private:
 	JSON_Value* value = nullptr;

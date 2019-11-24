@@ -16,6 +16,7 @@
 #include "ModuleGui.h"
 #include "ModuleInput.h"
 #include "ModuleImport.h"
+#include "ModuleFileSystem.h"
 #include "RaycastHit.h"
 
 #include "imGuizmo/ImGuizmo.h"
@@ -24,7 +25,9 @@
 
 ModuleScene::ModuleScene(const char * name, bool start_enabled) :
 	Module(start_enabled, name)
-{}
+{
+	current_scene_name = "new_scene";
+}
 
 ModuleScene::~ModuleScene()
 {}
@@ -243,11 +246,25 @@ void ModuleScene::SaveScene()
 {
 	current_scene.CreateJSONFile();
 	root_gameobject->OnSave(&current_scene);
-	current_scene.SaveFile(std::string("scene") + "." + SCENE_EXTENSION);
+	current_scene.SaveFile(std::string(ASSETS_FOLDER) + current_scene_name + "." + SCENE_EXTENSION);
 	current_scene.CloseFile();
+	LOG("Saved scene");
 }
 
+void ModuleScene::LoadScene(const char * scene_path)
+{
+	std::string scene_name;
+	App->file_system->SplitFilePath(scene_path, nullptr, &scene_name, nullptr);
+	current_scene_name = scene_name;
+	current_scene.LoadFile(scene_path);
 
+	for (JSONFile current_gameobject = current_scene.GetSection("GameObject");
+		current_gameobject.IsValid();
+		current_gameobject  = current_gameobject.GetSection("GameObject"))
+	{
+
+	}
+}
 
 update_status ModuleScene::PostUpdate()
 {
@@ -299,5 +316,9 @@ void ModuleScene::EventRequest(const Event & event)
 	else if (event.type == Event::SAVE_SCENE)
 	{
 		SaveScene();
+	}
+	else if (event.type == Event::LOAD_SCENE)
+	{
+		LoadScene(event.path);
 	}
 }

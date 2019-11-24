@@ -1,0 +1,68 @@
+{
+    "Root": {
+        "resourceUID": "09369571158777289088",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    "Main camera": {
+        "resourceUID": "00760296159301482568",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    "Camera": {
+        "resourceUID": "05523005916855416243",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    }
+}

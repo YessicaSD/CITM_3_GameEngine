@@ -177,3 +177,8 @@ bool JSONFile::LoadUIDVector(const char * name, std::vector<UID> & values)
 	}
 	return true;
 }
+
+bool JSONFile::IsValid()
+{
+	return object!=nullptr;
+}
