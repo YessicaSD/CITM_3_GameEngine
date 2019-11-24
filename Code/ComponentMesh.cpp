@@ -3,7 +3,6 @@
 
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
-#include "ResourceMesh.h"
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
@@ -15,9 +14,9 @@
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "MathGeoLib/include/Geometry/Triangle.h"
 
-
 #include "ComponentMaterial.h"
 #include "imgui/imgui.h"
+#include "ResourceMesh.h"
 
 CLASS_DEFINITION(Component, ComponentMesh)
 

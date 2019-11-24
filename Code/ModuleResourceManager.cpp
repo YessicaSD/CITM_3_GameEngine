@@ -163,7 +163,7 @@ update_status ModuleResourceManager::PreUpdate()
 bool ModuleResourceManager::CleanUp()
 {
 	DeleteTreeRecursive(asset_dir);
-	RELEASE(asset_dir);
+	//RELEASE(asset_dir);
 	return true;
 }
 
