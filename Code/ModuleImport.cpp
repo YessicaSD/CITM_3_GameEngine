@@ -208,15 +208,15 @@ ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, s
 			std::string meta_path = (final_path + "." + META_EXTENSION);
 			if (App->file_system->FileExists(meta_path.c_str()))
 			{
-				ret = App->texture->ImportTexture(final_path.c_str(), PopFirst(uids));
-				ret->asset_source = asset_path;
-			}
-			else
-			{
 				JSONFile file;
 				file.LoadFile(meta_path);
 				UID uid = file.LoadUID();
 				ret = (ResourceTexture*)App->resource_manager->GetResource(uid);
+			}
+			else
+			{
+				ret = App->texture->ImportTexture(final_path.c_str(), PopFirst(uids));
+				ret->asset_source = asset_path;
 			}
 		}
 		else
