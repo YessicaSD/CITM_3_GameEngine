@@ -9,10 +9,10 @@ A 3D game engine created in the third year of our Videogame Design and Developme
 - Click on any object with a mehs
 
 ## Frustrum culling
-- Go to configuration panel
-- Go to camera
-- Check see frustrum culling
-- Rotate the main camera
+- Go to "Configuration" panel
+- Open "Camera3D"
+- Check "See frustrum culling"
+- Rotate and move the main camera
 (Note that you must have gameobjects with bounding boxes in the scene to see the effect of the frustrum culling).
 
 ## Time management
