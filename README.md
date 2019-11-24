@@ -1,18 +1,42 @@
 # CITM_3_GameEngine
 A 3D game engine created in the third year of our Videogame Design and Development degree.
 
-# Innovations
-## Assignment 1:
-- Shortcuts panel
-- Tree hierarchy
-- Rotate and scale components
-- Show scene in an imgui panel
+# Instructions:
+
+Press Play to play the game.
+Press Pause to pause the game.
+Press Pause again to unpause the game.
+
+Drag a scene to the ScenePanel to load it.
+Go to File > Save Scene to save scenes.
+
+Drag an fbx to the scene to create a hirearchy of gameobjects that represents it.
+
+Add repository link
+
+# Innovation
 
 ## Assignment 2:
-- Create multiple shapes at one by pressing the circle button on the create menu.
+- Shortcuts panel
+- Show scene in an imgui panel
+- Each panel is a viewport that can be dettached from the main window
 - Event system to notify multiple modules. It has two systems, one that works with a queue and the other that lets you send events immediately to all modules.
 - Game panel separate from the scene window.
-- Virtual File System using PhysFs
+- File system using PhysFs.
+- Octree.
+
+# Contribution
+
+## Assignment 2:
+Yessica Servin Dominguez
+- Frustrum culling
+- Octree
+- Scene serialization
+- Mouse picking
+
+Jaume Montagut Guix
+- Resource Manager
+- Own file format
 
 # Credits:
 
@@ -24,7 +48,10 @@ https://github.com/YessicaSD
 www.linkedin.com/in/jaumemontagut
 https://github.com/JaumeMontagut
 
-Used:
+## Find respository at:
+https://github.com/YessicaSD/CITM_3_GameEngine
+
+## Libraries used:
 - SDL
 https://www.libsdl.org/
 - Dear ImGui: To create the GUI

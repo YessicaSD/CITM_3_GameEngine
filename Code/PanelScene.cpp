@@ -135,7 +135,7 @@ void PanelScene::DropObject()
 			AssetFile* asset = *(AssetFile**)payload->Data;
 			std::string extension;
 			App->file_system->GetExtension(asset->full_path.c_str(), extension);
-			if(extension == "fbx")
+			if(extension == "fbx" || extension == "FBX")
 			{
 				//Get the .meta associated with that file
 				JSONFile meta_file;
