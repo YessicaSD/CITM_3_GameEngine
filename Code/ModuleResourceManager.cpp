@@ -18,8 +18,9 @@ bool ModuleResourceManager::Start(JSONFile * module_file)
 
 	asset_dir = new AssetDir();
 	asset_dir->name = ASSETS_FOLDER;
+	asset_dir->full_path = ASSETS_FOLDER;
 	FillAssetTreeRecursive(asset_dir);
-	ImportAssetsRecursively(asset_dir, std::string(ASSETS_FOLDER));
+	ImportAssetsRecursively(asset_dir);
 
 	//DeleteTreeRecursive(App->resource_manager->asset_dir);
 
@@ -27,11 +28,11 @@ bool ModuleResourceManager::Start(JSONFile * module_file)
 }
 
 //TODO: Make it not recursive
-void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string curr_dir)
+void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir)
 {
 	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
 	{
-		std::string meta_path = curr_dir + (*iter)->name + std::string(".") + std::string(META_EXTENSION);
+		std::string meta_path = (*iter)->full_path + std::string(".") + std::string(META_EXTENSION);
 		//TODO: It must also get the name of the folder we're in
 
 		std::string extension;
@@ -44,7 +45,7 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 			JSONFile meta_file;
 			meta_file.LoadFile(meta_path);
 
-			if (IsFileModified(meta_file, (*iter)->name.c_str())
+			if (IsFileModified(meta_file, (*iter)->full_path.c_str())
 				|| MissingResources(meta_file, type))
 			{
 				const char * uid_string = meta_file.LoadText("resourceUID", "0");
@@ -63,7 +64,7 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 					DeleteDependantResources(textures_uids, "exportedTextures", &meta_file, RESOURCES_TEXTURES_FOLDER, TEXTURE_EXTENSION);
 					
 					//INFO: Generate new resources using the previous uids
-					App->import->ImportModel((curr_dir + (*iter)->name).c_str(), uid, meshes_uids, textures_uids);
+					App->import->ImportModel((*iter)->full_path.c_str(), uid, meshes_uids, textures_uids);
 				}
 				else if (type == ResourceTexture::type)
 				{
@@ -71,7 +72,7 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 					App->file_system->Remove((std::string(RESOURCES_TEXTURES_FOLDER) + uid_string + "." + TEXTURE_EXTENSION).c_str());
 					resources.erase(uid);
 
-					App->texture->ImportTexture((curr_dir + (*iter)->name).c_str(), uid);
+					App->texture->ImportTexture((*iter)->full_path.c_str(), uid);
 				}
 				else
 				{
@@ -89,11 +90,11 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 			//Import the file. Resources don't force uid
 			if (type == ResourceModel::type)
 			{
-				App->import->ImportModel((curr_dir + (*iter)->name).c_str());
+				App->import->ImportModel((*iter)->full_path.c_str());
 			}
 			else if (type == ResourceTexture::type)
 			{
-				App->texture->ImportTexture((curr_dir + (*iter)->name).c_str());
+				App->texture->ImportTexture((*iter)->full_path.c_str());
 			}
 			else
 			{
@@ -103,7 +104,7 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir, std::string c
 	}
 	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
 	{
-		ImportAssetsRecursively((*iter), curr_dir + (*iter)->name);
+		ImportAssetsRecursively((*iter));
 	}
 }
 
@@ -196,7 +197,7 @@ void ModuleResourceManager::FillAssetTreeRecursive(AssetDir * dir)
 	std::vector<std::string> file_list;
 	std::vector<std::string> dir_list;
 
-	App->file_system->GetFilesAndDirs(dir->name.c_str(), file_list, dir_list);
+	App->file_system->GetFilesAndDirs(dir->full_path.c_str(), file_list, dir_list);
 
 	//Add files
 	for (auto iter = file_list.begin(); iter != file_list.end(); ++iter)
@@ -208,6 +209,7 @@ void ModuleResourceManager::FillAssetTreeRecursive(AssetDir * dir)
 		{
 			AssetFile * new_asset = new AssetFile();
 			new_asset->name = (*iter);
+			new_asset->full_path = dir->full_path + (*iter);
 			dir->assets.push_back(new_asset);
 		}
 	}
@@ -217,6 +219,7 @@ void ModuleResourceManager::FillAssetTreeRecursive(AssetDir * dir)
 	{
 		AssetDir * new_dir = new AssetDir();
 		new_dir->name = dir->name + (*iter);
+		new_dir->full_path = dir->full_path + (*iter) + "/";
 		FillAssetTreeRecursive(new_dir);
 		dir->dirs.push_back(new_dir);
 	}
