@@ -25,6 +25,7 @@ typedef unsigned int uint;
 public:                                                                                     \
     static const uint type;                                                          \
     virtual bool IsClassType( const std::size_t classType ) const override;                 \
+	virtual unsigned int GetType() override; \
 
 //****************
 // CLASS_DEFINITION
@@ -40,7 +41,11 @@ bool childclass::IsClassType( const uint classType ) const {                    
         if ( classType == childclass::type )                                                \
             return true;                                                                    \
         return parentclass::IsClassType( classType );                                       \
-}    
+} \
+unsigned int childclass::GetType()\
+{\
+         return childclass::type;\
+}\
 
 class Resource
 {
@@ -59,7 +64,10 @@ public:
 	{
 		return classType == type;
 	}
-
+	virtual uint GetType()
+	{
+		return type;
+	}
 protected:
 	//INFO: Saves the resource with custom format in the Resources folder
 	virtual bool SaveFileData() = 0;

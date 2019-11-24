@@ -24,7 +24,6 @@
 
 
 //TODO: Remove, only for testing purposes
-#include "ResourceModel.h"
 
 ModuleScene::ModuleScene(const char * name, bool start_enabled) :
 	Module(start_enabled, name)
