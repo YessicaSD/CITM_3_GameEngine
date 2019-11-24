@@ -285,10 +285,6 @@ void ModuleScene::LoadScene(const char * scene_path)
 			GameObject* gameobject_ptr = (*gameobject_iter).second;
 			
 			UID parent_uid = current_object.LoadUID("Parent UID");
-			if (parent_uid == 8083943143860573717)
-			{
-				LOG("ROOT");
-			}
 			std::map<UID, GameObject*>::iterator parent_iter = new_gameobjects.find(parent_uid);
 			if (parent_iter != new_gameobjects.end())
 			{
