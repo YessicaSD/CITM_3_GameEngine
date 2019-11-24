@@ -24,7 +24,8 @@ public:
 	
 	void OnPostUpdate() override;
 	void PropertiesEditor() override;
-
+	void OnSave(JSONFile*) override;
+	void OnLoad(JSONFile*) override;
 	void SwitchedStatic();
 
 	void SetTransform(float3& position, float3& scale, float3 & rotation);

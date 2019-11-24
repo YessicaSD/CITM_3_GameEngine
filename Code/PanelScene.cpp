@@ -14,6 +14,7 @@
 #include "Event.h"
 #include "ModuleResourceManager.h"
 #include "imgui/imgui_internal.h"
+#include "ModuleFileSystem.h"
 
 PanelScene::PanelScene(std::string name, bool active, std::vector<SDL_Scancode> shortcuts) :
 	Panel(name, active, shortcuts)
@@ -132,15 +133,21 @@ void PanelScene::DropObject()
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("asset"))
 		{
 			AssetFile* asset = *(AssetFile**)payload->Data;
-			//Get the .meta associated with that file
-			JSONFile meta_file;
-			meta_file.LoadFile(std::string(ASSETS_FOLDER) + asset->name + "." + META_EXTENSION);
-			//TODO: Get the path of the asset + .META_EXTENSION (right now if we drop something that's on a folder it won't work)
-			UID uid = App->resource_manager->LoadUID(&meta_file);
-			//Get the id of that file
-			Event ev (Event::DROPPED_MODEL_TO_SCENE);
-			ev.drop_model_data.model = (ResourceModel*)App->resource_manager->GetResource(uid);
-			App->AddEvent(ev);
+			std::string extension;
+			App->file_system->GetExtension(asset->full_path.c_str(), extension);
+			if(extension == MODEL_EXTENSION)
+			{
+				//Get the .meta associated with that file
+				JSONFile meta_file;
+				meta_file.LoadFile(std::string(ASSETS_FOLDER) + asset->name + "." + META_EXTENSION);
+				//TODO: Get the path of the asset + .META_EXTENSION (right now if we drop something that's on a folder it won't work)
+				UID uid = App->resource_manager->LoadUID(&meta_file);
+				//Get the id of that file
+				Event ev(Event::DROPPED_MODEL_TO_SCENE);
+				ev.drop_model_data.model = (ResourceModel*)App->resource_manager->GetResource(uid);
+				App->AddEvent(ev);
+			}
+			
 		}
 		ImGui::EndDragDropTarget();
 	}
