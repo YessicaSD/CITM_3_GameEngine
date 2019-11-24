@@ -147,6 +147,12 @@ void GameObject::OnLoad(JSONFile * file)
 		ComponentCamera* component_camera = CreateComponent<ComponentCamera>();
 		component_camera->OnLoad(&component_file);
 	}
+	component_file = file->GetSection("Mesh");
+	if (component_file.IsValid())
+	{
+		ComponentMesh* component_camera = CreateComponent<ComponentMesh>();
+		component_camera->OnLoad(&component_file);
+	}
 
 }
 

@@ -9,6 +9,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleImport.h"
+#include "ModuleResourceManager.h"
 
 #include "MathGeoLib/include/Math/float4.h"
 #include "MathGeoLib/include/Geometry/LineSegment.h"
@@ -17,6 +18,7 @@
 #include "ComponentMaterial.h"
 #include "imgui/imgui.h"
 #include "ResourceMesh.h"
+
 
 CLASS_DEFINITION(Component, ComponentMesh)
 
@@ -288,4 +290,24 @@ bool ComponentMesh::SetMesh(ResourceMesh * mesh)
 	}
 
 	return ret;
+}
+
+void ComponentMesh::OnSave(JSONFile * file)
+{
+	JSONFile mesh_file = file->AddSection("Mesh");
+	if (mesh != nullptr)
+	{
+		mesh_file.SaveUID("ResourceMeshUID", mesh->GetUID());
+	}
+
+}
+
+void ComponentMesh::OnLoad(JSONFile *file)
+{
+	UID resource = file->LoadUID("ResourceMeshUID");
+	ResourceMesh* new_mesh = (ResourceMesh*)App->resource_manager->GetResource(resource);
+	if (new_mesh != nullptr)
+	{
+		SetMesh(new_mesh);
+	}
 }

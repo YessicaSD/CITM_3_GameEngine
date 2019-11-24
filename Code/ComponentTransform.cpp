@@ -389,6 +389,10 @@ void ComponentTransform::DeleteFromChildrens(ComponentTransform * object)
 
 void ComponentTransform::AddChild(ComponentTransform * new_object)
 {
+	if (new_object->parent != nullptr)
+	{
+		new_object->parent->DeleteFromChildrens(new_object);
+	}
 	children.push_back(new_object);
 	new_object->parent = this;
 }
