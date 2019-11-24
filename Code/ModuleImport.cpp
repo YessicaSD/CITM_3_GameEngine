@@ -210,7 +210,7 @@ ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, s
 			{
 				JSONFile file;
 				file.LoadFile(meta_path);
-				UID uid = file.LoadUID();
+				UID uid = file.LoadUID("resourceUID");
 				ret = (ResourceTexture*)App->resource_manager->GetResource(uid);
 			}
 		}

@@ -1,8 +1,8 @@
 [
     {
         "name": "Main camera",
-        "UID": "14963918063581434373",
-        "Parent UID": "11692694535337095996",
+        "UID": "10665144354855109105",
+        "Parent UID": "11661882934223596886",
         "Components": {
             "Transform": {
                 "Position": [
@@ -25,8 +25,8 @@
     },
     {
         "name": "Camera",
-        "UID": "11374546428539966688",
-        "Parent UID": "11692694535337095996",
+        "UID": "10767891509181733829",
+        "Parent UID": "11661882934223596886",
         "Components": {
             "Transform": {
                 "Position": [

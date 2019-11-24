@@ -23,7 +23,11 @@ public:
 	JSONFile GetSection(const char * section_name);
 	JSONFile AddSection(const char * section_name);
 	JSON_Value* GetValue();
+	JSON_Array* GetArray();
+	JSON_Object* GetObjectArray(int index);
+	int GetNumberOfElement();
 
+	void LoadArray();
 	void LoadFile(const std::string & path);
 	void SaveFile(const std::string& path);
 	void CloseFile();
@@ -36,7 +40,7 @@ public:
 	bool LoadTextArray(const char * name, const char ** arr);
 	bool LoadTextVector(const char * name, std::vector<const char*>& values);
 	void AddArrayValue(JSON_Value* newValue);
-	UID LoadUID() const;
+	UID LoadUID(const char* name) const;
 
 	//Write document
 	bool SaveBool(const char * variable_name, bool value);

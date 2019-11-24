@@ -8,6 +8,11 @@ JSONFile::JSONFile(JSON_Object * object) :
 	object(object)
 {}
 
+void JSONFile::LoadArray()
+{
+	array = json_value_get_array(value);
+}
+
 void JSONFile::LoadFile(const std::string & path)
 {
 	value = json_parse_file(path.c_str());
@@ -61,6 +66,21 @@ JSONFile JSONFile::AddSection(const char * section_name)
 JSON_Value * JSONFile::GetValue()
 {
 	return value;
+}
+
+JSON_Array * JSONFile::GetArray()
+{
+	return array;
+}
+
+JSON_Object * JSONFile::GetObjectArray(int index)
+{
+	return json_array_get_object(array, index);
+}
+
+int JSONFile::GetNumberOfElement()
+{
+	return json_array_get_count(array);
 }
 
 //Load document
@@ -177,9 +197,9 @@ bool JSONFile::SaveTextArray(const char * name, const char ** arr, const uint co
 	return ret;
 }
 
-UID JSONFile::LoadUID() const
+UID JSONFile::LoadUID(const char* name) const
 {
-	const char * aux_uid = LoadText("resourceUID", "0");
+	const char * aux_uid = LoadText(name, "0");
 	return strtoull(aux_uid, nullptr, 10);
 }
 

@@ -22,6 +22,7 @@
 #include "imGuizmo/ImGuizmo.h"
 #include "Event.h"
 #include <map>
+#include "parson\parson.h"
 
 ModuleScene::ModuleScene(const char * name, bool start_enabled) :
 	Module(start_enabled, name)
@@ -257,12 +258,19 @@ void ModuleScene::LoadScene(const char * scene_path)
 	App->file_system->SplitFilePath(scene_path, nullptr, &scene_name, nullptr);
 	current_scene_name = scene_name;
 	current_scene.LoadFile(scene_path);
-
-	for (JSONFile current_gameobject = current_scene.GetSection("GameObject");
-		current_gameobject.IsValid();
-		current_gameobject  = current_gameobject.GetSection("GameObject"))
+	if (json_value_get_type(current_scene.GetValue()) != JSONArray)
 	{
-
+		LOG("Could not load this scene");
+		return;
+	}
+	current_scene.LoadArray();
+	std::map<UID, GameObject*> new_gameobjects;
+	int number_of_objects = current_scene.GetNumberOfElement();
+	root_gameobject->transform->DeleteChildren();
+	for (int i = 0; i < number_of_objects; ++i)
+	{
+		JSONFile current_object(current_scene.GetObjectArray(i));
+		new GameObject(std::string(current_object.LoadText("name")), root_gameobject->transform, current_object.LoadUID("UID"));
 	}
 }
 
