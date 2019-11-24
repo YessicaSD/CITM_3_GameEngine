@@ -27,7 +27,7 @@ public:
 	void OnSave(JSONFile*) override;
 	void OnLoad(JSONFile*) override;
 	void SwitchedStatic();
-
+	void CleanUp() override;
 	void SetTransform(float3& position, float3& scale, float3 & rotation);
 	void SetTransform(float3& position, float3& scale, Quat & qrotation);
 	void SetTransform(const float4x4 & local_matrix);

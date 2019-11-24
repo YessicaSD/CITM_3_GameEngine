@@ -56,7 +56,8 @@ public:
 
 		for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
 		{
-			if ((*iter)->IsClassType(ComponentType::type))
+			uint type_ = ComponentType::type;
+			if ((*iter) && (*iter)->IsClassType(type_))
 			{
 				(*iter)->CleanUp();
 				delete (*iter);
