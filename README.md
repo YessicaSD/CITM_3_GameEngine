@@ -3,16 +3,29 @@ A 3D game engine created in the third year of our Videogame Design and Developme
 
 # Instructions:
 
-Press Play to play the game.
-Press Pause to pause the game.
-Press Pause again to unpause the game.
+- Drag an fbx to the scene to create a hirearchy of gameobjects that represents it.
 
-Drag a scene to the ScenePanel to load it.
-Go to File > Save Scene to save scenes.
+## Mouse picking
+- Click on any object with a mehs
 
-Drag an fbx to the scene to create a hirearchy of gameobjects that represents it.
+## Frustrum culling
+- Go to configuration panel
+- Go to camera
+- Check see frustrum culling
+- Rotate the main camera
+(Note that you must have gameobjects with bounding boxes in the scene to see the effect of the frustrum culling).
 
-Add repository link
+## Time management
+- Press Play to play the game.
+- Press Pause to pause the game.
+- Press Pause again to unpause the game.
+
+## Resource management
+- You can see the resource count of each resource in the "Resources" panel.
+
+## Scene serialization
+- Drag a scene from the Assets panel to the Scene panel to load it.
+- Go to File > Save Scene to save scenes.
 
 # Innovation
 
