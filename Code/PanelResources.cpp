@@ -11,8 +11,8 @@ void PanelResources::Draw()
 {
 	ImGui::Begin(name.c_str());
 	int space_1 = 175;
-	int space_2 = 325;
-	int space_3 = 425;
+	int space_2 = 375;
+	int space_3 = 475;
 	
 	ImGui::Text("Resource UID");
 	ImGui::SameLine(space_1);
@@ -32,7 +32,7 @@ void PanelResources::Draw()
 		ImGui::SameLine(space_1);
 		ImGui::Text((*iter).second->asset_source.c_str());
 		ImGui::SameLine(space_2);
-		ImGui::Text("%i", (*iter).second->GetType());
+		ImGui::Text(App->resource_manager->GetResourceTypeString((*iter).second->GetType()));
 		ImGui::SameLine(space_3);
 		std::string count = std::to_string((*iter).second->GetReferenceCount());
 		ImGui::Text(count.c_str());

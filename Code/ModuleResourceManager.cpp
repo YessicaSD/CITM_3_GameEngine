@@ -8,6 +8,7 @@
 #include "ResourceModel.h"
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
+#include "ResourceMaterial.h"
 
 ModuleResourceManager::ModuleResourceManager(const char * name) : Module(true, name)
 {
@@ -15,26 +16,26 @@ ModuleResourceManager::ModuleResourceManager(const char * name) : Module(true, n
 
 bool ModuleResourceManager::Start(JSONFile * module_file)
 {
+	check_assets_interval = 1.f;
 	//TODO: Assets which cannot be opened show "cannot open this file" in preview window
 
 	asset_dir = new AssetDir();
 	asset_dir->name = ASSETS_FOLDER;
 	asset_dir->full_path = ASSETS_FOLDER;
-	FillAssetTreeRecursive(asset_dir);
-	ImportAssetsRecursively(asset_dir);
-
-	//DeleteTreeRecursive(App->resource_manager->asset_dir);
+	CreateAssetTree(asset_dir);
+	StartCheckAssets(asset_dir);
+	check_assets_timer.Start();
 
 	return true;
 }
 
+//INFO: Only executed when the engine starts. It's recursive function.
 //TODO: Make it not recursive
-void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir)
+void ModuleResourceManager::StartCheckAssets(AssetDir* dir)
 {
 	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
 	{
 		std::string meta_path = (*iter)->full_path + std::string(".") + std::string(META_EXTENSION);
-		//TODO: It must also get the name of the folder we're in
 
 		std::string extension;
 		App->file_system->GetExtension((*iter)->name.c_str(), extension);
@@ -46,100 +47,148 @@ void ModuleResourceManager::ImportAssetsRecursively(AssetDir* dir)
 			JSONFile meta_file;
 			meta_file.LoadFile(meta_path);
 
-			if (IsFileModified(meta_file, (*iter)->full_path.c_str())
+			if (HasBeenModified(meta_file, (*iter)->full_path.c_str())
 				|| MissingResources(meta_file, type))
 			{
-				const char * uid_string = meta_file.LoadText("resourceUID", "0");
-				UID uid = strtoull(uid_string, nullptr, 10);
-				//Import the file. Resources force the previous uid.
-				if (type == ResourceModel::type)
-				{
-					//INFO: Delete the previous resources
-					App->file_system->Remove((std::string(RESOURCES_MODEL_FOLDER) + uid_string + "." + MODEL_EXTENSION).c_str());
-					resources.erase(uid);
-
-					std::vector<UID>meshes_uids;
-					DeleteDependantResources(meshes_uids, "exportedMeshes", &meta_file, RESOURCES_MESH_FOLDER, MESH_EXTENSION);
-
-					std::vector<UID>textures_uids;
-					DeleteDependantResources(textures_uids, "exportedTextures", &meta_file, RESOURCES_TEXTURES_FOLDER, TEXTURE_EXTENSION);
-					
-					//INFO: Generate new resources using the previous uids
-					App->import->ImportModel((*iter)->full_path.c_str(), uid, meshes_uids, textures_uids);
-				}
-				else if (type == ResourceTexture::type)
-				{
-					//INFO: Delete the previous resources
-					App->file_system->Remove((std::string(RESOURCES_TEXTURES_FOLDER) + uid_string + "." + TEXTURE_EXTENSION).c_str());
-					resources.erase(uid);
-
-					App->texture->ImportTexture((*iter)->full_path.c_str(), uid);
-				}
-				else
-				{
-					LOG("This format is unsupported.");
-				}
+				ReImportResources(meta_file, type, (*iter));
 			}
 			else
 			{
-				//INFO: Load its resources to the map
-				if (type == ResourceModel::type)
-				{
-					ResourceModel * resource_model = CreateResource<ResourceModel>(meta_file.LoadUID());
-					resource_model->asset_source = (*iter)->full_path;
-
-					std::vector<UID>meshes_uids;
-					meta_file.LoadUIDVector("exportedMeshes", meshes_uids);
-					for (auto mesh_iter = meshes_uids.begin(); mesh_iter != meshes_uids.end(); ++mesh_iter)
-					{
-						ResourceMesh * resource_mesh = CreateResource<ResourceMesh>((*mesh_iter));
-						resource_mesh->asset_source = (*iter)->full_path;
-					}
-
-					std::vector<UID>textures_uids;
-					meta_file.LoadUIDVector("exportedTextures", textures_uids);
-					for (auto texture_iter = textures_uids.begin(); texture_iter != textures_uids.end(); ++texture_iter)
-					{
-						ResourceTexture * resource_texture = CreateResource<ResourceTexture>((*texture_iter));
-						resource_texture->asset_source = (*iter)->full_path;
-					}
-				}
-				else if (type == ResourceTexture::type)
-				{
-					ResourceTexture * resource_texture = CreateResource<ResourceTexture>(meta_file.LoadUID());
-					resource_texture->asset_source = (*iter)->full_path;
-				}
-				else
-				{
-					LOG("This format is unsupported.");
-				}
+				CreateResourcesInMap(type, meta_file, (*iter));
 			}
 		}
 		else
 		{
-			//Import the file. Resources don't force uid
-			if (type == ResourceModel::type)
-			{
-				App->import->ImportModel((*iter)->full_path.c_str());
-			}
-			else if (type == ResourceTexture::type)
-			{
-				App->texture->ImportTexture((*iter)->full_path.c_str());
-			}
-			else
-			{
-				LOG("This format is unsupported.");
-			}
+			ImportResource(type, (*iter)->full_path.c_str());
 		}
 	}
 	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
 	{
-		ImportAssetsRecursively((*iter));
+		StartCheckAssets((*iter));
+	}
+}
+
+void ModuleResourceManager::UpdateCheckAssets(AssetDir* dir)
+{
+	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
+	{
+		std::string meta_path = (*iter)->full_path + std::string(".") + std::string(META_EXTENSION);
+
+		std::string extension;
+		App->file_system->GetExtension((*iter)->name.c_str(), extension);
+		uint type = GetResourceTypeFromExtension(extension);
+
+		//Check if it has a .meta. That means it has been imported already.
+		if (App->file_system->FileExists(meta_path.c_str()))
+		{
+			JSONFile meta_file;
+			meta_file.LoadFile(meta_path);
+
+			if (HasBeenModified(meta_file, (*iter)->full_path.c_str()))
+			{
+				ReImportResources(meta_file, type, (*iter));
+			}
+		}
+		else
+		{
+			ImportResource(type, (*iter)->full_path.c_str());
+		}
+	}
+	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
+	{
+		UpdateCheckAssets((*iter));
+	}
+}
+
+//Import resources which have changed or deleted their resources on the resources folder.
+//First delete the existing ones and then import them forcing the previous uids.
+void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &type, AssetFile * asset_file)
+{
+	const char * uid_string = meta_file.LoadText("resourceUID", "0");
+	UID uid = strtoull(uid_string, nullptr, 10);
+	//Import the file. Resources force the previous uid.
+	if (type == ResourceModel::type)
+	{
+		//INFO: Delete the previous resources
+		App->file_system->Remove((std::string(RESOURCES_MODEL_FOLDER) + uid_string + "." + MODEL_EXTENSION).c_str());
+		resources.erase(uid);
+
+		std::vector<UID>meshes_uids;
+		DeleteDependantResources(meshes_uids, "exportedMeshes", &meta_file, RESOURCES_MESH_FOLDER, MESH_EXTENSION);
+
+		std::vector<UID>textures_uids;
+		DeleteDependantResources(textures_uids, "exportedTextures", &meta_file, RESOURCES_TEXTURES_FOLDER, TEXTURE_EXTENSION);
+
+		//INFO: Generate new resources using the previous uids
+		App->import->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids);
+	}
+	else if (type == ResourceTexture::type)
+	{
+		//INFO: Delete the previous resources
+		App->file_system->Remove((std::string(RESOURCES_TEXTURES_FOLDER) + uid_string + "." + TEXTURE_EXTENSION).c_str());
+		resources.erase(uid);
+
+		App->texture->ImportTexture(asset_file->full_path.c_str(), uid);
+	}
+	else
+	{
+		LOG("This format is unsupported.");
+	}
+}
+
+void ModuleResourceManager::CreateResourcesInMap(const uint &type, JSONFile &meta_file, AssetFile * asset_file)
+{
+	if (type == ResourceModel::type)
+	{
+		ResourceModel * resource_model = CreateResource<ResourceModel>(meta_file.LoadUID());
+		resource_model->asset_source = asset_file->full_path;
+
+		std::vector<UID>meshes_uids;
+		meta_file.LoadUIDVector("exportedMeshes", meshes_uids);
+		for (auto mesh_iter = meshes_uids.begin(); mesh_iter != meshes_uids.end(); ++mesh_iter)
+		{
+			ResourceMesh * resource_mesh = CreateResource<ResourceMesh>((*mesh_iter));
+			resource_mesh->asset_source = asset_file->full_path;
+		}
+
+		std::vector<UID>textures_uids;
+		meta_file.LoadUIDVector("exportedTextures", textures_uids);
+		for (auto texture_iter = textures_uids.begin(); texture_iter != textures_uids.end(); ++texture_iter)
+		{
+			ResourceTexture * resource_texture = CreateResource<ResourceTexture>((*texture_iter));
+			resource_texture->asset_source = asset_file->full_path;
+		}
+	}
+	else if (type == ResourceTexture::type)
+	{
+		ResourceTexture * resource_texture = CreateResource<ResourceTexture>(meta_file.LoadUID());
+		resource_texture->asset_source = asset_file->full_path;
+	}
+	else
+	{
+		LOG("This format is unsupported.");
+	}
+}
+
+//Import resource without forcing the uid
+void ModuleResourceManager::ImportResource(const uint type, const char * path)
+{
+	if (type == ResourceModel::type)
+	{
+		App->import->ImportModel(path);
+	}
+	else if (type == ResourceTexture::type)
+	{
+		App->texture->ImportTexture(path);
+	}
+	else
+	{
+		LOG("This format is unsupported.");
 	}
 }
 
 //Check that the modified date of the .meta and the file match. That means the file hasn't been modified while the engine was closed.
-bool ModuleResourceManager::IsFileModified(JSONFile &meta_file, const char * file)
+bool ModuleResourceManager::HasBeenModified(JSONFile &meta_file, const char * file)
 {
 	int meta_file_dateModified = meta_file.LoadNumber("dateModified");
 	int asset_file_dateModified = 0;
@@ -187,14 +236,23 @@ bool ModuleResourceManager::MissingResources(JSONFile &meta_file, uint type)
 
 update_status ModuleResourceManager::PreUpdate()
 {
-	//TODO: Every second check for new assets and import them
-	//TODO: Also check for changes
+	if (check_assets_timer.ReadSec() > check_assets_interval)
+	{
+		LOG("upadted assets folder");
+		DeleteAssetTree(asset_dir);
+		asset_dir = new AssetDir();
+		asset_dir->name = ASSETS_FOLDER;
+		asset_dir->full_path = ASSETS_FOLDER;
+		CreateAssetTree(asset_dir);
+		UpdateCheckAssets(asset_dir);
+		check_assets_timer.Start();
+	}
 	return UPDATE_CONTINUE;
 }
 
 bool ModuleResourceManager::CleanUp()
 {
-	DeleteTreeRecursive(asset_dir);
+	DeleteAssetTree(asset_dir);
 	//RELEASE(asset_dir);
 	return true;
 }
@@ -222,7 +280,8 @@ UID ModuleResourceManager::GenerateNewUID()
 
 //TODO: Make a function directly on file system that returns files without .meta and returns class AssetFiles and class Dir instead of std::string
 //don't abstract it over an existing one, we end up with 2 lists for each
-void ModuleResourceManager::FillAssetTreeRecursive(AssetDir * dir)
+//INFO: Recursive function
+void ModuleResourceManager::CreateAssetTree(AssetDir * dir)
 {
 	std::vector<std::string> file_list;
 	std::vector<std::string> dir_list;
@@ -248,14 +307,15 @@ void ModuleResourceManager::FillAssetTreeRecursive(AssetDir * dir)
 	for (auto iter = dir_list.begin(); iter != dir_list.end(); ++iter)
 	{
 		AssetDir * new_dir = new AssetDir();
-		new_dir->name = dir->name + (*iter);
+		new_dir->name = (*iter);
 		new_dir->full_path = dir->full_path + (*iter) + "/";
-		FillAssetTreeRecursive(new_dir);
+		CreateAssetTree(new_dir);
 		dir->dirs.push_back(new_dir);
 	}
 }
 
-void ModuleResourceManager::DeleteTreeRecursive(AssetDir * dir)
+//INFO: Recursive function
+void ModuleResourceManager::DeleteAssetTree(AssetDir * dir)
 {
 	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
 	{
@@ -264,7 +324,7 @@ void ModuleResourceManager::DeleteTreeRecursive(AssetDir * dir)
 
 	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
 	{
-		DeleteTreeRecursive((*iter));
+		DeleteAssetTree((*iter));
 	}
 	delete(dir);
 }
@@ -279,6 +339,27 @@ uint ModuleResourceManager::GetResourceTypeFromExtension(const std::string & ext
 	{
 		return ResourceTexture::type;
 	}
+}
+
+const char * ModuleResourceManager::GetResourceTypeString(uint type)
+{
+	if (type == ResourceModel::type)
+	{
+		return "model";
+	}
+	else if (type == ResourceMesh::type)
+	{
+		return "mesh";
+	}
+	else if (type == ResourceTexture::type)
+	{
+		return "texture";
+	}
+	else if (type == ResourceMaterial::type)
+	{
+		return "material";
+	}
+	return "unsupported type";
 }
 
 UID ModuleResourceManager::LoadUID(JSONFile * meta_file) const

@@ -7,10 +7,11 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Resource.h"
+#include "Timer.h"
 
 class ResourceTexture;
 
-//Used to display the assets in the PanelAssets
+//Used to create the hirearchy of assets
 struct AssetFile
 {
 	//type (used to get the appropiate icon)
@@ -33,12 +34,6 @@ public:
 
 	bool Start(JSONFile * module_file) override;
 
-	void ImportAssetsRecursively(AssetDir * dir);
-
-	bool IsFileModified(JSONFile &meta_file, const char * file);
-
-	bool MissingResources(JSONFile & meta_file, uint type);
-
 	template<class ResourceType>
 	ResourceType * CreateResource(UID uid = INVALID_RESOURCE_UID)
 	{
@@ -60,24 +55,39 @@ public:
 
 	Resource * GetResource(UID uid);
 	uint GetResourceTypeFromExtension(const std::string & extension);
+	const char * GetResourceTypeString(uint type);
 
 	UID LoadUID(JSONFile * meta_file) const;
 	void SaveUID(JSONFile * meta_file, const UID & uid) const;
 	void SaveUIDArray(const std::vector<UID>& uid_vector, char * name, JSONFile * meta_file) const;
 
 private:
-	void DeleteDependantResources(std::vector<UID> uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension);
 	
-	UID GenerateNewUID();
+	//Checking assets helper functions
+	void StartCheckAssets(AssetDir * dir);
+	void UpdateCheckAssets(AssetDir * dir);
+	void CreateAssetTree(AssetDir * dir);
+	void DeleteAssetTree(AssetDir * dir);
 
-	void FillAssetTreeRecursive(AssetDir * dir);
-	void DeleteTreeRecursive(AssetDir * dir);
+	//Updating assets helper functions
+	void ImportResource(const uint type, const char * path);
+	void CreateResourcesInMap(const uint &type, JSONFile &meta_file, AssetFile * asset_file);
+	void ReImportResources(JSONFile &meta_file, const uint &type, AssetFile * asset_file);
+	
+	//Helpers to the functions to update assets
+	void DeleteDependantResources(std::vector<UID> uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension);
+	bool HasBeenModified(JSONFile &meta_file, const char * file);
+	bool MissingResources(JSONFile & meta_file, uint type);
+
+	UID GenerateNewUID();
 
 private:
 	std::map<UID, Resource*> resources;
 
 	//Used to diplay the assets in PanelAssets
 	AssetDir * asset_dir = nullptr;
+	Timer check_assets_timer;
+	float check_assets_interval = 0;
 
 	friend class PanelAssets;
 	friend class PanelResources;
