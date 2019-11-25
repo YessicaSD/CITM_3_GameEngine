@@ -1,7 +1,7 @@
 [
     {
         "name": "Main camera",
-        "UID": "13572271285177408937",
+        "UID": "08644308025817405165",
         "Parent UID": "00000000000000000000",
         "Components": {
             "Transform": {
@@ -32,7 +32,7 @@
     },
     {
         "name": "Camera",
-        "UID": "01330843699953894692",
+        "UID": "11690456084723960227",
         "Parent UID": "00000000000000000000",
         "Components": {
             "Transform": {
@@ -63,7 +63,7 @@
     },
     {
         "name": "RootNode",
-        "UID": "16117827655823361587",
+        "UID": "07641064650747645122",
         "Parent UID": "00000000000000000000",
         "Components": {
             "Transform": {
@@ -87,8 +87,8 @@
     },
     {
         "name": "Chimney",
-        "UID": "17154505314579933672",
-        "Parent UID": "16117827655823361587",
+        "UID": "03081530132868967681",
+        "Parent UID": "07641064650747645122",
         "Components": {
             "Transform": {
                 "Position": [
@@ -107,15 +107,18 @@
                     100
                 ]
             },
+            "Material": {
+                "Resource material UID": "14445747374968236097"
+            },
             "Mesh": {
-                "ResourceMeshUID": "10330937039413123950"
+                "Resource mesh UID": "18208540399779237370"
             }
         }
     },
     {
         "name": "Baker_house",
-        "UID": "04644392721356256801",
-        "Parent UID": "16117827655823361587",
+        "UID": "04422022233451342227",
+        "Parent UID": "07641064650747645122",
         "Components": {
             "Transform": {
                 "Position": [
@@ -134,8 +137,11 @@
                     100
                 ]
             },
+            "Material": {
+                "Resource material UID": "14445747374968236097"
+            },
             "Mesh": {
-                "ResourceMeshUID": "03329835019575598819"
+                "Resource mesh UID": "03577803988131324771"
             }
         }
     }

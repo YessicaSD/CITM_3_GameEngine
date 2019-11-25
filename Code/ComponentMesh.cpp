@@ -40,9 +40,11 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::OnPostUpdate()
 {
-	
 	if (mesh == nullptr)
+	{
+		LOG("Error: Invalid mesh.");
 		return;
+	}
 
 	if (gameobject->transform->IsSelected())
 	{
@@ -302,14 +304,13 @@ void ComponentMesh::OnSave(JSONFile * file)
 	JSONFile mesh_file = file->AddSection("Mesh");
 	if (mesh != nullptr)
 	{
-		mesh_file.SaveUID("ResourceMeshUID", mesh->GetUID());
+		mesh_file.SaveUID("Resource mesh UID", mesh->GetUID());
 	}
-
 }
 
 void ComponentMesh::OnLoad(JSONFile *file)
 {
-	UID resource = file->LoadUID("ResourceMeshUID");
+	UID resource = file->LoadUID("Resource mesh UID");
 	ResourceMesh* new_mesh = (ResourceMesh*)App->resource_manager->GetResource(resource);
 	if (new_mesh != nullptr)
 	{

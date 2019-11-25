@@ -5,6 +5,8 @@
 
 #include "imgui/imgui.h"
 #include "Globals.h"
+#include "Application.h"
+#include "ModuleResourceManager.h"
 
 CLASS_DEFINITION(Component, ComponentMaterial)
 
@@ -97,4 +99,23 @@ void ComponentMaterial::PropertiesEditor()
 void ComponentMaterial::SetMeshComponent(ComponentMesh *component_mesh)
 {
 	this->component_mesh = component_mesh;
+}
+
+void ComponentMaterial::OnSave(JSONFile * file)
+{
+	JSONFile material_file = file->AddSection("Material");
+	if (texture != nullptr)
+	{
+		material_file.SaveUID("Resource material UID", texture->GetUID());
+	}
+}
+
+void ComponentMaterial::OnLoad(JSONFile * file)
+{
+	UID resource_uid = file->LoadUID("Resource material UID");
+	ResourceTexture * texture = (ResourceTexture*)App->resource_manager->GetResource(resource_uid);
+	if (texture != nullptr)
+	{
+		SetTexture(texture);
+	}
 }

@@ -5,6 +5,7 @@
 #include "ModuleRandom.h"
 #include "ModuleScene.h"
 #include "ComponentCamera.h"
+#include "ComponentMaterial.h"
 
 GameObject::GameObject(std::string name, ComponentTransform * parent, UID uid):
 	name(name)
@@ -156,10 +157,16 @@ void GameObject::OnLoad(JSONFile * file)
 	component_file = file->GetSection("Mesh");
 	if (component_file.IsValid())
 	{
-		ComponentMesh* component_camera = CreateComponent<ComponentMesh>();
-		component_camera->OnLoad(&component_file);
+		ComponentMesh* component_mesh = CreateComponent<ComponentMesh>();
+		component_mesh->OnLoad(&component_file);
 	}
-
+	component_file = file->GetSection("Material");
+	if (component_file.IsValid())
+	{
+		//INFO: Component mesh creates a component material, that's why we use GetComponent instead of CreateComponent
+		ComponentMaterial * component_material = GetComponent<ComponentMaterial>();
+		component_material->OnLoad(&component_file);
+	}
 }
 
 UID GameObject::GetUID()

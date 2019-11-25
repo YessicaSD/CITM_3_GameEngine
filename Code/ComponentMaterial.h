@@ -21,6 +21,8 @@ public:
 	void RenderTexture();
 	void PropertiesEditor() override;
 	void SetMeshComponent(ComponentMesh * component_mesh);
+	void OnSave(JSONFile * file) override;
+	void OnLoad(JSONFile * file) override;
 
 private:
 	ResourceTexture* texture = nullptr;
