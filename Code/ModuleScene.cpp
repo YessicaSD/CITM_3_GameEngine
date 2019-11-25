@@ -247,7 +247,12 @@ void ModuleScene::DrawWithFrustrum(ComponentCamera * camera)
 void ModuleScene::SaveScene()
 {
 	current_scene.CreateJSONFileArray();
-	root_gameobject->OnSave(&current_scene);
+	for (auto iter = root_gameobject->transform->children.begin();
+		iter != root_gameobject->transform->children.end();
+		++iter)
+	{
+		(*iter)->gameobject->OnSave(&current_scene);
+	}
 	current_scene.SaveFile(std::string(ASSETS_FOLDER) + current_scene_name.c_str() + "." + SCENE_EXTENSION);
 	current_scene.CloseFile();
 	LOG("Saved scene");
@@ -266,41 +271,35 @@ void ModuleScene::LoadScene(const char * scene_path)
 	}
 	current_scene.LoadArray();
 	std::map<UID, GameObject*> new_gameobjects;
+	std::map<UID, UID> parent_index;
 	int number_of_objects = current_scene.GetNumberOfElement();
 	root_gameobject->transform->DeleteChildren();
+
+	//INFO: Load all gameobjects into a map
 	for (int i = 0; i < number_of_objects; ++i)
 	{
 		JSONFile current_object(current_scene.GetObjectArray(i));
 		GameObject* gameobject_ptr = new GameObject(std::string(current_object.LoadText("name")), nullptr, current_object.LoadUID("UID"));
 		gameobject_ptr->OnLoad(&current_object.GetSection("Components"));
 		new_gameobjects[gameobject_ptr->uid] = gameobject_ptr;
+		parent_index[gameobject_ptr->uid] = current_object.LoadUID("Parent UID");
 	}
 
-	for (int i = 0; i < number_of_objects; ++i)
+	//INFO: Parent them
+	for (auto iter = new_gameobjects.begin(); iter != new_gameobjects.end(); ++iter)
 	{
-		JSONFile current_object(current_scene.GetObjectArray(i));
-		std::map<UID, GameObject*>::iterator gameobject_iter = new_gameobjects.find(current_object.LoadUID("UID"));
-		if(gameobject_iter!= new_gameobjects.end())
+		GameObject * current_gameobject = (*iter).second;
+		UID parent_uid = parent_index[(*iter).first];
+		if (parent_uid != INVALID_GAMEOBJECT_UID)
 		{
-			GameObject* gameobject_ptr = (*gameobject_iter).second;
-			
-			UID parent_uid = current_object.LoadUID("Parent UID");
-			std::map<UID, GameObject*>::iterator parent_iter = new_gameobjects.find(parent_uid);
-			if (parent_iter != new_gameobjects.end())
-			{
-				GameObject* parent = (*parent_iter).second;
-				parent->transform->AddChild(gameobject_ptr->transform);
-			}
-			else
-			{
-				App->scene->root_gameobject->transform->AddChild(gameobject_ptr->transform);
-			}
+			GameObject * parent_gameobject = new_gameobjects[parent_uid];
+			current_gameobject->transform->SetParent(parent_gameobject->transform);
 		}
-		
+		else
+		{
+			current_gameobject->transform->SetParent(root_gameobject->transform);
+		}
 	}
-
-
-
 }
 
 update_status ModuleScene::PostUpdate()

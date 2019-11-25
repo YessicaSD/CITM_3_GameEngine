@@ -56,7 +56,7 @@ public:
 	void Reset();
 	void UpdateDisplayValues();
 	void DeleteChildren();
-	void DeleteFromChildrens(ComponentTransform* );
+	void DeleteFromChildren(ComponentTransform* );
 	void AddChild(ComponentTransform* ne_object);
 	void DrawAxis();
 	AABB GetAABB();

@@ -3,6 +3,7 @@
 #include "ComponentMesh.h"
 #include "Application.h"
 #include "ModuleRandom.h"
+#include "ModuleScene.h"
 #include "ComponentCamera.h"
 
 GameObject::GameObject(std::string name, ComponentTransform * parent, UID uid):
@@ -111,29 +112,31 @@ void GameObject::SetActive(bool value)
 	active = value;
 }
 
-void GameObject::OnSave(JSONFile * scene)
+void GameObject::OnSave(JSONFile * json_scene)
 {
-	if (transform->parent != nullptr)
+	JSONFile  json_gameobject;
+	json_gameobject.CreateJSONFile();
+	json_gameobject.SaveText("name", name.c_str());
+	json_gameobject.SaveUID("UID", uid);
+	if (transform->parent != App->scene->root_gameobject->transform)
 	{
-		JSONFile  this_gameobject;
-		this_gameobject.CreateJSONFile();
-		this_gameobject.SaveText("name", name.c_str());
-		this_gameobject.SaveUID("UID", uid);
-		this_gameobject.SaveUID("Parent UID", transform->parent->gameobject->GetUID());
-		JSONFile* components_section = &this_gameobject.AddSection("Components");
-		for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
-		{
-			(*iter)->OnSave(components_section);
-		}
-
-		scene->AddArrayValue(this_gameobject.GetValue());
+		json_gameobject.SaveUID("Parent UID", transform->parent->gameobject->GetUID());
 	}
+	else
+	{
+		json_gameobject.SaveUID("Parent UID", INVALID_GAMEOBJECT_UID);
+	}
+	JSONFile* components_section = &json_gameobject.AddSection("Components");
+	for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
+	{
+		(*iter)->OnSave(components_section);
+	}
+	json_scene->AddArrayValue(json_gameobject.GetValue());
+
 	for (std::vector<ComponentTransform*>::iterator iter = transform->children.begin(); iter != transform->children.end(); ++iter)
 	{
-		(*iter)->gameobject->OnSave(scene);
+		(*iter)->gameobject->OnSave(json_scene);
 	}
-	
-	
 }
 
 void GameObject::OnLoad(JSONFile * file)

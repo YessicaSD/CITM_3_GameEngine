@@ -349,7 +349,7 @@ void ComponentTransform::UpdateDisplayValues()
 
 void ComponentTransform::DeleteChildren()
 {
-	if (gameobject->transform->children.size() > 0)
+	if (!children.empty())
 	{
 		for (std::vector<ComponentTransform *>::iterator iter = children.begin(); iter != children.end(); ++iter)
 		{
@@ -360,7 +360,7 @@ void ComponentTransform::DeleteChildren()
 	}
 }
 
-void ComponentTransform::DeleteFromChildrens(ComponentTransform * object)
+void ComponentTransform::DeleteFromChildren(ComponentTransform * object)
 {
 	if (gameobject->transform->children.size() > 0)
 	{
@@ -380,7 +380,7 @@ void ComponentTransform::AddChild(ComponentTransform * new_object)
 {
 	if (new_object->parent != nullptr)
 	{
-		new_object->parent->DeleteFromChildrens(new_object);
+		new_object->parent->DeleteFromChildren(new_object);
 	}
 	children.push_back(new_object);
 	new_object->parent = this;

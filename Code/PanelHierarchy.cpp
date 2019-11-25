@@ -131,7 +131,7 @@ void PanelHierarchy::DropObject(ComponentTransform * object)
 
 void PanelHierarchy::ChangeHierarchy()
 {
-	drag_object->parent->DeleteFromChildrens(drag_object);
+	drag_object->parent->DeleteFromChildren(drag_object);
 	target_object->AddChild(drag_object);
 	drag_object->SetGlobalMatrix(target_object->global_matrix *  drag_object->local_matrix);
 

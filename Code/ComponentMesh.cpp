@@ -99,8 +99,6 @@ void ComponentMesh::OnPostUpdate()
 		{
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
-		
-		
 	}
 	
 	if (render_mode.wireframe)
