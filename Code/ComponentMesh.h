@@ -38,7 +38,8 @@ public:
 	void DrawOutline();
 	bool Intersect(LineSegment* ray, RaycastHit& out_hit);
 	bool SetMesh(ResourceMesh* mesh);
-
+	void OnSave(JSONFile*) override;
+	void OnLoad(JSONFile*) override;
 private:
 	ResourceMesh *mesh = nullptr;
 	BoundingBox *bounding_box;

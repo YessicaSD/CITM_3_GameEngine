@@ -3,7 +3,7 @@ A 3D game engine created in the third year of our Videogame Design and Developme
 
 # Instructions:
 
-- Drag an fbx to the scene to create a hirearchy of gameobjects that represents it.
+- Drag an fbx from the "Assets" panel to the "Scene" panel to create the hirearchy of gameobjects that represents it.
 
 ## Mouse picking
 - Click on any object with a mehs
@@ -15,6 +15,9 @@ A 3D game engine created in the third year of our Videogame Design and Developme
 - Rotate and move the main camera
 (Note that you must have gameobjects with bounding boxes in the scene to see the effect of the frustrum culling).
 
+## Quadtree
+- Quadtree is always visible inside the "Scene" panel
+
 ## Time management
 - Press Play to play the game.
 - Press Pause to pause the game.
@@ -24,7 +27,7 @@ A 3D game engine created in the third year of our Videogame Design and Developme
 - You can see the resource count of each resource in the "Resources" panel.
 
 ## Scene serialization
-- Drag a scene from the Assets panel to the Scene panel to load it.
+- Drag a scene from the "Assets" panel to the "Scene" panel to load it.
 - Go to File > Save Scene to save scenes.
 
 # Innovation

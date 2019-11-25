@@ -81,12 +81,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Module.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleCamera3D.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleInput.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
@@ -525,9 +519,6 @@
     <ClInclude Include="Component.h">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Sources\EntityComponentSystem</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleImport.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
@@ -554,9 +545,6 @@
     </ClInclude>
     <ClInclude Include="PanelAssets.h">
       <Filter>Sources\Editor\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleAudio.h">
-      <Filter>Sources\Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleHardware.h">
       <Filter>Sources\Modules</Filter>
@@ -594,12 +582,6 @@
     </ClInclude>
     <ClInclude Include="imGuizmo\ImSequencer.h">
       <Filter>Sources\Tools\imGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="RaycastHit.h">
-      <Filter>Sources\EntityComponentSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Octree.h">
-      <Filter>Sources\EntityComponentSystem</Filter>
     </ClInclude>
     <ClInclude Include="PanelGame.h">
       <Filter>Sources\Editor\Panels</Filter>
@@ -640,11 +622,26 @@
     <ClInclude Include="PanelImport.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Octree.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="RaycastHit.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleAudio.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCamera3D.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ModuleCamera3D.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleInput.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
@@ -831,9 +828,6 @@
     <ClCompile Include="PanelAbout.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Sources\EntityComponentSystem</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleImport.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
@@ -857,12 +851,6 @@
     </ClCompile>
     <ClCompile Include="PanelAssets.cpp">
       <Filter>Sources\Editor\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleAudio.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleFileSystem.cpp">
-      <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleHardware.cpp">
       <Filter>Sources\Modules</Filter>
@@ -910,9 +898,6 @@
     <ClCompile Include="ImguiShortFuntions.cpp">
       <Filter>Sources\Tools\imguiShortFuntions</Filter>
     </ClCompile>
-    <ClCompile Include="Octree.cpp">
-      <Filter>Sources\EntityComponentSystem</Filter>
-    </ClCompile>
     <ClCompile Include="PanelGame.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
@@ -948,6 +933,21 @@
     </ClCompile>
     <ClCompile Include="PanelResources.cpp">
       <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Octree.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleAudio.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleCamera3D.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFileSystem.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

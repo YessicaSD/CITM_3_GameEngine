@@ -26,10 +26,13 @@ GameObject::~GameObject()
 	for (std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); iter++)
 	{
 		Component* aux = (*iter);
+		(*iter) = nullptr;
+		aux->CleanUp();
 		if (aux)
 		{
 			delete aux;
 		}
+		
 	}
 	components.clear();
 }
@@ -145,6 +148,12 @@ void GameObject::OnLoad(JSONFile * file)
 	if (component_file.IsValid())
 	{
 		ComponentCamera* component_camera = CreateComponent<ComponentCamera>();
+		component_camera->OnLoad(&component_file);
+	}
+	component_file = file->GetSection("Mesh");
+	if (component_file.IsValid())
+	{
+		ComponentMesh* component_camera = CreateComponent<ComponentMesh>();
 		component_camera->OnLoad(&component_file);
 	}
 

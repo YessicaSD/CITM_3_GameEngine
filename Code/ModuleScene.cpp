@@ -271,7 +271,7 @@ void ModuleScene::LoadScene(const char * scene_path)
 	for (int i = 0; i < number_of_objects; ++i)
 	{
 		JSONFile current_object(current_scene.GetObjectArray(i));
-		GameObject* gameobject_ptr = new GameObject(std::string(current_object.LoadText("name")), root_gameobject->transform, current_object.LoadUID("UID"));
+		GameObject* gameobject_ptr = new GameObject(std::string(current_object.LoadText("name")), nullptr, current_object.LoadUID("UID"));
 		gameobject_ptr->OnLoad(&current_object.GetSection("Components"));
 		new_gameobjects[gameobject_ptr->uid] = gameobject_ptr;
 	}
@@ -283,12 +283,17 @@ void ModuleScene::LoadScene(const char * scene_path)
 		if(gameobject_iter!= new_gameobjects.end())
 		{
 			GameObject* gameobject_ptr = (*gameobject_iter).second;
+			
 			UID parent_uid = current_object.LoadUID("Parent UID");
 			std::map<UID, GameObject*>::iterator parent_iter = new_gameobjects.find(parent_uid);
 			if (parent_iter != new_gameobjects.end())
 			{
 				GameObject* parent = (*parent_iter).second;
 				parent->transform->AddChild(gameobject_ptr->transform);
+			}
+			else
+			{
+				App->scene->root_gameobject->transform->AddChild(gameobject_ptr->transform);
 			}
 		}
 		
@@ -302,6 +307,8 @@ update_status ModuleScene::PostUpdate()
 {
 	App->renderer3D->scene_fbo.StartRender(App->gui->panel_scene->current_viewport_size);
 
+	glLineWidth(5);
+	glColor4f(0, 0, 255, 1);
 	octree.Draw();
 
 	PPlane p(0, 1, 0, 0);
