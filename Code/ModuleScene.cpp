@@ -260,9 +260,11 @@ void ModuleScene::SaveScene()
 
 void ModuleScene::LoadScene(const char * scene_path)
 {
-	std::string scene_name;
-	App->file_system->SplitFilePath(scene_path, nullptr, &scene_name, nullptr);
-	current_scene_name = scene_name;
+	std::string scene_name_;
+	std::string extension_;
+	App->file_system->SplitFilePath(scene_path, nullptr, &scene_name_, &extension_);
+	size_t pos_extension = scene_name_.find(extension_);
+	current_scene_name = scene_name_.substr(0, pos_extension-1);
 	current_scene.LoadFile(scene_path);
 	if (json_value_get_type(current_scene.GetValue()) != JSONArray)
 	{

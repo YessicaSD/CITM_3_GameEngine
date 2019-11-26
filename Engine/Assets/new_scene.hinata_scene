@@ -1,7 +1,87 @@
 [
     {
+        "name": "RootNode",
+        "UID": "01009723283990558204",
+        "Parent UID": "00000000000000000000",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    -13.096096992492676
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Baker_house",
+        "UID": "07285639855517330336",
+        "Parent UID": "01009723283990558204",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "13065260510586872993"
+            }
+        }
+    },
+    {
+        "name": "Chimney",
+        "UID": "16942631088091884606",
+        "Parent UID": "01009723283990558204",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "17892528331966188754"
+            }
+        }
+    },
+    {
         "name": "Main camera",
-        "UID": "08644308025817405165",
+        "UID": "03672835193731771459",
         "Parent UID": "00000000000000000000",
         "Components": {
             "Transform": {
@@ -32,7 +112,7 @@
     },
     {
         "name": "Camera",
-        "UID": "11690456084723960227",
+        "UID": "04882064829988491305",
         "Parent UID": "00000000000000000000",
         "Components": {
             "Transform": {
@@ -58,90 +138,6 @@
                 "aspect_ratio ": 500,
                 "verticalFov ": 1.0471975803375244,
                 "horizontalFov ": 1.2877128124237061
-            }
-        }
-    },
-    {
-        "name": "RootNode",
-        "UID": "07641064650747645122",
-        "Parent UID": "00000000000000000000",
-        "Components": {
-            "Transform": {
-                "Position": [
-                    0,
-                    0,
-                    0
-                ],
-                "Rotation": [
-                    -0,
-                    0,
-                    -0
-                ],
-                "Scale": [
-                    1,
-                    1,
-                    1
-                ]
-            }
-        }
-    },
-    {
-        "name": "Chimney",
-        "UID": "03081530132868967681",
-        "Parent UID": "07641064650747645122",
-        "Components": {
-            "Transform": {
-                "Position": [
-                    0,
-                    0,
-                    0
-                ],
-                "Rotation": [
-                    -90.000007629394531,
-                    0,
-                    0
-                ],
-                "Scale": [
-                    100,
-                    100,
-                    100
-                ]
-            },
-            "Material": {
-                "Resource material UID": "14445747374968236097"
-            },
-            "Mesh": {
-                "Resource mesh UID": "18208540399779237370"
-            }
-        }
-    },
-    {
-        "name": "Baker_house",
-        "UID": "04422022233451342227",
-        "Parent UID": "07641064650747645122",
-        "Components": {
-            "Transform": {
-                "Position": [
-                    0,
-                    0,
-                    0
-                ],
-                "Rotation": [
-                    -90.000007629394531,
-                    0,
-                    0
-                ],
-                "Scale": [
-                    100,
-                    100,
-                    100
-                ]
-            },
-            "Material": {
-                "Resource material UID": "14445747374968236097"
-            },
-            "Mesh": {
-                "Resource mesh UID": "03577803988131324771"
             }
         }
     }
