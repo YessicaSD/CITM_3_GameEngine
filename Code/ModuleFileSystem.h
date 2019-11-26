@@ -29,6 +29,7 @@ public:
 	void NormalizePath(char * full_path) const;
 
 	void NormalizePath(std::string & full_path) const;
+	bool CleanUp() override;
 
 private:
 	void CreateAssimpIO();

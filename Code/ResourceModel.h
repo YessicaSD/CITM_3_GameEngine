@@ -31,6 +31,7 @@ struct ModelNode {
 	UID mesh_uid = INVALID_RESOURCE_UID;
 	UID material_uid = INVALID_RESOURCE_UID;
 	uint parent_index = INVALID_MODEL_ARRAY_INDEX;
+
 };
 //TODO: Alert when a Node has more than one mesh or material
 

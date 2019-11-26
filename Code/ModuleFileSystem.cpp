@@ -366,3 +366,16 @@ void ModuleFileSystem::NormalizePath(std::string & full_path) const
 			*it = tolower(*it);
 	}
 }
+
+bool ModuleFileSystem::CleanUp()
+{
+	if (AssimpIO != nullptr)
+	{
+		delete AssimpIO;
+	}
+	if (BassIO != nullptr)
+	{
+		delete BassIO;
+	}
+	return true;
+}

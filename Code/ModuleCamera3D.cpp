@@ -59,7 +59,10 @@ bool ModuleCamera3D::Start(JSONFile* config)
 bool ModuleCamera3D::CleanUp()
 {
 	LOG("Cleaning camera");
-
+	if (scene_camera != nullptr)
+	{
+		delete scene_camera;
+	}
 	return true;
 }
 
