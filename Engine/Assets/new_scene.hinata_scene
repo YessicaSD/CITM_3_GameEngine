@@ -1,14 +1,14 @@
 [
     {
         "name": "RootNode",
-        "UID": "01009723283990558204",
+        "UID": "00491354538630772738",
         "Parent UID": "00000000000000000000",
         "Components": {
             "Transform": {
                 "Position": [
+                    118.49542999267578,
                     0,
-                    0,
-                    -13.096096992492676
+                    -51.470909118652344
                 ],
                 "Rotation": [
                     -0,
@@ -24,37 +24,33 @@
         }
     },
     {
-        "name": "Baker_house",
-        "UID": "07285639855517330336",
-        "Parent UID": "01009723283990558204",
+        "name": "Camera001_$AssimpFbx$_Translation",
+        "UID": "03464038425146433430",
+        "Parent UID": "00491354538630772738",
         "Components": {
             "Transform": {
                 "Position": [
-                    0,
-                    0,
-                    0
+                    -78.312431335449219,
+                    45.251216888427734,
+                    -97.031112670898438
                 ],
                 "Rotation": [
+                    -0,
                     0,
-                    0,
-                    0
+                    -0
                 ],
                 "Scale": [
                     1,
                     1,
                     1
                 ]
-            },
-            "Material": {},
-            "Mesh": {
-                "Resource mesh UID": "13065260510586872993"
             }
         }
     },
     {
-        "name": "Chimney",
-        "UID": "16942631088091884606",
-        "Parent UID": "01009723283990558204",
+        "name": "Camera001_$AssimpFbx$_PreRotation",
+        "UID": "01063896879722203523",
+        "Parent UID": "03464038425146433430",
         "Components": {
             "Transform": {
                 "Position": [
@@ -63,9 +59,211 @@
                     0
                 ],
                 "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001_$AssimpFbx$_Rotation",
+        "UID": "04321362992796820569",
+        "Parent UID": "01063896879722203523",
+        "Components": {
+            "Transform": {
+                "Position": [
                     0,
                     0,
                     0
+                ],
+                "Rotation": [
+                    -68.525253295898438,
+                    -37.000518798828125,
+                    -166.68003845214844
+                ],
+                "Scale": [
+                    1,
+                    0.99999994039535522,
+                    0.99999994039535522
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001",
+        "UID": "01820508155159765352",
+        "Parent UID": "04321362992796820569",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Dummy001_$AssimpFbx$_PreRotation",
+        "UID": "10714588840484860282",
+        "Parent UID": "00491354538630772738",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Dummy001_$AssimpFbx$_Rotation",
+        "UID": "13284804679459504158",
+        "Parent UID": "10714588840484860282",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Dummy001",
+        "UID": "00628069853467437479",
+        "Parent UID": "13284804679459504158",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "City_building_040",
+        "UID": "00154423677503876632",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -34.679481506347656,
+                    -30.643888473510742,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "12659375294264980071"
+            }
+        }
+    },
+    {
+        "name": "Plane001",
+        "UID": "00296467850872916817",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -0.02860260009765625,
+                    0.026032090187072754,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    0.99663525819778442,
+                    0.97061645984649658,
+                    0.99663525819778442
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "15853311603505369706"
+            }
+        }
+    },
+    {
+        "name": "Object010",
+        "UID": "00412808210803007403",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -2.5033531188964844,
+                    15.800846099853516,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
                 ],
                 "Scale": [
                     1,
@@ -75,7 +273,2717 @@
             },
             "Material": {},
             "Mesh": {
-                "Resource mesh UID": "17892528331966188754"
+                "Resource mesh UID": "11565914221687152320"
+            }
+        }
+    },
+    {
+        "name": "City_building_036",
+        "UID": "02556951423729036960",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -31.216331481933594,
+                    33.201576232910156,
+                    5.0146070407208754e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15867455117889165186"
+            },
+            "Mesh": {
+                "Resource mesh UID": "16371907292180902183"
+            }
+        }
+    },
+    {
+        "name": "City_building_038",
+        "UID": "02626680792432131425",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -41.649002075195313,
+                    -16.495393753051758,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "13059308645348804955"
+            }
+        }
+    },
+    {
+        "name": "City_building_039",
+        "UID": "03597717037505034209",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -42.807239532470703,
+                    -30.643888473510742,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15995505532977407547"
+            }
+        }
+    },
+    {
+        "name": "City_building_007",
+        "UID": "03618020655184847312",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    16.010492324829102,
+                    37.4932861328125,
+                    -1.5106878663573298e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "16444683839873919948"
+            },
+            "Mesh": {
+                "Resource mesh UID": "00928139928712981396"
+            }
+        }
+    },
+    {
+        "name": "City_building_004",
+        "UID": "04664796819607773268",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -41.47589111328125,
+                    21.01409912109375,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14771579051282903914"
+            },
+            "Mesh": {
+                "Resource mesh UID": "11916218433062356827"
+            }
+        }
+    },
+    {
+        "name": "City_building_030",
+        "UID": "05112438230613315929",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -42.807239532470703,
+                    -41.835563659667969,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "18231548638554742262"
+            }
+        }
+    },
+    {
+        "name": "Line002",
+        "UID": "05539528409123547795",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -2.1597719192504883,
+                    1.8538382053375244,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "02878501416304248196"
+            }
+        }
+    },
+    {
+        "name": "City_building_013",
+        "UID": "05707157979504528555",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -42.288055419921875,
+                    33.201576232910156,
+                    5.0146070407208754e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15867455117889165186"
+            },
+            "Mesh": {
+                "Resource mesh UID": "05240776060988882902"
+            }
+        }
+    },
+    {
+        "name": "City_building_024",
+        "UID": "06619823658381965731",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -20.572771072387695,
+                    43.060829162597656,
+                    -0.069194458425045013
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "07205349593135142298"
+            },
+            "Mesh": {
+                "Resource mesh UID": "06838663246489514791"
+            }
+        }
+    },
+    {
+        "name": "City_building_011",
+        "UID": "06668574492715015035",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    30.134540557861328,
+                    37.4932861328125,
+                    -1.5106878663573298e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "16444683839873919948"
+            },
+            "Mesh": {
+                "Resource mesh UID": "11609343839393068316"
+            }
+        }
+    },
+    {
+        "name": "City_building_022",
+        "UID": "07238360500539707774",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -20.831323623657227,
+                    -27.426488876342773,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    179.99998474121094
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15266121678395268444"
+            }
+        }
+    },
+    {
+        "name": "City_building_010",
+        "UID": "07262389978067111869",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    25.154010772705078,
+                    -39.153720855712891,
+                    8.5538641769744572e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15284196930414196369"
+            },
+            "Mesh": {
+                "Resource mesh UID": "08606449389156238866"
+            }
+        }
+    },
+    {
+        "name": "City_building_028",
+        "UID": "08419006698559400658",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    13.38798999786377,
+                    -33.755039215087891,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "18314339774503355685"
+            }
+        }
+    },
+    {
+        "name": "City_building_016",
+        "UID": "09078840567845437332",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    34.270423889160156,
+                    -41.972747802734375,
+                    8.5538641769744572e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15284196930414196369"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15746719900106787727"
+            }
+        }
+    },
+    {
+        "name": "City_building_041",
+        "UID": "09859107783649664179",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    30.695278167724609,
+                    21.612646102905273,
+                    2.1210729528320371e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14733880248132658698"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15320433348465605622"
+            }
+        }
+    },
+    {
+        "name": "City_building_037",
+        "UID": "10229960547208492116",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -20.317693710327148,
+                    -16.163608551025391,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    179.99998474121094
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "17613186674968104789"
+            }
+        }
+    },
+    {
+        "name": "City_building_034",
+        "UID": "10465503413716969580",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    16.049516677856445,
+                    -16.696884155273438,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "04288941099017030226"
+            }
+        }
+    },
+    {
+        "name": "City_building_017",
+        "UID": "10784792112625931574",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    44.260082244873047,
+                    -39.153720855712891,
+                    8.5538641769744572e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15284196930414196369"
+            },
+            "Mesh": {
+                "Resource mesh UID": "06293353426884063888"
+            }
+        }
+    },
+    {
+        "name": "City_building_026",
+        "UID": "11604216113434846055",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    31.51188850402832,
+                    -16.446016311645508,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15753797875197836635"
+            }
+        }
+    },
+    {
+        "name": "City_building_001",
+        "UID": "13203213518786107622",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    17.707164764404297,
+                    20.053276062011719,
+                    2.1210729528320371e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14733880248132658698"
+            },
+            "Mesh": {
+                "Resource mesh UID": "01606240264634157779"
+            }
+        }
+    },
+    {
+        "name": "City_building_035",
+        "UID": "13534831764696196624",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    13.38798999786377,
+                    -40.802516937255859,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "00914135248714147291"
+            }
+        }
+    },
+    {
+        "name": "City_building_014",
+        "UID": "13671088420095346392",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -19.439706802368164,
+                    32.061729431152344,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14771579051282903914"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15489573329400754498"
+            }
+        }
+    },
+    {
+        "name": "City_building_023",
+        "UID": "13771189049628936507",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    42.130641937255859,
+                    37.4932861328125,
+                    -1.5106878663573298e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "16444683839873919948"
+            },
+            "Mesh": {
+                "Resource mesh UID": "01838048854247735223"
+            }
+        }
+    },
+    {
+        "name": "City_building_032",
+        "UID": "15033374049171155079",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -29.478403091430664,
+                    21.01409912109375,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14771579051282903914"
+            },
+            "Mesh": {
+                "Resource mesh UID": "13356094658268076714"
+            }
+        }
+    },
+    {
+        "name": "City_building_033",
+        "UID": "15527407900025529578",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -32.361495971679688,
+                    42.37042236328125,
+                    5.0146070407208754e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15867455117889165186"
+            },
+            "Mesh": {
+                "Resource mesh UID": "08384411622197132026"
+            }
+        }
+    },
+    {
+        "name": "City_building_031",
+        "UID": "17874560035303793776",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -34.679481506347656,
+                    -41.835563659667969,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "03009881104748671644"
+            }
+        }
+    },
+    {
+        "name": "City_building_008",
+        "UID": "18408745440327815793",
+        "Parent UID": "00628069853467437479",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    40.979995727539063,
+                    18.270824432373047,
+                    -2.0522466002148576e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "07205349593135142298"
+            },
+            "Mesh": {
+                "Resource mesh UID": "00325423231483664790"
+            }
+        }
+    },
+    {
+        "name": "Sky001_$AssimpFbx$_Translation",
+        "UID": "13581931561624975737",
+        "Parent UID": "00491354538630772738",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    18.153732299804688,
+                    0,
+                    58.960910797119141
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001_$AssimpFbx$_PreRotation",
+        "UID": "11874014287011223581",
+        "Parent UID": "13581931561624975737",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001_$AssimpFbx$_PostRotation",
+        "UID": "05240734869593314679",
+        "Parent UID": "11874014287011223581",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001",
+        "UID": "06042004722405342058",
+        "Parent UID": "05240734869593314679",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target_$AssimpFbx$_Translation",
+        "UID": "13643519877896925187",
+        "Parent UID": "00491354538630772738",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    28.890945434570313,
+                    -60.963882446289063,
+                    -2.6648158382158726e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target_$AssimpFbx$_PreRotation",
+        "UID": "08612042559538798005",
+        "Parent UID": "13643519877896925187",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target_$AssimpFbx$_Rotation",
+        "UID": "18176306265124384385",
+        "Parent UID": "08612042559538798005",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    90.000007629394531,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target",
+        "UID": "05077545746822900125",
+        "Parent UID": "18176306265124384385",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target_$AssimpFbx$_Translation",
+        "UID": "13960572556267274060",
+        "Parent UID": "00491354538630772738",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -28.132621765136719,
+                    20.873329162597656,
+                    -35.064212799072266
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target_$AssimpFbx$_PreRotation",
+        "UID": "05508367853078149769",
+        "Parent UID": "13960572556267274060",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target_$AssimpFbx$_Rotation",
+        "UID": "08626043244687728315",
+        "Parent UID": "05508367853078149769",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -68.525245666503906,
+                    -37.000530242919922,
+                    -166.68003845214844
+                ],
+                "Scale": [
+                    1,
+                    0.99999994039535522,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target",
+        "UID": "15738085111508418160",
+        "Parent UID": "08626043244687728315",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_Translation",
+        "UID": "15922944530741387586",
+        "Parent UID": "00491354538630772738",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -66.721267700195313,
+                    141.93412780761719,
+                    6.2041376622801181e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_PreRotation",
+        "UID": "00698876051432954210",
+        "Parent UID": "15922944530741387586",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_Rotation",
+        "UID": "15553235235207449774",
+        "Parent UID": "00698876051432954210",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    4.7190992518153507e-06,
+                    -25.231357574462891,
+                    -90
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_PostRotation",
+        "UID": "15103529585327153332",
+        "Parent UID": "15553235235207449774",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001",
+        "UID": "11626100729196591435",
+        "Parent UID": "15103529585327153332",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "RootNode",
+        "UID": "03366523139335086943",
+        "Parent UID": "00000000000000000000",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    57.368221282958984
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001_$AssimpFbx$_Translation",
+        "UID": "04780043936667707872",
+        "Parent UID": "03366523139335086943",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -78.312431335449219,
+                    45.251216888427734,
+                    -97.031112670898438
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001_$AssimpFbx$_PreRotation",
+        "UID": "00438331967086150238",
+        "Parent UID": "04780043936667707872",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001_$AssimpFbx$_Rotation",
+        "UID": "07090557220954289466",
+        "Parent UID": "00438331967086150238",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -68.525253295898438,
+                    -37.000518798828125,
+                    -166.68003845214844
+                ],
+                "Scale": [
+                    1,
+                    0.99999994039535522,
+                    0.99999994039535522
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001",
+        "UID": "00443897230233653473",
+        "Parent UID": "07090557220954289466",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target_$AssimpFbx$_Translation",
+        "UID": "08363820884414889407",
+        "Parent UID": "03366523139335086943",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    28.890945434570313,
+                    -60.963882446289063,
+                    -2.6648158382158726e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target_$AssimpFbx$_PreRotation",
+        "UID": "08959713266899557454",
+        "Parent UID": "08363820884414889407",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target_$AssimpFbx$_Rotation",
+        "UID": "16138495714279339288",
+        "Parent UID": "08959713266899557454",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    90.000007629394531,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target",
+        "UID": "09699490803989841826",
+        "Parent UID": "16138495714279339288",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001_$AssimpFbx$_Translation",
+        "UID": "10778124266568017118",
+        "Parent UID": "03366523139335086943",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    18.153732299804688,
+                    0,
+                    58.960910797119141
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001_$AssimpFbx$_PreRotation",
+        "UID": "14219265011945555118",
+        "Parent UID": "10778124266568017118",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001_$AssimpFbx$_PostRotation",
+        "UID": "10990867928322348794",
+        "Parent UID": "14219265011945555118",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001",
+        "UID": "07398965693612690630",
+        "Parent UID": "10990867928322348794",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_Translation",
+        "UID": "15195775498166887291",
+        "Parent UID": "03366523139335086943",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -66.721267700195313,
+                    141.93412780761719,
+                    6.2041376622801181e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_PreRotation",
+        "UID": "13668740015061169135",
+        "Parent UID": "15195775498166887291",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_Rotation",
+        "UID": "10477929176734531187",
+        "Parent UID": "13668740015061169135",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    4.7190992518153507e-06,
+                    -25.231357574462891,
+                    -90
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_PostRotation",
+        "UID": "13727755679069064764",
+        "Parent UID": "10477929176734531187",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001",
+        "UID": "12599387364842228341",
+        "Parent UID": "13727755679069064764",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Dummy001_$AssimpFbx$_PreRotation",
+        "UID": "16415333591721271610",
+        "Parent UID": "03366523139335086943",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Dummy001_$AssimpFbx$_Rotation",
+        "UID": "03944447677008158844",
+        "Parent UID": "16415333591721271610",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Dummy001",
+        "UID": "06841780217033403858",
+        "Parent UID": "03944447677008158844",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "City_building_032",
+        "UID": "00428838899518046714",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    45.222019195556641,
+                    21.014108657836914,
+                    -61.584766387939453
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14771579051282903914"
+            },
+            "Mesh": {
+                "Resource mesh UID": "13356094658268076714"
+            }
+        }
+    },
+    {
+        "name": "City_building_040",
+        "UID": "00813889230921348759",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -34.679481506347656,
+                    -30.643888473510742,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "12659375294264980071"
+            }
+        }
+    },
+    {
+        "name": "City_building_037",
+        "UID": "01046609399960712583",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -20.317693710327148,
+                    -16.163608551025391,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    179.99998474121094
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "17613186674968104789"
+            }
+        }
+    },
+    {
+        "name": "Line002",
+        "UID": "02244639613554927864",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -2.1597719192504883,
+                    1.8538382053375244,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    0.99999922513961792,
+                    0.99999922513961792,
+                    1
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "02878501416304248196"
+            }
+        }
+    },
+    {
+        "name": "City_building_035",
+        "UID": "02261981898446278027",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    13.38798999786377,
+                    -40.802516937255859,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "00914135248714147291"
+            }
+        }
+    },
+    {
+        "name": "City_building_024",
+        "UID": "02272030472783476327",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -6.7079634666442871,
+                    43.060832977294922,
+                    -0.069194458425045013
+                ],
+                "Rotation": [
+                    1.7748842816742399e-25,
+                    -4.0604617093584646e-18,
+                    -180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "07205349593135142298"
+            },
+            "Mesh": {
+                "Resource mesh UID": "06838663246489514791"
+            }
+        }
+    },
+    {
+        "name": "City_building_008",
+        "UID": "02291206079605190321",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    40.979995727539063,
+                    18.270824432373047,
+                    -2.0522466002148576e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "07205349593135142298"
+            },
+            "Mesh": {
+                "Resource mesh UID": "00325423231483664790"
+            }
+        }
+    },
+    {
+        "name": "City_building_001",
+        "UID": "02425152416626842262",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    17.707164764404297,
+                    20.053276062011719,
+                    2.384185791015625e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14733880248132658698"
+            },
+            "Mesh": {
+                "Resource mesh UID": "01606240264634157779"
+            }
+        }
+    },
+    {
+        "name": "City_building_031",
+        "UID": "02957391109218732837",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -34.679481506347656,
+                    -41.835563659667969,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "03009881104748671644"
+            }
+        }
+    },
+    {
+        "name": "City_building_033",
+        "UID": "03837766184217639262",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -32.361495971679688,
+                    42.37042236328125,
+                    5.0146070407208754e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15867455117889165186"
+            },
+            "Mesh": {
+                "Resource mesh UID": "08384411622197132026"
+            }
+        }
+    },
+    {
+        "name": "City_building_004",
+        "UID": "04807915182056089429",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -41.47589111328125,
+                    21.01409912109375,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14771579051282903914"
+            },
+            "Mesh": {
+                "Resource mesh UID": "11916218433062356827"
+            }
+        }
+    },
+    {
+        "name": "City_building_039",
+        "UID": "06260074343012234321",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -42.807239532470703,
+                    -30.643888473510742,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15995505532977407547"
+            }
+        }
+    },
+    {
+        "name": "Plane001",
+        "UID": "06672742176781852719",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -0.02860260009765625,
+                    0.026032090187072754,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    0.99663525819778442,
+                    0.97061645984649658,
+                    0.99663525819778442
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "15853311603505369706"
+            }
+        }
+    },
+    {
+        "name": "City_building_016",
+        "UID": "06791383475711714600",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    34.270423889160156,
+                    -41.972747802734375,
+                    8.5538641769744572e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15284196930414196369"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15746719900106787727"
+            }
+        }
+    },
+    {
+        "name": "City_building_038",
+        "UID": "07131814134204028132",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -41.649002075195313,
+                    -16.495393753051758,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "13059308645348804955"
+            }
+        }
+    },
+    {
+        "name": "City_building_041",
+        "UID": "08211319514410322577",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    30.695278167724609,
+                    21.612646102905273,
+                    2.1210729528320371e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14733880248132658698"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15320433348465605622"
+            }
+        }
+    },
+    {
+        "name": "City_building_023",
+        "UID": "08810645416043855813",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    42.130641937255859,
+                    37.4932861328125,
+                    -1.5106878663573298e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "16444683839873919948"
+            },
+            "Mesh": {
+                "Resource mesh UID": "01838048854247735223"
+            }
+        }
+    },
+    {
+        "name": "City_building_026",
+        "UID": "09239368495955852188",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    31.51188850402832,
+                    -16.446016311645508,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15753797875197836635"
+            }
+        }
+    },
+    {
+        "name": "City_building_011",
+        "UID": "10808762795432682148",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    30.134540557861328,
+                    37.4932861328125,
+                    -1.5106929822650272e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "16444683839873919948"
+            },
+            "Mesh": {
+                "Resource mesh UID": "11609343839393068316"
+            }
+        }
+    },
+    {
+        "name": "City_building_007",
+        "UID": "10905901920691545138",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    16.010492324829102,
+                    37.4932861328125,
+                    -1.510693891759729e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "16444683839873919948"
+            },
+            "Mesh": {
+                "Resource mesh UID": "00928139928712981396"
+            }
+        }
+    },
+    {
+        "name": "City_building_010",
+        "UID": "11143110778437726841",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    25.154010772705078,
+                    -39.153720855712891,
+                    8.5538641769744572e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15284196930414196369"
+            },
+            "Mesh": {
+                "Resource mesh UID": "08606449389156238866"
+            }
+        }
+    },
+    {
+        "name": "City_building_036",
+        "UID": "11346113239875082684",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -31.216331481933594,
+                    33.201576232910156,
+                    5.0146070407208754e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15867455117889165186"
+            },
+            "Mesh": {
+                "Resource mesh UID": "16371907292180902183"
+            }
+        }
+    },
+    {
+        "name": "City_building_014",
+        "UID": "11349374397389051499",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -19.439706802368164,
+                    32.061729431152344,
+                    7.3587216320447624e-09
+                ],
+                "Rotation": [
+                    2.6870756391877465e-26,
+                    6.1473126633766454e-19,
+                    180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14771579051282903914"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15489573329400754498"
+            }
+        }
+    },
+    {
+        "name": "City_building_034",
+        "UID": "12046436487835238005",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    16.049516677856445,
+                    -16.696884155273438,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "04288941099017030226"
+            }
+        }
+    },
+    {
+        "name": "City_building_022",
+        "UID": "13089659918828735929",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -20.831323623657227,
+                    -27.426488876342773,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    179.99998474121094
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15266121678395268444"
+            }
+        }
+    },
+    {
+        "name": "City_building_013",
+        "UID": "13595542288562419734",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -42.288055419921875,
+                    33.201576232910156,
+                    5.0146070407208754e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15867455117889165186"
+            },
+            "Mesh": {
+                "Resource mesh UID": "05240776060988882902"
+            }
+        }
+    },
+    {
+        "name": "Object010",
+        "UID": "13747668822317479498",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -2.5033531188964844,
+                    15.800846099853516,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "11565914221687152320"
+            }
+        }
+    },
+    {
+        "name": "City_building_030",
+        "UID": "15508272326479210861",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -42.807239532470703,
+                    -41.835563659667969,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "18231548638554742262"
+            }
+        }
+    },
+    {
+        "name": "City_building_028",
+        "UID": "16762318347528790445",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    13.38798999786377,
+                    -33.755039215087891,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "18314339774503355685"
+            }
+        }
+    },
+    {
+        "name": "City_building_017",
+        "UID": "17544031010169210214",
+        "Parent UID": "06841780217033403858",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    44.260082244873047,
+                    -39.153720855712891,
+                    8.5538641769744572e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15284196930414196369"
+            },
+            "Mesh": {
+                "Resource mesh UID": "06293353426884063888"
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target_$AssimpFbx$_Translation",
+        "UID": "17610374924522928464",
+        "Parent UID": "03366523139335086943",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -28.132621765136719,
+                    20.873329162597656,
+                    -35.064212799072266
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target_$AssimpFbx$_PreRotation",
+        "UID": "15103738649046659548",
+        "Parent UID": "17610374924522928464",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target_$AssimpFbx$_Rotation",
+        "UID": "16224859896833250861",
+        "Parent UID": "15103738649046659548",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -68.525245666503906,
+                    -37.000530242919922,
+                    -166.68003845214844
+                ],
+                "Scale": [
+                    1,
+                    0.99999994039535522,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target",
+        "UID": "10775611286513471249",
+        "Parent UID": "16224859896833250861",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
             }
         }
     },
@@ -106,7 +3014,7 @@
                 "far_plane ": 500,
                 "aspect_ratio ": 500,
                 "verticalFov ": 1.0471975803375244,
-                "horizontalFov ": 1.9762581586837769
+                "horizontalFov ": 1.2877128124237061
             }
         }
     },
@@ -137,7 +3045,2995 @@
                 "far_plane ": 500,
                 "aspect_ratio ": 500,
                 "verticalFov ": 1.0471975803375244,
-                "horizontalFov ": 1.2877128124237061
+                "horizontalFov ": 1.9762581586837769
+            }
+        }
+    },
+    {
+        "name": "RootNode",
+        "UID": "12549893628855580228",
+        "Parent UID": "00000000000000000000",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    -203.1453857421875
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Dummy001_$AssimpFbx$_PreRotation",
+        "UID": "03615571468907209580",
+        "Parent UID": "12549893628855580228",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Dummy001_$AssimpFbx$_Rotation",
+        "UID": "01594291147592133798",
+        "Parent UID": "03615571468907209580",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Dummy001",
+        "UID": "04656668027837517129",
+        "Parent UID": "01594291147592133798",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Plane001",
+        "UID": "00030769337338834714",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -0.02860260009765625,
+                    0.026032090187072754,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    0.99663525819778442,
+                    0.97061645984649658,
+                    0.99663525819778442
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "15853311603505369706"
+            }
+        }
+    },
+    {
+        "name": "City_building_022",
+        "UID": "00483713541005635778",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -20.831323623657227,
+                    -27.426488876342773,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    179.99998474121094
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15266121678395268444"
+            }
+        }
+    },
+    {
+        "name": "City_building_008",
+        "UID": "00800122655207234204",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    40.979995727539063,
+                    18.270824432373047,
+                    -2.0522466002148576e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "07205349593135142298"
+            },
+            "Mesh": {
+                "Resource mesh UID": "00325423231483664790"
+            }
+        }
+    },
+    {
+        "name": "City_building_028",
+        "UID": "01192958452050606363",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    13.38798999786377,
+                    -33.755039215087891,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "18314339774503355685"
+            }
+        }
+    },
+    {
+        "name": "City_building_036",
+        "UID": "01812044828840202842",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -31.216331481933594,
+                    33.201576232910156,
+                    5.0146070407208754e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15867455117889165186"
+            },
+            "Mesh": {
+                "Resource mesh UID": "16371907292180902183"
+            }
+        }
+    },
+    {
+        "name": "City_building_007",
+        "UID": "02424527809112357554",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    16.010492324829102,
+                    37.4932861328125,
+                    -1.5106878663573298e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "16444683839873919948"
+            },
+            "Mesh": {
+                "Resource mesh UID": "00928139928712981396"
+            }
+        }
+    },
+    {
+        "name": "City_building_032",
+        "UID": "04121827773492778238",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -29.478403091430664,
+                    21.01409912109375,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14771579051282903914"
+            },
+            "Mesh": {
+                "Resource mesh UID": "13356094658268076714"
+            }
+        }
+    },
+    {
+        "name": "City_building_004",
+        "UID": "04285363277684050839",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -41.47589111328125,
+                    21.01409912109375,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14771579051282903914"
+            },
+            "Mesh": {
+                "Resource mesh UID": "11916218433062356827"
+            }
+        }
+    },
+    {
+        "name": "City_building_011",
+        "UID": "04671146107658837693",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    30.134540557861328,
+                    37.4932861328125,
+                    -1.5106878663573298e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "16444683839873919948"
+            },
+            "Mesh": {
+                "Resource mesh UID": "11609343839393068316"
+            }
+        }
+    },
+    {
+        "name": "City_building_038",
+        "UID": "05006042293147702242",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -41.649002075195313,
+                    -16.495393753051758,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "13059308645348804955"
+            }
+        }
+    },
+    {
+        "name": "City_building_035",
+        "UID": "05445372926802135994",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    13.38798999786377,
+                    -40.802516937255859,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "00914135248714147291"
+            }
+        }
+    },
+    {
+        "name": "City_building_034",
+        "UID": "06238394493568231940",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    16.049516677856445,
+                    -16.696884155273438,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "04288941099017030226"
+            }
+        }
+    },
+    {
+        "name": "City_building_010",
+        "UID": "06962944432879676723",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    25.154010772705078,
+                    -39.153720855712891,
+                    8.5538641769744572e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15284196930414196369"
+            },
+            "Mesh": {
+                "Resource mesh UID": "08606449389156238866"
+            }
+        }
+    },
+    {
+        "name": "City_building_014",
+        "UID": "07095891204994646119",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -19.439706802368164,
+                    32.061729431152344,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14771579051282903914"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15489573329400754498"
+            }
+        }
+    },
+    {
+        "name": "City_building_037",
+        "UID": "07159964272071773595",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -20.317693710327148,
+                    -16.163608551025391,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    179.99998474121094
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "17613186674968104789"
+            }
+        }
+    },
+    {
+        "name": "City_building_030",
+        "UID": "07519405239330345860",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -42.807239532470703,
+                    -41.835563659667969,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "18231548638554742262"
+            }
+        }
+    },
+    {
+        "name": "City_building_040",
+        "UID": "08403475734439229979",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -34.679481506347656,
+                    -30.643888473510742,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "12659375294264980071"
+            }
+        }
+    },
+    {
+        "name": "City_building_033",
+        "UID": "08686109046956203274",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -32.361495971679688,
+                    42.37042236328125,
+                    5.0146070407208754e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15867455117889165186"
+            },
+            "Mesh": {
+                "Resource mesh UID": "08384411622197132026"
+            }
+        }
+    },
+    {
+        "name": "City_building_026",
+        "UID": "09316392913062438577",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    31.51188850402832,
+                    -16.446016311645508,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15753797875197836635"
+            }
+        }
+    },
+    {
+        "name": "City_building_017",
+        "UID": "09524349006114054635",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    44.260082244873047,
+                    -39.153720855712891,
+                    8.5538641769744572e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15284196930414196369"
+            },
+            "Mesh": {
+                "Resource mesh UID": "06293353426884063888"
+            }
+        }
+    },
+    {
+        "name": "City_building_023",
+        "UID": "09898535341157148132",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    42.130641937255859,
+                    37.4932861328125,
+                    -1.5106878663573298e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "16444683839873919948"
+            },
+            "Mesh": {
+                "Resource mesh UID": "01838048854247735223"
+            }
+        }
+    },
+    {
+        "name": "City_building_024",
+        "UID": "10162903697528151996",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -20.572771072387695,
+                    43.060829162597656,
+                    -0.069194458425045013
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "07205349593135142298"
+            },
+            "Mesh": {
+                "Resource mesh UID": "06838663246489514791"
+            }
+        }
+    },
+    {
+        "name": "Line002",
+        "UID": "10452867510760489916",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -2.1597719192504883,
+                    1.8538382053375244,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "02878501416304248196"
+            }
+        }
+    },
+    {
+        "name": "Object010",
+        "UID": "11523450939318195017",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -2.5033531188964844,
+                    15.800846099853516,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "11565914221687152320"
+            }
+        }
+    },
+    {
+        "name": "City_building_031",
+        "UID": "11920444212318301652",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -34.679481506347656,
+                    -41.835563659667969,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "03009881104748671644"
+            }
+        }
+    },
+    {
+        "name": "City_building_039",
+        "UID": "14007964451320916955",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -42.807239532470703,
+                    -30.643888473510742,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15995505532977407547"
+            }
+        }
+    },
+    {
+        "name": "City_building_016",
+        "UID": "15319110875735565513",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    34.270423889160156,
+                    -41.972747802734375,
+                    8.5538641769744572e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15284196930414196369"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15746719900106787727"
+            }
+        }
+    },
+    {
+        "name": "City_building_001",
+        "UID": "16497502715906857321",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    17.707164764404297,
+                    20.053276062011719,
+                    2.1210729528320371e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14733880248132658698"
+            },
+            "Mesh": {
+                "Resource mesh UID": "01606240264634157779"
+            }
+        }
+    },
+    {
+        "name": "City_building_041",
+        "UID": "17558045540184419273",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    30.695278167724609,
+                    21.612646102905273,
+                    2.1210729528320371e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14733880248132658698"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15320433348465605622"
+            }
+        }
+    },
+    {
+        "name": "City_building_013",
+        "UID": "17769323843637316496",
+        "Parent UID": "04656668027837517129",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -42.288055419921875,
+                    33.201576232910156,
+                    5.0146070407208754e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15867455117889165186"
+            },
+            "Mesh": {
+                "Resource mesh UID": "05240776060988882902"
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_Translation",
+        "UID": "10041091787271253030",
+        "Parent UID": "12549893628855580228",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -66.721267700195313,
+                    141.93412780761719,
+                    6.2041376622801181e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_PreRotation",
+        "UID": "17698184191644816468",
+        "Parent UID": "10041091787271253030",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_Rotation",
+        "UID": "13107368873733363310",
+        "Parent UID": "17698184191644816468",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    4.7190992518153507e-06,
+                    -25.231357574462891,
+                    -90
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_PostRotation",
+        "UID": "13514553674303627856",
+        "Parent UID": "13107368873733363310",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001",
+        "UID": "04894838364225185706",
+        "Parent UID": "13514553674303627856",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target_$AssimpFbx$_Translation",
+        "UID": "12402773170064007558",
+        "Parent UID": "12549893628855580228",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    28.890945434570313,
+                    -60.963882446289063,
+                    -2.6648158382158726e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target_$AssimpFbx$_PreRotation",
+        "UID": "02639845546241854209",
+        "Parent UID": "12402773170064007558",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target_$AssimpFbx$_Rotation",
+        "UID": "07709999455002492769",
+        "Parent UID": "02639845546241854209",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    90.000007629394531,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target",
+        "UID": "03464540988363834198",
+        "Parent UID": "07709999455002492769",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001_$AssimpFbx$_Translation",
+        "UID": "13688271819228709136",
+        "Parent UID": "12549893628855580228",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    18.153732299804688,
+                    0,
+                    58.960910797119141
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001_$AssimpFbx$_PreRotation",
+        "UID": "12995692646874110006",
+        "Parent UID": "13688271819228709136",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001_$AssimpFbx$_PostRotation",
+        "UID": "03723615277677327981",
+        "Parent UID": "12995692646874110006",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001",
+        "UID": "17660492577916444157",
+        "Parent UID": "03723615277677327981",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001_$AssimpFbx$_Translation",
+        "UID": "16305096978268009960",
+        "Parent UID": "12549893628855580228",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -78.312431335449219,
+                    45.251216888427734,
+                    -97.031112670898438
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001_$AssimpFbx$_PreRotation",
+        "UID": "17585067494878785311",
+        "Parent UID": "16305096978268009960",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001_$AssimpFbx$_Rotation",
+        "UID": "07500620709157902193",
+        "Parent UID": "17585067494878785311",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -68.525253295898438,
+                    -37.000518798828125,
+                    -166.68003845214844
+                ],
+                "Scale": [
+                    1,
+                    0.99999994039535522,
+                    0.99999994039535522
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001",
+        "UID": "11483185594311485057",
+        "Parent UID": "07500620709157902193",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target_$AssimpFbx$_Translation",
+        "UID": "17970541401259208559",
+        "Parent UID": "12549893628855580228",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -28.132621765136719,
+                    20.873329162597656,
+                    -35.064212799072266
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target_$AssimpFbx$_PreRotation",
+        "UID": "13985783408083595460",
+        "Parent UID": "17970541401259208559",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target_$AssimpFbx$_Rotation",
+        "UID": "08385109638819892047",
+        "Parent UID": "13985783408083595460",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -68.525245666503906,
+                    -37.000530242919922,
+                    -166.68003845214844
+                ],
+                "Scale": [
+                    1,
+                    0.99999994039535522,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target",
+        "UID": "10682040596380053838",
+        "Parent UID": "08385109638819892047",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "RootNode",
+        "UID": "07564268359535465418",
+        "Parent UID": "00000000000000000000",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001_$AssimpFbx$_Translation",
+        "UID": "13090905779589502281",
+        "Parent UID": "07564268359535465418",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    18.153732299804688,
+                    0,
+                    58.960910797119141
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001_$AssimpFbx$_PreRotation",
+        "UID": "08089740128846788860",
+        "Parent UID": "13090905779589502281",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001_$AssimpFbx$_PostRotation",
+        "UID": "05374655458083291160",
+        "Parent UID": "08089740128846788860",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Sky001",
+        "UID": "05852644611167321863",
+        "Parent UID": "05374655458083291160",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Dummy001_$AssimpFbx$_PreRotation",
+        "UID": "13449662174916054382",
+        "Parent UID": "07564268359535465418",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Dummy001_$AssimpFbx$_Rotation",
+        "UID": "13547195838453985945",
+        "Parent UID": "13449662174916054382",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Dummy001",
+        "UID": "02709846827774725490",
+        "Parent UID": "13547195838453985945",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "City_building_004",
+        "UID": "15957279392599347910",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -41.47589111328125,
+                    21.01409912109375,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14771579051282903914"
+            },
+            "Mesh": {
+                "Resource mesh UID": "11916218433062356827"
+            }
+        }
+    },
+    {
+        "name": "City_building_001",
+        "UID": "00668762750418434236",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    17.707164764404297,
+                    20.053276062011719,
+                    2.1210729528320371e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14733880248132658698"
+            },
+            "Mesh": {
+                "Resource mesh UID": "01606240264634157779"
+            }
+        }
+    },
+    {
+        "name": "City_building_007",
+        "UID": "08836873987009663803",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    16.010492324829102,
+                    37.4932861328125,
+                    -1.5106878663573298e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "16444683839873919948"
+            },
+            "Mesh": {
+                "Resource mesh UID": "00928139928712981396"
+            }
+        }
+    },
+    {
+        "name": "City_building_008",
+        "UID": "01978895326264759085",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    40.979995727539063,
+                    18.270824432373047,
+                    -2.0522466002148576e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "07205349593135142298"
+            },
+            "Mesh": {
+                "Resource mesh UID": "00325423231483664790"
+            }
+        }
+    },
+    {
+        "name": "Line002",
+        "UID": "14957182527773863467",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -2.1597719192504883,
+                    1.8538382053375244,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "02878501416304248196"
+            }
+        }
+    },
+    {
+        "name": "Plane001",
+        "UID": "04383654486472309997",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -0.02860260009765625,
+                    0.026032090187072754,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    0.99663525819778442,
+                    0.97061645984649658,
+                    0.99663525819778442
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "15853311603505369706"
+            }
+        }
+    },
+    {
+        "name": "City_building_010",
+        "UID": "08884046468794951051",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    25.154010772705078,
+                    -39.153720855712891,
+                    8.5538641769744572e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15284196930414196369"
+            },
+            "Mesh": {
+                "Resource mesh UID": "08606449389156238866"
+            }
+        }
+    },
+    {
+        "name": "City_building_011",
+        "UID": "11883254080443262508",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    30.134540557861328,
+                    37.4932861328125,
+                    -1.5106878663573298e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "16444683839873919948"
+            },
+            "Mesh": {
+                "Resource mesh UID": "11609343839393068316"
+            }
+        }
+    },
+    {
+        "name": "City_building_013",
+        "UID": "01770980956441376966",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -42.288055419921875,
+                    33.201576232910156,
+                    5.0146070407208754e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15867455117889165186"
+            },
+            "Mesh": {
+                "Resource mesh UID": "05240776060988882902"
+            }
+        }
+    },
+    {
+        "name": "City_building_014",
+        "UID": "06586248725987267309",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -19.439706802368164,
+                    32.061729431152344,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14771579051282903914"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15489573329400754498"
+            }
+        }
+    },
+    {
+        "name": "City_building_016",
+        "UID": "02377730981105851494",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    34.270423889160156,
+                    -41.972747802734375,
+                    8.5538641769744572e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15284196930414196369"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15746719900106787727"
+            }
+        }
+    },
+    {
+        "name": "City_building_017",
+        "UID": "12405397795738433011",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    44.260082244873047,
+                    -39.153720855712891,
+                    8.5538641769744572e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15284196930414196369"
+            },
+            "Mesh": {
+                "Resource mesh UID": "06293353426884063888"
+            }
+        }
+    },
+    {
+        "name": "City_building_022",
+        "UID": "15104088200553152907",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -20.831323623657227,
+                    -27.426488876342773,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    179.99998474121094
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15266121678395268444"
+            }
+        }
+    },
+    {
+        "name": "City_building_023",
+        "UID": "12907161799019344758",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    42.130641937255859,
+                    37.4932861328125,
+                    -1.5106878663573298e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "16444683839873919948"
+            },
+            "Mesh": {
+                "Resource mesh UID": "01838048854247735223"
+            }
+        }
+    },
+    {
+        "name": "City_building_024",
+        "UID": "17702608535518648612",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -20.572771072387695,
+                    43.060829162597656,
+                    -0.069194458425045013
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "07205349593135142298"
+            },
+            "Mesh": {
+                "Resource mesh UID": "06838663246489514791"
+            }
+        }
+    },
+    {
+        "name": "City_building_026",
+        "UID": "03184903340113934598",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    31.51188850402832,
+                    -16.446016311645508,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    180
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15753797875197836635"
+            }
+        }
+    },
+    {
+        "name": "City_building_028",
+        "UID": "00587007338380122093",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    13.38798999786377,
+                    -33.755039215087891,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "18314339774503355685"
+            }
+        }
+    },
+    {
+        "name": "Object010",
+        "UID": "12375933672588371671",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -2.5033531188964844,
+                    15.800846099853516,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "11565914221687152320"
+            }
+        }
+    },
+    {
+        "name": "City_building_030",
+        "UID": "14949428808906965235",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -42.807239532470703,
+                    -41.835563659667969,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "18231548638554742262"
+            }
+        }
+    },
+    {
+        "name": "City_building_031",
+        "UID": "01962568052825974129",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -34.679481506347656,
+                    -41.835563659667969,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "03009881104748671644"
+            }
+        }
+    },
+    {
+        "name": "City_building_032",
+        "UID": "18192846760268346738",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -29.478403091430664,
+                    21.01409912109375,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14771579051282903914"
+            },
+            "Mesh": {
+                "Resource mesh UID": "13356094658268076714"
+            }
+        }
+    },
+    {
+        "name": "City_building_033",
+        "UID": "13118061030329159926",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -32.361495971679688,
+                    42.37042236328125,
+                    5.0146070407208754e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15867455117889165186"
+            },
+            "Mesh": {
+                "Resource mesh UID": "08384411622197132026"
+            }
+        }
+    },
+    {
+        "name": "City_building_034",
+        "UID": "03794708866746262370",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    16.049516677856445,
+                    -16.696884155273438,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "04288941099017030226"
+            }
+        }
+    },
+    {
+        "name": "City_building_035",
+        "UID": "17357482297248922926",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    13.38798999786377,
+                    -40.802516937255859,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "00914135248714147291"
+            }
+        }
+    },
+    {
+        "name": "City_building_036",
+        "UID": "01165135343671321545",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -31.216331481933594,
+                    33.201576232910156,
+                    5.0146070407208754e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "15867455117889165186"
+            },
+            "Mesh": {
+                "Resource mesh UID": "16371907292180902183"
+            }
+        }
+    },
+    {
+        "name": "City_building_037",
+        "UID": "10013959246793151136",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -20.317693710327148,
+                    -16.163608551025391,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    179.99998474121094
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "17613186674968104789"
+            }
+        }
+    },
+    {
+        "name": "City_building_038",
+        "UID": "04638624560850034035",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -41.649002075195313,
+                    -16.495393753051758,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "06542784819280506836"
+            },
+            "Mesh": {
+                "Resource mesh UID": "13059308645348804955"
+            }
+        }
+    },
+    {
+        "name": "City_building_039",
+        "UID": "14641862046401203225",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -42.807239532470703,
+                    -30.643888473510742,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15995505532977407547"
+            }
+        }
+    },
+    {
+        "name": "City_building_040",
+        "UID": "01546853324175331249",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -34.679481506347656,
+                    -30.643888473510742,
+                    -9.3834518111179932e-07
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    -90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14248596405675366746"
+            },
+            "Mesh": {
+                "Resource mesh UID": "12659375294264980071"
+            }
+        }
+    },
+    {
+        "name": "City_building_041",
+        "UID": "07058985896853200809",
+        "Parent UID": "02709846827774725490",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    30.695278167724609,
+                    21.612646102905273,
+                    2.1210729528320371e-07
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    90.000007629394531
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Material": {
+                "Resource material UID": "14733880248132658698"
+            },
+            "Mesh": {
+                "Resource mesh UID": "15320433348465605622"
+            }
+        }
+    },
+    {
+        "name": "Camera001_$AssimpFbx$_Translation",
+        "UID": "01119226648965171117",
+        "Parent UID": "07564268359535465418",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -78.312431335449219,
+                    45.251216888427734,
+                    -97.031112670898438
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001_$AssimpFbx$_PreRotation",
+        "UID": "16355864839531283330",
+        "Parent UID": "01119226648965171117",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001_$AssimpFbx$_Rotation",
+        "UID": "10802173609523568733",
+        "Parent UID": "16355864839531283330",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -68.525253295898438,
+                    -37.000518798828125,
+                    -166.68003845214844
+                ],
+                "Scale": [
+                    1,
+                    0.99999994039535522,
+                    0.99999994039535522
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001",
+        "UID": "09017671548345393451",
+        "Parent UID": "10802173609523568733",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target_$AssimpFbx$_Translation",
+        "UID": "13076122656559284845",
+        "Parent UID": "07564268359535465418",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -28.132621765136719,
+                    20.873329162597656,
+                    -35.064212799072266
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target_$AssimpFbx$_PreRotation",
+        "UID": "04052915152182207267",
+        "Parent UID": "13076122656559284845",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target_$AssimpFbx$_Rotation",
+        "UID": "09810717654544990127",
+        "Parent UID": "04052915152182207267",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -68.525245666503906,
+                    -37.000530242919922,
+                    -166.68003845214844
+                ],
+                "Scale": [
+                    1,
+                    0.99999994039535522,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Camera001.Target",
+        "UID": "07508164455037300587",
+        "Parent UID": "09810717654544990127",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_Translation",
+        "UID": "14884457822586002375",
+        "Parent UID": "07564268359535465418",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    -66.721267700195313,
+                    141.93412780761719,
+                    6.2041376622801181e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_PreRotation",
+        "UID": "03083191065273247578",
+        "Parent UID": "14884457822586002375",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_Rotation",
+        "UID": "01640686204524537343",
+        "Parent UID": "03083191065273247578",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    4.7190992518153507e-06,
+                    -25.231357574462891,
+                    -90
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001_$AssimpFbx$_PostRotation",
+        "UID": "02300463454145039029",
+        "Parent UID": "01640686204524537343",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001",
+        "UID": "05323340476102846196",
+        "Parent UID": "02300463454145039029",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target_$AssimpFbx$_Translation",
+        "UID": "14542155831058952715",
+        "Parent UID": "07564268359535465418",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    28.890945434570313,
+                    -60.963882446289063,
+                    -2.6648158382158726e-06
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target_$AssimpFbx$_PreRotation",
+        "UID": "16355082233562491352",
+        "Parent UID": "14542155831058952715",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target_$AssimpFbx$_Rotation",
+        "UID": "06364205986710147394",
+        "Parent UID": "16355082233562491352",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    90.000007629394531,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Spot001.Target",
+        "UID": "05126436225902367008",
+        "Parent UID": "06364205986710147394",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
             }
         }
     }

@@ -34,6 +34,7 @@ void ComponentTransform::SetParent(ComponentTransform *parent)
 	{
 		this->parent = parent;
 		parent->children.push_back(this);
+		RecalculateMatrices();
 	}
 	//TODO: This should update the position, rotation and scale so that it remains intact in world space but it displays relative to the parent
 }
