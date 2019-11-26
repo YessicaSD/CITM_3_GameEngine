@@ -36,6 +36,11 @@ CubeLine::CubeLine()
 	Set(1, 1, 1, float3(0,0,0));
 }
 
+CubeLine::~CubeLine()
+{
+	CleanUp();
+}
+
 void CubeLine::Draw()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -69,4 +74,10 @@ void CubeLine::SetVetices(float * vertices)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vetex_buf_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * NUM_VERTICES * 3, vertices, GL_DYNAMIC_DRAW);
+}
+
+void CubeLine::CleanUp()
+{
+	glDeleteBuffers(1, &vetex_buf_id);
+	glDeleteBuffers(1, &indices_buf_id);
 }

@@ -13,6 +13,11 @@ BoundingBox::BoundingBox()
 	MultiplyByMatrix(float4x4::identity);
 }
 
+BoundingBox::~BoundingBox()
+{
+	CleanUp();
+}
+
 void BoundingBox::MultiplyByMatrix(float4x4 matrix)
 {
 	float3 corners[8];
@@ -46,6 +51,12 @@ void BoundingBox::Draw()
 	{
 		glEnable(GL_LIGHTING);
 	}
+}
+
+void BoundingBox::CleanUp()
+{
+	obb_cube.CleanUp();
+	aabb_cube.CleanUp();
 }
 
 void BoundingBox::SetLocalAABB(AABB local_aabb)

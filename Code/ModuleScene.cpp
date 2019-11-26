@@ -87,10 +87,15 @@ update_status ModuleScene::Update(float dt)
 	//TODO: Turn into a shortcut
 	if (App->input->GetKey(SDL_SCANCODE_DELETE))
 	{
+		
 		if (ComponentTransform* selected_object = App->gui->GetSelectedTransform())
 		{
+			Event new_event(Event::DELETE_OBJECT);
+			new_event.object.ptr = selected_object->gameobject;
+			App->AddEvent(new_event);
+
 			App->gui->SetSelectedGameObjec(nullptr);
-			DeleteGameObject(selected_object->gameobject);
+			
 
 		}
 	}
@@ -156,19 +161,23 @@ void ModuleScene::SetMainCamera(ComponentCamera * main_camera)
 
 void ModuleScene::DeleteGameObject(GameObject * gameobject)
 {
-	gameobject->transform->DeleteChildren();
-	if (gameobject->transform->parent)
+	if (gameobject)
 	{
-		for (std::vector<ComponentTransform*>::iterator iter = gameobject->transform->parent->children.begin(); iter != gameobject->transform->parent->children.end(); ++iter)
+		gameobject->transform->DeleteChildren();
+		if (gameobject->transform->parent)
 		{
-			if ((*iter) == gameobject->transform)
+			for (std::vector<ComponentTransform*>::iterator iter = gameobject->transform->parent->children.begin(); iter != gameobject->transform->parent->children.end(); ++iter)
 			{
-				gameobject->transform->parent->children.erase(iter);
-				break;
+				if ((*iter) == gameobject->transform)
+				{
+					gameobject->transform->parent->children.erase(iter);
+					break;
+				}
+
 			}
 		}
+		delete gameobject;
 	}
-	delete gameobject;
 }
 
 void ModuleScene::GetIntersectBoxNonStatics(ComponentTransform * object, LineSegment * ray, std::map<float, ComponentTransform*>& out_objects)
@@ -264,6 +273,7 @@ void ModuleScene::LoadScene(const char * scene_path)
 	std::string extension_;
 	App->file_system->SplitFilePath(scene_path, nullptr, &scene_name_, &extension_);
 	size_t pos_extension = scene_name_.find(extension_);
+
 	current_scene_name = scene_name_.substr(0, pos_extension-1);
 	current_scene.LoadFile(scene_path);
 	if (json_value_get_type(current_scene.GetValue()) != JSONArray)
@@ -360,6 +370,10 @@ void ModuleScene::EventRequest(const Event & event)
 	else if (event.type == Event::LOAD_SCENE)
 	{
 		LoadScene(event.path);
+	}
+	else if (event.type == Event::DELETE_OBJECT)
+	{
+		DeleteGameObject(event.object.ptr);
 	}
 }
 

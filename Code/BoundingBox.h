@@ -19,12 +19,14 @@ public:
 
 	float4 aabb_color, obb_color;
 	BoundingBox();
+	~BoundingBox();
 	void MultiplyByMatrix(float4x4 matrix);
 	void Draw();
+	void CleanUp();
 	void SetLocalAABB(AABB local_aabb);
 	AABB GetAABB();
 	OBB GetOBB();
-
+	
 };
 
 

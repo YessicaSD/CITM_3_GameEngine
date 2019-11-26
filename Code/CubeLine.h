@@ -26,11 +26,12 @@ public:
 
 	CubeLine(float width, float height, float depth, float3	position);
 	CubeLine();
+	~CubeLine();
 
 	void Draw();
 	void Set(float width, float height, float depth, float3 position);
 	void SetVetices(float* vertices);
-	
+	void CleanUp();
 
 
 };

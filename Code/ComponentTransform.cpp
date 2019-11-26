@@ -26,6 +26,7 @@ ComponentTransform::ComponentTransform(GameObject *gameobject) : Component(gameo
 ComponentTransform::~ComponentTransform()
 {
 	CleanUp();
+	
 }
 
 void ComponentTransform::SetParent(ComponentTransform *parent)
@@ -126,6 +127,7 @@ void ComponentTransform::CleanUp()
 	{
 		App->gui->SetSelectedGameObjec(nullptr);
 	}
+	bounding_box.CleanUp();
 }
 
 void ComponentTransform::SetTransform(float3 &position, float3 &scale, float3 &euler_rotation)

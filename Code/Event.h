@@ -2,7 +2,7 @@
 #define  __EVENT_H__
 
 class ResourceModel;
-
+class GameObject;
 struct Event
 {
 public:
@@ -18,6 +18,7 @@ public:
 		UNPAUSE,
 		SAVE_SCENE,
 		LOAD_SCENE,
+		DELETE_OBJECT,
 	}type;
 
 	union 
@@ -26,6 +27,10 @@ public:
 		{
 			ResourceModel * model = nullptr;
 		} drop_model_data;
+		struct
+		{
+			GameObject* ptr = nullptr;
+		}object;
 	};
 
 	const char* path;
