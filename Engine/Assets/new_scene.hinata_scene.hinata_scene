@@ -1,0 +1,220 @@
+[
+    {
+        "name": "RootNode",
+        "UID": "07641064650747645122",
+        "Parent UID": "00000000000000000000",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Chimney",
+        "UID": "03081530132868967681",
+        "Parent UID": "07641064650747645122",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    100,
+                    100,
+                    100
+                ]
+            },
+            "Material": {},
+            "Mesh": {}
+        }
+    },
+    {
+        "name": "Baker_house",
+        "UID": "04422022233451342227",
+        "Parent UID": "07641064650747645122",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    100,
+                    100,
+                    100
+                ]
+            },
+            "Material": {},
+            "Mesh": {}
+        }
+    },
+    {
+        "name": "Main camera",
+        "UID": "08644308025817405165",
+        "Parent UID": "00000000000000000000",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Camera": {
+                "near_plane": 0.10000000149011612,
+                "far_plane ": 500,
+                "aspect_ratio ": 500,
+                "verticalFov ": 1.0471975803375244,
+                "horizontalFov ": 1.2877128124237061
+            }
+        }
+    },
+    {
+        "name": "Camera",
+        "UID": "11690456084723960227",
+        "Parent UID": "00000000000000000000",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    0,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "Camera": {
+                "near_plane": 0.10000000149011612,
+                "far_plane ": 500,
+                "aspect_ratio ": 500,
+                "verticalFov ": 1.0471975803375244,
+                "horizontalFov ": 1.2877128124237061
+            }
+        }
+    },
+    {
+        "name": "RootNode",
+        "UID": "08488112790565863150",
+        "Parent UID": "00000000000000000000",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -0,
+                    0,
+                    -0
+                ],
+                "Scale": [
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    {
+        "name": "Chimney",
+        "UID": "08744247054390781459",
+        "Parent UID": "08488112790565863150",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    100,
+                    100,
+                    100
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "17892528331966188754"
+            }
+        }
+    },
+    {
+        "name": "Baker_house",
+        "UID": "14457676199749286022",
+        "Parent UID": "08488112790565863150",
+        "Components": {
+            "Transform": {
+                "Position": [
+                    0,
+                    0,
+                    0
+                ],
+                "Rotation": [
+                    -90.000007629394531,
+                    0,
+                    0
+                ],
+                "Scale": [
+                    100,
+                    100,
+                    100
+                ]
+            },
+            "Material": {},
+            "Mesh": {
+                "Resource mesh UID": "13065260510586872993"
+            }
+        }
+    }
+]

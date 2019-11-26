@@ -289,6 +289,8 @@ bool ComponentMesh::SetMesh(ResourceMesh * mesh)
 	{
 		this->mesh = mesh;
 		mesh->StartUsingResource();
+		gameobject->transform->bounding_box.SetLocalAABB(mesh->GetAABB());
+		gameobject->transform->bounding_box.MultiplyByMatrix(gameobject->transform->GetGlobalMatrix());
 		ret = true;
 	}
 	else
