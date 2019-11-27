@@ -42,7 +42,7 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path, UID force
 	//Import data from path first
 	ilGenImages(1, &resource_texture->buffer_id);
 	ilBindImage(resource_texture->buffer_id);
-	//ilutRenderer(ILUT_OPENGL);
+	ilutRenderer(ILUT_OPENGL);
 
 	if (ilLoadImage(asset_path) == IL_TRUE)
 	{

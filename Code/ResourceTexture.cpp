@@ -57,7 +57,7 @@ bool ResourceTexture::LoadFileData()
 	uint image_id = 0u;
 	ilGenImages(1, &image_id);
 	ilBindImage(image_id);
-	//ilutRenderer(ILUT_OPENGL);
+	ilutRenderer(ILUT_OPENGL);
 
 	if (ilLoadImage(custom_format_path) == IL_TRUE)
 	{
@@ -87,6 +87,7 @@ bool ResourceTexture::LoadFileData()
 		auto error = ilGetError();
 		LOG("Error loadig texture with path: %s. Error: %s", custom_format_path, ilGetString(error));
 	}
+	ilDeleteImages(1, &image_id);
 	//free(lump);
 
 	return true;

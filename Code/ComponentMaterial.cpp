@@ -44,7 +44,7 @@ bool ComponentMaterial::SetTexture(ResourceTexture *texture)
 	if (component_mesh->mesh != nullptr && component_mesh->mesh->uv_coord != nullptr && texture != nullptr)
 	{
 		this->texture = texture;
-		texture->StartUsingResource();
+		this->texture->StartUsingResource();
 		ret = true;
 	}
 	else
@@ -70,12 +70,7 @@ void ComponentMaterial::RenderTexture()
 	if (texture != nullptr)
 	{
 		glEnable(GL_TEXTURE_2D);
-		//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-
-		ResourceMesh *mesh = component_mesh->mesh;
 		glBindTexture(GL_TEXTURE_2D, texture->buffer_id);
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
-		glTexCoordPointer(mesh->uv_dimensions, GL_FLOAT, 0, (void *)0);
 	}
 }
 

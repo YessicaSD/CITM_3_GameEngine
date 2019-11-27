@@ -8,6 +8,7 @@ void CubeLine::OpenBuffers()
 	glGenBuffers(1, (GLuint*) & (vetex_buf_id));
 	glBindBuffer(GL_ARRAY_BUFFER, vetex_buf_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * NUM_VERTICES * 3, nullptr, GL_DYNAMIC_DRAW);
+	
 	//Opening buffer for indeces
 	glGenBuffers(1, (GLuint*) & (indices_buf_id));
 }
@@ -44,7 +45,9 @@ CubeLine::~CubeLine()
 
 void CubeLine::Draw()
 {
+
 	glEnableClientState(GL_VERTEX_ARRAY);
+	
 	glBindBuffer(GL_ARRAY_BUFFER, vetex_buf_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 

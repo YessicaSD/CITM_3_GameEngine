@@ -53,18 +53,13 @@ void ComponentMesh::OnPostUpdate()
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	}
 
-	if (mesh->uv_coord != nullptr)
-	{
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	}
-
 	glPushMatrix();
 	glMultMatrixf((const GLfloat *)&gameobject->transform->GetGlobalMatrix().Transposed());
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indice);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indice);
 
 	if (render_mode.vertex_normals)
 	{
@@ -77,7 +72,7 @@ void ComponentMesh::OnPostUpdate()
 
 	if (mesh->uv_coord != nullptr)
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 		glTexCoordPointer(mesh->uv_dimensions, GL_FLOAT, 0, NULL);
 	}
@@ -105,6 +100,7 @@ void ComponentMesh::OnPostUpdate()
 	
 	if (render_mode.wireframe)
 	{
+
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glLineWidth(line_width);
 		glColor4f(line_color[0], line_color[1], line_color[2], line_color[3]);

@@ -150,6 +150,7 @@ void PanelScene::DropObject()
 			else if (extension == SCENE_EXTENSION)
 			{
 				App->AddEvent(Event(Event::LOAD_SCENE, asset->full_path.c_str()));
+				App->AddEvent(Event(Event::UPDATE_OCTREE));
 			}
 			
 		}
