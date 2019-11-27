@@ -57,7 +57,6 @@ bool ResourceTexture::LoadFileData()
 	uint image_id = 0u;
 	ilGenImages(1, &image_id);
 	ilBindImage(image_id);
-	//ilutRenderer(ILUT_OPENGL);
 
 	if (ilLoadImage(custom_format_path) == IL_TRUE)
 	{

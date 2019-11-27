@@ -40,9 +40,9 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path, UID force
 	resource_texture->asset_source = asset_path;
 
 	//Import data from path first
-	ilGenImages(1, &resource_texture->buffer_id);
-	ilBindImage(resource_texture->buffer_id);
-	//ilutRenderer(ILUT_OPENGL);
+	uint image_id = 0u;
+	ilGenImages(1, &image_id);
+	ilBindImage(image_id);
 
 	if (ilLoadImage(asset_path) == IL_TRUE)
 	{
@@ -54,7 +54,7 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path, UID force
 		}
 		resource_texture->SaveFileData();
 		SaveTextureMeta(resource_texture, asset_path);
-		ilDeleteImages(1, &resource_texture->buffer_id);
+		ilDeleteImages(1, &image_id);
 		resource_texture->buffer_id = 0u;
 		LOG("Success importing texture from: %s in: %i ms", asset_path, import_timer.Read());
 	}
