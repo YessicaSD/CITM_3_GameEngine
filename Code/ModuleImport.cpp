@@ -292,6 +292,7 @@ ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh, UID uid, const
 	return resource_mesh;
 }
 
+
 ResourceMesh *ModuleImport::ImportParShapeMesh(par_shapes_mesh *mesh)
 {
 	ResourceMesh *resource_mesh = App->resource_manager->CreateResource<ResourceMesh>();
@@ -302,6 +303,7 @@ ResourceMesh *ModuleImport::ImportParShapeMesh(par_shapes_mesh *mesh)
 	//TODO: Get vertices normals
 	resource_mesh->ImportFaces(mesh->ntriangles, mesh->triangles);
 	resource_mesh->CalculateFaceNormals();
+	//TODO: Load uv coomponent (2D or 3D)
 	resource_mesh->ImportUVs(mesh->tcoords);
 
 	resource_mesh->SaveFileData();

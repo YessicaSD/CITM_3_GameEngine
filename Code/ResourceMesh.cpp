@@ -35,6 +35,7 @@ bool ResourceMesh::SaveFileData()
 		num_vertices,
 		num_indices,
 		num_faces,
+		uv_dimensions
 	};
 
 	uint ranges_bytes = sizeof(ranges);
@@ -57,7 +58,6 @@ bool ResourceMesh::SaveFileData()
 	char* cursor = data;
 
 	CopyToFile(ranges, &cursor, ranges_bytes);
-
 	CopyToFile(vertices, &cursor, vertices_bytes);
 	CopyToFile(vertex_normals, &cursor, vertex_normals_bytes);
 	CopyToFile(indices, &cursor, indices_bytes);
@@ -89,7 +89,7 @@ bool ResourceMesh::LoadFileData()
 		char * cursor = data;
 
 		//INFO: The number of elements on the ranges array must be the same as in the ranges array of ResourceMesh::SaveFileData()
-		uint ranges[3];
+		uint ranges[4];
 
 		uint ranges_bytes = sizeof(ranges);
 		memcpy(ranges, cursor, ranges_bytes);
@@ -97,6 +97,7 @@ bool ResourceMesh::LoadFileData()
 		num_vertices = ranges[0];
 		num_indices = ranges[1];
 		num_faces = ranges[2];
+		uv_dimensions = ranges[3];
 
 		cursor += ranges_bytes;
 
@@ -271,9 +272,8 @@ bool ResourceMesh::ImportUVs(aiMesh * info)
 
 bool ResourceMesh::ImportUVs(float * coords)
 {
-	if (coords)
+	if (coords != nullptr)
 	{
-		this->uv_dimensions = 2u;
 		this->uv_coord = new float[uv_dimensions * this->num_vertices];
 		memcpy(this->uv_coord, coords, sizeof(float) * uv_dimensions * this->num_vertices);
 	}
@@ -333,7 +333,7 @@ bool ResourceMesh::GenerateUVsBuffer()
 	{
 		glGenBuffers(1, &id_uv);
 		glBindBuffer(GL_ARRAY_BUFFER, id_uv);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * uv_dimensions * num_vertices, &uv_coord[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * num_vertices, &uv_coord[0], GL_STATIC_DRAW);
 	}
 
 	return true;

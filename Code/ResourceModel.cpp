@@ -115,5 +115,13 @@ bool ResourceModel::ReleaseData()
 		}
 		nodes.clear();
 	}
+	if (meshes_uid.size() > 0)
+	{
+		meshes_uid.clear();
+	}
+	if (textures_uid.size() > 0)
+	{
+		textures_uid.clear();
+	}
 	return true;
 }
