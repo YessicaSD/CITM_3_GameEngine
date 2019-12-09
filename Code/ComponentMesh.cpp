@@ -101,6 +101,10 @@ void ComponentMesh::OnPostUpdate()
 		{
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
+		if (mesh->vertex_normals != nullptr)
+		{
+			glDisableClientState(GL_NORMAL_ARRAY);
+		}
 	}
 	
 	if (render_mode.wireframe)
@@ -202,6 +206,7 @@ void ComponentMesh::PropertiesEditor()
 
 void ComponentMesh::CleanUp()
 {
+	LOG("COMPONENT MESH CLEANUP");
 	gameobject->RemoveComponent<ComponentMaterial>();
 
 	if (mesh != nullptr)

@@ -21,10 +21,12 @@ ComponentMaterial::ComponentMaterial(GameObject *gameobject, ComponentMesh *mesh
 
 ComponentMaterial::ComponentMaterial(GameObject *gameobject) : Component(gameobject)
 {
+	name = "Material";
 }
 
 void ComponentMaterial::CleanUp()
 {
+	LOG("COMPONENT MATERIAL CLEANUP");
 	if (texture != nullptr)
 	{
 		texture->StopUsingResource();

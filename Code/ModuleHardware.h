@@ -35,7 +35,6 @@ private:
 	
 public:
 	ModuleHardware(const char* name);
-	update_status PreUpdate() override;
 	void DrawConfigurationUi();
 };
 #endif // !MODULE_HARDWARE_H_

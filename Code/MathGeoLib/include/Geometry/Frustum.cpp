@@ -651,8 +651,11 @@ bool Frustum::Intersects(const OBB &obb) const
 		int iInCount = 8;
 		for (int i = 0; i < 8; i++)
 		{
-			if (plane.IsOnPositiveSide(corners[i]))
+			corners[i];
+			if (plane.IsOnPositiveSide(corners[i]) == true)
+			{
 				--iInCount;
+			}
 		}
 
 		if (iInCount == 0)

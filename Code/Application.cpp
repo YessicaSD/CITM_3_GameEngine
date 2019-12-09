@@ -212,10 +212,15 @@ update_status Application::Update()
 
 	item = modules.begin();
 
+	
 	while (item != modules.end() && ret == UPDATE_CONTINUE)
 	{
-		if ((*item)->IsActive())
+		if ((*item)!= nullptr && (*item)->IsActive())
+		{
+			
 			ret = (*item)->PostUpdate();
+
+		}
 		item = ++item;
 	}
 

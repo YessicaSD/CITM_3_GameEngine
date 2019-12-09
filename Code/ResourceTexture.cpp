@@ -93,8 +93,12 @@ bool ResourceTexture::LoadFileData()
 
 bool ResourceTexture::ReleaseData()
 {
-	ilDeleteImages(1, &buffer_id);
-	buffer_id = 0u;
+	if (buffer_id != 0u)
+	{
+		ilDeleteImages(1, &buffer_id);
+		buffer_id = 0u;
+	}
+
 
 	return true;
 }

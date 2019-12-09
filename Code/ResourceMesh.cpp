@@ -136,27 +136,41 @@ bool ResourceMesh::LoadFileData()
 bool ResourceMesh::ReleaseData()
 {
 	RELEASE_ARRAY(uv_coord);
-	glDeleteBuffers(1, &id_uv);
-	id_uv = 0u;
+	if (id_uv != 0u)
+	{
+		glDeleteBuffers(1, &id_uv);
+		id_uv = 0u;
+	}
+
 
 	RELEASE_ARRAY(faces_normals);
-	//glDeleteBuffer(1, &id_faces_normals);
-	//id_faces_normals = 0u;
+	RELEASE_ARRAY(face_middle_point);
 
 	RELEASE_ARRAY(indices);
 	num_indices = 0u;
 	num_faces = 0u;
-	glDeleteBuffers(1, &id_indice);
-	id_indice = 0u;
-
+	if (id_indice != 0u)
+	{
+		glDeleteBuffers(1, &id_indice);
+		id_indice = 0u;
+	}
+	
 	RELEASE_ARRAY(vertex_normals);
-	glDeleteBuffers(1, &id_vertex_normals);
-	id_vertex_normals = 0u;
+	if (id_vertex_normals != 0u)
+	{
+		glDeleteBuffers(1, &id_vertex_normals);
+		id_vertex_normals = 0u;
+	}
+
 
 	RELEASE_ARRAY(vertices);
 	num_vertices = 0u;
-	glDeleteBuffers(1, &id_vertex);
-	id_vertex = 0u;
+	if (id_vertex != 0u)
+	{
+		glDeleteBuffers(1, &id_vertex);
+		id_vertex = 0u;
+	}
+
 
 	return true;
 }
@@ -292,7 +306,7 @@ bool ResourceMesh::GenerateVertexNormalsBuffer()
 	{
 		glGenBuffers(1, &id_vertex_normals);
 		glBindBuffer(GL_ARRAY_BUFFER, this->id_vertex_normals);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * this->num_vertices, vertex_normals, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * this->num_vertices, vertex_normals, GL_STATIC_DRAW);
 	}
 
 	return true;
@@ -333,7 +347,7 @@ bool ResourceMesh::GenerateUVsBuffer()
 	{
 		glGenBuffers(1, &id_uv);
 		glBindBuffer(GL_ARRAY_BUFFER, id_uv);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * num_vertices, &uv_coord[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * uv_dimensions * num_vertices, &uv_coord[0], GL_STATIC_DRAW);
 	}
 
 	return true;

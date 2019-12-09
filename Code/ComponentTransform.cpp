@@ -123,6 +123,7 @@ void ComponentTransform::SwitchedStatic()
 
 void ComponentTransform::CleanUp()
 {
+	LOG("COMPONENT TRANSFORM CLEANUP");
 	if (App->gui->GetSelectedTransform() == this)
 	{
 		App->gui->SetSelectedGameObjec(nullptr);

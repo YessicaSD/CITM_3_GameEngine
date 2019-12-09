@@ -87,16 +87,14 @@ update_status ModuleScene::Update(float dt)
 	//TODO: Turn into a shortcut
 	if (App->input->GetKey(SDL_SCANCODE_DELETE))
 	{
-		
-		if (ComponentTransform* selected_object = App->gui->GetSelectedTransform())
+		ComponentTransform* selected_object = App->gui->GetSelectedTransform();
+		if (selected_object != nullptr)
 		{
 			Event new_event(Event::DELETE_OBJECT);
 			new_event.object.ptr = selected_object->gameobject;
 			App->AddEvent(new_event);
-
+			App->AddEvent(Event(Event::UPDATE_OCTREE));
 			App->gui->SetSelectedGameObjec(nullptr);
-			
-
 		}
 	}
 	return UPDATE_CONTINUE;

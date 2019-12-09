@@ -346,6 +346,7 @@ void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, Com
 		}
 	}
 	model_gameobjects[0]->transform->SetParent(parent);
+	resource_model->StopUsingResource();
 }
 
 bool ModuleImport::CleanUp()

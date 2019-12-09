@@ -48,11 +48,5 @@ ModuleHardware::ModuleHardware(const char * name):Module(true, name)
 
 }
 
-update_status ModuleHardware::PreUpdate()
-{
-	
-
-	return update_status::UPDATE_CONTINUE;
-}
 
 

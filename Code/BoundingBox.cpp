@@ -6,11 +6,21 @@
 
 BoundingBox::BoundingBox()
 {
+	SetNegativeInfinty();
+
 	obb_color = { 1,1,0,1 };
 	aabb_color = {0,1,0,1 };
-	float3 vertex = { 0,0,0 };
-	local_aabb.Enclose(&vertex, 1);
+	const float3 vertex = { 0,0,0 };
+	const float3 size = { 1,1,1 };
+	local_aabb.SetFromCenterAndSize(vertex, size);
 	MultiplyByMatrix(float4x4::identity);
+}
+
+void BoundingBox::SetNegativeInfinty()
+{
+	local_aabb.SetNegativeInfinity();
+	aabb.SetNegativeInfinity();
+	obb.SetNegativeInfinity();
 }
 
 BoundingBox::~BoundingBox()
@@ -57,6 +67,7 @@ void BoundingBox::CleanUp()
 {
 	obb_cube.CleanUp();
 	aabb_cube.CleanUp();
+	SetNegativeInfinty();
 }
 
 void BoundingBox::SetLocalAABB(AABB local_aabb)

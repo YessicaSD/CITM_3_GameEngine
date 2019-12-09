@@ -1,8 +1,9 @@
 #include "ModuleTime.h"
 #include "Application.h"
 #include "Event.h"
-ModuleTime::ModuleTime(const char * name):Module(name)
+ModuleTime::ModuleTime(const char * name):Module(true, name)
 {
+
 }
 
 update_status ModuleTime::PreUpdate()

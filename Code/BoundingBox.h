@@ -19,6 +19,7 @@ public:
 
 	float4 aabb_color, obb_color;
 	BoundingBox();
+	void SetNegativeInfinty();
 	~BoundingBox();
 	void MultiplyByMatrix(float4x4 matrix);
 	void Draw();

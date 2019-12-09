@@ -104,6 +104,7 @@ inline void ComponentTransform::GetIntersectNonStatics(std::vector<ComponentTran
 {
 	if (!is_static)
 	{
+		bounding_box.GetOBB();
 		if (primitive.Intersects(bounding_box.GetOBB()))
 		{
 			static_objects.push_back(this);

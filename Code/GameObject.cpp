@@ -29,9 +29,9 @@ GameObject::~GameObject()
 	{
 		Component* aux = (*iter);
 		(*iter) = nullptr;
-		aux->CleanUp();
-		if (aux)
+		if (aux != nullptr)
 		{
+			aux->CleanUp();
 			delete aux;
 		}
 		
