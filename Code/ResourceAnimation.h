@@ -40,6 +40,8 @@ private:
 	uint numChannels = 0u;
 	NodeAnimation* nodes = nullptr;
 
+	bool SaveFileData() override;
+
 	void LoadAnimation(const aiAnimation& animation);
 	friend class ModuleImport;
 };
