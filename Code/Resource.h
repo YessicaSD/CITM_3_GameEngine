@@ -77,8 +77,8 @@ protected:
 	virtual void CleanUp() {};
 	
 	//Helpers for LoadFileData() and SaveFileData()
-	void CopyToFile(void* info, char ** data_cursor, size_t bytes);
-	void CopyToMemory(void* info, char ** data_cursor, size_t bytes);
+	void SaveVariable(void* info, char ** data_cursor, size_t bytes);
+	void LoadVariable(void* info, char ** data_cursor, size_t bytes);
 
 protected:
 	UID uid = 0u;

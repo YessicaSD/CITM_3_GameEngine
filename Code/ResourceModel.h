@@ -52,6 +52,7 @@ public:
 	std::vector<ModelNode*> nodes;
 	std::vector<UID> meshes_uid;
 	std::vector<UID> textures_uid;
+	std::vector<UID> animations_uid;
 
 	friend class ModuleImport;
 	friend class ModuleResourceManager;

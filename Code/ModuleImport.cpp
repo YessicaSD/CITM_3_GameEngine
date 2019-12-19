@@ -82,17 +82,18 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 			for (uint i = 0u; i < scene->mNumAnimations; ++i)
 			{
 				ResourceAnimation * resource_animation = nullptr;
-				resource_animation = App->resource_manager->CreateResource<ResourceAnimation>();
-				resource_animation->LoadAnimation((*scene->mAnimations[i]));
+				//resource_animation = App->resource_manager->CreateResource<ResourceAnimation>();
+				//resource_animation->ImportAnimation((*scene->mAnimations[i]));
+				//TODO: Make that it fills previous uid if it's modified
 			}
 		}
-		//TODO ask jaume if he likes this change of "ifs"
 		if (scene->HasMeshes())
 		{
 			resource_model = App->resource_manager->CreateResource<ResourceModel>(model_uid);
 			resource_model->asset_source = asset_path;
-			std::vector<uint> mesh_texture_indices;
+			std::vector<uint> mesh_texture_indices;//TODO: Reserve memory
 
+			//TODO: An fbx file can have materials without having any meshes, take this out of the conditional
 			if (scene->HasMaterials())
 			{
 				resource_model->textures_uid.reserve(scene->mNumMaterials);
@@ -113,17 +114,16 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 				}
 			}
 
-		
-				resource_model->meshes_uid.reserve(scene->mNumMeshes);
-				mesh_texture_indices.reserve(scene->mNumMeshes);
+			resource_model->meshes_uid.reserve(scene->mNumMeshes);
+			mesh_texture_indices.reserve(scene->mNumMeshes);
 
-				for (uint i = 0u; i < scene->mNumMeshes; ++i)
-				{
-					aiMesh *assimp_mesh = scene->mMeshes[i];
-					ResourceMesh * resource_mesh = ImportAssimpMesh(assimp_mesh, PopFirst(prev_meshes_uids), asset_path);
-					resource_model->meshes_uid.push_back(resource_mesh->GetUID());
-					mesh_texture_indices.push_back(assimp_mesh->mMaterialIndex);
-				}
+			for (uint i = 0u; i < scene->mNumMeshes; ++i)
+			{
+				aiMesh *assimp_mesh = scene->mMeshes[i];
+				ResourceMesh * resource_mesh = ImportAssimpMesh(assimp_mesh, PopFirst(prev_meshes_uids), asset_path);
+				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
+				mesh_texture_indices.push_back(assimp_mesh->mMaterialIndex);
+			}
 		
 			ImportFBXNodes(resource_model, new ModelNode(), scene->mRootNode, resource_model->meshes_uid, resource_model->textures_uid, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX);
 			aiReleaseImport(scene);

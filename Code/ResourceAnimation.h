@@ -14,15 +14,18 @@ struct KeyAnimation
 struct aiNodeAnim;
 class NodeAnimation
 {
-	std::string name;
-	uint numPositionKeys;
+	char * name = nullptr;
+
+	uint num_position_keys;
 	KeyAnimation<float3>* position_keys = nullptr;
-	uint numScalingKeys;
-	KeyAnimation<float3>* scale_keys = nullptr;
-	uint numRotationKeys;
+
+	uint num_rotation_keys;
 	KeyAnimation<Quat>* rotation_keys = nullptr;
 
-	void LoadNodeAnimation(const aiNodeAnim& node_animation);
+	uint num_scale_keys;
+	KeyAnimation<float3>* scale_keys = nullptr;
+
+	void ImportAnimationNode(const aiNodeAnim& node_animation);
 	friend class ResourceAnimation;
 };
 struct aiAnimation;
@@ -34,15 +37,15 @@ public:
 
 	 void CleanUp() override;
 private:
-	std::string name = "";
-	float duration = 0;
-	float ticksPerSecond = 0;
-	uint numChannels = 0u;
+	char * name = nullptr;
+	float duration = 0.f;
+	float ticks_per_second = 0.f;
+	uint num_channels = 0u;
 	NodeAnimation* nodes = nullptr;
 
 	bool SaveFileData() override;
 
-	void LoadAnimation(const aiAnimation& animation);
+	void ImportAnimation(const aiAnimation& animation);
 	friend class ModuleImport;
 };
 #endif // !RESOURCE_ANIMATION_H_

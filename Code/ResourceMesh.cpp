@@ -57,12 +57,12 @@ bool ResourceMesh::SaveFileData()
 
 	char* cursor = data;
 
-	CopyToFile(ranges, &cursor, ranges_bytes);
-	CopyToFile(vertices, &cursor, vertices_bytes);
-	CopyToFile(vertex_normals, &cursor, vertex_normals_bytes);
-	CopyToFile(indices, &cursor, indices_bytes);
-	CopyToFile(faces_normals, &cursor, face_normals_bytes);
-	CopyToFile(uv_coord, &cursor, uv_bytes);
+	SaveVariable(ranges, &cursor, ranges_bytes);
+	SaveVariable(vertices, &cursor, vertices_bytes);
+	SaveVariable(vertex_normals, &cursor, vertex_normals_bytes);
+	SaveVariable(indices, &cursor, indices_bytes);
+	SaveVariable(faces_normals, &cursor, face_normals_bytes);
+	SaveVariable(uv_coord, &cursor, uv_bytes);
 
 	//SaveFile
 	uint path_size = 250u;
@@ -102,24 +102,24 @@ bool ResourceMesh::LoadFileData()
 		cursor += ranges_bytes;
 
 		vertices = new float3[num_vertices];
-		CopyToMemory(vertices, &cursor, sizeof(float3) * num_vertices);
+		LoadVariable(vertices, &cursor, sizeof(float3) * num_vertices);
 		GenerateVerticesBuffer();
 
 		vertex_normals = new float3[num_vertices];
-		CopyToMemory(vertex_normals, &cursor, sizeof(float3) * num_vertices);
+		LoadVariable(vertex_normals, &cursor, sizeof(float3) * num_vertices);
 		GenerateVertexNormalsBuffer();
 
 		indices = new uint[num_indices];
-		CopyToMemory(indices, &cursor, sizeof(uint) * num_indices);
+		LoadVariable(indices, &cursor, sizeof(uint) * num_indices);
 		GenerateFacesBuffer();
 
 		faces_normals = new float3[num_faces];
-		CopyToMemory(faces_normals, &cursor, sizeof(float3) * num_faces);
+		LoadVariable(faces_normals, &cursor, sizeof(float3) * num_faces);
 		GenerateFaceNormalsBuffer();
 
 		uint num_uv = GetUVCoordSize();
 		uv_coord = new float[num_uv];
-		CopyToMemory(uv_coord, &cursor, sizeof(float) * num_uv);
+		LoadVariable(uv_coord, &cursor, sizeof(float) * num_uv);
 		GenerateUVsBuffer();
 
 		aabb.SetNegativeInfinity();
