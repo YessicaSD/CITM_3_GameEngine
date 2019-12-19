@@ -63,6 +63,17 @@ bool ResourceAnimation::SaveFileData()
 	return true;
 }
 
+bool ResourceAnimation::LoadFileData()
+{
+	return true;
+}
+
+bool ResourceAnimation::ReleaseData()
+{
+
+	return true;
+}
+
 void ResourceAnimation::ImportAnimation(const aiAnimation& animation)
 {
 	const char * animation_name = animation.mName.C_Str();

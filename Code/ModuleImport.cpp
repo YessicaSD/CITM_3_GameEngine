@@ -82,8 +82,8 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 			for (uint i = 0u; i < scene->mNumAnimations; ++i)
 			{
 				ResourceAnimation * resource_animation = nullptr;
-				//resource_animation = App->resource_manager->CreateResource<ResourceAnimation>();
-				//resource_animation->ImportAnimation((*scene->mAnimations[i]));
+				resource_animation = App->resource_manager->CreateResource<ResourceAnimation>();
+				resource_animation->ImportAnimation((*scene->mAnimations[i]));
 				//TODO: Make that it fills previous uid if it's modified
 			}
 		}
