@@ -282,6 +282,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="PanelImport.cpp" />
     <ClCompile Include="PanelResources.cpp" />
+    <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="ResourceMaterial.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="AssimpIO.cpp" />

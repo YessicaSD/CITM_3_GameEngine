@@ -47,9 +47,10 @@ unsigned int childclass::GetType()\
 
 class Resource
 {
+
 public:
 	static const uint type;
-
+	
 public:
 	Resource();
 	bool StartUsingResource();
@@ -66,12 +67,15 @@ public:
 	{
 		return type;
 	}
+	
 protected:
 	//INFO: Saves the resource with custom format in the Resources folder
 	virtual bool SaveFileData() = 0;
 	virtual bool LoadFileData() = 0;
 	virtual bool ReleaseData() = 0;
 
+	virtual void CleanUp() {};
+	
 	//Helpers for LoadFileData() and SaveFileData()
 	void CopyToFile(void* info, char ** data_cursor, size_t bytes);
 	void CopyToMemory(void* info, char ** data_cursor, size_t bytes);

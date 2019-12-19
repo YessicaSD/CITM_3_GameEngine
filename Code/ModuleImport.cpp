@@ -12,6 +12,7 @@
 #include "Resource.h"
 #include "ResourceMesh.h"
 #include "ResourceModel.h"
+#include "ResourceAnimation.h"
 
 #include "ModuleRenderer3D.h"
 #include "GameObject.h"
@@ -71,54 +72,68 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 		aiProcess_FlipUVs | \
 		0;
 	ResourceModel * resource_model = nullptr;
+	
 	const aiScene *scene = aiImportFile(asset_path, flags);
-	if (scene != nullptr && scene->HasMeshes())
+	
+	if (scene != nullptr)
 	{
-		resource_model = App->resource_manager->CreateResource<ResourceModel>(model_uid);
-		resource_model->asset_source = asset_path;
-		std::vector<uint> mesh_texture_indices;
-
-		if (scene->HasMaterials())
+		if (scene->HasAnimations())
 		{
-			resource_model->textures_uid.reserve(scene->mNumMaterials);
-
-			for (uint i = 0u; i < scene->mNumMaterials; ++i)
+			for (uint i = 0u; i < scene->mNumAnimations; ++i)
 			{
-				aiMaterial * material = scene->mMaterials[i];
-				ResourceTexture * resource_texture = ImportFBXTexture(material, prev_textures_uids, asset_path);
-				//TODO: Remove this if when we separate ResourceMaterials from ResourceTextures
-				if (resource_texture == nullptr)
-				{
-					resource_model->textures_uid.push_back(INVALID_RESOURCE_UID);
-				}
-				else
-				{
-					resource_model->textures_uid.push_back(resource_texture->GetUID());
-				}
+				ResourceAnimation * resource_animation = nullptr;
+				resource_animation = App->resource_manager->CreateResource<ResourceAnimation>();
+				resource_animation->LoadAnimation((*scene->mAnimations[i]));
 			}
 		}
-
+		//TODO ask jaume if he likes this change of "ifs"
 		if (scene->HasMeshes())
 		{
-			resource_model->meshes_uid.reserve(scene->mNumMeshes);
-			mesh_texture_indices.reserve(scene->mNumMeshes);
+			resource_model = App->resource_manager->CreateResource<ResourceModel>(model_uid);
+			resource_model->asset_source = asset_path;
+			std::vector<uint> mesh_texture_indices;
 
-			for (uint i = 0u; i < scene->mNumMeshes; ++i)
+			if (scene->HasMaterials())
 			{
-				aiMesh *assimp_mesh = scene->mMeshes[i];
-				ResourceMesh * resource_mesh = ImportAssimpMesh(assimp_mesh, PopFirst(prev_meshes_uids), asset_path);
-				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
-				mesh_texture_indices.push_back(assimp_mesh->mMaterialIndex);
-			}
-		}
-		ImportFBXNodes(resource_model, new ModelNode(), scene->mRootNode, resource_model->meshes_uid, resource_model->textures_uid, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX);
-		aiReleaseImport(scene);
-		resource_model->SaveFileData();
-		SaveModelMeta(resource_model, asset_path);
-		//Delete all the data from the Resource (when it has just been imported, there is no object referencing it)
-		resource_model->ReleaseData();
+				resource_model->textures_uid.reserve(scene->mNumMaterials);
 
-		LOG("Success importing model from: %s in %i ms.", asset_path, import_timer.Read());
+				for (uint i = 0u; i < scene->mNumMaterials; ++i)
+				{
+					aiMaterial * material = scene->mMaterials[i];
+					ResourceTexture * resource_texture = ImportFBXTexture(material, prev_textures_uids, asset_path);
+					//TODO: Remove this if when we separate ResourceMaterials from ResourceTextures
+					if (resource_texture == nullptr)
+					{
+						resource_model->textures_uid.push_back(INVALID_RESOURCE_UID);
+					}
+					else
+					{
+						resource_model->textures_uid.push_back(resource_texture->GetUID());
+					}
+				}
+			}
+
+		
+				resource_model->meshes_uid.reserve(scene->mNumMeshes);
+				mesh_texture_indices.reserve(scene->mNumMeshes);
+
+				for (uint i = 0u; i < scene->mNumMeshes; ++i)
+				{
+					aiMesh *assimp_mesh = scene->mMeshes[i];
+					ResourceMesh * resource_mesh = ImportAssimpMesh(assimp_mesh, PopFirst(prev_meshes_uids), asset_path);
+					resource_model->meshes_uid.push_back(resource_mesh->GetUID());
+					mesh_texture_indices.push_back(assimp_mesh->mMaterialIndex);
+				}
+		
+			ImportFBXNodes(resource_model, new ModelNode(), scene->mRootNode, resource_model->meshes_uid, resource_model->textures_uid, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX);
+			aiReleaseImport(scene);
+			resource_model->SaveFileData();
+			SaveModelMeta(resource_model, asset_path);
+			//Delete all the data from the Resource (when it has just been imported, there is no object referencing it)
+			resource_model->ReleaseData();
+
+			LOG("Success importing model from: %s in %i ms.", asset_path, import_timer.Read());
+		}
 	}
 	else
 	{

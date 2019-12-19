@@ -35,21 +35,7 @@ public:
 	bool Start(JSONFile * module_file) override;
 
 	template<class ResourceType>
-	ResourceType * CreateResource(UID uid = INVALID_RESOURCE_UID)
-	{
-		ResourceType * resource = new ResourceType();
-		if (uid == INVALID_RESOURCE_UID)
-		{
-			resource->uid = GenerateNewUID();
-		}
-		else
-		{
-			resource->uid = uid;
-		}
-		resources[resource->uid] = resource;
-		return resource;
-	}
-
+	ResourceType * CreateResource(UID uid = INVALID_RESOURCE_UID);
 	update_status PreUpdate() override;
 	bool CleanUp() override;
 
@@ -95,3 +81,19 @@ private:
 
 
 #endif
+
+template<class ResourceType>
+inline ResourceType * ModuleResourceManager::CreateResource(UID uid)
+{
+	ResourceType * resource = new ResourceType();
+	if (uid == INVALID_RESOURCE_UID)
+	{
+		resource->uid = GenerateNewUID();
+	}
+	else
+	{
+		resource->uid = uid;
+	}
+	resources[resource->uid] = resource;
+	return resource;
+}
