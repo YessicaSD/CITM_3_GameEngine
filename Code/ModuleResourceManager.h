@@ -60,7 +60,7 @@ private:
 	void ReImportResources(JSONFile &meta_file, const uint &type, AssetFile * asset_file);
 	
 	//Helpers to the functions to update assets
-	void DeleteDependantResources(std::vector<UID> uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension);
+	void DeleteDependantResources(std::vector<UID> & uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension);
 	bool HasBeenModified(JSONFile &meta_file, const char * file);
 	bool MissingResources(JSONFile & meta_file, uint type);
 

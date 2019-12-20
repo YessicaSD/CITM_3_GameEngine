@@ -13,6 +13,11 @@ ResourceModel::~ResourceModel()
 	}
 }
 
+const char * ResourceModel::GetTypeString()
+{
+	return "model";
+}
+
 bool ResourceModel::SaveFileData()
 {
 	uint header_bytes = sizeof(uint);

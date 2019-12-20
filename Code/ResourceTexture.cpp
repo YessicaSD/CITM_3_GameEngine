@@ -17,6 +17,11 @@ ResourceTexture::ResourceTexture() : Resource()
 {
 }
 
+const char * ResourceTexture::GetTypeString()
+{
+	return "texture";
+}
+
 bool ResourceTexture::SaveFileData()
 {
 	//Create path

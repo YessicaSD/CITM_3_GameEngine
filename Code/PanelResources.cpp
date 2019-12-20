@@ -32,7 +32,7 @@ void PanelResources::Draw()
 		ImGui::SameLine(space_1);
 		ImGui::Text((*iter).second->asset_source.c_str());
 		ImGui::SameLine(space_2);
-		ImGui::Text(App->resource_manager->GetResourceTypeString((*iter).second->GetType()));
+		ImGui::Text((*iter).second->GetTypeString());
 		ImGui::SameLine(space_3);
 		std::string count = std::to_string((*iter).second->GetReferenceCount());
 		ImGui::Text(count.c_str());

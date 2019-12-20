@@ -38,8 +38,8 @@ class ResourceAnimation : public Resource
 	RESOURCE_DECLARATION(ResourceAnimation);
 public:
 	~ResourceAnimation();
-
-	 void CleanUp() override;
+	const char * GetTypeString() override;
+	void CleanUp() override;
 protected:
 	bool SaveFileData() override;
 	bool LoadFileData() override;

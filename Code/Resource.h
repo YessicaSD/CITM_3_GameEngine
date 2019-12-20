@@ -67,6 +67,7 @@ public:
 	{
 		return type;
 	}
+	virtual const char * GetTypeString() = 0;
 	
 protected:
 	//INFO: Saves the resource with custom format in the Resources folder

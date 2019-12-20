@@ -42,6 +42,9 @@ class ResourceModel : public Resource
 public:
 	~ResourceModel();
 
+public:
+	const char * GetTypeString() override;
+
 private:
 	ResourceModel() {};
 	bool SaveFileData() override;

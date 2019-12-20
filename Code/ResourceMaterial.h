@@ -8,6 +8,13 @@ class ResourceMaterial : public Resource
 	RESOURCE_DECLARATION(ResourceMaterial);
 
 public:
+	const char * GetTypeString() override;
+private:
+	bool SaveFileData() override;
+	bool LoadFileData() override;
+	bool ReleaseData() override;
+
+public:
 	int i = 0;
 	//TODO: Look what information a material holds in assimp
 };

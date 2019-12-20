@@ -13,6 +13,11 @@ ResourceAnimation::~ResourceAnimation()
 	CleanUp();
 }
 
+const char * ResourceAnimation::GetTypeString()
+{
+	return "animation";
+}
+
 void ResourceAnimation::CleanUp()
 {
 	RELEASE(nodes);
@@ -125,7 +130,7 @@ bool ResourceAnimation::LoadFileData()
 
 bool ResourceAnimation::ReleaseData()
 {
-	if (num_channels > 0)
+	if (num_channels > 0u)
 	{
 		for (int i = num_channels - 1; i < num_channels; ++i)
 		{

@@ -119,6 +119,9 @@ void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &t
 		std::vector<UID>textures_uids;
 		DeleteDependantResources(textures_uids, "exportedTextures", &meta_file, RESOURCES_TEXTURES_FOLDER, TEXTURE_EXTENSION);
 
+		std::vector<UID>animation_uids;
+		DeleteDependantResources(animation_uids, "exportedAnimations", &meta_file, RESOURCES_ANIMATION_FOLDER, ANIMATION_EXTENSION);
+
 		//INFO: Generate new resources using the previous uids
 		App->import->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids);
 	}
@@ -340,27 +343,6 @@ uint ModuleResourceManager::GetResourceTypeFromExtension(const std::string & ext
 	}
 }
 
-const char * ModuleResourceManager::GetResourceTypeString(uint type)
-{
-	if (type == ResourceModel::type)
-	{
-		return "model";
-	}
-	else if (type == ResourceMesh::type)
-	{
-		return "mesh";
-	}
-	else if (type == ResourceTexture::type)
-	{
-		return "texture";
-	}
-	else if (type == ResourceMaterial::type)
-	{
-		return "material";
-	}
-	return "unsupported type";
-}
-
 UID ModuleResourceManager::LoadUID(JSONFile * meta_file) const
 {
 	const char * aux_uid = meta_file->LoadText("resourceUID", "0");
@@ -392,7 +374,7 @@ void ModuleResourceManager::SaveUIDArray(const std::vector<UID> & uid_vector, ch
 	delete[]uid_string_vector;
 }
 
-void ModuleResourceManager::DeleteDependantResources(std::vector<UID> uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension)
+void ModuleResourceManager::DeleteDependantResources(std::vector<UID> & uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension)
 {
 	std::vector<const char *>uids_string;
 	meta_file->LoadTextVector(name, uids_string);

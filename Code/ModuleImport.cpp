@@ -89,6 +89,7 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 				resource_animation = App->resource_manager->CreateResource<ResourceAnimation>();
 				resource_animation->ImportAnimation((*scene->mAnimations[i]));
 				resource_model->animations_uid.push_back(resource_animation->GetUID());
+				resource_animation->asset_source = asset_path;
 				//TODO: Don't create it each time, make sure it fills the previous uid like meshes
 			}
 		}
@@ -127,16 +128,15 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
 				mesh_texture_indices.push_back(assimp_mesh->mMaterialIndex);
 			}
-		
 			ImportFBXNodes(resource_model, new ModelNode(), scene->mRootNode, resource_model->meshes_uid, resource_model->textures_uid, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX);
-			aiReleaseImport(scene);
-			resource_model->SaveFileData();
-			SaveModelMeta(resource_model, asset_path);
-			//Delete all the data from the Resource (when it has just been imported, there is no object referencing it)
-			resource_model->ReleaseData();
-
-			LOG("Success importing model from: %s in %i ms.", asset_path, import_timer.Read());
 		}
+		aiReleaseImport(scene);
+		resource_model->SaveFileData();
+		SaveModelMeta(resource_model, asset_path);
+		//Delete all the data from the Resource (when it has just been imported, there is no object referencing it)
+		resource_model->ReleaseData();
+
+		LOG("Success importing model from: %s in %i ms.", asset_path, import_timer.Read());
 	}
 	else
 	{
@@ -171,7 +171,7 @@ void ModuleImport::LoadModelMeta(ResourceModel * model, const char * meta_path)
 
 	model->uid = App->resource_manager->LoadUID(&meta_file);
 
-	//TODO: Cretate objects forcing their uids
+	//TODO: Create objects forcing their uids
 	//App->resource_manager->CreateResource<ResourceModel>(uid);
 	//meta_file.CloseFile();
 }

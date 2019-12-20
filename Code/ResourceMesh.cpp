@@ -25,6 +25,11 @@ ResourceMesh::~ResourceMesh()
 	CleanUp();
 }
 
+const char * ResourceMesh::GetTypeString()
+{
+	return "mesh";
+}
+
 //Generates and saves data to a file
 bool ResourceMesh::SaveFileData()
 {

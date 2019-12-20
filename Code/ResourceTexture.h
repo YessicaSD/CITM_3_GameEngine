@@ -13,6 +13,9 @@ class ResourceTexture : public Resource
 public:
 	~ResourceTexture();
 
+public:
+	const char * GetTypeString() override;
+
 private:
 	ResourceTexture();
 

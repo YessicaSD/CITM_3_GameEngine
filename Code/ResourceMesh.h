@@ -26,6 +26,8 @@ private:
 public:
 	~ResourceMesh();
 
+	const char * GetTypeString() override;
+
 	bool ImportVertices(const int num_vertices, const float *vertices);
 	bool ImportVerticesNormals(aiMesh *info);
 	bool ImportFaces(aiMesh *info);
