@@ -82,12 +82,14 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 
 		if (scene->HasAnimations())
 		{
+			resource_model->animations_uid.reserve(scene->mNumAnimations);
 			for (uint i = 0u; i < scene->mNumAnimations; ++i)
 			{
 				ResourceAnimation * resource_animation = nullptr;
 				resource_animation = App->resource_manager->CreateResource<ResourceAnimation>();
 				resource_animation->ImportAnimation((*scene->mAnimations[i]));
-				//TODO: Make that it fills previous uid if it's modified
+				resource_model->animations_uid.push_back(resource_animation->GetUID());
+				//TODO: Don't create it each time, make sure it fills the previous uid like meshes
 			}
 		}
 		if (scene->HasMeshes())
@@ -154,6 +156,7 @@ void ModuleImport::SaveModelMeta(ResourceModel * resource_model, const char * as
 	resource_model->SaveModifiedDate(&meta_file, asset_path);
 	App->resource_manager->SaveUIDArray(resource_model->textures_uid, "exportedTextures", &meta_file);
 	App->resource_manager->SaveUIDArray(resource_model->meshes_uid, "exportedMeshes", &meta_file);
+	App->resource_manager->SaveUIDArray(resource_model->animations_uid, "exportedAnimations", &meta_file);
 	//TODO: Add import options
 	meta_file.SaveFile(std::string(asset_path) + std::string(".") + std::string(META_EXTENSION));
 	meta_file.CloseFile();
@@ -351,6 +354,11 @@ void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, Com
 			component_material->SetTexture((ResourceTexture*)App->resource_manager->GetResource(resource_model->nodes[i]->material_uid));
 		}
 		model_gameobjects.push_back(new_gameobject);
+	}
+	for (uint i = 0u; i < resource_model->animations_uid.size(); ++i)
+	{
+		ResourceAnimation * resource_animation = (ResourceAnimation*)App->resource_manager->GetResource(resource_model->animations_uid[i]);
+		resource_animation->StartUsingResource();
 	}
 
 	//Parent them

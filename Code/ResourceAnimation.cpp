@@ -139,23 +139,11 @@ bool ResourceAnimation::ReleaseData()
 		}
 		RELEASE_ARRAY(nodes);
 	}
-	
 
 	num_channels = 0u;
 	ticks_per_second = 0.f;
 	duration = 0.f;
 	RELEASE_ARRAY(name);
-
-	return true;
-}
-
-bool ResourceAnimation::LoadFileData()
-{
-	return true;
-}
-
-bool ResourceAnimation::ReleaseData()
-{
 
 	return true;
 }
