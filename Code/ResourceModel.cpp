@@ -134,3 +134,10 @@ bool ResourceModel::ReleaseData()
 	}
 	return true;
 }
+
+
+//Used in resource manager. Tells it that a particular uid exits by creating an instance on the map.
+void CreateResourcesInMap()
+{
+
+}

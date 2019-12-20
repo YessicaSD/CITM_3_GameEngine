@@ -9,6 +9,7 @@
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
 #include "ResourceMaterial.h"
+#include "ResourceAnimation.h"
 
 ModuleResourceManager::ModuleResourceManager(const char * name) : Module(true, name)
 {
@@ -161,6 +162,14 @@ void ModuleResourceManager::CreateResourcesInMap(const uint &type, JSONFile &met
 			ResourceTexture * resource_texture = CreateResource<ResourceTexture>((*texture_iter));
 			resource_texture->asset_source = asset_file->full_path;
 		}
+
+		std::vector<UID>animations_uid;
+		meta_file.LoadUIDVector("exportedAnimations", animations_uid);
+		for (auto animation_iter = animations_uid.begin(); animation_iter != animations_uid.end(); ++animation_iter)
+		{
+			ResourceAnimation * resource_animation = CreateResource<ResourceAnimation>((*animation_iter));
+			resource_animation->asset_source = asset_file->full_path;
+		}
 	}
 	else if (type == ResourceTexture::type)
 	{
@@ -218,7 +227,7 @@ bool ModuleResourceManager::MissingResources(JSONFile &meta_file, uint type)
 		{
 			ret = true;
 		}
-		//TODO: Check if it lacks meshes or textures
+		//TODO: Check if it lacks meshes, textures or animations
 	}
 	else if (type == ResourceTexture::type)
 	{
