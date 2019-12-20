@@ -77,20 +77,21 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 	
 	if (scene != nullptr)
 	{
+		resource_model = App->resource_manager->CreateResource<ResourceModel>(model_uid);
+		resource_model->asset_source = asset_path;
+
 		if (scene->HasAnimations())
 		{
 			for (uint i = 0u; i < scene->mNumAnimations; ++i)
 			{
 				ResourceAnimation * resource_animation = nullptr;
-				//resource_animation = App->resource_manager->CreateResource<ResourceAnimation>();
-				//resource_animation->ImportAnimation((*scene->mAnimations[i]));
+				resource_animation = App->resource_manager->CreateResource<ResourceAnimation>();
+				resource_animation->ImportAnimation((*scene->mAnimations[i]));
 				//TODO: Make that it fills previous uid if it's modified
 			}
 		}
 		if (scene->HasMeshes())
 		{
-			resource_model = App->resource_manager->CreateResource<ResourceModel>(model_uid);
-			resource_model->asset_source = asset_path;
 			std::vector<uint> mesh_texture_indices;//TODO: Reserve memory
 
 			//TODO: An fbx file can have materials without having any meshes, take this out of the conditional

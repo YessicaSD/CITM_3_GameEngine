@@ -11,7 +11,9 @@ struct KeyAnimation
 	double time;
 	TYPE value;
 };
+
 struct aiNodeAnim;
+
 class NodeAnimation
 {
 	char * name = nullptr;
@@ -28,7 +30,9 @@ class NodeAnimation
 	void ImportAnimationNode(const aiNodeAnim& node_animation);
 	friend class ResourceAnimation;
 };
+
 struct aiAnimation;
+
 class ResourceAnimation : public Resource
 {
 	RESOURCE_DECLARATION(ResourceAnimation);
@@ -44,6 +48,8 @@ private:
 	NodeAnimation* nodes = nullptr;
 
 	bool SaveFileData() override;
+	bool LoadFileData() override;
+	bool ReleaseData() override;
 
 	void ImportAnimation(const aiAnimation& animation);
 	friend class ModuleImport;

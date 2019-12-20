@@ -90,16 +90,11 @@ bool ResourceMesh::LoadFileData()
 
 		//INFO: The number of elements on the ranges array must be the same as in the ranges array of ResourceMesh::SaveFileData()
 		uint ranges[4];
-
-		uint ranges_bytes = sizeof(ranges);
-		memcpy(ranges, cursor, ranges_bytes);
-
+		LoadVariable(ranges, &cursor, sizeof(ranges));
 		num_vertices = ranges[0];
 		num_indices = ranges[1];
 		num_faces = ranges[2];
 		uv_dimensions = ranges[3];
-
-		cursor += ranges_bytes;
 
 		vertices = new float3[num_vertices];
 		LoadVariable(vertices, &cursor, sizeof(float3) * num_vertices);
