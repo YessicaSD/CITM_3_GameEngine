@@ -93,31 +93,28 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 				//TODO: Don't create it each time, make sure it fills the previous uid like meshes
 			}
 		}
+		if (scene->HasMaterials())
+		{
+			resource_model->textures_uid.reserve(scene->mNumMaterials);
+
+			for (uint i = 0u; i < scene->mNumMaterials; ++i)
+			{
+				aiMaterial * material = scene->mMaterials[i];
+				ResourceTexture * resource_texture = ImportFBXTexture(material, prev_textures_uids, asset_path);
+				//TODO: Remove this if when we separate ResourceMaterials from ResourceTextures
+				if (resource_texture == nullptr)
+				{
+					resource_model->textures_uid.push_back(INVALID_RESOURCE_UID);
+				}
+				else
+				{
+					resource_model->textures_uid.push_back(resource_texture->GetUID());
+				}
+			}
+		}
 		if (scene->HasMeshes())
 		{
 			std::vector<uint> mesh_texture_indices;//TODO: Reserve memory
-
-			//TODO: An fbx file can have materials without having any meshes, take this out of the conditional
-			if (scene->HasMaterials())
-			{
-				resource_model->textures_uid.reserve(scene->mNumMaterials);
-
-				for (uint i = 0u; i < scene->mNumMaterials; ++i)
-				{
-					aiMaterial * material = scene->mMaterials[i];
-					ResourceTexture * resource_texture = ImportFBXTexture(material, prev_textures_uids, asset_path);
-					//TODO: Remove this if when we separate ResourceMaterials from ResourceTextures
-					if (resource_texture == nullptr)
-					{
-						resource_model->textures_uid.push_back(INVALID_RESOURCE_UID);
-					}
-					else
-					{
-						resource_model->textures_uid.push_back(resource_texture->GetUID());
-					}
-				}
-			}
-
 			resource_model->meshes_uid.reserve(scene->mNumMeshes);
 			mesh_texture_indices.reserve(scene->mNumMeshes);
 
