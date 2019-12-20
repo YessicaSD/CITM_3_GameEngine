@@ -8,9 +8,9 @@
 #include "ModuleScene.h"
 #include "ResourceTexture.h"
 
+
 class ResourceMesh;
 class ModelNode;
-class ResourceTexture;
 struct aiMesh;
 struct aiMaterial;
 struct aiNode;

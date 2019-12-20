@@ -86,6 +86,7 @@ protected:
 
 public:
 	std::string asset_source;//The path to the asset that this resource was generated from
+	friend class ModuleResourceManager;
 };
 
 #endif

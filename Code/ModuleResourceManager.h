@@ -8,7 +8,6 @@
 #include "Globals.h"
 #include "Resource.h"
 #include "Timer.h"
-
 class ResourceTexture;
 
 //Used to create the hirearchy of assets
