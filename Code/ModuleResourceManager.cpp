@@ -124,7 +124,7 @@ void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &t
 		DeleteDependantResources(animation_uids, "exportedAnimations", &meta_file, RESOURCES_ANIMATION_FOLDER, ANIMATION_EXTENSION);
 
 		//INFO: Generate new resources using the previous uids
-		App->import->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids);
+		App->import->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids, animation_uids);
 	}
 	else if (type == ResourceTexture::type)
 	{

@@ -31,7 +31,7 @@ class ModuleImport : public Module
 public:
 	ModuleImport(const char * name);
 	bool Start(JSONFile * module_file) override;
-	ResourceModel * ImportModel(const char* path, UID model_uid = INVALID_RESOURCE_UID, std::vector<UID> & meshes_uids = std::vector<UID>(), std::vector<UID> & textures_uids = std::vector<UID>());
+	ResourceModel * ImportModel(const char* path, UID model_uid = INVALID_RESOURCE_UID, std::vector<UID> & meshes_uids = std::vector<UID>(), std::vector<UID> & textures_uids = std::vector<UID>(), std::vector<UID>& animation_uids = std::vector<UID>());
 	bool CleanUp() override;
 	void EventRequest(const Event& event) override;
 	ResourceMesh* ImportAssimpMesh(aiMesh * assimp_mesh, UID uid, const char * asset_path);

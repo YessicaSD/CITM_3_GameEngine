@@ -55,7 +55,7 @@ bool ModuleImport::Start(JSONFile * config)
 }
 
 //INFO: Creates a .hinata_model (our custom format for 3d models) from an fbx
-ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid, std::vector<UID> & prev_meshes_uids, std::vector<UID> & prev_textures_uids)
+ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid, std::vector<UID> & prev_meshes_uids, std::vector<UID> & prev_textures_uids, std::vector<UID>& animation_uids)
 {
 	Timer import_timer;
 	unsigned flags = aiProcess_CalcTangentSpace | \
@@ -86,11 +86,10 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 			for (uint i = 0u; i < scene->mNumAnimations; ++i)
 			{
 				ResourceAnimation * resource_animation = nullptr;
-				resource_animation = App->resource_manager->CreateResource<ResourceAnimation>();
+				resource_animation = App->resource_manager->CreateResource<ResourceAnimation>(PopFirst(animation_uids));
 				resource_animation->ImportAnimation((*scene->mAnimations[i]));
-				resource_model->animations_uid.push_back(resource_animation->GetUID());
 				resource_animation->asset_source = asset_path;
-				//TODO: Don't create it each time, make sure it fills the previous uid like meshes
+				resource_model->animations_uid.push_back(resource_animation->GetUID());
 			}
 		}
 		if (scene->HasMaterials())
