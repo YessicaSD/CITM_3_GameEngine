@@ -40,7 +40,7 @@ public:
 
 private:
 	void SaveModelMeta(ResourceModel * resource_model, const char * asset_path);
-	bool ImportFBXNodes(ResourceModel * resource_model, ModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index);
+	bool ImportFBXNodes(ResourceModel * resource_model, ModelNode * model_node, aiNode * node, const std::vector<uint> mesh_texture_idxs, uint parent_index);
 	ResourceTexture * ImportFBXTexture(const  aiMaterial * material, std::vector<UID> & uids, const char * asset_path);
 	void LoadModelMeta(ResourceModel * model, const char * meta_path);
 	UID PopFirst(std::vector<UID>& vector);

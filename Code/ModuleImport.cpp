@@ -16,8 +16,11 @@
 
 #include "ModuleRenderer3D.h"
 #include "GameObject.h"
+
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+#include "ComponentAnimation.h"
+
 #include "ModuleTexture.h"
 #include "ModuleResourceManager.h"
 #include "Event.h"
@@ -125,7 +128,7 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
 				mesh_texture_indices.push_back(assimp_mesh->mMaterialIndex);
 			}
-			ImportFBXNodes(resource_model, new ModelNode(), scene->mRootNode, resource_model->meshes_uid, resource_model->textures_uid, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX);
+			ImportFBXNodes(resource_model, new ModelNode(), scene->mRootNode, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX);
 		}
 		aiReleaseImport(scene);
 		resource_model->SaveFileData();
@@ -173,9 +176,13 @@ void ModuleImport::LoadModelMeta(ResourceModel * model, const char * meta_path)
 	//meta_file.CloseFile();
 }
 
-bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ModelNode * model_node, aiNode * node, const std::vector<UID>& meshes, const std::vector<UID>& materials, const std::vector<uint> mesh_texture_idxs, uint parent_index)
+bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ModelNode * model_node, aiNode * node, const std::vector<uint> mesh_texture_idxs, uint parent_index)
 {
 	uint curr_index = resource_model->nodes.size();
+
+	const std::vector<UID>& meshes = resource_model->meshes_uid;
+	const std::vector<UID>& materials = resource_model->textures_uid;
+	const std::vector<UID>& animations = resource_model->animations_uid;
 
 	const char * node_name = node->mName.C_Str();
 	model_node->name = new char[NODE_NAME_SIZE];
@@ -191,6 +198,7 @@ bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ModelNode * mo
 			uint index = node->mMeshes[i];
 			model_node->mesh_uid = meshes[index];
 			model_node->material_uid = materials[mesh_texture_idxs[index]];
+			model_node->animation_uid = animations[index];
 		}
 		//TODO: Create a new ResourceModelNode for each mesh
 		//Right now this for allows that there is more than one mesh per gameobject
@@ -199,7 +207,7 @@ bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ModelNode * mo
 
 	for (uint i = 0u; i < node->mNumChildren; ++i)
 	{
-		ImportFBXNodes(resource_model, new ModelNode(), node->mChildren[i], meshes, materials, mesh_texture_idxs, curr_index);
+		ImportFBXNodes(resource_model, new ModelNode(), node->mChildren[i], mesh_texture_idxs, curr_index);
 	}
 
 	return true;
@@ -350,14 +358,15 @@ void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, Com
 			ComponentMaterial * component_material = new_gameobject->GetComponent<ComponentMaterial>();
 			component_material->SetTexture((ResourceTexture*)App->resource_manager->GetResource(resource_model->nodes[i]->material_uid));
 		}
+		if (resource_model->nodes[i]->animation_uid != INVALID_RESOURCE_UID)
+		{
+			ResourceAnimation * resource_animation = (ResourceAnimation*)App->resource_manager->GetResource(resource_model->animations_uid[i]);
+			resource_animation->StartUsingResource();
+			ComponentAnimation* component_animation = new_gameobject->CreateComponent<ComponentAnimation>();
+			
+		}
 		model_gameobjects.push_back(new_gameobject);
 	}
-	for (uint i = 0u; i < resource_model->animations_uid.size(); ++i)
-	{
-		ResourceAnimation * resource_animation = (ResourceAnimation*)App->resource_manager->GetResource(resource_model->animations_uid[i]);
-		resource_animation->StartUsingResource();
-	}
-
 	//Parent them
 	for (uint i = 0u; i < model_gameobjects.size(); ++i)
 	{
@@ -366,7 +375,9 @@ void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, Com
 			model_gameobjects[i]->transform->SetParent(model_gameobjects[resource_model->nodes[i]->parent_index]->transform);
 		}
 	}
-	model_gameobjects[0]->transform->SetParent(parent);
+	if (model_gameobjects.size() > 0);
+		model_gameobjects[0]->transform->SetParent(parent);
+
 	resource_model->StopUsingResource();
 }
 
@@ -382,6 +393,7 @@ void ModuleImport::EventRequest(const Event &event)
 	if (event.type == Event::EVENT_TYPE::DROPPED_FILE)
 	{
 		std::string extension;
+		App->file_system->NormalizePath((char*)event.path);
 		App->file_system->GetExtension(event.path, extension);
 
 		std::string file;

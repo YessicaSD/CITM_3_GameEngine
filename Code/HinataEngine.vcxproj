@@ -128,6 +128,7 @@
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentAnimation.h" />
     <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeLine.h" />
@@ -280,6 +281,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="ComponentAnimation.cpp" />
     <ClCompile Include="PanelImport.cpp" />
     <ClCompile Include="PanelResources.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />

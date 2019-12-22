@@ -49,7 +49,7 @@ public:
 public:
 	Component(GameObject * gameobject);
 
-	virtual void PropertiesEditor() {};
+	virtual void PropertiesEditor() = 0;
 	void EnableComponent(bool value);
 
 	virtual bool IsClassType(const uint classType) const

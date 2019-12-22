@@ -1,9 +1,13 @@
 {
-    "resourceUID": "06714405302208354524",
-    "dateModified": 1576790389,
-    "exportedTextures": [],
-    "exportedMeshes": [],
+    "resourceUID": "15534541286894764929",
+    "dateModified": 1577014082,
+    "exportedTextures": [
+        "07106369687743807833"
+    ],
+    "exportedMeshes": [
+        "02659175563114308259"
+    ],
     "exportedAnimations": [
-        "15920476667676409214"
+        "02048460590705261552"
     ]
 }

@@ -44,6 +44,7 @@ protected:
 	bool SaveFileData() override;
 	bool LoadFileData() override;
 	bool ReleaseData() override;
+
 private:
 	char * name = nullptr;
 	float duration = 0.f;
