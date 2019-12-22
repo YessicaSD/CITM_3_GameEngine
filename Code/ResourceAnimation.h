@@ -14,7 +14,7 @@ struct KeyAnimation
 
 struct aiNodeAnim;
 
-class NodeAnimation
+class AnimationChannels
 {
 	char * name = nullptr;
 
@@ -49,8 +49,9 @@ private:
 	char * name = nullptr;
 	float duration = 0.f;
 	float ticks_per_second = 0.f;
+
 	uint num_channels = 0u;
-	NodeAnimation* nodes = nullptr;
+	AnimationChannels* channels = nullptr;
 
 	void ImportAnimation(const aiAnimation& animation);
 	friend class ModuleImport;

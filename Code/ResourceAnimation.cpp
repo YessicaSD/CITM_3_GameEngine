@@ -20,7 +20,7 @@ const char * ResourceAnimation::GetTypeString()
 
 void ResourceAnimation::CleanUp()
 {
-	RELEASE(nodes);
+	RELEASE(channels);
 	name = "";
 	num_channels = 0;
 	duration = 0;
@@ -42,13 +42,13 @@ bool ResourceAnimation::SaveFileData()
 	{
 		size += NODE_NAME_SIZE;//name
 
-		size += sizeof(nodes[i].num_position_keys);
-		size += sizeof(nodes[i].num_rotation_keys);
-		size += sizeof(nodes[i].num_scale_keys);
+		size += sizeof(channels[i].num_position_keys);
+		size += sizeof(channels[i].num_rotation_keys);
+		size += sizeof(channels[i].num_scale_keys);
 
-		size += sizeof(KeyAnimation<float3>) * nodes[i].num_position_keys;//TODO: Try if we can do sizeof(position_keys)
-		size += sizeof(KeyAnimation<Quat>) * nodes[i].num_rotation_keys;
-		size += sizeof(KeyAnimation<float3>) * nodes[i].num_scale_keys;
+		size += sizeof(KeyAnimation<float3>) * channels[i].num_position_keys;//TODO: Try if we can do sizeof(position_keys)
+		size += sizeof(KeyAnimation<Quat>) * channels[i].num_rotation_keys;
+		size += sizeof(KeyAnimation<float3>) * channels[i].num_scale_keys;
 	}
 
 	//Save the data array
@@ -62,16 +62,16 @@ bool ResourceAnimation::SaveFileData()
 	for (int i = 0; i < num_channels; ++i)
 	{
 		uint ranges[] = {
-			nodes[i].num_position_keys,
-			nodes[i].num_rotation_keys,
-			nodes[i].num_scale_keys
+			channels[i].num_position_keys,
+			channels[i].num_rotation_keys,
+			channels[i].num_scale_keys
 		};
 
 		SaveVariable(&name, &cursor, NODE_NAME_SIZE);
 		SaveVariable(ranges, &cursor, sizeof(ranges));
-		SaveVariable(nodes[i].position_keys, &cursor, sizeof(KeyAnimation<float3>) * nodes[i].num_position_keys);
-		SaveVariable(nodes[i].rotation_keys, &cursor, sizeof(KeyAnimation<Quat>) * nodes[i].num_rotation_keys);
-		SaveVariable(nodes[i].scale_keys, &cursor, sizeof(KeyAnimation<float3>) * nodes[i].num_scale_keys);
+		SaveVariable(channels[i].position_keys, &cursor, sizeof(KeyAnimation<float3>) * channels[i].num_position_keys);
+		SaveVariable(channels[i].rotation_keys, &cursor, sizeof(KeyAnimation<Quat>) * channels[i].num_rotation_keys);
+		SaveVariable(channels[i].scale_keys, &cursor, sizeof(KeyAnimation<float3>) * channels[i].num_scale_keys);
 	}
 
 	//Save file
@@ -111,13 +111,13 @@ bool ResourceAnimation::LoadFileData()
 			//INFO: The number of elements on the ranges array must be the same as in the ranges array of the ResourceAnimation::SaveFileData()
 			uint ranges[3];
 			LoadVariable(ranges, &cursor, sizeof(ranges));
-			nodes[i].num_position_keys = ranges[0];
-			nodes[i].num_rotation_keys = ranges[1];
-			nodes[i].num_scale_keys = ranges[2];
+			channels[i].num_position_keys = ranges[0];
+			channels[i].num_rotation_keys = ranges[1];
+			channels[i].num_scale_keys = ranges[2];
 
-			LoadVariable(nodes[i].position_keys, &cursor, sizeof(KeyAnimation<float3>) * nodes[i].num_position_keys);
-			LoadVariable(nodes[i].rotation_keys, &cursor, sizeof(KeyAnimation<Quat>) * nodes[i].num_rotation_keys);
-			LoadVariable(nodes[i].scale_keys, &cursor, sizeof(KeyAnimation<float3>) * nodes[i].num_scale_keys);
+			LoadVariable(channels[i].position_keys, &cursor, sizeof(KeyAnimation<float3>) * channels[i].num_position_keys);
+			LoadVariable(channels[i].rotation_keys, &cursor, sizeof(KeyAnimation<Quat>) * channels[i].num_rotation_keys);
+			LoadVariable(channels[i].scale_keys, &cursor, sizeof(KeyAnimation<float3>) * channels[i].num_scale_keys);
 
 			LOG("Success loading animation from: %s in : %i ms.", path, load_timer.Read());
 		}
@@ -134,15 +134,15 @@ bool ResourceAnimation::ReleaseData()
 	{
 		for (int i = num_channels - 1; i < num_channels; ++i)
 		{
-			RELEASE_ARRAY(nodes[i].scale_keys);
-			RELEASE_ARRAY(nodes[i].rotation_keys);
-			RELEASE_ARRAY(nodes[i].position_keys);
-			nodes[i].num_scale_keys = 0u;
-			nodes[i].num_rotation_keys = 0u;
-			nodes[i].num_position_keys = 0u;
+			RELEASE_ARRAY(channels[i].scale_keys);
+			RELEASE_ARRAY(channels[i].rotation_keys);
+			RELEASE_ARRAY(channels[i].position_keys);
+			channels[i].num_scale_keys = 0u;
+			channels[i].num_rotation_keys = 0u;
+			channels[i].num_position_keys = 0u;
 			RELEASE_ARRAY(name);
 		}
-		RELEASE_ARRAY(nodes);
+		RELEASE_ARRAY(channels);
 	}
 
 	num_channels = 0u;
@@ -164,16 +164,16 @@ void ResourceAnimation::ImportAnimation(const aiAnimation& animation)
 	ticks_per_second = animation.mTicksPerSecond;
 	num_channels = animation.mNumChannels;
 
-	nodes = new NodeAnimation[num_channels];
+	channels = new AnimationChannels[num_channels];
 	for (uint i = 0u; i < num_channels; ++i)
 	{
-		nodes[i].ImportAnimationNode((*animation.mChannels[i]));
+		channels[i].ImportAnimationNode((*animation.mChannels[i]));
 	}
 
 	SaveFileData();
 }
 
-void NodeAnimation::ImportAnimationNode(const aiNodeAnim & node_animation)
+void AnimationChannels::ImportAnimationNode(const aiNodeAnim & node_animation)
 {
 	const char * node_name = node_animation.mNodeName.C_Str();
 	name = new char[NODE_NAME_SIZE];
