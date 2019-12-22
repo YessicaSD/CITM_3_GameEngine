@@ -212,7 +212,7 @@ bool ModuleImportModel::ImportFBXNodes(ResourceModel * resource_model, ModelNode
 }
 
 //INFO: textures must be in the same folder as the fbx
-ResourceTexture * ModuleImportModel::ImportFBXTexture(const  aiMaterial * material, std::vector<UID> & uids, const char * asset_path)
+ResourceTexture * ModuleImportModel::ImportFBXTexture(const aiMaterial * material, std::vector<UID> & uids, const char * asset_path)
 {
 	ResourceTexture * ret = nullptr;
 

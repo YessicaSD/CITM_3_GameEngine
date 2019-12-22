@@ -230,6 +230,7 @@
     <ClInclude Include="MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="ResourceAnimation.h" />
+    <ClInclude Include="ResourceBone.h" />
     <ClInclude Include="ResourceMaterial.h" />
     <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="MenuCreateShape.h" />
@@ -287,6 +288,7 @@
     <ClCompile Include="PanelImport.cpp" />
     <ClCompile Include="PanelResources.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
+    <ClCompile Include="ResourceBone.cpp" />
     <ClCompile Include="ResourceMaterial.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="AssimpIO.cpp" />
