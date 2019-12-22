@@ -359,7 +359,7 @@ void ModuleScene::EventRequest(const Event & event)
 	}
 	else if (event.type == Event::DROPPED_MODEL_TO_SCENE)
 	{
-		App->import->CreateGameObjectFromModel(event.drop_model_data.model, App->scene->root_gameobject->transform);
+		App->import_model->CreateGameObjectFromModel(event.drop_model_data.model, App->scene->root_gameobject->transform);
 	}
 	else if (event.type == Event::SAVE_SCENE)
 	{

@@ -16,11 +16,11 @@
 //#define checkImageHeight 512
 //static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
 
-ModuleTexture::ModuleTexture(const char *name) : Module(true, name)
+ModuleImportTexture::ModuleImportTexture(const char *name) : Module(true, name)
 {
 }
 
-bool ModuleTexture::Init(JSONFile *module_file)
+bool ModuleImportTexture::Init(JSONFile *module_file)
 {
 	//Initialize DevIL libraries
 	LOG("Initializing DevIl libraries");
@@ -32,7 +32,7 @@ bool ModuleTexture::Init(JSONFile *module_file)
 }
 
 //Saves the texture as DDS in the Library folder (faster to use)
-ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path, UID forced_uid)
+ResourceTexture* ModuleImportTexture::ImportTexture(const char * asset_path, UID forced_uid)
 {
 	Timer import_timer;
 
@@ -68,7 +68,7 @@ ResourceTexture* ModuleTexture::ImportTexture(const char * asset_path, UID force
 	return resource_texture;
 }
 
-void ModuleTexture::SaveTextureMeta(ResourceTexture * resource_texture, const char * asset_path)
+void ModuleImportTexture::SaveTextureMeta(ResourceTexture * resource_texture, const char * asset_path)
 {
 	//INFO Create .meta
 	JSONFile meta_file;

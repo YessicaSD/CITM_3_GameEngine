@@ -18,7 +18,7 @@ typedef unsigned __int64 uint64;
 
 class Module;
 class ModuleImportModel;
-class ModuleTexture;
+class ModuleImportTexture;
 class ModuleFileSystem;
 class ModuleAudio;
 class ModuleHardware;
@@ -31,6 +31,7 @@ class ModuleGui;
 class ModuleRandom;
 class ModuleTime;
 class ModuleResourceManager;
+class ModuleImportMesh;
 
 struct ImVec2;
 
@@ -58,13 +59,14 @@ public:
 	ModuleScene *scene = nullptr;
 	ModuleGui *gui = nullptr;
 	ModuleRandom *random = nullptr;
-	ModuleImportModel *import = nullptr;
-	ModuleTexture *texture = nullptr;
+	ModuleImportModel *import_model = nullptr;
+	ModuleImportTexture * import_texture = nullptr;
 	ModuleFileSystem *file_system = nullptr;
 	ModuleAudio *audio = nullptr;
 	ModuleHardware *hardware = nullptr;
 	ModuleTime *time = nullptr;
 	ModuleResourceManager *resource_manager = nullptr;
+	ModuleImportMesh * import_mesh = nullptr;
 
 	std::string application_name;
 	std::string organization_name;

@@ -649,6 +649,9 @@
     <ClInclude Include="ModuleImportTexture.h">
       <Filter>Sources\Modules\ModuleImport</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleImportMesh.h">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -962,6 +965,9 @@
       <Filter>Sources\Modules\ModuleImport</Filter>
     </ClCompile>
     <ClCompile Include="ModuleImportTexture.cpp">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleImportMesh.cpp">
       <Filter>Sources\Modules\ModuleImport</Filter>
     </ClCompile>
   </ItemGroup>

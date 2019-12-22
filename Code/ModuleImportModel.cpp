@@ -26,6 +26,7 @@
 #include "Event.h"
 #include "ModuleFileSystem.h"
 #include "PhysFS/include/physfs.h"
+#include "ModuleImportMesh.h"
 
 #define PAR_SHAPES_IMPLEMENTATION
 #include "par\par_shapes.h"
@@ -111,7 +112,7 @@ ResourceModel * ModuleImportModel::ImportModel(const char *asset_path, UID model
 			for (uint i = 0u; i < scene->mNumMeshes; ++i)
 			{
 				aiMesh *assimp_mesh = scene->mMeshes[i];
-				ResourceMesh * resource_mesh = ImportAssimpMesh(assimp_mesh, PopFirst(prev_meshes_uids), asset_path);
+				ResourceMesh * resource_mesh = App->import_mesh->ImportAssimpMesh(assimp_mesh, PopFirst(prev_meshes_uids), asset_path);
 				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
 				mesh_texture_indices.push_back(resource_model->textures_uid[assimp_mesh->mMaterialIndex]);
 			}
@@ -236,7 +237,7 @@ ResourceTexture * ModuleImportModel::ImportFBXTexture(const  aiMaterial * materi
 			}
 			else
 			{
-				ret = App->texture->ImportTexture(final_path.c_str(), PopFirst(uids));
+				ret = App->import_texture->ImportTexture(final_path.c_str(), PopFirst(uids));
 				ret->asset_source = asset_path;
 			}
 		}
@@ -290,46 +291,6 @@ ResourceTexture * ModuleImportModel::ImportFBXTexture(const  aiMaterial * materi
 		LOG("texture type");
 	}
 	return ret;
-}
-
-ResourceMesh *ModuleImportModel::ImportAssimpMesh(aiMesh *assimp_mesh, UID uid, const char * asset_path)
-{
-	Timer import_timer;
-
-	ResourceMesh *resource_mesh = App->resource_manager->CreateResource<ResourceMesh>(uid);
-	resource_mesh->asset_source = asset_path;
-	//INFO: We can only do this cast because we know that aiVector3D is 3 consecutive floats
-	resource_mesh->ImportVertices(assimp_mesh->mNumVertices, (const float *)assimp_mesh->mVertices);
-	resource_mesh->CreateBoundingBox();
-	resource_mesh->ImportVerticesNormals(assimp_mesh);
-	resource_mesh->ImportFaces(assimp_mesh);
-	resource_mesh->CalculateFaceNormals();
-	resource_mesh->ImportUVs(assimp_mesh);
-
-	resource_mesh->SaveFileData();
-
-	LOG("Success importing mesh with uid: %llu in: %i ms.", resource_mesh->GetUID(), import_timer.Read());
-
-	return resource_mesh;
-}
-
-
-ResourceMesh *ModuleImportModel::ImportParShapeMesh(par_shapes_mesh *mesh)
-{
-	ResourceMesh *resource_mesh = App->resource_manager->CreateResource<ResourceMesh>();
-
-	resource_mesh->ImportVertices(mesh->npoints, mesh->points);
-	resource_mesh->CreateBoundingBox();
-
-	//TODO: Get vertices normals
-	resource_mesh->ImportFaces(mesh->ntriangles, mesh->triangles);
-	resource_mesh->CalculateFaceNormals();
-	//TODO: Load uv coomponent (2D or 3D)
-	resource_mesh->ImportUVs(mesh->tcoords);
-
-	resource_mesh->SaveFileData();
-
-	return resource_mesh;
 }
 
 void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent)
@@ -401,7 +362,7 @@ void ModuleImportModel::EventRequest(const Event &event)
 		{
 			if (App->file_system->CopyFromOutsideFS(event.path, dst_path.c_str()))
 			{
-				App->texture->ImportTexture(dst_path.c_str());
+				App->import_texture->ImportTexture(dst_path.c_str());
 				//TODO: Update assets tree
 			}
 		}

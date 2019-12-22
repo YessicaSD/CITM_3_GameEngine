@@ -19,6 +19,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleResourceManager.h"
 #include "ModuleTime.h"
+#include "ModuleImportMesh.h"
 
 #include "JSONFile.h"
 #include "Timer.h"
@@ -35,10 +36,11 @@ Application::Application()
 	AddModule(file_system = new ModuleFileSystem("File System"));
 	AddModule(hardware = new ModuleHardware("Hardware"));
 	AddModule(input = new ModuleInput("Input"));
-	AddModule(texture = new ModuleTexture("Textures"));
+	AddModule(import_texture = new ModuleImportTexture("Import Textures"));
+	AddModule(import_mesh = new ModuleImportMesh("Import Mesh"));
 	AddModule(time = new ModuleTime("Time"));
 	AddModule(scene = new ModuleScene("Scene"));
-	AddModule(import = new ModuleImportModel("Import"));
+	AddModule(import_model = new ModuleImportModel("Import Model"));
 	AddModule(camera = new ModuleCamera3D("Camera 3D"));
 	//AddModule(audio = new ModuleAudio("Audio"));
 	AddModule(resource_manager = new ModuleResourceManager("Resource Manager"));

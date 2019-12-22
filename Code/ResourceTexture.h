@@ -29,7 +29,7 @@ public:
 	uint width = 0u;
 	uint height = 0u;
 
-	friend class ModuleTexture;
+	friend class ModuleImportTexture;
 	friend class ModuleResourceManager;
 };
 

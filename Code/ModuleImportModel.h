@@ -34,8 +34,7 @@ public:
 	ResourceModel * ImportModel(const char* path, UID model_uid = INVALID_RESOURCE_UID, std::vector<UID> & meshes_uids = std::vector<UID>(), std::vector<UID> & textures_uids = std::vector<UID>(), std::vector<UID>& animation_uids = std::vector<UID>());
 	bool CleanUp() override;
 	void EventRequest(const Event& event) override;
-	ResourceMesh* ImportAssimpMesh(aiMesh * assimp_mesh, UID uid, const char * asset_path);
-	ResourceMesh* ImportParShapeMesh(par_shapes_mesh * mesh);
+
 	void CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent);
 
 private:
