@@ -295,10 +295,12 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char * full_path, const char * de
 	size_t size;
 
 	FILE* source = nullptr;
+	
+	NormalizePath((char*)destination);
 	fopen_s(&source, full_path, "rb");
 	PHYSFS_file* dest = PHYSFS_openWrite(destination);
 
-	if (source && dest)
+	if (source != nullptr && dest != nullptr)
 	{
 		while (size = fread_s(buf, buf_size, 1, buf_size, source))
 		{

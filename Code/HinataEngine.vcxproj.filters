@@ -643,6 +643,9 @@
     <ClInclude Include="ResourceAnimation.h">
       <Filter>Sources\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentAnimation.h">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -954,6 +957,9 @@
     </ClCompile>
     <ClCompile Include="ResourceAnimation.cpp">
       <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentAnimation.cpp">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
