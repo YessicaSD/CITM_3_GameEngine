@@ -58,7 +58,7 @@ public:
 	std::vector<UID> textures_uid;
 	std::vector<UID> animations_uid;
 
-	friend class ModuleImport;
+	friend class ModuleImportModel;
 	friend class ModuleResourceManager;
 };
 

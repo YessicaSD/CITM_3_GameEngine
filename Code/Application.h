@@ -17,7 +17,7 @@ typedef unsigned __int32 uint32;
 typedef unsigned __int64 uint64;
 
 class Module;
-class ModuleImport;
+class ModuleImportModel;
 class ModuleTexture;
 class ModuleFileSystem;
 class ModuleAudio;
@@ -58,7 +58,7 @@ public:
 	ModuleScene *scene = nullptr;
 	ModuleGui *gui = nullptr;
 	ModuleRandom *random = nullptr;
-	ModuleImport *import = nullptr;
+	ModuleImportModel *import = nullptr;
 	ModuleTexture *texture = nullptr;
 	ModuleFileSystem *file_system = nullptr;
 	ModuleAudio *audio = nullptr;

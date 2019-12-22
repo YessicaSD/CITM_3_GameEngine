@@ -1,5 +1,5 @@
 #include "Application.h"
-#include "ModuleImport.h"
+#include "ModuleImportModel.h"
 
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -21,7 +21,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentAnimation.h"
 
-#include "ModuleTexture.h"
+#include "ModuleImportTexture.h"
 #include "ModuleResourceManager.h"
 #include "Event.h"
 #include "ModuleFileSystem.h"
@@ -43,11 +43,11 @@ void AssimpWriteLogStream(const char *text, char *data)
 	LOG(tmp_txt.c_str());
 }
 
-ModuleImport::ModuleImport(const char *name) : Module(true, name)
+ModuleImportModel::ModuleImportModel(const char *name) : Module(true, name)
 {
 }
 
-bool ModuleImport::Start(JSONFile * config)
+bool ModuleImportModel::Start(JSONFile * config)
 {
 	LOG("Creating assimp LOG stream");
 	aiLogStream stream;
@@ -58,7 +58,7 @@ bool ModuleImport::Start(JSONFile * config)
 }
 
 //INFO: Creates a .hinata_model (our custom format for 3d models) from an fbx
-ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid, std::vector<UID> & prev_meshes_uids, std::vector<UID> & prev_textures_uids, std::vector<UID>& animation_uids)
+ResourceModel * ModuleImportModel::ImportModel(const char *asset_path, UID model_uid, std::vector<UID> & prev_meshes_uids, std::vector<UID> & prev_textures_uids, std::vector<UID>& animation_uids)
 {
 	Timer import_timer;
 	unsigned flags = aiProcess_CalcTangentSpace | \
@@ -83,18 +83,6 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 		resource_model = App->resource_manager->CreateResource<ResourceModel>(model_uid);
 		resource_model->asset_source = asset_path;
 
-		if (scene->HasAnimations())
-		{
-			resource_model->animations_uid.reserve(scene->mNumAnimations);
-			for (uint i = 0u; i < scene->mNumAnimations; ++i)
-			{
-				ResourceAnimation * resource_animation = nullptr;
-				resource_animation = App->resource_manager->CreateResource<ResourceAnimation>(PopFirst(animation_uids));
-				resource_animation->ImportAnimation((*scene->mAnimations[i]));
-				resource_animation->asset_source = asset_path;
-				resource_model->animations_uid.push_back(resource_animation->GetUID());
-			}
-		}
 		if (scene->HasMaterials())
 		{
 			resource_model->textures_uid.reserve(scene->mNumMaterials);
@@ -114,9 +102,9 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 				}
 			}
 		}
+		std::vector<uint> mesh_texture_indices;
 		if (scene->HasMeshes())
 		{
-			std::vector<uint> mesh_texture_indices;//TODO: Reserve memory
 			resource_model->meshes_uid.reserve(scene->mNumMeshes);
 			mesh_texture_indices.reserve(scene->mNumMeshes);
 
@@ -125,10 +113,23 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 				aiMesh *assimp_mesh = scene->mMeshes[i];
 				ResourceMesh * resource_mesh = ImportAssimpMesh(assimp_mesh, PopFirst(prev_meshes_uids), asset_path);
 				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
-				mesh_texture_indices.push_back(assimp_mesh->mMaterialIndex);
+				mesh_texture_indices.push_back(resource_model->textures_uid[assimp_mesh->mMaterialIndex]);
 			}
-			ImportFBXNodes(resource_model, new ModelNode(), scene->mRootNode, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX);
 		}
+		ImportFBXNodes(resource_model, new ModelNode(), scene->mRootNode, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX);
+		if (scene->HasAnimations())
+		{
+			resource_model->animations_uid.reserve(scene->mNumAnimations);
+			for (uint i = 0u; i < scene->mNumAnimations; ++i)
+			{
+				ResourceAnimation * resource_animation = nullptr;
+				resource_animation = App->resource_manager->CreateResource<ResourceAnimation>(PopFirst(animation_uids));
+				resource_animation->ImportAnimation((*scene->mAnimations[i]));
+				resource_animation->asset_source = asset_path;
+				resource_model->animations_uid.push_back(resource_animation->GetUID());
+			}
+		}
+
 		aiReleaseImport(scene);
 		resource_model->SaveFileData();
 		SaveModelMeta(resource_model, asset_path);
@@ -147,7 +148,7 @@ ResourceModel * ModuleImport::ImportModel(const char *asset_path, UID model_uid,
 	return resource_model;
 }
 
-void ModuleImport::SaveModelMeta(ResourceModel * resource_model, const char * asset_path)
+void ModuleImportModel::SaveModelMeta(ResourceModel * resource_model, const char * asset_path)
 {
 	JSONFile meta_file;
 	meta_file.CreateJSONFile();
@@ -161,7 +162,7 @@ void ModuleImport::SaveModelMeta(ResourceModel * resource_model, const char * as
 	meta_file.CloseFile();
 }
 
-void ModuleImport::LoadModelMeta(ResourceModel * model, const char * meta_path)
+void ModuleImportModel::LoadModelMeta(ResourceModel * model, const char * meta_path)
 {
 	JSONFile meta_file;
 	meta_file.LoadFile(meta_path);
@@ -175,29 +176,26 @@ void ModuleImport::LoadModelMeta(ResourceModel * model, const char * meta_path)
 	//meta_file.CloseFile();
 }
 
-bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ModelNode * model_node, aiNode * node, const std::vector<uint> mesh_texture_idxs, uint parent_index)
+bool ModuleImportModel::ImportFBXNodes(ResourceModel * resource_model, ModelNode * model_node, aiNode * node, const std::vector<uint> mesh_texture_idxs, uint parent_index)
 {
 	uint curr_index = resource_model->nodes.size();
-
-	const std::vector<UID>& meshes = resource_model->meshes_uid;
-	const std::vector<UID>& materials = resource_model->textures_uid;
-	const std::vector<UID>& animations = resource_model->animations_uid;
 
 	const char * node_name = node->mName.C_Str();
 	model_node->name = new char[NODE_NAME_SIZE];
 	memset(model_node->name, NULL, NODE_NAME_SIZE);
 	strcpy(model_node->name, node_name);
+
 	model_node->transform = reinterpret_cast<const float4x4&>(node->mTransformation);
+
 	model_node->parent_index = parent_index;
 
-	if (node->mNumMeshes > 0u)
+	if (resource_model->meshes_uid.size() > 0u)
 	{
 		for (uint i = 0u; i < node->mNumMeshes; ++i)
 		{
-			uint index = node->mMeshes[i];
-			model_node->mesh_uid = meshes[index];
-			model_node->material_uid = materials[mesh_texture_idxs[index]];
-			model_node->animation_uid = animations[index];
+			uint mesh_index = node->mMeshes[i];
+			model_node->mesh_uid = resource_model->meshes_uid[mesh_index];
+			model_node->material_uid = mesh_texture_idxs[mesh_index];
 		}
 		//TODO: Create a new ResourceModelNode for each mesh
 		//Right now this for allows that there is more than one mesh per gameobject
@@ -213,7 +211,7 @@ bool ModuleImport::ImportFBXNodes(ResourceModel * resource_model, ModelNode * mo
 }
 
 //INFO: textures must be in the same folder as the fbx
-ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, std::vector<UID> & uids, const char * asset_path)
+ResourceTexture * ModuleImportModel::ImportFBXTexture(const  aiMaterial * material, std::vector<UID> & uids, const char * asset_path)
 {
 	ResourceTexture * ret = nullptr;
 
@@ -294,7 +292,7 @@ ResourceTexture * ModuleImport::ImportFBXTexture(const  aiMaterial * material, s
 	return ret;
 }
 
-ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh, UID uid, const char * asset_path)
+ResourceMesh *ModuleImportModel::ImportAssimpMesh(aiMesh *assimp_mesh, UID uid, const char * asset_path)
 {
 	Timer import_timer;
 
@@ -316,7 +314,7 @@ ResourceMesh *ModuleImport::ImportAssimpMesh(aiMesh *assimp_mesh, UID uid, const
 }
 
 
-ResourceMesh *ModuleImport::ImportParShapeMesh(par_shapes_mesh *mesh)
+ResourceMesh *ModuleImportModel::ImportParShapeMesh(par_shapes_mesh *mesh)
 {
 	ResourceMesh *resource_mesh = App->resource_manager->CreateResource<ResourceMesh>();
 
@@ -334,7 +332,7 @@ ResourceMesh *ModuleImport::ImportParShapeMesh(par_shapes_mesh *mesh)
 	return resource_mesh;
 }
 
-void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent)
+void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent)
 {
 	std::vector<GameObject*> model_gameobjects;
 
@@ -362,7 +360,6 @@ void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, Com
 			ResourceAnimation * resource_animation = (ResourceAnimation*)App->resource_manager->GetResource(resource_model->animations_uid[i]);
 			resource_animation->StartUsingResource();
 			ComponentAnimation* component_animation = new_gameobject->CreateComponent<ComponentAnimation>();
-			
 		}
 		model_gameobjects.push_back(new_gameobject);
 	}
@@ -380,14 +377,14 @@ void ModuleImport::CreateGameObjectFromModel(ResourceModel * resource_model, Com
 	resource_model->StopUsingResource();
 }
 
-bool ModuleImport::CleanUp()
+bool ModuleImportModel::CleanUp()
 {
 	// detach log stream
 	aiDetachAllLogStreams();
 	return true;
 }
 
-void ModuleImport::EventRequest(const Event &event)
+void ModuleImportModel::EventRequest(const Event &event)
 {
 	if (event.type == Event::EVENT_TYPE::DROPPED_FILE)
 	{
@@ -424,7 +421,7 @@ void ModuleImport::EventRequest(const Event &event)
 	}
 }
 
-UID ModuleImport::PopFirst(std::vector<UID> & vector)
+UID ModuleImportModel::PopFirst(std::vector<UID> & vector)
 {
 	if (vector.size() > 0u)
 	{

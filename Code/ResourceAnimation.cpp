@@ -1,7 +1,7 @@
 #include "ResourceAnimation.h"
 #include "Assimp/include/scene.h"
 #include "Globals.h"
-#include "ModuleImport.h"
+#include "ModuleImportModel.h"
 #include "ResourceModel.h"
 #include "ModuleFileSystem.h"
 #include "Application.h"

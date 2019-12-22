@@ -93,7 +93,7 @@ private:
 	bool is_selected = false;
 
 	friend class MenuCreateShape;
-	friend class ModuleImport;
+	friend class ModuleImportModel;
 	friend class PanelHierarchy;
 	friend class ModuleScene;
 	friend class GameObject;

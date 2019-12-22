@@ -76,7 +76,7 @@ public:
 	uint id_uv = 0u;
 	uint uv_dimensions = 0u; //Whether the UVs are stored as 2D or 3D
 
-	friend class ModuleImport;
+	friend class ModuleImportModel;
 	friend class ModuleResourceManager;
 };
 

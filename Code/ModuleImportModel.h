@@ -1,5 +1,5 @@
-#ifndef MODULE_IMPORT_H_
-#define MODULE_IMPORT_H_
+#ifndef __MODULE_IMPORT_MODEL_H_
+#define __MODULE_IMPORT_MODEL_H_
 
 #include "Module.h"
 #include <vector>
@@ -26,10 +26,10 @@ struct ModelImportOptions
 };
 
 //Module responsible for importing assets into the engine
-class ModuleImport : public Module
+class ModuleImportModel : public Module
 {
 public:
-	ModuleImport(const char * name);
+	ModuleImportModel(const char * name);
 	bool Start(JSONFile * module_file) override;
 	ResourceModel * ImportModel(const char* path, UID model_uid = INVALID_RESOURCE_UID, std::vector<UID> & meshes_uids = std::vector<UID>(), std::vector<UID> & textures_uids = std::vector<UID>(), std::vector<UID>& animation_uids = std::vector<UID>());
 	bool CleanUp() override;

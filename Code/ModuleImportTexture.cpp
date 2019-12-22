@@ -7,7 +7,7 @@
 #pragma comment(lib, "DevIL/lib/ILU.lib")
 #pragma comment(lib, "DevIL/lib/ILUT.lib")
 
-#include "ModuleTexture.h"
+#include "ModuleImportTexture.h"
 #include "ResourceTexture.h"
 #include "Application.h"
 #include "ModuleResourceManager.h"

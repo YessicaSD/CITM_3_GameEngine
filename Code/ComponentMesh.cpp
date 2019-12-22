@@ -8,7 +8,7 @@
 #include "ComponentTransform.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "ModuleImport.h"
+#include "ModuleImportModel.h"
 #include "ModuleResourceManager.h"
 
 #include "MathGeoLib/include/Math/float4.h"

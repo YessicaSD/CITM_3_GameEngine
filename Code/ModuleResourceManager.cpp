@@ -2,8 +2,8 @@
 #include "ModuleRandom.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
-#include "ModuleTexture.h"
-#include "ModuleImport.h"
+#include "ModuleImportTexture.h"
+#include "ModuleImportModel.h"
 
 #include "ResourceModel.h"
 #include "ResourceMesh.h"

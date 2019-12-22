@@ -15,7 +15,7 @@
 #include "ModuleInput.h"
 #include "ModuleGui.h"
 #include "ModuleInput.h"
-#include "ModuleImport.h"
+#include "ModuleImportModel.h"
 #include "ModuleFileSystem.h"
 #include "RaycastHit.h"
 #include "ComponentMaterial.h"

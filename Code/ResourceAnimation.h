@@ -54,7 +54,7 @@ private:
 	AnimationChannels* channels = nullptr;
 
 	void ImportAnimation(const aiAnimation& animation);
-	friend class ModuleImport;
+	friend class ModuleImportModel;
 };
 #endif // !RESOURCE_ANIMATION_H_
 

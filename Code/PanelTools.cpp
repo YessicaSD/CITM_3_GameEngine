@@ -1,6 +1,6 @@
 #include "PanelTools.h"
 #include "Application.h"
-#include "ModuleTexture.h"
+#include "ModuleImportTexture.h"
 #include "imgui/imgui.h"
 #include "ResourceTexture.h"
 #include "ModuleResourceManager.h"

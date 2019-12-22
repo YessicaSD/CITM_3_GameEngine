@@ -79,6 +79,9 @@
     <Filter Include="Sources\Resources">
       <UniqueIdentifier>{20ac4e08-bde6-46b5-b29b-070a97e2fac1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\ModuleImport">
+      <UniqueIdentifier>{3343826c-311f-47f1-9ba0-96018dce026a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModuleInput.h">
@@ -519,9 +522,6 @@
     <ClInclude Include="Component.h">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleImport.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="PanelHierarchy.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
@@ -533,9 +533,6 @@
     </ClInclude>
     <ClInclude Include="ComponentTransform.h">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleTexture.h">
-      <Filter>Sources\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Event.h">
       <Filter>Sources\Containers</Filter>
@@ -645,6 +642,12 @@
     </ClInclude>
     <ClInclude Include="ComponentAnimation.h">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleImportModel.h">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleImportTexture.h">
+      <Filter>Sources\Modules\ModuleImport</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -834,9 +837,6 @@
     <ClCompile Include="PanelAbout.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleImport.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="PanelHierarchy.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
@@ -851,9 +851,6 @@
     </ClCompile>
     <ClCompile Include="ComponentTransform.cpp">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleTexture.cpp">
-      <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="PanelAssets.cpp">
       <Filter>Sources\Editor\Panels</Filter>
@@ -960,6 +957,12 @@
     </ClCompile>
     <ClCompile Include="ComponentAnimation.cpp">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleImportModel.cpp">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleImportTexture.cpp">
+      <Filter>Sources\Modules\ModuleImport</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

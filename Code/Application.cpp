@@ -6,8 +6,8 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_stdlib.h"
 
-#include "ModuleImport.h"
-#include "ModuleTexture.h"
+#include "ModuleImportModel.h"
+#include "ModuleImportTexture.h"
 #include "ModuleFileSystem.h"
 #include "ModuleAudio.h"
 #include "ModuleHardware.h"
@@ -38,7 +38,7 @@ Application::Application()
 	AddModule(texture = new ModuleTexture("Textures"));
 	AddModule(time = new ModuleTime("Time"));
 	AddModule(scene = new ModuleScene("Scene"));
-	AddModule(import = new ModuleImport("Import"));
+	AddModule(import = new ModuleImportModel("Import"));
 	AddModule(camera = new ModuleCamera3D("Camera 3D"));
 	//AddModule(audio = new ModuleAudio("Audio"));
 	AddModule(resource_manager = new ModuleResourceManager("Resource Manager"));
