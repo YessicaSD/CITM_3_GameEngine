@@ -125,6 +125,8 @@ void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &t
 
 		//INFO: Generate new resources using the previous uids
 		App->import_model->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids, animation_uids);
+
+		//TODO: Unload only if there is no object referencing them?
 	}
 	else if (type == ResourceTexture::type)
 	{
@@ -187,11 +189,13 @@ void ModuleResourceManager::ImportResource(const uint type, const char * path)
 {
 	if (type == ResourceModel::type)
 	{
-		App->import_model->ImportModel(path);
+		ResourceModel * resource_model = App->import_model->ImportModel(path);
+		resource_model->ReleaseData();
 	}
 	else if (type == ResourceTexture::type)
 	{
-		App->import_texture->ImportTexture(path);
+		ResourceTexture * resource_texture = App->import_texture->ImportTexture(path);
+		resource_texture->ReleaseData();
 	}
 	//else
 	//{

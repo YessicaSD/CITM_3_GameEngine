@@ -134,8 +134,6 @@ ResourceModel * ModuleImportModel::ImportModel(const char *asset_path, UID model
 		aiReleaseImport(scene);
 		resource_model->SaveFileData();
 		SaveModelMeta(resource_model, asset_path);
-		//Delete all the data from the Resource (when it has just been imported, there is no object referencing it)
-		resource_model->ReleaseData();
 
 		LOG("Success importing model from: %s in %i ms.", asset_path, import_timer.Read());
 	}

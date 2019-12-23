@@ -146,8 +146,6 @@ bool ResourceAnimation::LoadFileData()
 	return ret;
 }
 
-//TODO: Release this after importing
-//When is this called?
 bool ResourceAnimation::ReleaseData()
 {
 	if (num_channels > 0u)

@@ -145,6 +145,7 @@ bool ResourceModel::ReleaseData()
 	if (animations_uid.size() > 0)
 	{
 		animations_uid.clear();
+		//Release data from animations
 	}
 	if (meshes_uid.size() > 0)
 	{

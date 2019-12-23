@@ -142,7 +142,6 @@ bool ResourceMesh::ReleaseData()
 		id_uv = 0u;
 	}
 
-
 	RELEASE_ARRAY(faces_normals);
 	RELEASE_ARRAY(face_middle_point);
 
@@ -162,7 +161,6 @@ bool ResourceMesh::ReleaseData()
 		id_vertex_normals = 0u;
 	}
 
-
 	RELEASE_ARRAY(vertices);
 	num_vertices = 0u;
 	if (id_vertex != 0u)
@@ -170,7 +168,6 @@ bool ResourceMesh::ReleaseData()
 		glDeleteBuffers(1, &id_vertex);
 		id_vertex = 0u;
 	}
-
 
 	return true;
 }
