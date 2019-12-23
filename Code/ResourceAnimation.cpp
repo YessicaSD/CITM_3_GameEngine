@@ -64,7 +64,7 @@ bool ResourceAnimation::SaveFileData()
 	//Save the data array
 	char* data = new char[size];
 	char* cursor = data;
-	SaveVariable(&name, &cursor,sizeof(char) * NODE_NAME_SIZE);
+	SaveVariable(name, &cursor,sizeof(char) * NODE_NAME_SIZE);
 	SaveVariable(&duration, &cursor,sizeof(duration));
 	SaveVariable(&ticks_per_second, &cursor,sizeof(ticks_per_second));
 	SaveVariable(&num_channels, &cursor,sizeof(num_channels));
@@ -77,7 +77,7 @@ bool ResourceAnimation::SaveFileData()
 			channels[i].num_scale_keys
 		};
 
-		SaveVariable(&channels[i].name, &cursor, NODE_NAME_SIZE);
+		SaveVariable(channels[i].name, &cursor, NODE_NAME_SIZE);
 		SaveVariable(ranges, &cursor, sizeof(ranges));
 		SaveVariable(channels[i].position_keys, &cursor, sizeof(KeyAnimation<float3>) * channels[i].num_position_keys);
 		SaveVariable(channels[i].rotation_keys, &cursor, sizeof(KeyAnimation<Quat>) * channels[i].num_rotation_keys);
@@ -110,7 +110,7 @@ bool ResourceAnimation::LoadFileData()
 		char * cursor = data;
 
 		name = new char[NODE_NAME_SIZE];
-		LoadVariable(&name, &cursor, NODE_NAME_SIZE);
+		LoadVariable(name, &cursor, NODE_NAME_SIZE);
 		LoadVariable(&duration, &cursor, sizeof(duration));
 		LoadVariable(&ticks_per_second, &cursor, sizeof(ticks_per_second));
 		LoadVariable(&num_channels, &cursor, sizeof(num_channels));
@@ -119,7 +119,7 @@ bool ResourceAnimation::LoadFileData()
 		for (int i = 0; i < num_channels; ++i)
 		{
 			channels[i].name = new char[NODE_NAME_SIZE];
-			LoadVariable(&channels[i].name, &cursor, NODE_NAME_SIZE);
+			LoadVariable(channels[i].name, &cursor, NODE_NAME_SIZE);
 			
 			//INFO: The number of elements on the ranges array must be the same as in the ranges array of the ResourceAnimation::SaveFileData()
 			uint ranges[3];
