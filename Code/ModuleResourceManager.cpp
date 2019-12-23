@@ -105,6 +105,8 @@ void ModuleResourceManager::UpdateCheckAssets(AssetDir* dir)
 //First delete the existing ones and then import them forcing the previous uids.
 void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &type, AssetFile * asset_file)
 {
+	Resource * imported_resource = nullptr;
+
 	const char * uid_string = meta_file.LoadText("resourceUID", "0");
 	UID uid = strtoull(uid_string, nullptr, 10);
 	//Import the file. Resources force the previous uid.
@@ -124,21 +126,33 @@ void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &t
 		DeleteDependantResources(animation_uids, "exportedAnimations", &meta_file, RESOURCES_ANIMATION_FOLDER, ANIMATION_EXTENSION);
 
 		//INFO: Generate new resources using the previous uids
-		ResourceModel * resource_model = App->import_model->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids, animation_uids);
-		resource_model->ReleaseData();
+		ResourceModel * imported_resource = App->import_model->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids, animation_uids);
 	}
 	else if (type == ResourceTexture::type)
 	{
 		//INFO: Delete the previous resources
 		App->file_system->Remove((std::string(RESOURCES_TEXTURES_FOLDER) + uid_string + "." + TEXTURE_EXTENSION).c_str());
 		resources.erase(uid);
-
-		ResourceTexture * resource_texture = App->import_texture->ImportTexture(asset_file->full_path.c_str(), uid);
-		resource_texture->ReleaseData();
 	}
 	else
 	{
 		LOG("This format is unsupported.");
+	}
+
+	ReleaseImportDataAndReload(imported_resource);
+}
+
+void ModuleResourceManager::ReleaseImportDataAndReload(Resource * imported_resource)
+{
+	if (imported_resource != nullptr)
+	{
+		//Release the data so we don't allocate memory in pointers that have already allocated memory (ex. mesh's vertex)
+		imported_resource->ReleaseData();
+		if (imported_resource->GetReferenceCount() > 0)
+		{
+			//Reload the new imported data
+			imported_resource->LoadFileData();
+		}
 	}
 }
 
@@ -187,20 +201,21 @@ void ModuleResourceManager::CreateResourcesInMap(const uint &type, JSONFile &met
 //Import resource without forcing the uid
 void ModuleResourceManager::ImportResource(const uint type, const char * path)
 {
+	Resource * imported_resource = nullptr;
 	if (type == ResourceModel::type)
 	{
-		ResourceModel * resource_model = App->import_model->ImportModel(path);
-		resource_model->ReleaseData();
+		imported_resource = App->import_model->ImportModel(path);
 	}
 	else if (type == ResourceTexture::type)
 	{
-		ResourceTexture * resource_texture = App->import_texture->ImportTexture(path);
-		resource_texture->ReleaseData();
+		imported_resource = App->import_texture->ImportTexture(path);
 	}
 	//else
 	//{
 	//	LOG("This format is unsupported.");
 	//}
+
+	ReleaseImportDataAndReload(imported_resource);
 }
 
 //Check that the modified date of the .meta and the file match. That means the file hasn't been modified while the engine was closed.
