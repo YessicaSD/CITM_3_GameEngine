@@ -21,14 +21,15 @@ class ComponentAnimation : public Component
 {
 	CLASS_DECLARATION(ComponentAnimation);
 
-	ResourceAnimation* resource_animation = nullptr;
 	
 public:
 	ComponentAnimation(GameObject* attached_object);
-	void SetAnimationClip(ResourceAnimation* clip);
-	void OnPostUpdate() override;
+	void AddClip(ResourceAnimation* clip);
+	//TODO: RemoveClip
 	void PropertiesEditor() override;
 
+private:
+	std::vector<ResourceAnimation*> clips;
 };
 
 

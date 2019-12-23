@@ -30,9 +30,7 @@ struct ModelNode {
 	float4x4 transform = float4x4::identity;
 	UID mesh_uid = INVALID_RESOURCE_UID;
 	UID material_uid = INVALID_RESOURCE_UID;
-	UID animation_uid = INVALID_RESOURCE_UID;
 	uint parent_index = INVALID_MODEL_ARRAY_INDEX;
-
 };
 //TODO: Alert when a Node has more than one mesh or material
 

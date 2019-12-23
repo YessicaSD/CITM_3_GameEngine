@@ -316,14 +316,9 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 			ComponentMaterial * component_material = new_gameobject->GetComponent<ComponentMaterial>();
 			component_material->SetTexture((ResourceTexture*)App->resource_manager->GetResource(resource_model->nodes[i]->material_uid));
 		}
-		if (resource_model->nodes[i]->animation_uid != INVALID_RESOURCE_UID)
-		{
-			ResourceAnimation * resource_animation = (ResourceAnimation*)App->resource_manager->GetResource(resource_model->animations_uid[i]);
-			resource_animation->StartUsingResource();
-			ComponentAnimation* component_animation = new_gameobject->CreateComponent<ComponentAnimation>();
-		}
 		model_gameobjects.push_back(new_gameobject);
 	}
+
 	//Parent them
 	for (uint i = 0u; i < model_gameobjects.size(); ++i)
 	{
@@ -332,8 +327,19 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 			model_gameobjects[i]->transform->SetParent(model_gameobjects[resource_model->nodes[i]->parent_index]->transform);
 		}
 	}
-	if (model_gameobjects.size() > 0);
-		model_gameobjects[0]->transform->SetParent(parent);
+
+	if (resource_model->animations_uid.size() > 0)
+	{
+		ComponentAnimation * animator = model_gameobjects[0]->CreateComponent<ComponentAnimation>();
+		for (auto iter = resource_model->animations_uid.begin(); iter != resource_model->animations_uid.end(); ++iter)
+		{
+			ResourceAnimation * resource_animation = (ResourceAnimation*)App->resource_manager->GetResource((*iter));
+			animator->AddClip(resource_animation);
+		}
+	}
+
+	//Set the root of the model to the scene
+	model_gameobjects[0]->transform->SetParent(parent);
 
 	resource_model->StopUsingResource();
 }

@@ -8,24 +8,13 @@ ComponentAnimation::ComponentAnimation(GameObject * attached_object): Component(
 {
 };
 
-void ComponentAnimation::SetAnimationClip(ResourceAnimation* clip)
+void ComponentAnimation::AddClip(ResourceAnimation* clip)
 {
-	if (resource_animation != nullptr)
-	{
-		resource_animation->StopUsingResource();
-	}
+	//TODO: Check is not a duplicate
 	if (clip != nullptr)
 	{
 		clip->StartUsingResource();
-		resource_animation = clip;
-	}
-}
-
-void ComponentAnimation::OnPostUpdate()
-{
-	if (resource_animation != nullptr)
-	{
-		
+		clips.push_back(clip);
 	}
 }
 
@@ -37,4 +26,5 @@ void ComponentAnimation::PropertiesEditor()
 	{
 
 	}
+	//TODO: Show a list of all the clips and let you select which one has to be played
 }

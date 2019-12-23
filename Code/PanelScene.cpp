@@ -142,6 +142,7 @@ void PanelScene::DropObject()
 				meta_file.LoadFile(std::string(ASSETS_FOLDER) + asset->name + "." + META_EXTENSION);
 				//TODO: Get the path of the asset + .META_EXTENSION (right now if we drop something that's on a folder it won't work)
 				UID uid = App->resource_manager->LoadUID(&meta_file);
+
 				//Get the id of that file
 				Event ev(Event::DROPPED_MODEL_TO_SCENE);
 				ev.drop_model_data.model = (ResourceModel*)App->resource_manager->GetResource(uid);

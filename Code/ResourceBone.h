@@ -13,6 +13,11 @@ private:
 	bool SaveFileData() override;
 	bool LoadFileData() override;
 	bool ReleaseData() override;
+
+private:
+
+	const char * name = nullptr;
+
 };
 
 #endif
