@@ -5,6 +5,7 @@
 #include "MathGeoLib/include/Math/Quat.h"
 #include <string>
 
+
 template<typename TYPE>
 struct KeyAnimation
 {
@@ -40,6 +41,9 @@ public:
 	~ResourceAnimation();
 	const char * GetTypeString() override;
 	void CleanUp() override;
+	inline uint GetNumChannels();
+	inline AnimationChannels* GetChannels();
+
 protected:
 	bool SaveFileData() override;
 	bool LoadFileData() override;
@@ -52,7 +56,7 @@ private:
 
 	uint num_channels = 0u;
 	AnimationChannels* channels = nullptr;
-
+	
 	void ImportAnimation(const aiAnimation& animation);
 	friend class ModuleImportModel;
 };

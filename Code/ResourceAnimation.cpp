@@ -27,6 +27,16 @@ void ResourceAnimation::CleanUp()
 	ticks_per_second = 0;
 }
 
+inline uint ResourceAnimation::GetNumChannels()
+{
+	return num_channels;
+}
+
+inline AnimationChannels * ResourceAnimation::GetChannels()
+{
+	return channels;
+}
+
 bool ResourceAnimation::SaveFileData()
 {
 	bool ret = true;

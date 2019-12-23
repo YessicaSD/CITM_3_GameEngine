@@ -1,14 +1,17 @@
 #include "ComponentAnimation.h"
 #include "ResourceAnimation.h"
 #include "imgui/imgui.h"
+#include "Application.h"
+#include "ModuleTime.h"
 
-CLASS_DEFINITION(Component, ComponentAnimation);
+CLASS_DEFINITION(Component, ComponentAnimator);
 
-ComponentAnimation::ComponentAnimation(GameObject * attached_object): Component(attached_object)
+ComponentAnimator::ComponentAnimator(GameObject * attached_object): Component(attached_object)
 {
+	name = "Animator";
 };
 
-void ComponentAnimation::AddClip(ResourceAnimation* clip)
+void ComponentAnimator::AddClip(ResourceAnimation* clip)
 {
 	//TODO: Check is not a duplicate
 	if (clip != nullptr)
@@ -18,13 +21,23 @@ void ComponentAnimation::AddClip(ResourceAnimation* clip)
 	}
 }
 
-void ComponentAnimation::PropertiesEditor()
+void ComponentAnimator::PropertiesEditor()
 {
 	ImGui::Separator();
-	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
+	//ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
 
 	}
 	//TODO: Show a list of all the clips and let you select which one has to be played
+}
+
+void ComponentAnimator::OnPostUpdate()
+{
+	if (clips.size() > 0)
+	{
+		ResourceAnimation* resource_animation = (*clips.begin());
+		float current_time = App->time->GetTime();
+		uint num_channels;
+	}
 }

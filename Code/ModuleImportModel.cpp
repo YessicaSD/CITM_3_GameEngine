@@ -330,7 +330,7 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 
 	if (resource_model->animations_uid.size() > 0)
 	{
-		ComponentAnimation * animator = model_gameobjects[0]->CreateComponent<ComponentAnimation>();
+		ComponentAnimator * animator = model_gameobjects[0]->CreateComponent<ComponentAnimator>();
 		for (auto iter = resource_model->animations_uid.begin(); iter != resource_model->animations_uid.end(); ++iter)
 		{
 			ResourceAnimation * resource_animation = (ResourceAnimation*)App->resource_manager->GetResource((*iter));
