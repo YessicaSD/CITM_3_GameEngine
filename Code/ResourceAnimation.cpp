@@ -77,7 +77,7 @@ bool ResourceAnimation::SaveFileData()
 			channels[i].num_scale_keys
 		};
 
-		SaveVariable(&name, &cursor, NODE_NAME_SIZE);
+		SaveVariable(&channels[i].name, &cursor, NODE_NAME_SIZE);
 		SaveVariable(ranges, &cursor, sizeof(ranges));
 		SaveVariable(channels[i].position_keys, &cursor, sizeof(KeyAnimation<float3>) * channels[i].num_position_keys);
 		SaveVariable(channels[i].rotation_keys, &cursor, sizeof(KeyAnimation<Quat>) * channels[i].num_rotation_keys);
@@ -109,14 +109,17 @@ bool ResourceAnimation::LoadFileData()
 	{
 		char * cursor = data;
 
+		name = new char[NODE_NAME_SIZE];
 		LoadVariable(&name, &cursor, NODE_NAME_SIZE);
 		LoadVariable(&duration, &cursor, sizeof(duration));
 		LoadVariable(&ticks_per_second, &cursor, sizeof(ticks_per_second));
 		LoadVariable(&num_channels, &cursor, sizeof(num_channels));
+		channels = new AnimationChannels[num_channels];
 
 		for (int i = 0; i < num_channels; ++i)
 		{
-			LoadVariable(name, &cursor, NODE_NAME_SIZE);
+			channels[i].name = new char[NODE_NAME_SIZE];
+			LoadVariable(&channels[i].name, &cursor, NODE_NAME_SIZE);
 			
 			//INFO: The number of elements on the ranges array must be the same as in the ranges array of the ResourceAnimation::SaveFileData()
 			uint ranges[3];
@@ -125,8 +128,13 @@ bool ResourceAnimation::LoadFileData()
 			channels[i].num_rotation_keys = ranges[1];
 			channels[i].num_scale_keys = ranges[2];
 
+			channels[i].position_keys = new KeyAnimation<float3>[channels[i].num_position_keys];
 			LoadVariable(channels[i].position_keys, &cursor, sizeof(KeyAnimation<float3>) * channels[i].num_position_keys);
+			
+			channels[i].rotation_keys = new KeyAnimation<Quat>[channels[i].num_rotation_keys];
 			LoadVariable(channels[i].rotation_keys, &cursor, sizeof(KeyAnimation<Quat>) * channels[i].num_rotation_keys);
+			
+			channels[i].scale_keys = new KeyAnimation<float3>[channels[i].num_scale_keys];
 			LoadVariable(channels[i].scale_keys, &cursor, sizeof(KeyAnimation<float3>) * channels[i].num_scale_keys);
 
 			LOG("Success loading animation from: %s in : %i ms.", path, load_timer.Read());
@@ -138,6 +146,8 @@ bool ResourceAnimation::LoadFileData()
 	return ret;
 }
 
+//TODO: Release this after importing
+//When is this called?
 bool ResourceAnimation::ReleaseData()
 {
 	if (num_channels > 0u)
@@ -150,7 +160,7 @@ bool ResourceAnimation::ReleaseData()
 			channels[i].num_scale_keys = 0u;
 			channels[i].num_rotation_keys = 0u;
 			channels[i].num_position_keys = 0u;
-			RELEASE_ARRAY(name);
+			RELEASE_ARRAY(channels[i].name);
 		}
 		RELEASE_ARRAY(channels);
 	}

@@ -58,6 +58,8 @@ protected:
 	bool LoadFileData() override;
 	bool ReleaseData() override;
 
+	void ImportAnimation(const aiAnimation& animation);
+
 private:
 	char * name = nullptr;
 	float duration = 0.f;
@@ -66,7 +68,6 @@ private:
 	uint num_channels = 0u;
 	AnimationChannels* channels = nullptr;
 	
-	void ImportAnimation(const aiAnimation& animation);
 	friend class ModuleImportModel;
 };
 #endif // !RESOURCE_ANIMATION_H_

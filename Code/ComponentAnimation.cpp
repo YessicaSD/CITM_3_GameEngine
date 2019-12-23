@@ -64,7 +64,11 @@ void ComponentAnimator::OnPostUpdate()
 				KeyAnimation<float3>* position_key = channel.getKeyPosition(current_time);
 				KeyAnimation<float3>* scale_key = channel.getKeyScale(current_time);
 				KeyAnimation<Quat>* rotation_key = channel.getKeyRotation(current_time);
-					
+				
+				float3 end_position = (position_key != nullptr) ? position_key->value : bone->GetPosition();
+				float3 end_scale = (scale_key != nullptr) ? scale_key->value : bone->GetScale();
+				Quat end_rotation = (rotation_key != nullptr) ? rotation_key->value : bone->GetRotation();
+				bone->SetTransform(end_position, end_scale, end_rotation);
 			}
 		}
 	}
