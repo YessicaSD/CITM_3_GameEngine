@@ -124,9 +124,8 @@ void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &t
 		DeleteDependantResources(animation_uids, "exportedAnimations", &meta_file, RESOURCES_ANIMATION_FOLDER, ANIMATION_EXTENSION);
 
 		//INFO: Generate new resources using the previous uids
-		App->import_model->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids, animation_uids);
-
-		//TODO: Unload only if there is no object referencing them?
+		ResourceModel * resource_model = App->import_model->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids, animation_uids);
+		resource_model->ReleaseData();
 	}
 	else if (type == ResourceTexture::type)
 	{
@@ -134,7 +133,8 @@ void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &t
 		App->file_system->Remove((std::string(RESOURCES_TEXTURES_FOLDER) + uid_string + "." + TEXTURE_EXTENSION).c_str());
 		resources.erase(uid);
 
-		App->import_texture->ImportTexture(asset_file->full_path.c_str(), uid);
+		ResourceTexture * resource_texture = App->import_texture->ImportTexture(asset_file->full_path.c_str(), uid);
+		resource_texture->ReleaseData();
 	}
 	else
 	{

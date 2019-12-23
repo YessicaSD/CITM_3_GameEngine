@@ -144,15 +144,29 @@ bool ResourceModel::ReleaseData()
 	}
 	if (animations_uid.size() > 0)
 	{
+		for (auto iter = animations_uid.begin(); iter != animations_uid.end(); ++iter)
+		{
+			Resource * resource_animation = App->resource_manager->GetResource((*iter));
+			resource_animation->ReleaseData();
+		}
 		animations_uid.clear();
-		//Release data from animations
 	}
 	if (meshes_uid.size() > 0)
 	{
+		for (auto iter = meshes_uid.begin(); iter != meshes_uid.end(); ++iter)
+		{
+			Resource * resource_mesh = App->resource_manager->GetResource((*iter));
+			resource_mesh->ReleaseData();
+		}
 		meshes_uid.clear();
 	}
 	if (textures_uid.size() > 0)
 	{
+		for (auto iter = textures_uid.begin(); iter != textures_uid.end(); ++iter)
+		{
+			Resource * resource_texture = App->resource_manager->GetResource((*iter));
+			resource_texture->ReleaseData();
+		}
 		textures_uid.clear();
 	}
 	return true;
