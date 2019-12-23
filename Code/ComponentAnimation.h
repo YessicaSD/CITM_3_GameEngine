@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 class ResourceAnimation;
-class Gameobject;
+class ComponentTransform;
 class AnimatorNode
 {
 	ResourceAnimation* clip = nullptr;
@@ -33,7 +33,7 @@ public:
 	void OnPostUpdate() override;
 private:
 	std::vector<ResourceAnimation*> clips;
-	std::map<std::string, Gameobject*> bones;
+	std::map<std::string, ComponentTransform*> bones;
 };
 
 

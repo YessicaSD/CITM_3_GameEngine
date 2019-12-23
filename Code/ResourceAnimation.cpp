@@ -27,12 +27,12 @@ void ResourceAnimation::CleanUp()
 	ticks_per_second = 0;
 }
 
-inline uint ResourceAnimation::GetNumChannels()
+uint ResourceAnimation::GetNumChannels()
 {
 	return num_channels;
 }
 
-inline AnimationChannels * ResourceAnimation::GetChannels()
+AnimationChannels * ResourceAnimation::GetChannels()
 {
 	return channels;
 }
@@ -218,4 +218,82 @@ void AnimationChannels::ImportAnimationNode(const aiNodeAnim & node_animation)
 		scale_keys[i].time = m_scale_keys[i].mTime;
 		scale_keys[i].value.Set(m_scale_keys[i].mValue.x, m_scale_keys[i].mValue.y, m_scale_keys[i].mValue.z);
 	}
+}
+
+KeyAnimation<float3>* AnimationChannels::getKeyPosition(double time)
+{
+	KeyAnimation<float3>* bigger_key = nullptr;
+	for (uint i = 0; i < num_position_keys;)
+	{
+		if (i == 0)
+		{
+			bigger_key = &position_keys[0];
+			if (bigger_key->time > time)
+			{
+				return nullptr;
+			}
+		}
+
+		if (position_keys[i].time <= time && position_keys[i].time > bigger_key->time)
+		{
+			bigger_key = &position_keys[i];
+		}
+		else
+		{
+			return bigger_key;
+		}
+	}
+	return nullptr;
+}
+
+KeyAnimation<float3>* AnimationChannels::getKeyScale(double time)
+{
+	KeyAnimation<float3>* bigger_key = nullptr;
+	for (uint i = 0; i < num_position_keys;)
+	{
+		if (i == 0)
+		{
+			bigger_key = &scale_keys[0];
+			if (bigger_key->time > time)
+			{
+				return nullptr;
+			}
+		}
+
+		if (scale_keys[i].time <= time && scale_keys[i].time > bigger_key->time)
+		{
+			bigger_key = &scale_keys[i];
+		}
+		else
+		{
+			return bigger_key;
+		}
+	}
+	return nullptr;
+}
+
+KeyAnimation<Quat>* AnimationChannels::getKeyRotation(double time)
+{
+	KeyAnimation<Quat>* bigger_key = nullptr;
+	for (uint i = 0; i < num_position_keys;)
+	{
+		if (i == 0)
+		{
+			bigger_key = &rotation_keys[0];
+			if (bigger_key->time > time)
+			{
+				return nullptr;
+			}
+		}
+
+		if (rotation_keys[i].time <= time && rotation_keys[i].time > bigger_key->time)
+		{
+			bigger_key = &rotation_keys[i];
+		}
+		else
+		{
+			return bigger_key;
+		}
+	}
+	return nullptr;
 }

@@ -3,7 +3,8 @@
 #include "imgui/imgui.h"
 #include "Application.h"
 #include "ModuleTime.h"
-
+#include "GameObject.h"
+#include "ComponentTransform.h"
 CLASS_DEFINITION(Component, ComponentAnimator);
 
 ComponentAnimator::ComponentAnimator(GameObject * attached_object): Component(attached_object)
@@ -38,6 +39,33 @@ void ComponentAnimator::OnPostUpdate()
 	{
 		ResourceAnimation* resource_animation = (*clips.begin());
 		float current_time = App->time->GetTime();
-		uint num_channels;
+		uint num_channels = resource_animation->GetNumChannels();
+		AnimationChannels* channels = resource_animation->GetChannels();
+		for (uint i = 0; i < num_channels; ++i)
+		{
+			AnimationChannels channel = channels[i];
+			std::string bone_name = channel.GetName();
+			std::map<std::string, ComponentTransform*>::iterator bone_iter = bones.find(bone_name);
+			ComponentTransform* bone = nullptr;
+			if (bone_iter != bones.end())
+			{ 
+				bone = (*bone_iter).second;
+			}
+			else
+			{
+				bone = gameobject->transform->Find(bone_name.c_str());
+				if (bone != nullptr)
+				{
+					bones[bone_name] = bone;
+				}
+			}
+			if (bone != nullptr)
+			{
+				KeyAnimation<float3>* position_key = channel.getKeyPosition(current_time);
+				KeyAnimation<float3>* scale_key = channel.getKeyScale(current_time);
+				KeyAnimation<Quat>* rotation_key = channel.getKeyRotation(current_time);
+					
+			}
+		}
 	}
 }

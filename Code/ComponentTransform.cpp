@@ -10,6 +10,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleGui.h"
+#include <string>
 CLASS_DEFINITION(Component, ComponentTransform)
 
 ComponentTransform::ComponentTransform(GameObject *gameobject) : Component(gameobject)
@@ -43,6 +44,19 @@ void ComponentTransform::SetParent(ComponentTransform *parent)
 ComponentTransform * ComponentTransform::GetParent()
 {
 	return parent;
+}
+
+ComponentTransform * ComponentTransform::Find(const char * name)
+{
+	for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
+	{
+		if ((*iter)->name == name)
+		{
+			return (*iter);
+		}
+		(*iter)->Find(name);
+	}
+	return nullptr;
 }
 
 void ComponentTransform::OnPostUpdate()
