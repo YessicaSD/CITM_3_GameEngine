@@ -21,7 +21,7 @@ public:
 
 	void SetParent(ComponentTransform * parent);
 	ComponentTransform* GetParent();
-	
+	ComponentTransform* Find(const char* name);
 	void OnPostUpdate() override;
 	void PropertiesEditor() override;
 	void OnSave(JSONFile*) override;

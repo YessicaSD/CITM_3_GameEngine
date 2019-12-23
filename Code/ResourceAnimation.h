@@ -29,6 +29,15 @@ class AnimationChannels
 	KeyAnimation<float3>* scale_keys = nullptr;
 
 	void ImportAnimationNode(const aiNodeAnim& node_animation);
+	
+public:
+	const char* GetName() {
+		return name;
+	}
+	KeyAnimation<float3>* getKeyPosition(double time);
+	KeyAnimation<float3>* getKeyScale(double time);
+	KeyAnimation<Quat>* getKeyRotation(double time);
+
 	friend class ResourceAnimation;
 };
 
@@ -41,8 +50,8 @@ public:
 	~ResourceAnimation();
 	const char * GetTypeString() override;
 	void CleanUp() override;
-	inline uint GetNumChannels();
-	inline AnimationChannels* GetChannels();
+	uint GetNumChannels();
+	AnimationChannels* GetChannels();
 
 protected:
 	bool SaveFileData() override;
