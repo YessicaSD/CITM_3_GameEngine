@@ -37,6 +37,11 @@ AnimationChannels * ResourceAnimation::GetChannels()
 	return channels;
 }
 
+float ResourceAnimation::GetTicksPerSecond()
+{
+	return ticks_per_second;
+}
+
 bool ResourceAnimation::SaveFileData()
 {
 	bool ret = true;
@@ -178,8 +183,9 @@ void ResourceAnimation::ImportAnimation(const aiAnimation& animation)
 	memset(name, NULL, NODE_NAME_SIZE);
 	strcpy(name, animation_name);
 
-	duration = animation.mDuration;
-	ticks_per_second = animation.mTicksPerSecond;
+	ticks_per_second = (animation.mTicksPerSecond != 0) ? animation.mTicksPerSecond : DEFAULT_TICK_PER_SECOND;
+	duration = animation.mDuration/ ticks_per_second;
+
 	num_channels = animation.mNumChannels;
 
 	channels = new AnimationChannels[num_channels];
@@ -230,6 +236,7 @@ void AnimationChannels::ImportAnimationNode(const aiNodeAnim & node_animation)
 
 KeyAnimation<float3>* AnimationChannels::getKeyPosition(double time)
 {
+
 	KeyAnimation<float3>* bigger_key = nullptr;
 	for (uint i = 0; i < num_position_keys;)
 	{

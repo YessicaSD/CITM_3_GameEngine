@@ -38,7 +38,7 @@ void ComponentAnimator::OnPostUpdate()
 	if (clips.size() > 0)
 	{
 		ResourceAnimation* resource_animation = (*clips.begin());
-		float current_time = App->time->GetTime();
+		float current_time = App->time->GetTime() * resource_animation->GetTicksPerSecond();
 		uint num_channels = resource_animation->GetNumChannels();
 		AnimationChannels* channels = resource_animation->GetChannels();
 		for (uint i = 0; i < num_channels; ++i)
@@ -62,9 +62,9 @@ void ComponentAnimator::OnPostUpdate()
 			if (bone != nullptr)
 			{
 				KeyAnimation<float3>* position_key = channel.getKeyPosition(current_time);
-				KeyAnimation<float3>* scale_key = channel.getKeyScale(current_time);
 				KeyAnimation<Quat>* rotation_key = channel.getKeyRotation(current_time);
-				
+				KeyAnimation<float3>* scale_key = channel.getKeyScale(current_time);
+
 				float3 end_position = (position_key != nullptr) ? position_key->value : bone->GetPosition();
 				float3 end_scale = (scale_key != nullptr) ? scale_key->value : bone->GetScale();
 				Quat end_rotation = (rotation_key != nullptr) ? rotation_key->value : bone->GetRotation();

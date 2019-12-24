@@ -4,7 +4,7 @@
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/Quat.h"
 #include <string>
-
+#define DEFAULT_TICK_PER_SECOND 25
 
 template<typename TYPE>
 struct KeyAnimation
@@ -52,6 +52,7 @@ public:
 	void CleanUp() override;
 	uint GetNumChannels();
 	AnimationChannels* GetChannels();
+	float GetTicksPerSecond();
 
 protected:
 	bool SaveFileData() override;
@@ -62,7 +63,7 @@ protected:
 
 private:
 	char * name = nullptr;
-	float duration = 0.f;
+	double duration = 0.f;
 	float ticks_per_second = 0.f;
 
 	uint num_channels = 0u;
