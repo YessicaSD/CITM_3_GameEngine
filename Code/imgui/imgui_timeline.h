@@ -12,6 +12,7 @@ namespace ImGui
 {
 	bool BeginTimeline(const char* str_id, float max_value);
 	bool TimelineEvent(const char* str_id, float* values);
+	void TimelineMarker(float curr_time);
 	void EndTimeline();
 }
 

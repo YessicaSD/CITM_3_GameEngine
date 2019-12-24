@@ -5,6 +5,8 @@
 #include "ModuleTime.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "imgui/imgui_timeline.h"
+
 CLASS_DEFINITION(Component, ComponentAnimator);
 
 ComponentAnimator::ComponentAnimator(GameObject * attached_object): Component(attached_object)
@@ -33,9 +35,13 @@ void ComponentAnimator::PropertiesEditor()
 {
 	ImGui::Separator();
 	//ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
-	if (ImGui::CollapsingHeader(name.c_str()))
+	if (CollapsigHeaderWithCheckbox())
 	{
-
+		ImGui::BeginTimeline("animation timeline", 1000);
+		float values[] = { 250.f, 750 };
+		ImGui::TimelineEvent("event 01", values);
+		ImGui::TimelineMarker(250.f);
+		ImGui::EndTimeline();
 	}
 	//TODO: Show a list of all the clips and let you select which one has to be played
 }

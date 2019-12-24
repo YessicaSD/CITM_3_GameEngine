@@ -84,6 +84,29 @@ namespace ImGui
 	}
 
 
+	void TimelineMarker(float curr_time)
+	{
+		ImGuiWindow* win = GetCurrentWindow();
+
+		ImU32 color = ColorConvertFloat4ToU32(GImGui->Style.Colors[ImGuiCol_Button]);
+		ImU32 line_color = ColorConvertFloat4ToU32(GImGui->Style.Colors[ImGuiCol_Button]);
+		ImU32 text_color = ColorConvertFloat4ToU32(GImGui->Style.Colors[ImGuiCol_Text]);
+		float rounding = GImGui->Style.ScrollbarRounding;
+		ImVec2 start(GetWindowContentRegionMin().x + win->Pos.x,
+			GetWindowContentRegionMax().y - GetTextLineHeightWithSpacing() + win->Pos.y);
+		ImVec2 end = GetWindowContentRegionMax() + win->Pos;
+
+		win->DrawList->AddRectFilled(start, end, color, rounding);
+
+		const ImVec2 text_offset(0, GetTextLineHeightWithSpacing());
+
+		ImVec2 a = GetWindowContentRegionMin() + win->Pos + ImVec2(TIMELINE_RADIUS, 0);
+		a.x += curr_time / s_max_timeline_value * GetWindowContentRegionWidth();
+		ImVec2 b = a;
+		b.y = start.y;
+		win->DrawList->AddLine(a, b, line_color);
+	}
+
 	void EndTimeline()
 	{
 		ImGuiWindow* win = GetCurrentWindow();
