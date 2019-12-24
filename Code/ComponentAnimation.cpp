@@ -38,7 +38,7 @@ void ComponentAnimator::OnPostUpdate()
 	if (clips.size() > 0)
 	{
 		ResourceAnimation* resource_animation = (*clips.begin());
-		float current_time = App->time->GetTime();
+		float current_time = App->time->GetTime() * resource_animation->GetTicksPerSecond();
 		uint num_channels = resource_animation->GetNumChannels();
 		AnimationChannels* channels = resource_animation->GetChannels();
 
