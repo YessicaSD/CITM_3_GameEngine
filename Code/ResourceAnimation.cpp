@@ -228,7 +228,7 @@ void AnimationChannels::ImportAnimationNode(const aiNodeAnim & node_animation)
 	}
 }
 
-KeyAnimation<float3>* AnimationChannels::getKeyPosition(double time)
+KeyAnimation<float3>* AnimationChannels::GetKeyPosition(double time)
 {
 	KeyAnimation<float3>* bigger_key = nullptr;
 	for (uint i = 0; i < num_position_keys;)
@@ -257,7 +257,7 @@ KeyAnimation<float3>* AnimationChannels::getKeyPosition(double time)
 	return bigger_key;
 }
 
-KeyAnimation<float3>* AnimationChannels::getKeyScale(double time)
+KeyAnimation<float3>* AnimationChannels::GetKeyScale(double time)
 {
 	KeyAnimation<float3>* bigger_key = nullptr;
 	for (uint i = 0; i < num_rotation_keys;)
@@ -286,7 +286,7 @@ KeyAnimation<float3>* AnimationChannels::getKeyScale(double time)
 	return nullptr;
 }
 
-KeyAnimation<Quat>* AnimationChannels::getKeyRotation(double time)
+KeyAnimation<Quat>* AnimationChannels::GetKeyRotation(double time)
 {
 	KeyAnimation<Quat>* bigger_key = nullptr;
 	for (uint i = 0; i < num_rotation_keys;)

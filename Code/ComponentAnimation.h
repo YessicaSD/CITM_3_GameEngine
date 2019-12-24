@@ -31,6 +31,7 @@ public:
 	//TODO: RemoveClip
 	void PropertiesEditor() override;
 	void OnPostUpdate() override;
+	ComponentTransform * GetBoneByName(const std::string & bone_name);
 	void CleanUp() override;
 private:
 	std::vector<ResourceAnimation*> clips;
