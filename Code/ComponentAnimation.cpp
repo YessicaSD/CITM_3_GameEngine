@@ -33,6 +33,7 @@ void ComponentAnimator::PropertiesEditor()
 		ImGui::BeginTimeline("animation timeline", 1000);
 		float values[] = { 250.f, 750 };
 		ImGui::TimelineEvent("event 01", values);
+		ImGui::TimelineMarker(250.f);
 		ImGui::EndTimeline();
 	}
 	//TODO: Show a list of all the clips and let you select which one has to be played
