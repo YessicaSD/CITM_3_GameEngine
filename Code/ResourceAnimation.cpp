@@ -42,6 +42,11 @@ float ResourceAnimation::GetTicksPerSecond()
 	return ticks_per_second;
 }
 
+double ResourceAnimation::GetDuration()
+{
+	return duration;
+}
+
 bool ResourceAnimation::SaveFileData()
 {
 	bool ret = true;

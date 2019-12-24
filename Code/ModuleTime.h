@@ -10,6 +10,7 @@ public:
 	update_status PreUpdate() override;
 	void EventRequest(const Event& event) override;
 	float GetTime();
+	float GetDeltaTime();
 private:
 	int frame_count = 0; // app graphics frames since game start
 	float time = 0.0f; // second since game start (Game Clock)

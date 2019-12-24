@@ -53,7 +53,7 @@ public:
 	uint GetNumChannels();
 	AnimationChannels* GetChannels();
 	float GetTicksPerSecond();
-
+	double GetDuration();
 protected:
 	bool SaveFileData() override;
 	bool LoadFileData() override;

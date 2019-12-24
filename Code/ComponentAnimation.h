@@ -7,8 +7,14 @@ class ResourceAnimation;
 class ComponentTransform;
 class AnimatorNode
 {
+private:
 	ResourceAnimation* clip = nullptr;
 	float speed = 1;
+public:
+	void SetClip(ResourceAnimation* clip);
+	ResourceAnimation* GetClip();
+	float current_time = 0;
+	bool loop = true;
 };
 
 class EntryState
@@ -33,7 +39,9 @@ public:
 	void OnPostUpdate() override;
 	ComponentTransform * GetBoneByName(const std::string & bone_name);
 	void CleanUp() override;
+
 private:
+	AnimatorNode* current_animation_node = nullptr;
 	std::vector<ResourceAnimation*> clips;
 	std::map<std::string, ComponentTransform*> bones;
 };

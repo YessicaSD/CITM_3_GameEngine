@@ -38,3 +38,8 @@ float ModuleTime::GetTime()
 {
 	return time;
 }
+
+float ModuleTime::GetDeltaTime()
+{
+	return delta_time;
+}
