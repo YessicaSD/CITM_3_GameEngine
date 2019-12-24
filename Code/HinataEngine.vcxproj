@@ -137,6 +137,7 @@
     <ClInclude Include="imGuizmo\ImGradient.h" />
     <ClInclude Include="imGuizmo\ImGuizmo.h" />
     <ClInclude Include="imGuizmo\ImSequencer.h" />
+    <ClInclude Include="imgui\imgui_timeline.h" />
     <ClInclude Include="JSONFile.h" />
     <ClInclude Include="ModuleImportMesh.h" />
     <ClInclude Include="ModuleTime.h" />
@@ -284,6 +285,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ComponentAnimation.cpp" />
+    <ClCompile Include="imgui\imgui_timeline.cpp" />
     <ClCompile Include="ModuleImportMesh.cpp" />
     <ClCompile Include="PanelImport.cpp" />
     <ClCompile Include="PanelResources.cpp" />

@@ -655,6 +655,9 @@
     <ClInclude Include="ResourceBone.h">
       <Filter>Sources\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="imgui\imgui_timeline.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -975,6 +978,10 @@
     </ClCompile>
     <ClCompile Include="ResourceBone.cpp">
       <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Timeline.cpp" />
+    <ClCompile Include="imgui\imgui_timeline.cpp">
+      <Filter>Sources\Tools\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

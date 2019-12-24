@@ -34,9 +34,9 @@ public:
 	const char* GetName() {
 		return name;
 	}
-	KeyAnimation<float3>* getKeyPosition(double time);
-	KeyAnimation<float3>* getKeyScale(double time);
-	KeyAnimation<Quat>* getKeyRotation(double time);
+	KeyAnimation<float3>* GetKeyPosition(double time);
+	KeyAnimation<Quat>* GetKeyRotation(double time);
+	KeyAnimation<float3>* GetKeyScale(double time);
 
 	friend class ResourceAnimation;
 };
