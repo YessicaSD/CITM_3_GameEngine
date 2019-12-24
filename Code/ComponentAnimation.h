@@ -31,6 +31,7 @@ public:
 	//TODO: RemoveClip
 	void PropertiesEditor() override;
 	void OnPostUpdate() override;
+	void CleanUp() override;
 private:
 	std::vector<ResourceAnimation*> clips;
 	std::map<std::string, ComponentTransform*> bones;

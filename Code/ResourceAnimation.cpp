@@ -240,6 +240,8 @@ KeyAnimation<float3>* AnimationChannels::getKeyPosition(double time)
 			{
 				return nullptr;
 			}
+			++i;
+			continue;
 		}
 
 		if (position_keys[i].time <= time && position_keys[i].time > bigger_key->time)
@@ -250,14 +252,15 @@ KeyAnimation<float3>* AnimationChannels::getKeyPosition(double time)
 		{
 			return bigger_key;
 		}
+		++i;
 	}
-	return nullptr;
+	return bigger_key;
 }
 
 KeyAnimation<float3>* AnimationChannels::getKeyScale(double time)
 {
 	KeyAnimation<float3>* bigger_key = nullptr;
-	for (uint i = 0; i < num_position_keys;)
+	for (uint i = 0; i < num_rotation_keys;)
 	{
 		if (i == 0)
 		{
@@ -266,6 +269,8 @@ KeyAnimation<float3>* AnimationChannels::getKeyScale(double time)
 			{
 				return nullptr;
 			}
+			++i;
+			continue;
 		}
 
 		if (scale_keys[i].time <= time && scale_keys[i].time > bigger_key->time)
@@ -276,6 +281,7 @@ KeyAnimation<float3>* AnimationChannels::getKeyScale(double time)
 		{
 			return bigger_key;
 		}
+		++i;
 	}
 	return nullptr;
 }
@@ -283,7 +289,7 @@ KeyAnimation<float3>* AnimationChannels::getKeyScale(double time)
 KeyAnimation<Quat>* AnimationChannels::getKeyRotation(double time)
 {
 	KeyAnimation<Quat>* bigger_key = nullptr;
-	for (uint i = 0; i < num_position_keys;)
+	for (uint i = 0; i < num_rotation_keys;)
 	{
 		if (i == 0)
 		{
@@ -292,6 +298,8 @@ KeyAnimation<Quat>* AnimationChannels::getKeyRotation(double time)
 			{
 				return nullptr;
 			}
+			++i;
+			continue;
 		}
 
 		if (rotation_keys[i].time <= time && rotation_keys[i].time > bigger_key->time)
@@ -302,6 +310,7 @@ KeyAnimation<Quat>* AnimationChannels::getKeyRotation(double time)
 		{
 			return bigger_key;
 		}
+		++i;
 	}
 	return nullptr;
 }

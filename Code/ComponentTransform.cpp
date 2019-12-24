@@ -48,15 +48,20 @@ ComponentTransform * ComponentTransform::GetParent()
 
 ComponentTransform * ComponentTransform::Find(const char * name)
 {
+	ComponentTransform* ret = nullptr;
 	for (std::vector<ComponentTransform*>::iterator iter = children.begin(); iter != children.end(); ++iter)
 	{
-		if ((*iter)->name == name)
+		if ((*iter)->gameobject->name == name)
 		{
 			return (*iter);
 		}
-		(*iter)->Find(name);
+		ret = (*iter)->Find(name);
+		if (ret != nullptr)
+		{
+			return ret;
+		}
 	}
-	return nullptr;
+	return ret;
 }
 
 void ComponentTransform::OnPostUpdate()

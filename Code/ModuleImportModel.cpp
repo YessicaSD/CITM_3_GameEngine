@@ -335,7 +335,7 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 			animator->AddClip(resource_animation);
 		}
 	}
-
+	resource_model->animations_uid.clear();
 	//Set the root of the model to the scene
 	model_gameobjects[0]->transform->SetParent(parent);
 

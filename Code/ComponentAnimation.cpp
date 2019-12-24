@@ -73,3 +73,11 @@ void ComponentAnimator::OnPostUpdate()
 		}
 	}
 }
+
+void ComponentAnimator::CleanUp()
+{
+	for (uint i = 0; i < clips.size(); ++i)
+	{
+		clips[i]->StopUsingResource();
+	}
+}
