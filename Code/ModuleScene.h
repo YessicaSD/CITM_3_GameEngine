@@ -32,6 +32,7 @@ public:
 	update_status PostUpdate() override;
 	void EventRequest(const Event& event) override;
 	bool CleanUp();
+	void GameObjectUpdateRecursive(float dt, ComponentTransform * transform);
 	void GameObjectPostUpdateRecursive(ComponentTransform * object);
 	bool IntersectRay(LineSegment* ray, RaycastHit& hit);
 	void RecreateOctree();

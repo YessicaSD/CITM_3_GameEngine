@@ -97,7 +97,21 @@ update_status ModuleScene::Update(float dt)
 			App->gui->SetSelectedGameObjec(nullptr);
 		}
 	}
+
+	GameObjectUpdateRecursive(dt, root_gameobject->transform);
+
 	return UPDATE_CONTINUE;
+}
+
+void ModuleScene::GameObjectUpdateRecursive(float dt, ComponentTransform * transform)
+{
+	transform->gameobject->OnUpdate(dt);
+	for (std::vector<ComponentTransform *>::iterator iter = transform->children.begin();
+		iter != transform->children.end();
+		++iter)
+	{
+		GameObjectUpdateRecursive(dt, (*iter));
+	}
 }
 
 void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * transform)
