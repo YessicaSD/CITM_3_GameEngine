@@ -59,7 +59,7 @@ private:
 	void CreateResourcesInMap(const uint &type, JSONFile &meta_file, AssetFile * asset_file);
 	void ReImportResources(JSONFile &meta_file, const uint &type, AssetFile * asset_file);
 
-	void ReleaseImportDataAndReload(Resource * imported_resource);
+	void ReleaseDataAndReload(Resource * imported_resource);
 	
 	//Helpers to the functions to update assets
 	void DeleteDependantResources(std::vector<UID> & uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension);

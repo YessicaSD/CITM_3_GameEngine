@@ -36,7 +36,7 @@ public:
 	void AddClip(ResourceAnimation* clip);
 	//TODO: RemoveClip
 	void PropertiesEditor() override;
-	void OnPostUpdate() override;
+	void OnUpdate(float dt) override;
 	ComponentTransform * GetBoneByName(const std::string & bone_name);
 	void CleanUp() override;
 

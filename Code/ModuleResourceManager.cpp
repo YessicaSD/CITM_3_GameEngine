@@ -126,23 +126,25 @@ void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &t
 		DeleteDependantResources(animation_uids, "exportedAnimations", &meta_file, RESOURCES_ANIMATION_FOLDER, ANIMATION_EXTENSION);
 
 		//INFO: Generate new resources using the previous uids
-		ResourceModel * imported_resource = App->import_model->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids, animation_uids);
+		imported_resource = App->import_model->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids, animation_uids);
 	}
 	else if (type == ResourceTexture::type)
 	{
 		//INFO: Delete the previous resources
 		App->file_system->Remove((std::string(RESOURCES_TEXTURES_FOLDER) + uid_string + "." + TEXTURE_EXTENSION).c_str());
 		resources.erase(uid);
+
+		imported_resource = App->import_texture->ImportTexture(asset_file->full_path.c_str(), uid);
 	}
 	else
 	{
 		LOG("This format is unsupported.");
 	}
 
-	ReleaseImportDataAndReload(imported_resource);
+	ReleaseDataAndReload(imported_resource);
 }
 
-void ModuleResourceManager::ReleaseImportDataAndReload(Resource * imported_resource)
+void ModuleResourceManager::ReleaseDataAndReload(Resource * imported_resource)
 {
 	if (imported_resource != nullptr)
 	{
@@ -215,7 +217,7 @@ void ModuleResourceManager::ImportResource(const uint type, const char * path)
 	//	LOG("This format is unsupported.");
 	//}
 
-	ReleaseImportDataAndReload(imported_resource);
+	ReleaseDataAndReload(imported_resource);
 }
 
 //Check that the modified date of the .meta and the file match. That means the file hasn't been modified while the engine was closed.

@@ -46,42 +46,40 @@ void ComponentAnimator::PropertiesEditor()
 	//TODO: Show a list of all the clips and let you select which one has to be played
 }
 
-void ComponentAnimator::OnPostUpdate()
+void ComponentAnimator::OnUpdate(float dt)
 {
-		ResourceAnimation* resource_animation = current_animation_node->GetClip();
-		if (resource_animation != nullptr)
+	ResourceAnimation* resource_animation = current_animation_node->GetClip();
+	if (resource_animation != nullptr)
+	{
+		current_animation_node->current_time += App->GetDt();
+		if (current_animation_node->current_time >= resource_animation->GetDuration())
 		{
-			current_animation_node->current_time += App->GetDt();
-			if (current_animation_node->current_time >= resource_animation->GetDuration())
+			current_animation_node->current_time = (current_animation_node->loop) ? 0 : resource_animation->GetDuration();
+		}
+		float current_time_ticks = current_animation_node->current_time * resource_animation->GetTicksPerSecond();
+		uint num_channels = resource_animation->GetNumChannels();
+		AnimationChannels* channels = resource_animation->GetChannels();
+
+		for (uint i = 0; i < num_channels; ++i)
+		{
+			AnimationChannels channel = channels[i];
+			ComponentTransform * bone = GetBoneByName(channel.GetName());
+
+			if (bone != nullptr)
 			{
-				current_animation_node->current_time = (current_animation_node->loop) ? 0 : resource_animation->GetDuration();
-			}
-			float current_time_ticks = current_animation_node->current_time * resource_animation->GetTicksPerSecond();
-			uint num_channels = resource_animation->GetNumChannels();
-			AnimationChannels* channels = resource_animation->GetChannels();
+				KeyAnimation<float3>* position_key = channel.GetKeyPosition(current_time_ticks);
+				KeyAnimation<Quat>* rotation_key = channel.GetKeyRotation(current_time_ticks);
+				KeyAnimation<float3>* scale_key = channel.GetKeyScale(current_time_ticks);
 
-			for (uint i = 0; i < num_channels; ++i)
-			{
-				AnimationChannels channel = channels[i];
-				ComponentTransform * bone = GetBoneByName(channel.GetName());
+				float3 end_position = (position_key != nullptr) ? position_key->value : bone->GetPosition();
+				Quat end_rotation = (rotation_key != nullptr) ? rotation_key->value : bone->GetRotation();
+				float3 end_scale = (scale_key != nullptr) ? scale_key->value : bone->GetScale();
 
-				if (bone != nullptr)
-				{
-					KeyAnimation<float3>* position_key = channel.GetKeyPosition(current_time_ticks);
-					KeyAnimation<Quat>* rotation_key = channel.GetKeyRotation(current_time_ticks);
-					KeyAnimation<float3>* scale_key = channel.GetKeyScale(current_time_ticks);
-
-					float3 end_position = (position_key != nullptr) ? position_key->value : bone->GetPosition();
-					Quat end_rotation = (rotation_key != nullptr) ? rotation_key->value : bone->GetRotation();
-					float3 end_scale = (scale_key != nullptr) ? scale_key->value : bone->GetScale();
-
-					bone->SetTransform(end_position, end_scale, end_rotation);
-				}
+				bone->SetTransform(end_position, end_scale, end_rotation);
 			}
 		}
-		
+	}
 }
-
 
 //INFO: Optimization, adds it to a map so we don't have to iterate over all the children gameobjects all the time
 ComponentTransform* ComponentAnimator::GetBoneByName(const std::string & bone_name)
