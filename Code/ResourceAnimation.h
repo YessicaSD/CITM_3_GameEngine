@@ -29,14 +29,14 @@ class AnimationChannels
 	KeyAnimation<float3>* scale_keys = nullptr;
 
 	void ImportAnimationNode(const aiNodeAnim& node_animation);
-	
+	bool GetKeyFloat3(double time, math::float3 & value, KeyAnimation<float3>* keys, uint num_keys);
 public:
 	const char* GetName() {
 		return name;
 	}
-	KeyAnimation<float3>* GetKeyPosition(double time);
-	KeyAnimation<Quat>* GetKeyRotation(double time);
-	KeyAnimation<float3>* GetKeyScale(double time);
+	bool GetKeyPosition(double time, float3& value);
+	bool GetKeyRotation(double time, Quat& value);
+	bool GetKeyScale(double time, float3& value);
 
 	friend class ResourceAnimation;
 };

@@ -5,6 +5,7 @@
 #include "ModuleResourceManager.h"
 #include "Assimp/include/mesh.h"
 #include "par/par_shapes.h"
+#include "ResourceBone.h"
 
 ModuleImportMesh::ModuleImportMesh(const char *name) : Module(true, name)
 {

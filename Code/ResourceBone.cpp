@@ -21,5 +21,4 @@ bool ResourceBone::ReleaseData()
 void ResourceBone::LoadFromAssimp(aiBone bone)
 {
 	name = bone.mName.C_Str();
-
 }
