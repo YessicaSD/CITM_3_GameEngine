@@ -105,7 +105,7 @@ bool ResourceMesh::LoadFileData()
 		num_indices = ranges[1];
 		num_faces = ranges[2];
 		uv_dimensions = ranges[3];
-		num_bones = ranges[5];
+		num_bones = ranges[4];
 
 		vertices = new float3[num_vertices];
 		LoadVariable(vertices, &cursor, sizeof(float3) * num_vertices);

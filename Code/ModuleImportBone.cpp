@@ -22,8 +22,21 @@ bool ModuleImportBone::ImportBone(aiBone * assimp_bone, UID uid, const char * as
 	memset(resource_bone->name, NULL, NODE_NAME_SIZE);
 	strcpy(resource_bone->name, bone_name);
 
-	resource_bone->offset_matrix = reinterpret_cast<const float4x4&>(assimp_bone);
+	resource_bone->offset_matrix = reinterpret_cast<const float4x4&>(assimp_bone->mOffsetMatrix);
+
+	resource_bone->num_weights = assimp_bone->mNumWeights;
+
+	resource_bone->weights = new VertexWeigth[assimp_bone->mNumWeights];
+	//TODO: See if we can do a memcpy instead of iterating
+	for (int i = 0; i < resource_bone->num_weights; ++i)
+	{
+		resource_bone->weights[i].vertex_id = assimp_bone->mWeights[i].mVertexId;
+		resource_bone->weights[i].weigth = assimp_bone->mWeights[i].mWeight;
+	}
 
 	resource_bone->SaveFileData();
+
+	LOG("Success importing bone with uid: %llu in: %i ms.", resource_bone->GetUID(), import_timer.Read());
+
 	return true;
 }
