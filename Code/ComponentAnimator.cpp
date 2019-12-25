@@ -1,4 +1,4 @@
-#include "ComponentAnimation.h"
+#include "ComponentAnimator.h"
 #include "ResourceAnimation.h"
 #include "imgui/imgui.h"
 #include "Application.h"
@@ -79,6 +79,12 @@ void ComponentAnimator::OnUpdate(float dt)
 			}
 		}
 	}
+}
+
+void ComponentAnimator::OnPostUpdate()
+{
+	//Draw the bones
+
 }
 
 //INFO: Optimization, adds it to a map so we don't have to iterate over all the children gameobjects all the time

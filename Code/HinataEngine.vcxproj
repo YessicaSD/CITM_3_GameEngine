@@ -128,7 +128,7 @@
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="ComponentAnimation.h" />
+    <ClInclude Include="ComponentAnimator.h" />
     <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeLine.h" />
@@ -284,7 +284,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="ComponentAnimation.cpp" />
+    <ClCompile Include="ComponentAnimator.cpp" />
     <ClCompile Include="imgui\imgui_timeline.cpp" />
     <ClCompile Include="ModuleImportMesh.cpp" />
     <ClCompile Include="PanelImport.cpp" />

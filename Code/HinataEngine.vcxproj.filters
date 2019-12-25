@@ -640,9 +640,6 @@
     <ClInclude Include="ResourceAnimation.h">
       <Filter>Sources\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentAnimation.h">
-      <Filter>Sources\EntityComponentSystem\Components</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleImportModel.h">
       <Filter>Sources\Modules\ModuleImport</Filter>
     </ClInclude>
@@ -657,6 +654,9 @@
     </ClInclude>
     <ClInclude Include="imgui\imgui_timeline.h">
       <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentAnimator.h">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -964,9 +964,6 @@
     <ClCompile Include="ResourceAnimation.cpp">
       <Filter>Sources\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentAnimation.cpp">
-      <Filter>Sources\EntityComponentSystem\Components</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleImportModel.cpp">
       <Filter>Sources\Modules\ModuleImport</Filter>
     </ClCompile>
@@ -979,9 +976,11 @@
     <ClCompile Include="ResourceBone.cpp">
       <Filter>Sources\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Timeline.cpp" />
     <ClCompile Include="imgui\imgui_timeline.cpp">
       <Filter>Sources\Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentAnimator.cpp">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

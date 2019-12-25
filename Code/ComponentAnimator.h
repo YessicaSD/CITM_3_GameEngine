@@ -1,5 +1,6 @@
-#ifndef COMPONENT_ANIMATION_H
-#define COMPONENT_ANIMATION_H
+#ifndef COMPONENT_ANIMATOR_H
+#define COMPONENT_ANIMATOR_H
+
 #include "Component.h"
 #include <map>
 #include <string>
@@ -37,6 +38,7 @@ public:
 	//TODO: RemoveClip
 	void PropertiesEditor() override;
 	void OnUpdate(float dt) override;
+	void OnPostUpdate() override;
 	ComponentTransform * GetBoneByName(const std::string & bone_name);
 	void CleanUp() override;
 
