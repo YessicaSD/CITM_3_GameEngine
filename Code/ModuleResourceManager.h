@@ -9,6 +9,7 @@
 #include "Resource.h"
 #include "Timer.h"
 class ResourceTexture;
+class ResourceBone;
 
 //Used to create the hirearchy of assets
 struct AssetFile
@@ -45,6 +46,7 @@ public:
 	UID LoadUID(JSONFile * meta_file) const;
 	void SaveUID(JSONFile * meta_file, const UID & uid) const;
 	void SaveUIDArray(const std::vector<UID>& uid_vector, char * name, JSONFile * meta_file) const;
+	UID PopFirst(std::vector<UID>& vector);
 
 private:
 	

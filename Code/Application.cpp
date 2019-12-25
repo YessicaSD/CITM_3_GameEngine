@@ -20,6 +20,7 @@
 #include "ModuleResourceManager.h"
 #include "ModuleTime.h"
 #include "ModuleImportMesh.h"
+#include "ModuleImportBone.h"
 
 #include "JSONFile.h"
 #include "Timer.h"
@@ -41,6 +42,7 @@ Application::Application()
 	AddModule(time = new ModuleTime("Time"));
 	AddModule(scene = new ModuleScene("Scene"));
 	AddModule(import_model = new ModuleImportModel("Import Model"));
+	AddModule(import_bone = new ModuleImportBone("Import Bone"));
 	AddModule(camera = new ModuleCamera3D("Camera 3D"));
 	//AddModule(audio = new ModuleAudio("Audio"));
 	AddModule(resource_manager = new ModuleResourceManager("Resource Manager"));

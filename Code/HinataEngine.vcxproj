@@ -140,6 +140,7 @@
     <ClInclude Include="imGuizmo\ImSequencer.h" />
     <ClInclude Include="imgui\imgui_timeline.h" />
     <ClInclude Include="JSONFile.h" />
+    <ClInclude Include="ModuleImportBone.h" />
     <ClInclude Include="ModuleImportMesh.h" />
     <ClInclude Include="ModuleTime.h" />
     <ClInclude Include="ModuleResourceManager.h" />
@@ -288,6 +289,7 @@
     <ClCompile Include="ComponentAnimator.cpp" />
     <ClCompile Include="ComponentSkinnedMeshRenderer.cpp" />
     <ClCompile Include="imgui\imgui_timeline.cpp" />
+    <ClCompile Include="ModuleImportBone.cpp" />
     <ClCompile Include="ModuleImportMesh.cpp" />
     <ClCompile Include="PanelImport.cpp" />
     <ClCompile Include="PanelResources.cpp" />

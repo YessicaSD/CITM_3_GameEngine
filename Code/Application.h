@@ -32,6 +32,7 @@ class ModuleRandom;
 class ModuleTime;
 class ModuleResourceManager;
 class ModuleImportMesh;
+class ModuleImportBone;
 
 struct ImVec2;
 
@@ -67,6 +68,7 @@ public:
 	ModuleTime *time = nullptr;
 	ModuleResourceManager *resource_manager = nullptr;
 	ModuleImportMesh * import_mesh = nullptr;
+	ModuleImportBone * import_bone = nullptr;
 
 	std::string application_name;
 	std::string organization_name;

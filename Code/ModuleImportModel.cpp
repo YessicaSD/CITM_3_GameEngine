@@ -59,7 +59,7 @@ bool ModuleImportModel::Start(JSONFile * config)
 }
 
 //INFO: Creates a .hinata_model (our custom format for 3d models) from an fbx
-ResourceModel * ModuleImportModel::ImportModel(const char *asset_path, UID model_uid, std::vector<UID> & prev_meshes_uids, std::vector<UID> & prev_textures_uids, std::vector<UID>& animation_uids)
+ResourceModel * ModuleImportModel::ImportModel(const char *asset_path, std::vector<UID> & bones_uids, UID model_uid, std::vector<UID> & prev_meshes_uids, std::vector<UID> & prev_textures_uids, std::vector<UID>& animation_uids)
 {
 	Timer import_timer;
 	unsigned flags = aiProcess_CalcTangentSpace | \
@@ -112,13 +112,10 @@ ResourceModel * ModuleImportModel::ImportModel(const char *asset_path, UID model
 			for (uint i = 0u; i < scene->mNumMeshes; ++i)
 			{
 				aiMesh *assimp_mesh = scene->mMeshes[i];
-				ResourceMesh * resource_mesh = App->import_mesh->ImportAssimpMesh(assimp_mesh, PopFirst(prev_meshes_uids), asset_path);
+				ResourceMesh * resource_mesh = App->import_mesh->ImportAssimpMesh(assimp_mesh, App->resource_manager->PopFirst(prev_meshes_uids), bones_uids, asset_path);
 				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
 				mesh_texture_indices.push_back(resource_model->textures_uid[assimp_mesh->mMaterialIndex]);
-				
-
 			}
-			
 		}
 		ImportFBXNodes(resource_model, new ModelNode(), scene->mRootNode, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX);
 		if (scene->HasAnimations())
@@ -127,7 +124,7 @@ ResourceModel * ModuleImportModel::ImportModel(const char *asset_path, UID model
 			for (uint i = 0u; i < scene->mNumAnimations; ++i)
 			{
 				ResourceAnimation * resource_animation = nullptr;
-				resource_animation = App->resource_manager->CreateResource<ResourceAnimation>(PopFirst(animation_uids));
+				resource_animation = App->resource_manager->CreateResource<ResourceAnimation>(App->resource_manager->PopFirst(animation_uids));
 				resource_animation->ImportAnimation((*scene->mAnimations[i]));
 				resource_animation->asset_source = asset_path;
 				resource_model->animations_uid.push_back(resource_animation->GetUID());
@@ -238,7 +235,7 @@ ResourceTexture * ModuleImportModel::ImportFBXTexture(const aiMaterial * materia
 			}
 			else
 			{
-				ret = App->import_texture->ImportTexture(final_path.c_str(), PopFirst(uids));
+				ret = App->import_texture->ImportTexture(final_path.c_str(), App->resource_manager->PopFirst(uids));
 				ret->asset_source = asset_path;
 			}
 		}
@@ -379,7 +376,7 @@ void ModuleImportModel::EventRequest(const Event &event)
 		{
 			if (App->file_system->CopyFromOutsideFS(event.path, dst_path.c_str()))
 			{
-				ImportModel(dst_path.c_str());
+				ImportModel(dst_path.c_str(), std::vector<UID>());
 				//TODO: Update assets tree
 			}
 		}
@@ -389,15 +386,4 @@ void ModuleImportModel::EventRequest(const Event &event)
 		}
 		LOG("File dropped %s", event.path);
 	}
-}
-
-UID ModuleImportModel::PopFirst(std::vector<UID> & vector)
-{
-	if (vector.size() > 0u)
-	{
-		UID uid = (*vector.begin());
-		vector.erase(vector.begin());
-		return uid;
-	}
-	return INVALID_RESOURCE_UID;
 }

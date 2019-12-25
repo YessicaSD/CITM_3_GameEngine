@@ -31,7 +31,7 @@ class ModuleImportModel : public Module
 public:
 	ModuleImportModel(const char * name);
 	bool Start(JSONFile * module_file) override;
-	ResourceModel * ImportModel(const char* path, UID model_uid = INVALID_RESOURCE_UID, std::vector<UID> & meshes_uids = std::vector<UID>(), std::vector<UID> & textures_uids = std::vector<UID>(), std::vector<UID>& animation_uids = std::vector<UID>());
+	ResourceModel * ImportModel(const char* path, std::vector<UID> & bones_uids, UID model_uid = INVALID_RESOURCE_UID, std::vector<UID> & meshes_uids = std::vector<UID>(), std::vector<UID> & textures_uids = std::vector<UID>(), std::vector<UID>& animation_uids = std::vector<UID>());
 	bool CleanUp() override;
 	void EventRequest(const Event& event) override;
 
@@ -42,7 +42,6 @@ private:
 	bool ImportFBXNodes(ResourceModel * resource_model, ModelNode * model_node, aiNode * node, const std::vector<uint> mesh_texture_idxs, uint parent_index);
 	ResourceTexture * ImportFBXTexture(const  aiMaterial * material, std::vector<UID> & uids, const char * asset_path);
 	void LoadModelMeta(ResourceModel * model, const char * meta_path);
-	UID PopFirst(std::vector<UID>& vector);
 
 	friend ModuleScene;
 };
