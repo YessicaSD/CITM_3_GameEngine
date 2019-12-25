@@ -11,6 +11,7 @@
 typedef unsigned int uint;
 struct aiMesh;
 struct aiScene;
+class ResourceBone;
 
 class ResourceMesh : public Resource
 {
@@ -41,6 +42,7 @@ public:
 	bool GenerateFacesBuffer();
 	bool GenerateFaceNormalsBuffer();
 	bool GenerateUVsBuffer();
+	bool HasBones();
 
 	void CreateBoundingBox();
 	void CleanUp();
@@ -75,6 +77,10 @@ public:
 	float *uv_coord = nullptr;
 	uint id_uv = 0u;
 	uint uv_dimensions = 0u; //Whether the UVs are stored as 2D or 3D
+
+	//Bones 
+	uint num_bones = 0;
+	ResourceBone* bones = nullptr;
 
 	friend class ModuleImportMesh;
 	friend class ModuleImportModel;

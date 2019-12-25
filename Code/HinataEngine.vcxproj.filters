@@ -658,6 +658,9 @@
     <ClInclude Include="ComponentAnimator.h">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentSkinnedMeshRenderer.h">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -980,6 +983,9 @@
       <Filter>Sources\Tools\imgui</Filter>
     </ClCompile>
     <ClCompile Include="ComponentAnimator.cpp">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentSkinnedMeshRenderer.cpp">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClCompile>
   </ItemGroup>

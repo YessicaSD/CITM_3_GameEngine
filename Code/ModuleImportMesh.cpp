@@ -23,6 +23,15 @@ ResourceMesh * ModuleImportMesh::ImportAssimpMesh(aiMesh * assimp_mesh, UID uid,
 	resource_mesh->ImportFaces(assimp_mesh);
 	resource_mesh->CalculateFaceNormals();
 	resource_mesh->ImportUVs(assimp_mesh);
+	if (assimp_mesh->HasBones())
+	{
+		for (uint i = 0u; i < assimp_mesh->mNumBones; ++i)
+		{
+			aiBone bone = (*assimp_mesh->mBones[i]);
+			ResourceBone* resource_bone = App->resource_manager->CreateResource<ResourceBone>();
+			
+		}
+	}
 
 	resource_mesh->SaveFileData();
 

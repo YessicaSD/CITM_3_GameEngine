@@ -1,4 +1,5 @@
 #include "ResourceBone.h"
+#include "Assimp/include/mesh.h"
 
 RESOURCE_DEFINITION(Resource, ResourceBone);
 
@@ -15,4 +16,10 @@ bool ResourceBone::LoadFileData()
 bool ResourceBone::ReleaseData()
 {
 	return true;
+}
+
+void ResourceBone::LoadFromAssimp(aiBone bone)
+{
+	name = bone.mName.C_Str();
+
 }
