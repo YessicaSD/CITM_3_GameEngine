@@ -12,6 +12,7 @@
 #include "ResourceTexture.h"
 #include "BoundingBox.h"
 #include "ModuleFileSystem.h"
+#include "ResourceBone.h"
 
 RESOURCE_DEFINITION(Resource, ResourceMesh);
 
@@ -40,7 +41,8 @@ bool ResourceMesh::SaveFileData()
 		num_vertices,
 		num_indices,
 		num_faces,
-		uv_dimensions
+		uv_dimensions,
+		num_bones,
 	};
 
 	uint ranges_bytes = sizeof(ranges);
@@ -49,13 +51,15 @@ bool ResourceMesh::SaveFileData()
 	uint indices_bytes = sizeof(uint) * num_indices;
 	uint face_normals_bytes = sizeof(float3) * num_faces;
 	uint uv_bytes = sizeof(float) * GetUVCoordSize();
+	uint bones_bytes = sizeof(ResourceBone)*num_bones;
 
 	uint size = ranges_bytes
 		+ vertices_bytes
 		+ vertex_normals_bytes
 		+ indices_bytes
 		+ face_normals_bytes
-		+ uv_bytes;
+		+ uv_bytes
+		+ bones_bytes;
 
 	// Allocate
 	char* data = new char[size]; 
@@ -68,6 +72,7 @@ bool ResourceMesh::SaveFileData()
 	SaveVariable(indices, &cursor, indices_bytes);
 	SaveVariable(faces_normals, &cursor, face_normals_bytes);
 	SaveVariable(uv_coord, &cursor, uv_bytes);
+	SaveVariable(bones, &cursor, bones_bytes);
 
 	//SaveFile
 	uint path_size = 250u;
@@ -94,12 +99,13 @@ bool ResourceMesh::LoadFileData()
 		char * cursor = data;
 
 		//INFO: The number of elements on the ranges array must be the same as in the ranges array of ResourceMesh::SaveFileData()
-		uint ranges[4];
+		uint ranges[5];
 		LoadVariable(ranges, &cursor, sizeof(ranges));
 		num_vertices = ranges[0];
 		num_indices = ranges[1];
 		num_faces = ranges[2];
 		uv_dimensions = ranges[3];
+		num_bones = ranges[5];
 
 		vertices = new float3[num_vertices];
 		LoadVariable(vertices, &cursor, sizeof(float3) * num_vertices);
@@ -348,6 +354,11 @@ bool ResourceMesh::GenerateUVsBuffer()
 	}
 
 	return true;
+}
+
+bool ResourceMesh::HasBones()
+{
+	return bones != nullptr;
 }
 
 void ResourceMesh::CleanUp()

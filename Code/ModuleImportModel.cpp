@@ -115,7 +115,10 @@ ResourceModel * ModuleImportModel::ImportModel(const char *asset_path, UID model
 				ResourceMesh * resource_mesh = App->import_mesh->ImportAssimpMesh(assimp_mesh, PopFirst(prev_meshes_uids), asset_path);
 				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
 				mesh_texture_indices.push_back(resource_model->textures_uid[assimp_mesh->mMaterialIndex]);
+				
+
 			}
+			
 		}
 		ImportFBXNodes(resource_model, new ModelNode(), scene->mRootNode, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX);
 		if (scene->HasAnimations())
