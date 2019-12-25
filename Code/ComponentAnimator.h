@@ -32,6 +32,8 @@ class ComponentAnimator : public Component
 {
 	CLASS_DECLARATION(ComponentAnimator);
 
+private:
+	void DrawBoneRecursive(ComponentTransform * bone) const;
 public:
 	ComponentAnimator(GameObject* attached_object);
 	void AddClip(ResourceAnimation* clip);

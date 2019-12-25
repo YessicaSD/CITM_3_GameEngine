@@ -264,6 +264,11 @@ void ComponentTransform::SetGlobalMatrix(const float4x4& matrix)
 
 }
 
+std::vector<ComponentTransform*> ComponentTransform::GetChildren()
+{
+	return 	children;;
+}
+
 void ComponentTransform::SetLocalMatrix(const float4x4 & matrix)
 {
 	if (parent != nullptr)
@@ -332,6 +337,15 @@ float3 ComponentTransform::GetYAxis()
 float3 ComponentTransform::GetPosition() const
 {
 	return position;
+}
+
+float3 ComponentTransform::GetGlobalPosition() const
+{
+	float3 global_position;
+	Quat global_rotation;
+	float3 global_scale;
+	global_matrix.Decompose(global_position, global_rotation, global_scale);
+	return global_position;
 }
 
 Quat ComponentTransform::GetRotation() const

@@ -37,6 +37,7 @@ public:
 	void SetScale(const float3 & scale);
 	void SetLocalMatrix(const float4x4& matrix);
 	void SetGlobalMatrix(const float4x4& matrix);
+	std::vector<ComponentTransform*> GetChildren();
 	
 	void SetSelected(bool state);
 	
@@ -47,6 +48,7 @@ public:
 	float3   GetZAxis();
 	float3   GetYAxis();
 	float3   GetPosition() const;
+	float3	 GetGlobalPosition() const;
 	Quat     GetRotation() const;
 	float3   GetRotationEuler() const;
 	float3   GetScale() const;
