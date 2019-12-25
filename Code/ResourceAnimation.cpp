@@ -239,45 +239,40 @@ void AnimationChannels::ImportAnimationNode(const aiNodeAnim & node_animation)
 	}
 }
 
+//Returns nullptr if there isn't a key with less time than the specified
 KeyAnimation<float3>* AnimationChannels::GetKeyPosition(double time)
 {
-
-	KeyAnimation<float3>* bigger_key = nullptr;
-	for (uint i = 0; i < num_position_keys;)
+	KeyAnimation<float3>* prev_key = nullptr;
+	if (num_position_keys > 0u
+		&& position_keys[0].time <= time)
 	{
-		if (i == 0)
+		prev_key = &position_keys[0];
+		for (uint i = 1u; i < num_position_keys; ++i)
 		{
-			bigger_key = &position_keys[0];
-			if (bigger_key->time > time)
+			if (position_keys[i].time <= time)
 			{
-				return nullptr;
+				prev_key = &position_keys[i];
 			}
-			++i;
-			continue;
+			else
+			{
+				//next_key = &position_keys[i];
+				//prev_key = &position_keys[i - 1];
+				return prev_key;
+			}
 		}
-
-		if (position_keys[i].time <= time && position_keys[i].time > bigger_key->time)
-		{
-			bigger_key = &position_keys[i];
-		}
-		else
-		{
-			return bigger_key;
-		}
-		++i;
 	}
-	return bigger_key;
+	return prev_key;
 }
 
-KeyAnimation<float3>* AnimationChannels::GetKeyScale(double time)
+KeyAnimation<Quat>* AnimationChannels::GetKeyRotation(double time)
 {
-	KeyAnimation<float3>* bigger_key = nullptr;
+	KeyAnimation<Quat>* next_key = nullptr;
 	for (uint i = 0; i < num_rotation_keys;)
 	{
 		if (i == 0)
 		{
-			bigger_key = &scale_keys[0];
-			if (bigger_key->time > time)
+			next_key = &rotation_keys[0];
+			if (next_key->time > time)
 			{
 				return nullptr;
 			}
@@ -285,28 +280,28 @@ KeyAnimation<float3>* AnimationChannels::GetKeyScale(double time)
 			continue;
 		}
 
-		if (scale_keys[i].time <= time && scale_keys[i].time > bigger_key->time)
+		if (rotation_keys[i].time <= time && rotation_keys[i].time > next_key->time)
 		{
-			bigger_key = &scale_keys[i];
+			next_key = &rotation_keys[i];
 		}
 		else
 		{
-			return bigger_key;
+			return next_key;
 		}
 		++i;
 	}
 	return nullptr;
 }
 
-KeyAnimation<Quat>* AnimationChannels::GetKeyRotation(double time)
+KeyAnimation<float3>* AnimationChannels::GetKeyScale(double time)
 {
-	KeyAnimation<Quat>* bigger_key = nullptr;
+	KeyAnimation<float3>* next_key = nullptr;
 	for (uint i = 0; i < num_rotation_keys;)
 	{
 		if (i == 0)
 		{
-			bigger_key = &rotation_keys[0];
-			if (bigger_key->time > time)
+			next_key = &scale_keys[0];
+			if (next_key->time > time)
 			{
 				return nullptr;
 			}
@@ -314,13 +309,13 @@ KeyAnimation<Quat>* AnimationChannels::GetKeyRotation(double time)
 			continue;
 		}
 
-		if (rotation_keys[i].time <= time && rotation_keys[i].time > bigger_key->time)
+		if (scale_keys[i].time <= time && scale_keys[i].time > next_key->time)
 		{
-			bigger_key = &rotation_keys[i];
+			next_key = &scale_keys[i];
 		}
 		else
 		{
-			return bigger_key;
+			return next_key;
 		}
 		++i;
 	}

@@ -39,7 +39,7 @@ public:
 	bool CleanUp() override;
 
 	Resource * GetResource(UID uid);
-	uint GetResourceTypeFromExtension(const std::string & extension);
+	uint GetAssetTypeFromExtension(const std::string & extension);
 	const char * GetResourceTypeString(uint type);
 
 	UID LoadUID(JSONFile * meta_file) const;

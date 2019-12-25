@@ -40,7 +40,7 @@ void ModuleResourceManager::StartCheckAssets(AssetDir* dir)
 
 		std::string extension;
 		App->file_system->GetExtension((*iter)->name.c_str(), extension);
-		uint type = GetResourceTypeFromExtension(extension);
+		uint type = GetAssetTypeFromExtension(extension);
 
 		//Check if it has a .meta. That means it has been imported already.
 		if (App->file_system->FileExists(meta_path.c_str()))
@@ -77,7 +77,7 @@ void ModuleResourceManager::UpdateCheckAssets(AssetDir* dir)
 
 		std::string extension;
 		App->file_system->GetExtension((*iter)->name.c_str(), extension);
-		uint type = GetResourceTypeFromExtension(extension);
+		uint type = GetAssetTypeFromExtension(extension);
 
 		//Check if it has a .meta. That means it has been imported already.
 		if (App->file_system->FileExists(meta_path.c_str()))
@@ -361,7 +361,7 @@ void ModuleResourceManager::DeleteAssetTree(AssetDir * dir)
 	delete(dir);
 }
 
-uint ModuleResourceManager::GetResourceTypeFromExtension(const std::string & extension)
+uint ModuleResourceManager::GetAssetTypeFromExtension(const std::string & extension)
 {
 	if (extension == "fbx" || extension == "FBX")
 	{

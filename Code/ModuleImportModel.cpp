@@ -363,7 +363,7 @@ void ModuleImportModel::EventRequest(const Event &event)
 		App->file_system->SplitFilePath(event.path, nullptr, &file, nullptr);
 		//TODO: Change it so that you can drag onto an specific folder on the assets
 		std::string dst_path = std::string(ASSETS_FOLDER) + std::string("/") + file;
-		uint resource_type = App->resource_manager->GetResourceTypeFromExtension(extension);
+		uint resource_type = App->resource_manager->GetAssetTypeFromExtension(extension);
 		if (resource_type == ResourceTexture::type)
 		{
 			if (App->file_system->CopyFromOutsideFS(event.path, dst_path.c_str()))

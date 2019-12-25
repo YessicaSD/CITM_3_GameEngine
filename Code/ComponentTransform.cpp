@@ -21,13 +21,11 @@ ComponentTransform::ComponentTransform(GameObject *gameobject) : Component(gameo
 	global_matrix = local_matrix = local_matrix.identity;
 	SetTransform(float3(0,0,0), float3(1,1,1), float3(0,0,0));
 	UpdateVector();
-	
 }
 
 ComponentTransform::~ComponentTransform()
 {
 	CleanUp();
-	
 }
 
 void ComponentTransform::SetParent(ComponentTransform *parent)
@@ -78,33 +76,30 @@ void ComponentTransform::PropertiesEditor()
 		SwitchedStatic();
 	}
 	
-		bool position_changed = false,
-			rotation_changed = false,
-			scale_changed = false;
+	bool position_changed = false,
+		rotation_changed = false,
+		scale_changed = false;
 
-		if (ImGui::Button("Reset"))
-		{
-			Reset();
-		}
-		if (ImGui::InputFloat3("Position", (float *)&position, "%.2f"))
-		{
-			position_changed = true;
-		}
-		if (ImGui::InputFloat3("Rotation", (float *)&euler_rotation, "%.2f"))
-		{
-			rotation_changed = true;
-		}
-		if (ImGui::InputFloat3("Scale", (float *)&scale, "%.2f"))
-		{
-			scale_changed = true;
-		}
-		if (position_changed || rotation_changed || scale_changed)
-		{
-			SetTransform(position, scale, euler_rotation);
-		}
-	
-	
-	
+	if (ImGui::Button("Reset"))
+	{
+		Reset();
+	}
+	if (ImGui::InputFloat3("Position", (float *)&position, "%.2f"))
+	{
+		position_changed = true;
+	}
+	if (ImGui::InputFloat3("Rotation", (float *)&euler_rotation, "%.2f"))
+	{
+		rotation_changed = true;
+	}
+	if (ImGui::InputFloat3("Scale", (float *)&scale, "%.2f"))
+	{
+		scale_changed = true;
+	}
+	if (position_changed || rotation_changed || scale_changed)
+	{
+		SetTransform(position, scale, euler_rotation);
+	}
 }
 
 void ComponentTransform::OnSave(JSONFile * file)
