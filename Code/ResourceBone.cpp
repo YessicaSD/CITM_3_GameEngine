@@ -70,13 +70,25 @@ bool ResourceBone::LoadFileData()
 
 		uint ranges[1];
 
-		//LoadVariable(ranges, &cursor, );
+		LoadVariable(ranges, &cursor, sizeof(ranges));
+		LoadVariable(name, &cursor, sizeof(char) * NODE_NAME_SIZE);
+		LoadVariable(weights, &cursor, sizeof(VertexWeigth) * num_weights);
+		LoadVariable(&offset_matrix, &cursor, sizeof(float4x4));
+
+		LOG("Success loading mesh from: %s in: %i ms.", path, load_timer.Read());
 	}
+
+	RELEASE_ARRAY(path);
 
 	return ret;
 }
 
 bool ResourceBone::ReleaseData()
 {
+	RELEASE_ARRAY(name);
+	num_weights = 0u;
+	RELEASE_ARRAY(weights);
+	offset_matrix = float4x4::identity;
+
 	return true;
 }

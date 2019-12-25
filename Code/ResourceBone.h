@@ -5,8 +5,8 @@
 #include "MathGeoLib/include/Math/float4x4.h"
 struct VertexWeigth
 {
-	uint vertex_id = 0;
-	float weigth = 0;
+	uint vertex_id = 0u;
+	float weigth = 0.f;
 };
 struct aiBone;
 class ResourceBone : public Resource
