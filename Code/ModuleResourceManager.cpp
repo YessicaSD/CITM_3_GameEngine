@@ -10,6 +10,7 @@
 #include "ResourceTexture.h"
 #include "ResourceMaterial.h"
 #include "ResourceAnimation.h"
+#include "ResourceBone.h"
 
 ModuleResourceManager::ModuleResourceManager(const char * name) : Module(true, name)
 {
@@ -126,7 +127,7 @@ void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &t
 		DeleteDependantResources(animation_uids, "exportedAnimations", &meta_file, RESOURCES_ANIMATION_FOLDER, ANIMATION_EXTENSION);
 
 		//INFO: Generate new resources using the previous uids
-		imported_resource = App->import_model->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids, animation_uids);
+		imported_resource = App->import_model->ImportModel(asset_file->full_path.c_str(), std::vector<UID>(), uid, meshes_uids, textures_uids, animation_uids);
 	}
 	else if (type == ResourceTexture::type)
 	{
@@ -206,7 +207,7 @@ void ModuleResourceManager::ImportResource(const uint type, const char * path)
 	Resource * imported_resource = nullptr;
 	if (type == ResourceModel::type)
 	{
-		imported_resource = App->import_model->ImportModel(path);
+		imported_resource = App->import_model->ImportModel(path, std::vector<UID>());
 	}
 	else if (type == ResourceTexture::type)
 	{
@@ -419,4 +420,15 @@ void ModuleResourceManager::DeleteDependantResources(std::vector<UID> & uids, co
 		App->file_system->Remove((std::string(folder) + uids_string[i] + "." + extension).c_str());
 		resources.erase(uids[i]);
 	}
+}
+
+UID ModuleResourceManager::PopFirst(std::vector<UID> & vector)
+{
+	if (vector.size() > 0u)
+	{
+		UID uid = (*vector.begin());
+		vector.erase(vector.begin());
+		return uid;
+	}
+	return INVALID_RESOURCE_UID;
 }

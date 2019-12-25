@@ -14,18 +14,21 @@ class ResourceBone : public Resource
 	RESOURCE_DECLARATION(ResourceBone);
 
 private:
-	const char * name = nullptr;
-	uint num_weights = 0;
+	char * name = nullptr;
+	uint num_weights = 0u;
+	VertexWeigth * weights = nullptr;
 	float4x4 offset_matrix = float4x4::identity;
 
 private:
 	ResourceBone();//Constructor is private because Resources need to be created from ModuleResourceManager
-
+	
+	const char * GetTypeString() override;
 	bool SaveFileData() override;
 	bool LoadFileData() override;
 	bool ReleaseData() override;
-public:
-	void LoadFromAssimp(aiBone bone);
+
+	friend class ModuleImportBone;
+	friend class ModuleResourceManager;
 };
 
 #endif

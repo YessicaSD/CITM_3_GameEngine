@@ -5,12 +5,14 @@
 #include "ModuleResourceManager.h"
 #include "Assimp/include/mesh.h"
 #include "par/par_shapes.h"
+#include "ResourceBone.h"
+#include "ModuleImportBone.h"
 
 ModuleImportMesh::ModuleImportMesh(const char *name) : Module(true, name)
 {
 }
 
-ResourceMesh * ModuleImportMesh::ImportAssimpMesh(aiMesh * assimp_mesh, UID uid, const char * asset_path)
+ResourceMesh * ModuleImportMesh::ImportAssimpMesh(aiMesh * assimp_mesh, UID uid, std::vector<UID> & bones_uid, const char * asset_path)
 {
 	Timer import_timer;
 
@@ -27,9 +29,7 @@ ResourceMesh * ModuleImportMesh::ImportAssimpMesh(aiMesh * assimp_mesh, UID uid,
 	{
 		for (uint i = 0u; i < assimp_mesh->mNumBones; ++i)
 		{
-			aiBone bone = (*assimp_mesh->mBones[i]);
-			ResourceBone* resource_bone = App->resource_manager->CreateResource<ResourceBone>();
-			
+			App->import_bone->ImportBone(assimp_mesh->mBones[i], App->resource_manager->PopFirst(bones_uid), asset_path);
 		}
 	}
 

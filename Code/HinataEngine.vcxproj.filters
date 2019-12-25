@@ -661,6 +661,7 @@
     <ClInclude Include="ComponentSkinnedMeshRenderer.h">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleImportBone.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -988,6 +989,7 @@
     <ClCompile Include="ComponentSkinnedMeshRenderer.cpp">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleImportBone.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
