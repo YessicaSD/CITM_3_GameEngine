@@ -19,7 +19,7 @@
 
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
-#include "ComponentAnimation.h"
+#include "ComponentAnimator.h"
 
 #include "ModuleImportTexture.h"
 #include "ModuleResourceManager.h"
