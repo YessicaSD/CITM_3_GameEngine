@@ -69,15 +69,22 @@ void ComponentAnimator::OnUpdate(float dt)
 
 			if (bone != nullptr)
 			{
-				KeyAnimation<float3>* position_key = channel.GetKeyPosition(current_time_ticks);
-				KeyAnimation<Quat>* rotation_key = channel.GetKeyRotation(current_time_ticks);
-				KeyAnimation<float3>* scale_key = channel.GetKeyScale(current_time_ticks);
-
-				float3 end_position = (position_key != nullptr) ? position_key->value : bone->GetPosition();
-				Quat end_rotation = (rotation_key != nullptr) ? rotation_key->value : bone->GetRotation();
-				float3 end_scale = (scale_key != nullptr) ? scale_key->value : bone->GetScale();
-
-				bone->SetTransform(end_position, end_scale, end_rotation);
+				float3 position_key;
+				if (!channel.GetKeyPosition(current_time_ticks, position_key))
+				{
+					position_key = bone->GetPosition();
+				}
+				float3 scale_key;
+				if (!channel.GetKeyScale(current_time_ticks, scale_key))
+				{
+					scale_key = bone->GetScale();
+				}
+				Quat rotation_key;
+				if (!channel.GetKeyRotation(current_time_ticks, rotation_key))
+				{
+					rotation_key = bone->GetRotation();
+				}
+				bone->SetTransform(position_key, scale_key, rotation_key);
 			}
 		}
 	}

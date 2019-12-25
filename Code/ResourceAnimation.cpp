@@ -240,84 +240,67 @@ void AnimationChannels::ImportAnimationNode(const aiNodeAnim & node_animation)
 }
 
 //Returns nullptr if there isn't a key with less time than the specified
-KeyAnimation<float3>* AnimationChannels::GetKeyPosition(double time)
+bool AnimationChannels::GetKeyPosition(double time, float3& value)
+{
+	return GetKeyFloat3(time, value, position_keys, num_position_keys);
+}
+
+bool AnimationChannels::GetKeyFloat3(double time, math::float3 & value, KeyAnimation<float3>* keys, uint num_keys)
 {
 	KeyAnimation<float3>* prev_key = nullptr;
-	if (num_position_keys > 0u
-		&& position_keys[0].time <= time)
+	if (num_keys > 0u
+		&& keys[0].time <= time)
 	{
-		prev_key = &position_keys[0];
-		for (uint i = 1u; i < num_position_keys; ++i)
+		prev_key = &keys[0];
+		for (uint i = 1u; i < num_keys; ++i)
 		{
-			if (position_keys[i].time <= time)
+			if (keys[i].time <= time)
 			{
-				prev_key = &position_keys[i];
+				prev_key = &keys[i];
 			}
 			else
 			{
 				//next_key = &position_keys[i];
 				//prev_key = &position_keys[i - 1];
-				return prev_key;
+				float t = (time - prev_key->time) / (keys[i].time - prev_key->time);
+				value = prev_key->value.Lerp(keys[i].value, t);
+				return true;
 			}
 		}
+		value = prev_key->value;
+		return true;
 	}
-	return prev_key;
+	return false;
 }
 
-KeyAnimation<Quat>* AnimationChannels::GetKeyRotation(double time)
+bool AnimationChannels::GetKeyRotation(double time, Quat& value)
 {
-	KeyAnimation<Quat>* next_key = nullptr;
-	for (uint i = 0; i < num_rotation_keys;)
+	KeyAnimation<Quat>* prev_key = nullptr;
+	if (num_rotation_keys > 0u
+		&& rotation_keys[0].time <= time)
 	{
-		if (i == 0)
+		prev_key = &rotation_keys[0];
+		for (uint i = 0; i < num_rotation_keys; ++i)
 		{
-			next_key = &rotation_keys[0];
-			if (next_key->time > time)
+			if (rotation_keys[i].time <= time)
 			{
-				return nullptr;
+				prev_key = &rotation_keys[i];
 			}
-			++i;
-			continue;
+			else
+			{
+				float t = (time - prev_key->time) / (rotation_keys[i].time - prev_key->time);
+				value = prev_key->value.Slerp(rotation_keys[i].value, t);
+				return true;
+			}
 		}
-
-		if (rotation_keys[i].time <= time && rotation_keys[i].time > next_key->time)
-		{
-			next_key = &rotation_keys[i];
-		}
-		else
-		{
-			return next_key;
-		}
-		++i;
+		value = prev_key->value;
+		return true;
 	}
-	return nullptr;
+	
+	return false;
 }
 
-KeyAnimation<float3>* AnimationChannels::GetKeyScale(double time)
+bool AnimationChannels::GetKeyScale(double time, float3& value)
 {
-	KeyAnimation<float3>* next_key = nullptr;
-	for (uint i = 0; i < num_rotation_keys;)
-	{
-		if (i == 0)
-		{
-			next_key = &scale_keys[0];
-			if (next_key->time > time)
-			{
-				return nullptr;
-			}
-			++i;
-			continue;
-		}
-
-		if (scale_keys[i].time <= time && scale_keys[i].time > next_key->time)
-		{
-			next_key = &scale_keys[i];
-		}
-		else
-		{
-			return next_key;
-		}
-		++i;
-	}
-	return nullptr;
+	return GetKeyFloat3(time, value, scale_keys, num_rotation_keys);
 }

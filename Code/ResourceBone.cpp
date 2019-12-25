@@ -11,7 +11,7 @@ ResourceBone::ResourceBone()
 {
 }
 
-const char * ResourceBone::GetTypeString()
+const char *ResourceBone::GetTypeString()
 {
 	return "bone";
 }

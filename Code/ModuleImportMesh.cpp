@@ -12,7 +12,7 @@ ModuleImportMesh::ModuleImportMesh(const char *name) : Module(true, name)
 {
 }
 
-ResourceMesh * ModuleImportMesh::ImportAssimpMesh(aiMesh * assimp_mesh, UID uid, std::vector<UID> & bones_uid, const char * asset_path)
+ResourceMesh *ModuleImportMesh::ImportAssimpMesh(aiMesh *assimp_mesh, UID uid, std::vector<UID> &bones_uid, const char *asset_path)
 {
 	Timer import_timer;
 
