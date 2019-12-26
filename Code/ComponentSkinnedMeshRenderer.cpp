@@ -66,7 +66,7 @@ void ComponentSkinnedMeshRenderer::OnUpdate(float dt)
 {
 	if (mesh != nullptr)
 	{
-		memcpy(vertices, this->mesh->vertices, sizeof(float3)*this->mesh->num_vertices);
+		memset(vertices, 0, sizeof(float3)*this->mesh->num_vertices);
 		for (uint i = 0; i < mesh->num_bones; ++i)
 		{
 			std::string bone_name  = mesh->bones[i]->GetName();
