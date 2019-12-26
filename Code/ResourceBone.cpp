@@ -69,9 +69,11 @@ bool ResourceBone::LoadFileData()
 		char * cursor = data;
 
 		uint ranges[1];
-
 		LoadVariable(ranges, &cursor, sizeof(ranges));
+		num_weights = ranges[0];
+		name = new char[NODE_NAME_SIZE];
 		LoadVariable(name, &cursor, sizeof(char) * NODE_NAME_SIZE);
+		weights = new VertexWeigth[num_weights];
 		LoadVariable(weights, &cursor, sizeof(VertexWeigth) * num_weights);
 		LoadVariable(&offset_matrix, &cursor, sizeof(float4x4));
 
