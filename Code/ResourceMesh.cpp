@@ -77,7 +77,7 @@ bool ResourceMesh::SaveFileData()
 	for (int i = 0; i < num_bones; ++i)
 	{
 		UID bone_uid = bones[i]->GetUID();
-		SaveVariable(&bone_uid, &cursor, bones_bytes);
+		SaveVariable(&bone_uid, &cursor, sizeof(UID));
 	}
 
 	//SaveFile
@@ -139,8 +139,9 @@ bool ResourceMesh::LoadFileData()
 		{
 			UID bone_uid = 0;
 			LoadVariable(&bone_uid, &cursor, sizeof(UID));
-			bones[i] = (ResourceBone*)App->resource_manager->GetResource(bone_uid);
-			//Load data for the bone
+			ResourceBone * bone = (ResourceBone*)App->resource_manager->GetResource(bone_uid);
+			bone->StartUsingResource();
+			bones[i] = bone;
 		}
 
 		aabb.SetNegativeInfinity();
