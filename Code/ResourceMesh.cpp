@@ -16,6 +16,8 @@
 #include "ModuleImportBone.h"
 #include "ModuleResourceManager.h"
 
+
+
 RESOURCE_DEFINITION(Resource, ResourceMesh);
 
 ResourceMesh::ResourceMesh() : Resource()
@@ -48,10 +50,10 @@ bool ResourceMesh::SaveFileData()
 	};
 
 	uint ranges_bytes = sizeof(ranges);
-	uint vertices_bytes = sizeof(float3) * num_vertices;
-	uint vertex_normals_bytes = sizeof(float3) * num_vertices;
+	uint vertices_bytes = sizeof(math::float3) * num_vertices;
+	uint vertex_normals_bytes = sizeof(math::float3) * num_vertices;
 	uint indices_bytes = sizeof(uint) * num_indices;
-	uint face_normals_bytes = sizeof(float3) * num_faces;
+	uint face_normals_bytes = sizeof(math::float3) * num_faces;
 	uint uv_bytes = sizeof(float) * GetUVCoordSize();
 	uint bones_bytes = sizeof(UID) * num_bones;
 
@@ -114,11 +116,11 @@ bool ResourceMesh::LoadFileData()
 		uv_dimensions = ranges[3];
 		num_bones = ranges[4];
 
-		vertices = new float3[num_vertices];
-		LoadVariable(vertices, &cursor, sizeof(float3) * num_vertices);
+		vertices = new math::float3[num_vertices];
+		LoadVariable(vertices, &cursor, sizeof(math::float3) * num_vertices);
 		GenerateVerticesBuffer();
 
-		vertex_normals = new float3[num_vertices];
+		vertex_normals = new math::float3[num_vertices];
 		LoadVariable(vertex_normals, &cursor, sizeof(float3) * num_vertices);
 		GenerateVertexNormalsBuffer();
 
@@ -348,7 +350,7 @@ bool ResourceMesh::GenerateVertexNormalsBuffer()
 	if (vertex_normals != nullptr)
 	{
 		glGenBuffers(1, &id_vertex_normals);
-		glBindBuffer(GL_ARRAY_BUFFER, this->id_vertex_normals);
+		glBindBuffer(GL_ARRAY_BUFFER, id_vertex_normals);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * this->num_vertices, vertex_normals, GL_STATIC_DRAW);
 	}
 
@@ -444,3 +446,4 @@ uint ResourceMesh::GetUVCoordSize()
 {
 	return num_vertices * uv_dimensions;
 }
+

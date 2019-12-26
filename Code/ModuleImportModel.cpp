@@ -20,6 +20,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentAnimator.h"
+#include "ComponentSkinnedMeshRenderer.h"
 
 #include "ModuleImportTexture.h"
 #include "ModuleResourceManager.h"
@@ -314,7 +315,7 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 
 	//Loads the data
 	resource_model->StartUsingResource();
-
+	std::vector<ComponentSkinnedMeshRenderer*> skinned_mesh_comp_vector;
 	for (uint i = 0u; i < resource_model->nodes.size(); ++i)
 	{
 		GameObject * new_gameobject = new GameObject(resource_model->nodes[i]->name, nullptr);
@@ -322,14 +323,25 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 		
 		if (resource_model->nodes[i]->mesh_uid != INVALID_RESOURCE_UID)
 		{
-			ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
 			ResourceMesh* resource_mesh = (ResourceMesh*)App->resource_manager->GetResource(resource_model->nodes[i]->mesh_uid);
-			component_mesh->SetMesh(resource_mesh);
-			new_gameobject->transform->bounding_box.SetLocalAABB(resource_mesh->aabb);
-			new_gameobject->transform->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
-			//INFO: component mesh creates a material component inside its constructor
-			ComponentMaterial * component_material = new_gameobject->GetComponent<ComponentMaterial>();
-			component_material->SetTexture((ResourceTexture*)App->resource_manager->GetResource(resource_model->nodes[i]->material_uid));
+			resource_mesh->StartUsingResource();
+			if (resource_mesh->HasBones())
+			{
+				ComponentSkinnedMeshRenderer* component_skinnedmesh = new_gameobject->CreateComponent<ComponentSkinnedMeshRenderer>();
+				component_skinnedmesh->SetMesh(resource_mesh);
+				skinned_mesh_comp_vector.push_back(component_skinnedmesh);
+			}
+			else
+			{
+				ComponentMesh * component_mesh = new_gameobject->CreateComponent<ComponentMesh>();
+				component_mesh->SetMesh(resource_mesh);
+				new_gameobject->transform->bounding_box.SetLocalAABB(resource_mesh->aabb);
+				new_gameobject->transform->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
+				//INFO: component mesh creates a material component inside its constructor
+				ComponentMaterial * component_material = new_gameobject->GetComponent<ComponentMaterial>();
+				component_material->SetTexture((ResourceTexture*)App->resource_manager->GetResource(resource_model->nodes[i]->material_uid));
+			}
+			
 		}
 		model_gameobjects.push_back(new_gameobject);
 	}
@@ -343,6 +355,7 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 		}
 	}
 
+
 	if (resource_model->animations_uid.size() > 0)
 	{
 		ComponentAnimator * animator = model_gameobjects[0]->CreateComponent<ComponentAnimator>();
@@ -355,6 +368,10 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 		}
 	}
 	resource_model->animations_uid.clear();
+	for (std::vector<ComponentSkinnedMeshRenderer*>::iterator iter = skinned_mesh_comp_vector.begin(); iter != skinned_mesh_comp_vector.end(); ++iter)
+	{
+		(*iter)->root_object = model_gameobjects[0]->transform;
+	}
 	//Set the root of the model to the scene
 	model_gameobjects[0]->transform->SetParent(parent);
 

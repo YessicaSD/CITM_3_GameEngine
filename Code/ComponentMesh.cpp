@@ -126,8 +126,7 @@ void ComponentMesh::OnPostUpdate()
 	{
 		DrawOutline();
 	}
-
-	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
+	glDisableClientState(GL_VERTEX_ARRAY);
 	material->DisableGLModes();
 
 	if (mesh->uv_coord != nullptr)

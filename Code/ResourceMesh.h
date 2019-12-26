@@ -13,6 +13,7 @@ struct aiMesh;
 struct aiScene;
 class ResourceBone;
 
+
 class ResourceMesh : public Resource
 {
 	RESOURCE_DECLARATION(ResourceMesh);
@@ -49,16 +50,14 @@ public:
 	void CleanUp();
 	AABB GetAABB();
 	uint GetUVCoordSize();
-
 private:
 	AABB aabb;
-
 public:
+	
 	//Vertices
 	uint id_vertex = 0u; // unique vertex in VRAM
 	uint num_vertices = 0u;
 	float3 *vertices = nullptr;
-
 	//Vertices normals
 	float3 *vertex_normals = nullptr;
 	uint id_vertex_normals = 0u;

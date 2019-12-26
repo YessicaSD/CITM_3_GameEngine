@@ -94,3 +94,8 @@ bool ResourceBone::ReleaseData()
 
 	return true;
 }
+
+char * ResourceBone::GetName()
+{
+	return name;
+}

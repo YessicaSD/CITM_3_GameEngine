@@ -26,7 +26,10 @@ private:
 	bool SaveFileData() override;
 	bool LoadFileData() override;
 	bool ReleaseData() override;
+public:
+	char* GetName();
 
+	friend class ComponentSkinnedMeshRenderer;
 	friend class ResourceMesh;
 	friend class ModuleImportBone;
 	friend class ModuleResourceManager;
