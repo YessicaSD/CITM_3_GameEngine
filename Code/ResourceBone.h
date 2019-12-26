@@ -27,6 +27,7 @@ private:
 	bool LoadFileData() override;
 	bool ReleaseData() override;
 
+	friend class ResourceMesh;
 	friend class ModuleImportBone;
 	friend class ModuleResourceManager;
 };

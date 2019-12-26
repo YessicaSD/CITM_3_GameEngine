@@ -31,7 +31,13 @@ class ModuleImportModel : public Module
 public:
 	ModuleImportModel(const char * name);
 	bool Start(JSONFile * module_file) override;
-	ResourceModel * ImportModel(const char* path, std::vector<UID> & bones_uids, UID model_uid = INVALID_RESOURCE_UID, std::vector<UID> & meshes_uids = std::vector<UID>(), std::vector<UID> & textures_uids = std::vector<UID>(), std::vector<UID>& animation_uids = std::vector<UID>());
+	ResourceModel * ImportModel(
+		const char* path,
+		UID model_uid = INVALID_RESOURCE_UID,
+		std::vector<UID> & meshes_uids = std::vector<UID>(),
+		std::vector<UID> & textures_uids = std::vector<UID>(),
+		std::vector<UID>& animation_uids = std::vector<UID>(),
+		std::vector<UID>& bones_uids = std::vector<UID>());
 	bool CleanUp() override;
 	void EventRequest(const Event& event) override;
 

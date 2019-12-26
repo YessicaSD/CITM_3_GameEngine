@@ -130,7 +130,7 @@ void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &t
 		DeleteDependantResources(bones_uids, "exportedBones", &meta_file, RESOURCES_BONE_FOLDER, BONE_EXTENSION);
 
 		//INFO: Generate new resources using the previous uids
-		imported_resource = App->import_model->ImportModel(asset_file->full_path.c_str(), std::vector<UID>(), uid, meshes_uids, textures_uids, animation_uids);
+		imported_resource = App->import_model->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids, animation_uids, bones_uids);
 	}
 	else if (type == ResourceTexture::type)
 	{
@@ -192,6 +192,14 @@ void ModuleResourceManager::CreateResourcesInMap(const uint &type, JSONFile &met
 			ResourceAnimation * resource_animation = CreateResource<ResourceAnimation>((*animation_iter));
 			resource_animation->asset_source = asset_file->full_path;
 		}
+
+		std::vector<UID>bones_uid;
+		meta_file.LoadUIDVector("exportedBones", bones_uid);
+		for (auto bone_iter = bones_uid.begin(); bone_iter != bones_uid.end(); ++bone_iter)
+		{
+			ResourceBone * resource_bone = CreateResource<ResourceBone>((*bone_iter));
+			resource_bone->asset_source = asset_file->full_path;
+		}
 	}
 	else if (type == ResourceTexture::type)
 	{
@@ -210,7 +218,7 @@ void ModuleResourceManager::ImportResource(const uint type, const char * path)
 	Resource * imported_resource = nullptr;
 	if (type == ResourceModel::type)
 	{
-		imported_resource = App->import_model->ImportModel(path, std::vector<UID>());
+		imported_resource = App->import_model->ImportModel(path);
 	}
 	else if (type == ResourceTexture::type)
 	{

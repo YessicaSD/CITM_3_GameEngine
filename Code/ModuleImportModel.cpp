@@ -33,6 +33,8 @@
 #include "BoundingBox.h"
 #include <sys/stat.h>
 
+#include "ResourceBone.h"
+
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
 
 void AssimpWriteLogStream(const char *text, char *data)
@@ -59,7 +61,12 @@ bool ModuleImportModel::Start(JSONFile * config)
 }
 
 //INFO: Creates a .hinata_model (our custom format for 3d models) from an fbx
-ResourceModel * ModuleImportModel::ImportModel(const char *asset_path, std::vector<UID> & bones_uids, UID model_uid, std::vector<UID> & prev_meshes_uids, std::vector<UID> & prev_textures_uids, std::vector<UID>& animation_uids)
+ResourceModel * ModuleImportModel::ImportModel(
+	const char *asset_path, UID model_uid,
+	std::vector<UID> & prev_meshes_uids,
+	std::vector<UID> & prev_textures_uids,
+	std::vector<UID>& animation_uids,
+	std::vector<UID>& bones_uids)
 {
 	Timer import_timer;
 	unsigned flags = aiProcess_CalcTangentSpace | \
@@ -156,6 +163,16 @@ void ModuleImportModel::SaveModelMeta(ResourceModel * resource_model, const char
 	App->resource_manager->SaveUIDArray(resource_model->textures_uid, "exportedTextures", &meta_file);
 	App->resource_manager->SaveUIDArray(resource_model->meshes_uid, "exportedMeshes", &meta_file);
 	App->resource_manager->SaveUIDArray(resource_model->animations_uid, "exportedAnimations", &meta_file);
+	std::vector<UID> bones_uids;
+	for (int i = 0; i < resource_model->meshes_uid.size(); ++i)
+	{
+		ResourceMesh * mesh = (ResourceMesh*)App->resource_manager->GetResource(resource_model->meshes_uid[i]);
+		for (int j = 0; j < mesh->num_bones; ++j)
+		{
+			bones_uids.push_back(mesh->bones[j]->GetUID());
+		}
+	}
+	App->resource_manager->SaveUIDArray(bones_uids, "exportedBones", &meta_file);
 	//TODO: Add import options
 	meta_file.SaveFile(std::string(asset_path) + std::string(".") + std::string(META_EXTENSION));
 	meta_file.CloseFile();
@@ -376,7 +393,7 @@ void ModuleImportModel::EventRequest(const Event &event)
 		{
 			if (App->file_system->CopyFromOutsideFS(event.path, dst_path.c_str()))
 			{
-				ImportModel(dst_path.c_str(), std::vector<UID>());
+				ImportModel(dst_path.c_str(), INVALID_RESOURCE_UID, std::vector<UID>(), std::vector<UID>(), std::vector<UID>(), std::vector<UID>());
 				//TODO: Update assets tree
 			}
 		}

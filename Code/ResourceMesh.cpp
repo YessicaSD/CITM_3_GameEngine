@@ -156,6 +156,13 @@ bool ResourceMesh::LoadFileData()
 
 bool ResourceMesh::ReleaseData()
 {
+	for (int i = 0; i < num_bones; ++i)
+	{
+		bones[i]->ReleaseData();
+	}
+	RELEASE_ARRAY(bones);
+	num_bones = 0u;
+
 	RELEASE_ARRAY(uv_coord);
 	if (id_uv != 0u)
 	{
