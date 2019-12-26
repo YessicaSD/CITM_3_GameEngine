@@ -75,7 +75,7 @@ bool ResourceBone::LoadFileData()
 		LoadVariable(weights, &cursor, sizeof(VertexWeigth) * num_weights);
 		LoadVariable(&offset_matrix, &cursor, sizeof(float4x4));
 
-		LOG("Success loading mesh from: %s in: %i ms.", path, load_timer.Read());
+		LOG("Success loading bone from: %s in: %i ms.", path, load_timer.Read());
 	}
 
 	RELEASE_ARRAY(path);

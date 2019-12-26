@@ -86,6 +86,7 @@ bool ResourceMesh::SaveFileData()
 	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, uid, MESH_EXTENSION);
 	ret = App->file_system->SaveFile((const void *)data, size, &path);
 	RELEASE_ARRAY(path);
+
 	return ret;
 }
 
