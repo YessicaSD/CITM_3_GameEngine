@@ -36,6 +36,7 @@ public:
 	bool CalculateFaceNormals();
 	bool ImportUVs(aiMesh *info);
 	bool ImportUVs(float *coods);
+	bool ImportBones(aiMesh * assimp_mesh, const char * asset_path, std::vector<UID> & bones_uid);
 
 	bool GenerateVerticesBuffer();
 	bool GenerateVertexNormalsBuffer();
@@ -80,7 +81,7 @@ public:
 
 	//Bones 
 	uint num_bones = 0;
-	ResourceBone* bones = nullptr;
+	ResourceBone** bones = nullptr;
 
 	friend class ModuleImportMesh;
 	friend class ModuleImportModel;

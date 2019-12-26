@@ -13,6 +13,8 @@
 #include "BoundingBox.h"
 #include "ModuleFileSystem.h"
 #include "ResourceBone.h"
+#include "ModuleImportBone.h"
+#include "ModuleResourceManager.h"
 
 RESOURCE_DEFINITION(Resource, ResourceMesh);
 
@@ -51,7 +53,7 @@ bool ResourceMesh::SaveFileData()
 	uint indices_bytes = sizeof(uint) * num_indices;
 	uint face_normals_bytes = sizeof(float3) * num_faces;
 	uint uv_bytes = sizeof(float) * GetUVCoordSize();
-	uint bones_bytes = sizeof(ResourceBone)*num_bones;
+	uint bones_bytes = sizeof(UID) * num_bones;
 
 	uint size = ranges_bytes
 		+ vertices_bytes
@@ -72,7 +74,11 @@ bool ResourceMesh::SaveFileData()
 	SaveVariable(indices, &cursor, indices_bytes);
 	SaveVariable(faces_normals, &cursor, face_normals_bytes);
 	SaveVariable(uv_coord, &cursor, uv_bytes);
-	SaveVariable(bones, &cursor, bones_bytes);
+	for (int i = 0; i < num_bones; ++i)
+	{
+		UID bone_uid = bones[i]->GetUID();
+		SaveVariable(&bone_uid, &cursor, bones_bytes);
+	}
 
 	//SaveFile
 	uint path_size = 250u;
@@ -127,6 +133,15 @@ bool ResourceMesh::LoadFileData()
 		uv_coord = new float[num_uv];
 		LoadVariable(uv_coord, &cursor, sizeof(float) * num_uv);
 		GenerateUVsBuffer();
+
+		bones = new ResourceBone*[num_bones];
+		for (int i = 0; i < num_bones; ++i)
+		{
+			UID bone_uid = 0;
+			LoadVariable(&bone_uid, &cursor, sizeof(UID));
+			bones[i] = (ResourceBone*)App->resource_manager->GetResource(bone_uid);
+			//Load data for the bone
+		}
 
 		aabb.SetNegativeInfinity();
 		aabb.Enclose(vertices, num_vertices);
@@ -296,6 +311,22 @@ bool ResourceMesh::ImportUVs(float * coords)
 	}
 
 	return true;
+}
+
+bool ResourceMesh::ImportBones(aiMesh * assimp_mesh, const char * asset_path, std::vector<UID> & bones_uid = std::vector<UID>())
+{
+	bool ret = false;
+	if (assimp_mesh->HasBones())
+	{
+		num_bones = assimp_mesh->mNumBones;
+		bones = new ResourceBone*[num_bones];
+		for (uint i = 0u; i < assimp_mesh->mNumBones; ++i)
+		{
+			bones[i] = App->import_bone->ImportBone(assimp_mesh->mBones[i], App->resource_manager->PopFirst(bones_uid), asset_path);
+		}
+		ret = true;
+	}
+	return ret;
 }
 
 void ResourceMesh::CreateBoundingBox()

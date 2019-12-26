@@ -25,13 +25,7 @@ ResourceMesh *ModuleImportMesh::ImportAssimpMesh(aiMesh *assimp_mesh, UID uid, s
 	resource_mesh->ImportFaces(assimp_mesh);
 	resource_mesh->CalculateFaceNormals();
 	resource_mesh->ImportUVs(assimp_mesh);
-	if (assimp_mesh->HasBones())
-	{
-		for (uint i = 0u; i < assimp_mesh->mNumBones; ++i)
-		{
-			App->import_bone->ImportBone(assimp_mesh->mBones[i], App->resource_manager->PopFirst(bones_uid), asset_path);
-		}
-	}
+	resource_mesh->ImportBones(assimp_mesh, asset_path, bones_uid);
 
 	resource_mesh->SaveFileData();
 

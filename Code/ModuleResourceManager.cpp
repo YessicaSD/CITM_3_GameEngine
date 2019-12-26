@@ -126,6 +126,9 @@ void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &t
 		std::vector<UID>animation_uids;
 		DeleteDependantResources(animation_uids, "exportedAnimations", &meta_file, RESOURCES_ANIMATION_FOLDER, ANIMATION_EXTENSION);
 
+		std::vector<UID>bones_uids;
+		DeleteDependantResources(bones_uids, "exportedBones", &meta_file, RESOURCES_BONE_FOLDER, BONE_EXTENSION);
+
 		//INFO: Generate new resources using the previous uids
 		imported_resource = App->import_model->ImportModel(asset_file->full_path.c_str(), std::vector<UID>(), uid, meshes_uids, textures_uids, animation_uids);
 	}

@@ -9,7 +9,7 @@ ModuleImportBone::ModuleImportBone(const char * name) : Module(true, name)
 {
 }
 
-bool ModuleImportBone::ImportBone(aiBone * assimp_bone, UID uid, const char * asset_path)
+ResourceBone* ModuleImportBone::ImportBone(aiBone * assimp_bone, UID uid, const char * asset_path)
 {
 	Timer import_timer;
 
@@ -38,5 +38,5 @@ bool ModuleImportBone::ImportBone(aiBone * assimp_bone, UID uid, const char * as
 
 	LOG("Success importing bone with uid: %llu in: %i ms.", resource_bone->GetUID(), import_timer.Read());
 
-	return true;
+	return resource_bone;
 }

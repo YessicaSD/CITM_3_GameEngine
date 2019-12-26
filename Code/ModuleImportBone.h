@@ -4,12 +4,13 @@
 #include "Module.h"
 
 struct aiBone;
+class ResourceBone;
 
 class ModuleImportBone : public Module
 {
 public:
 	ModuleImportBone(const char *name);
-	bool ImportBone(aiBone * assimp_bone, UID uid, const char * asset_path);
+	ResourceBone * ImportBone(aiBone * assimp_bone, UID uid, const char * asset_path);
 };
 
 #endif
