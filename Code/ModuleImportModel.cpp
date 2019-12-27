@@ -371,7 +371,6 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 		}
 	}
 
-
 	if (resource_model->animations_uid.size() > 0u)
 	{
 		ComponentAnimator * animator = model_gameobjects[0]->CreateComponent<ComponentAnimator>();

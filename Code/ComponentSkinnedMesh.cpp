@@ -119,6 +119,7 @@ void ComponentSkinnedMesh::OnPostUpdate()
 {
 	if (mesh == nullptr)
 	{
+		LOG("Error: Invalid mesh.");
 		return;
 	}
 	//if (gameobject->transform->IsSelected())
@@ -142,7 +143,6 @@ void ComponentSkinnedMesh::OnPostUpdate()
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	if (mesh->uv_coord != nullptr)
 	{
-
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 		glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 	}

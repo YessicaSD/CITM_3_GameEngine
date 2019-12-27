@@ -405,36 +405,7 @@ bool ResourceMesh::HasBones()
 
 void ResourceMesh::CleanUp()
 {
-	if (indices)
-	{
-		delete[] indices;
-		indices = nullptr;
-	}
-	if (vertices)
-	{
-		delete[] vertices;
-		vertices = nullptr;
-	}
-	if (vertex_normals)
-	{
-		delete[] vertex_normals;
-		vertex_normals = nullptr;
-	}
-	if (faces_normals)
-	{
-		delete[] faces_normals;
-		faces_normals = nullptr;
-	}
-	if (face_middle_point)
-	{
-		delete[] face_middle_point;
-		face_middle_point = nullptr;
-	}
-	if (uv_coord)
-	{
-		delete[] uv_coord;
-		uv_coord = nullptr;
-	}
+	ReleaseData();
 }
 
 AABB ResourceMesh::GetAABB()
