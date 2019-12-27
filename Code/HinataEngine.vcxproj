@@ -130,7 +130,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentAnimator.h" />
     <ClInclude Include="ComponentCamera.h" />
-    <ClInclude Include="ComponentSkinnedMeshRenderer.h" />
+    <ClInclude Include="ComponentSkinnedMesh.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeLine.h" />
     <ClInclude Include="Event.h" />
@@ -287,7 +287,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ComponentAnimator.cpp" />
-    <ClCompile Include="ComponentSkinnedMeshRenderer.cpp" />
+    <ClCompile Include="ComponentSkinnedMesh.cpp" />
     <ClCompile Include="imgui\imgui_timeline.cpp" />
     <ClCompile Include="ModuleImportBone.cpp" />
     <ClCompile Include="ModuleImportMesh.cpp" />

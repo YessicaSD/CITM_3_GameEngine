@@ -20,7 +20,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentAnimator.h"
-#include "ComponentSkinnedMeshRenderer.h"
+#include "ComponentSkinnedMesh.h"
 
 #include "ModuleImportTexture.h"
 #include "ModuleResourceManager.h"
@@ -331,7 +331,7 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 
 	//Loads the data
 	resource_model->StartUsingResource();
-	std::vector<ComponentSkinnedMeshRenderer*> skinned_mesh_comp_vector;
+	std::vector<ComponentSkinnedMesh*> skinned_mesh_comp_vector;
 	for (uint i = 0u; i < resource_model->nodes.size(); ++i)
 	{
 		GameObject * new_gameobject = new GameObject(resource_model->nodes[i]->name, INVALID_GAMEOBJECT_UID);
@@ -343,7 +343,7 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 			resource_mesh->StartUsingResource();
 			if (resource_mesh->HasBones())
 			{
-				ComponentSkinnedMeshRenderer* component_skinned_mesh = new_gameobject->CreateComponent<ComponentSkinnedMeshRenderer>();
+				ComponentSkinnedMesh* component_skinned_mesh = new_gameobject->CreateComponent<ComponentSkinnedMesh>();
 				component_skinned_mesh->SetMesh(resource_mesh);
 				skinned_mesh_comp_vector.push_back(component_skinned_mesh);
 			}
@@ -384,7 +384,7 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 		}
 	}
 	resource_model->animations_uid.clear();
-	for (std::vector<ComponentSkinnedMeshRenderer*>::iterator iter = skinned_mesh_comp_vector.begin(); iter != skinned_mesh_comp_vector.end(); ++iter)
+	for (std::vector<ComponentSkinnedMesh*>::iterator iter = skinned_mesh_comp_vector.begin(); iter != skinned_mesh_comp_vector.end(); ++iter)
 	{
 		(*iter)->root_object = model_gameobjects[0]->transform;
 	}

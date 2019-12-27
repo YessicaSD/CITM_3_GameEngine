@@ -29,7 +29,7 @@ private:
 public:
 	char* GetName();
 
-	friend class ComponentSkinnedMeshRenderer;
+	friend class ComponentSkinnedMesh;
 	friend class ResourceMesh;
 	friend class ModuleImportBone;
 	friend class ModuleResourceManager;

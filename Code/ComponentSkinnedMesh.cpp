@@ -1,4 +1,4 @@
-#include  "ComponentSkinnedMeshRenderer.h"
+#include  "ComponentSkinnedMesh.h"
 
 #include "glew\include\GL\glew.h"
 #include <gl\GL.h>
@@ -11,14 +11,14 @@
 #include "ResourceBone.h"
 #include "Globals.h"
 
-CLASS_DEFINITION(Component, ComponentSkinnedMeshRenderer)
+CLASS_DEFINITION(Component, ComponentSkinnedMesh)
 
-void ComponentSkinnedMeshRenderer::OpenBuffer()
+void ComponentSkinnedMesh::OpenBuffer()
 {
-	if (id_vertex_buffer != 0)
+	if (id_vertex_buffer != 0u)
 	{
 		glDeleteBuffers(1, &id_vertex_buffer);
-		id_vertex_buffer = 0;
+		id_vertex_buffer = 0u;
 	}
 	if (vertices != nullptr)
 	{
@@ -28,12 +28,12 @@ void ComponentSkinnedMeshRenderer::OpenBuffer()
 	}
 }
 
-ComponentSkinnedMeshRenderer::ComponentSkinnedMeshRenderer(GameObject * parent):Component(parent)
+ComponentSkinnedMesh::ComponentSkinnedMesh(GameObject * parent):Component(parent)
 {
-	name = "Skinned Mesh Renderer";
+	name = "Skinned Mesh";
 };
 
-void ComponentSkinnedMeshRenderer::PropertiesEditor()
+void ComponentSkinnedMesh::PropertiesEditor()
 {
 	if (CollapsigHeaderWithCheckbox())
 	{
@@ -41,7 +41,7 @@ void ComponentSkinnedMeshRenderer::PropertiesEditor()
 	}
 }
 
-void ComponentSkinnedMeshRenderer::SetMesh(ResourceMesh * mesh)
+void ComponentSkinnedMesh::SetMesh(ResourceMesh * mesh)
 {
 	if (mesh != nullptr)
 	{
@@ -62,7 +62,7 @@ void ComponentSkinnedMeshRenderer::SetMesh(ResourceMesh * mesh)
 	}
 }
 
-void ComponentSkinnedMeshRenderer::OnUpdate(float dt)
+void ComponentSkinnedMesh::OnUpdate(float dt)
 {
 	if (mesh != nullptr)
 	{
@@ -110,12 +110,12 @@ void ComponentSkinnedMeshRenderer::OnUpdate(float dt)
 				}
 			}
 		}
-			glBindBuffer(GL_ARRAY_BUFFER, id_vertex_buffer);
-			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * mesh->num_vertices * 3, vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, id_vertex_buffer);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * mesh->num_vertices * 3, vertices);
 	}
 }
 
-void ComponentSkinnedMeshRenderer::OnPostUpdate()
+void ComponentSkinnedMesh::OnPostUpdate()
 {
 	if (mesh == nullptr)
 	{
@@ -176,6 +176,6 @@ void ComponentSkinnedMeshRenderer::OnPostUpdate()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void ComponentSkinnedMeshRenderer::CleanUp()
+void ComponentSkinnedMesh::CleanUp()
 {
 }

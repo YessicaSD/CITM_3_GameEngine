@@ -658,10 +658,10 @@
     <ClInclude Include="ComponentAnimator.h">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentSkinnedMeshRenderer.h">
+    <ClInclude Include="ModuleImportBone.h" />
+    <ClInclude Include="ComponentSkinnedMesh.h">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleImportBone.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -986,10 +986,10 @@
     <ClCompile Include="ComponentAnimator.cpp">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentSkinnedMeshRenderer.cpp">
+    <ClCompile Include="ModuleImportBone.cpp" />
+    <ClCompile Include="ComponentSkinnedMesh.cpp">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleImportBone.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
