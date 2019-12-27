@@ -195,10 +195,12 @@ void ModuleImportModel::LoadModelMeta(ResourceModel * model, const char * meta_p
 
 bool ModuleImportModel::ImportModelNodes(ResourceModel * resource_model, aiNode * node, const std::vector<uint> & mesh_texture_idxs, uint parent_index, float4x4 curr_transformation)
 {
-	uint curr_index = resource_model->nodes.size();
+	uint curr_index = INVALID_MODEL_ARRAY_INDEX;
 
 	if (std::string(node->mName.C_Str()).find("_$AssimpFbx$_") == std::string::npos)
 	{
+		curr_index = resource_model->nodes.size();
+
 		//If the name isn't _$Assimp$_ create a new node
 		ModelNode * model_node = new ModelNode();
 
@@ -228,6 +230,7 @@ bool ModuleImportModel::ImportModelNodes(ResourceModel * resource_model, aiNode 
 	}
 	else
 	{
+		curr_index = parent_index;
 		//If the name is "_$Assimp$_" only grab the transformation and go to the child nodes
 		curr_transformation = curr_transformation * reinterpret_cast<const float4x4&>(node->mTransformation);
 	}
