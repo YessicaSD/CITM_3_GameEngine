@@ -142,7 +142,7 @@ bool ResourceModel::ReleaseData()
 		}
 		nodes.clear();
 	}
-	if (animations_uid.size() > 0)
+	if (animations_uid.size() > 0u)
 	{
 		for (auto iter = animations_uid.begin(); iter != animations_uid.end(); ++iter)
 		{
@@ -151,7 +151,7 @@ bool ResourceModel::ReleaseData()
 		}
 		animations_uid.clear();
 	}
-	if (meshes_uid.size() > 0)
+	if (meshes_uid.size() > 0u)
 	{
 		for (auto iter = meshes_uid.begin(); iter != meshes_uid.end(); ++iter)
 		{
@@ -160,7 +160,7 @@ bool ResourceModel::ReleaseData()
 		}
 		meshes_uid.clear();
 	}
-	if (textures_uid.size() > 0)
+	if (textures_uid.size() > 0u)
 	{
 		for (auto iter = textures_uid.begin(); iter != textures_uid.end(); ++iter)
 		{
@@ -178,7 +178,7 @@ bool ResourceModel::ReleaseData()
 
 
 //Used in resource manager. Tells it that a particular uid exits by creating an instance on the map.
-void CreateResourcesInMap()
-{
-
-}
+//void CreateResourcesInMap()
+//{
+//
+//}

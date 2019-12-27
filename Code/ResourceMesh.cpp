@@ -137,14 +137,17 @@ bool ResourceMesh::LoadFileData()
 		LoadVariable(uv_coord, &cursor, sizeof(float) * num_uv);
 		GenerateUVsBuffer();
 
-		bones = new ResourceBone*[num_bones];
-		for (int i = 0; i < num_bones; ++i)
+		if (num_bones > 0)
 		{
-			UID bone_uid = 0;
-			LoadVariable(&bone_uid, &cursor, sizeof(UID));
-			ResourceBone * bone = (ResourceBone*)App->resource_manager->GetResource(bone_uid);
-			bone->StartUsingResource();
-			bones[i] = bone;
+			bones = new ResourceBone*[num_bones];
+			for (int i = 0; i < num_bones; ++i)
+			{
+				UID bone_uid = 0;
+				LoadVariable(&bone_uid, &cursor, sizeof(UID));
+				ResourceBone * bone = (ResourceBone*)App->resource_manager->GetResource(bone_uid);
+				bone->StartUsingResource();
+				bones[i] = bone;
+			}
 		}
 
 		aabb.SetNegativeInfinity();
