@@ -96,7 +96,7 @@ void ComponentSkinnedMeshRenderer::OnUpdate(float dt)
 					}
 				}
 
-				float4x4 trans = gameobject->transform->GetGlobalMatrix().Inverted() * bone->GetGlobalMatrix();
+				float4x4 trans = gameobject->transform->GetLocalMatrix().Inverted() * bone->GetGlobalMatrix();
 				trans = trans *  resource_bone->offset_matrix;
 
 				if (resource_bone != nullptr)
