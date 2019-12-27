@@ -164,8 +164,12 @@ bool ResourceModel::ReleaseData()
 	{
 		for (auto iter = textures_uid.begin(); iter != textures_uid.end(); ++iter)
 		{
-			Resource * resource_texture = App->resource_manager->GetResource((*iter));
-			resource_texture->ReleaseData();
+			//TODO: Remove when we start using resource Material (there shouldn't be any invalid at that point)
+			if ((*iter) != INVALID_RESOURCE_UID)
+			{
+				Resource * resource_texture = App->resource_manager->GetResource((*iter));
+				resource_texture->ReleaseData();
+			}
 		}
 		textures_uid.clear();
 	}

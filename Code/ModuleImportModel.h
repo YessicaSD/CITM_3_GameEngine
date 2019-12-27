@@ -45,8 +45,8 @@ public:
 
 private:
 	void SaveModelMeta(ResourceModel * resource_model, const char * asset_path);
-	bool ImportFBXNodes(ResourceModel * resource_model, ModelNode * model_node, aiNode * node, const std::vector<uint> mesh_texture_idxs, uint parent_index);
-	ResourceTexture * ImportFBXTexture(const  aiMaterial * material, std::vector<UID> & uids, const char * asset_path);
+	bool ImportModelNodes(ResourceModel * resource_model, aiNode * node, const std::vector<uint> & mesh_texture_idxs, uint parent_index, float4x4 curr_transformation);
+	ResourceTexture * ImportModelTexture(const  aiMaterial * material, std::vector<UID> & uids, const char * asset_path);
 	void LoadModelMeta(ResourceModel * model, const char * meta_path);
 
 	friend ModuleScene;

@@ -99,7 +99,7 @@ ResourceModel * ModuleImportModel::ImportModel(
 			for (uint i = 0u; i < scene->mNumMaterials; ++i)
 			{
 				aiMaterial * material = scene->mMaterials[i];
-				ResourceTexture * resource_texture = ImportFBXTexture(material, prev_textures_uids, asset_path);
+				ResourceTexture * resource_texture = ImportModelTexture(material, prev_textures_uids, asset_path);
 				//TODO: Remove this if when we separate ResourceMaterials from ResourceTextures
 				if (resource_texture == nullptr)
 				{
@@ -125,7 +125,7 @@ ResourceModel * ModuleImportModel::ImportModel(
 				mesh_texture_indices.push_back(resource_model->textures_uid[assimp_mesh->mMaterialIndex]);
 			}
 		}
-		ImportFBXNodes(resource_model, new ModelNode(), scene->mRootNode, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX);
+		ImportModelNodes(resource_model, scene->mRootNode, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX, float4x4::identity);
 		if (scene->HasAnimations())
 		{
 			resource_model->animations_uid.reserve(scene->mNumAnimations);
@@ -193,42 +193,55 @@ void ModuleImportModel::LoadModelMeta(ResourceModel * model, const char * meta_p
 	//meta_file.CloseFile();
 }
 
-bool ModuleImportModel::ImportFBXNodes(ResourceModel * resource_model, ModelNode * model_node, aiNode * node, const std::vector<uint> mesh_texture_idxs, uint parent_index)
+bool ModuleImportModel::ImportModelNodes(ResourceModel * resource_model, aiNode * node, const std::vector<uint> & mesh_texture_idxs, uint parent_index, float4x4 curr_transformation)
 {
 	uint curr_index = resource_model->nodes.size();
 
-	const char * node_name = node->mName.C_Str();
-	model_node->name = new char[NODE_NAME_SIZE];
-	memset(model_node->name, NULL, NODE_NAME_SIZE);
-	strcpy(model_node->name, node_name);
-
-	model_node->transform = reinterpret_cast<const float4x4&>(node->mTransformation);
-
-	model_node->parent_index = parent_index;
-
-	if (resource_model->meshes_uid.size() > 0u)
+	if (std::string(node->mName.C_Str()).find("_$AssimpFbx$_") == std::string::npos)
 	{
-		for (uint i = 0u; i < node->mNumMeshes; ++i)
+		//If the name isn't _$Assimp$_ create a new node
+		ModelNode * model_node = new ModelNode();
+
+		const char * node_name = node->mName.C_Str();
+		model_node->name = new char[NODE_NAME_SIZE];
+		memset(model_node->name, NULL, NODE_NAME_SIZE);
+		strcpy(model_node->name, node_name);
+
+		//curr_transformation carries the transformation of the dummy "_$AssimpFbx$_" nodes
+		//it's float::4x4 identity if there isnt' any
+		model_node->transform = curr_transformation * reinterpret_cast<const float4x4&>(node->mTransformation);
+		curr_transformation = float4x4::identity;
+
+		model_node->parent_index = parent_index;
+
+		if (resource_model->meshes_uid.size() > 0u)
 		{
-			uint mesh_index = node->mMeshes[i];
-			model_node->mesh_uid = resource_model->meshes_uid[mesh_index];
-			model_node->material_uid = mesh_texture_idxs[mesh_index];
+			for (uint i = 0u; i < node->mNumMeshes; ++i)
+			{
+				uint mesh_index = node->mMeshes[i];
+				model_node->mesh_uid = resource_model->meshes_uid[mesh_index];
+				model_node->material_uid = mesh_texture_idxs[mesh_index];
+			}
+			//INFO: We allow a single gameobject to have more than one mesh to preserve the same hierarchy as you'd see in the 3D program
 		}
-		//TODO: Create a new ResourceModelNode for each mesh
-		//Right now this for allows that there is more than one mesh per gameobject
+		resource_model->nodes.push_back(model_node);
 	}
-	resource_model->nodes.push_back(model_node);
+	else
+	{
+		//If the name is "_$Assimp$_" only grab the transformation and go to the child nodes
+		curr_transformation = curr_transformation * reinterpret_cast<const float4x4&>(node->mTransformation);
+	}
 
 	for (uint i = 0u; i < node->mNumChildren; ++i)
 	{
-		ImportFBXNodes(resource_model, new ModelNode(), node->mChildren[i], mesh_texture_idxs, curr_index);
+		ImportModelNodes(resource_model, node->mChildren[i], mesh_texture_idxs, curr_index, curr_transformation);
 	}
 
 	return true;
 }
 
 //INFO: textures must be in the same folder as the fbx
-ResourceTexture * ModuleImportModel::ImportFBXTexture(const aiMaterial * material, std::vector<UID> & uids, const char * asset_path)
+ResourceTexture * ModuleImportModel::ImportModelTexture(const aiMaterial * material, std::vector<UID> & uids, const char * asset_path)
 {
 	ResourceTexture * ret = nullptr;
 
@@ -318,7 +331,7 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 	std::vector<ComponentSkinnedMeshRenderer*> skinned_mesh_comp_vector;
 	for (uint i = 0u; i < resource_model->nodes.size(); ++i)
 	{
-		GameObject * new_gameobject = new GameObject(resource_model->nodes[i]->name, nullptr);
+		GameObject * new_gameobject = new GameObject(resource_model->nodes[i]->name, INVALID_GAMEOBJECT_UID);
 		new_gameobject->transform->SetGlobalMatrix(resource_model->nodes[i]->transform);
 		
 		if (resource_model->nodes[i]->mesh_uid != INVALID_RESOURCE_UID)
@@ -327,9 +340,9 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 			resource_mesh->StartUsingResource();
 			if (resource_mesh->HasBones())
 			{
-				ComponentSkinnedMeshRenderer* component_skinnedmesh = new_gameobject->CreateComponent<ComponentSkinnedMeshRenderer>();
-				component_skinnedmesh->SetMesh(resource_mesh);
-				skinned_mesh_comp_vector.push_back(component_skinnedmesh);
+				ComponentSkinnedMeshRenderer* component_skinned_mesh = new_gameobject->CreateComponent<ComponentSkinnedMeshRenderer>();
+				component_skinned_mesh->SetMesh(resource_mesh);
+				skinned_mesh_comp_vector.push_back(component_skinned_mesh);
 			}
 			else
 			{
@@ -356,7 +369,7 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 	}
 
 
-	if (resource_model->animations_uid.size() > 0)
+	if (resource_model->animations_uid.size() > 0u)
 	{
 		ComponentAnimator * animator = model_gameobjects[0]->CreateComponent<ComponentAnimator>();
 

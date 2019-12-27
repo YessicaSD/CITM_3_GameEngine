@@ -398,12 +398,12 @@ void ComponentTransform::DeleteFromChildren(ComponentTransform * object)
 	{
 		for (std::vector<ComponentTransform *>::iterator iter = gameobject->transform->children.begin(); iter != gameobject->transform->children.end(); ++iter)
 		{
-			if((*iter)==object)
-				{
-					(*iter)->parent = nullptr;
-					children.erase(iter);
-					return;
-				}
+			if ((*iter) == object)
+			{
+				(*iter)->parent = nullptr;
+				children.erase(iter);
+				return;
+			}
 		}
 	}
 }
