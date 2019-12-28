@@ -54,13 +54,14 @@ public:
 	AnimationChannels* GetChannels();
 	float GetTicksPerSecond();
 	double GetDuration();
+	char* GetName();
 protected:
 	bool SaveFileData() override;
 	bool LoadFileData() override;
 	bool ReleaseData() override;
 
 	void ImportAnimation(const aiAnimation& animation);
-
+	
 private:
 	char * name = nullptr;
 	double duration = 0.f;

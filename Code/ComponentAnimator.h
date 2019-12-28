@@ -11,11 +11,16 @@ class AnimatorNode
 private:
 	ResourceAnimation* clip = nullptr;
 	float speed = 1;
+
 public:
+	std::string name;
+	AnimatorNode(std::string name) : name(name) {};
 	void SetClip(ResourceAnimation* clip);
 	ResourceAnimation* GetClip();
 	float current_time = 0;
 	bool loop = true;
+	~AnimatorNode();
+
 };
 
 class EntryState
@@ -46,7 +51,7 @@ public:
 
 private:
 	AnimatorNode* current_animation_node = nullptr;
-	std::vector<ResourceAnimation*> clips;
+	std::vector<AnimatorNode*> animation_nodes;
 	std::map<std::string, ComponentTransform*> bones;
 };
 

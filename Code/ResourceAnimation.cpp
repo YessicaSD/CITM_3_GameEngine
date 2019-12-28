@@ -47,6 +47,11 @@ double ResourceAnimation::GetDuration()
 	return duration;
 }
 
+char * ResourceAnimation::GetName()
+{
+	return name;
+}
+
 bool ResourceAnimation::SaveFileData()
 {
 	bool ret = true;

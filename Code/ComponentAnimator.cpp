@@ -14,7 +14,7 @@ CLASS_DEFINITION(Component, ComponentAnimator);
 ComponentAnimator::ComponentAnimator(GameObject * attached_object): Component(attached_object)
 {
 	name = "Animator";
-	current_animation_node = new AnimatorNode();
+	current_animation_node = new AnimatorNode("idele");
 };
 
 void ComponentAnimator::AddClip(ResourceAnimation* clip)
@@ -23,13 +23,14 @@ void ComponentAnimator::AddClip(ResourceAnimation* clip)
 	if (clip != nullptr)
 	{
 		clip->StartUsingResource();
-		clips.push_back(clip);
-
+		AnimatorNode* node = new AnimatorNode(clip->GetName());
+		node->SetClip(clip);
 		//TODO remove this later
-		if (clips.size() == 1)
+		if (animation_nodes.size() == 0)
 		{
-			current_animation_node->SetClip(clip);
+			current_animation_node = node;
 		}
+		animation_nodes.push_back(node);
 	}
 }
 
@@ -39,6 +40,11 @@ void ComponentAnimator::PropertiesEditor()
 	//ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
 	if (CollapsigHeaderWithCheckbox())
 	{
+		for (auto node = animation_nodes.begin(); node != animation_nodes.end(); ++node)
+		{
+			ImGui::Separator();
+
+		}
 		ImGui::BeginTimeline("animation timeline", 1000);
 		float values[] = { 250.f, 750 };
 		ImGui::TimelineEvent("event 01", values);
@@ -152,10 +158,6 @@ ComponentTransform* ComponentAnimator::GetBoneByName(const std::string & bone_na
 
 void ComponentAnimator::CleanUp()
 {
-	for (uint i = 0; i < clips.size(); ++i)
-	{
-		clips[i]->StopUsingResource();
-	}
 }
 
 void AnimatorNode::SetClip(ResourceAnimation * clip)
@@ -174,4 +176,13 @@ void AnimatorNode::SetClip(ResourceAnimation * clip)
 ResourceAnimation * AnimatorNode::GetClip()
 {
 	return clip;
+}
+
+AnimatorNode::~AnimatorNode()
+{
+	if (clip)
+	{
+		clip->StopUsingResource();
+		clip = nullptr;
+	}
 }
