@@ -48,7 +48,6 @@ void ComponentAnimator::PropertiesEditor()
 			ImGui::Text((*node)->name.c_str());
 			ImGui::Separator();
 		}
-
 		if (ImGui::BeginMenu("Add node with clip."))
 		{
 			//TODO: Don't search for clips each time

@@ -50,7 +50,7 @@ public:
 	void CleanUp() override;
 
 private:
-	AnimatorNode *current_animation_node = nullptr;
+	AnimatorNode* current_animation_node = nullptr;
 	std::vector<AnimatorNode *> nodes;
 	std::map<std::string, ComponentTransform *> bones;
 
