@@ -76,8 +76,9 @@ private:
 	//Used to diplay the assets in PanelAssets
 	AssetDir * asset_dir = nullptr;
 	Timer check_assets_timer;
-	float check_assets_interval = 0;
+	float check_assets_interval = 0.f;
 
+	friend class ComponentAnimator;
 	friend class PanelAssets;
 	friend class PanelResources;
 };
