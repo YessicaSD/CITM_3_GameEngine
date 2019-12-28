@@ -27,9 +27,11 @@ void PanelTimeline::Draw()
 		{
 			AnimatorNode * animator_node = animator->nodes[0];
 			//TODO: Let you select the node you want to see
+
 			ImGui::BeginTimeline("animation timeline", animator_node->GetClip()->GetDuration());
 			float values[] = { 0.1, 0.2 };
 			ImGui::TimelineEvent("event 01", values);
+			ImGui::TimelineEvent("event 02", values);
 			ImGui::TimelineMarker(animator_node->current_time);
 			ImGui::EndTimeline();
 		}
