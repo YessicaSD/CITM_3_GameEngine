@@ -30,6 +30,7 @@ class PanelResources;
 class PanelGame;
 class PanelImport;
 class PanelTools;
+class PanelTimeline;
 class PanelAnimator;
 enum KEY_STATE;
 
@@ -41,6 +42,7 @@ public:
 	MenuCreateShape *create_menu = nullptr;
 	PanelScene *panel_scene = nullptr;
 	PanelGame *panel_game = nullptr;
+	PanelProperties* panel_properties = nullptr;
 
 private:
 	bool showMenuImGui = false;
@@ -49,13 +51,13 @@ private:
 	PanelConfiguration* panel_configuration = nullptr;
 	PanelConsole* panel_console = nullptr;
 	PanelShortcuts * panel_shortcuts = nullptr;
-	PanelProperties* panel_properties = nullptr;
 	PanelAbout* panel_about = nullptr;
 	PanelHierarchy * panel_hierarchy = nullptr;
 	PanelAssets* panel_assets = nullptr;
 	PanelResources * panel_resources = nullptr;
 	PanelImport * panel_import = nullptr;
-	PanelTools *panel_tools;
+	PanelTools *panel_tools = nullptr;
+	PanelTimeline * panel_timeline = nullptr;
 	PanelAnimator* panel_animator = nullptr;
 
 	std::vector<Shortcut *> shortcuts;

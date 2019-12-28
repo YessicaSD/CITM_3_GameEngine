@@ -153,6 +153,7 @@
     <ClInclude Include="PanelAnimator.h" />
     <ClInclude Include="PanelImport.h" />
     <ClInclude Include="PanelResources.h" />
+    <ClInclude Include="PanelTimeline.h" />
     <ClInclude Include="PhysFS\include\physfs.h" />
     <ClInclude Include="Octree.h" />
     <ClInclude Include="PanelGame.h" />
@@ -305,6 +306,7 @@
     <ClCompile Include="PanelAnimator.cpp" />
     <ClCompile Include="PanelImport.cpp" />
     <ClCompile Include="PanelResources.cpp" />
+    <ClCompile Include="PanelTimeline.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="ResourceBone.cpp" />
     <ClCompile Include="ResourceMaterial.cpp" />

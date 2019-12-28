@@ -7,6 +7,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleGui.h"
+
 PanelProperties::PanelProperties(std::string name, bool state, std::vector<SDL_Scancode> shortcuts): Panel(name, state, shortcuts)
 {
 }

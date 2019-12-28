@@ -9,28 +9,27 @@ class ComponentTransform;
 class AnimatorNode
 {
 private:
-	ResourceAnimation* clip = nullptr;
+	ResourceAnimation *clip = nullptr;
+
 	float speed = 1;
 
 public:
 	std::string name;
-	AnimatorNode(std::string name) : name(name) {};
-	void SetClip(ResourceAnimation* clip);
-	ResourceAnimation* GetClip();
-	float current_time = 0;
+	AnimatorNode(std::string name) : name(name){};
+	void SetClip(ResourceAnimation *clip);
+	ResourceAnimation *GetClip();
+	float current_time = 0.f;
 	bool loop = true;
 	~AnimatorNode();
-
 };
 
 class EntryState
 {
-	AnimatorNode* defaulState = nullptr;
+	AnimatorNode *defaulState = nullptr;
 };
 
 class Animator
 {
-	
 };
 
 class ComponentAnimator : public Component
@@ -38,23 +37,24 @@ class ComponentAnimator : public Component
 	CLASS_DECLARATION(ComponentAnimator);
 
 private:
-	void DrawBoneRecursive(ComponentTransform * bone) const;
+	void DrawBoneRecursive(ComponentTransform *bone) const;
+
 public:
-	ComponentAnimator(GameObject* attached_object);
-	void AddClip(ResourceAnimation* clip);
+	ComponentAnimator(GameObject *attached_object);
+	void AddClip(ResourceAnimation *clip);
 	//TODO: RemoveClip
 	void PropertiesEditor() override;
 	void OnUpdate(float dt) override;
 	void OnPostUpdate() override;
-	ComponentTransform * GetBoneByName(const std::string & bone_name);
+	ComponentTransform *GetBoneByName(const std::string &bone_name);
 	void CleanUp() override;
 
 private:
-	AnimatorNode* current_animation_node = nullptr;
-	std::vector<AnimatorNode*> animation_nodes;
-	std::map<std::string, ComponentTransform*> bones;
+	AnimatorNode *current_animation_node = nullptr;
+	std::vector<AnimatorNode *> nodes;
+	std::map<std::string, ComponentTransform *> bones;
+
+	friend class PanelTimeline;
 };
 
-
 #endif // !COMPONENT_ANIMATION_H
-

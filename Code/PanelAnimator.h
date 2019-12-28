@@ -62,5 +62,7 @@ public:
 	PanelAnimator(std::string name, bool active, std::vector<SDL_Scancode> shortcuts = {});
 	void Draw() override;
 	void CreateNode();
+
+	friend class ModuleGui;
 };
 #endif // !PANEL_ANIMATOR_H_
