@@ -30,6 +30,7 @@ void ComponentAnimator::AddClip(ResourceAnimation *clip)
 		//TODO remove this later
 		if (nodes.size() == 0)
 		{
+			index = 0;
 			current_animation_node = node;
 		}
 		nodes.push_back(node);
@@ -46,6 +47,11 @@ void ComponentAnimator::PropertiesEditor()
 		for (auto node = nodes.begin(); node != nodes.end(); ++node)
 		{
 			ImGui::Text((*node)->name.c_str());
+			ImGui::Text("Loop:");
+			ImGui::SameLine();
+			std::string str_check = "##";
+			str_check += (*node)->name.c_str();
+			ImGui::Checkbox(str_check.c_str(), &(*node)->loop);
 			ImGui::Separator();
 		}
 		if (ImGui::BeginMenu("Add node with clip."))
@@ -79,17 +85,39 @@ void ComponentAnimator::PropertiesEditor()
 
 void ComponentAnimator::OnUpdate(float dt)
 {
-	if (nodes.size() > 0u)
+	if (current_animation_node != nullptr)
 	{
-		ResourceAnimation *resource_animation = nodes[0]->GetClip();
+		ResourceAnimation *resource_animation = current_animation_node->GetClip();
 		if (resource_animation != nullptr)
 		{
-			nodes[0]->current_time += App->GetDt();
-			if (nodes[0]->current_time >= resource_animation->GetDuration())
+			current_animation_node->current_time += App->GetDt();
+			if (current_animation_node->current_time >= resource_animation->GetDuration())
 			{
-				nodes[0]->current_time = (nodes[0]->loop) ? 0 : resource_animation->GetDuration();
+				if ((current_animation_node->loop))
+				{
+					current_animation_node->current_time = 0;
+				}
+				else if(nodes.size()>1)
+				{
+					
+					if ((index + 1) < nodes.size())
+					{
+						++index;
+					}
+					else
+					{
+						index = 0;
+						resource_animation->GetDuration();
+					}
+					current_animation_node->current_time = 0;
+					current_animation_node = nodes.at(index);
+				}
+				else
+				{
+					current_animation_node->current_time = resource_animation->GetDuration();
+				}
 			}
-			float current_time_ticks = nodes[0]->current_time * resource_animation->GetTicksPerSecond();
+			float current_time_ticks = current_animation_node->current_time * resource_animation->GetTicksPerSecond();
 			uint num_channels = resource_animation->GetNumChannels();
 			AnimationChannels *channels = resource_animation->GetChannels();
 

@@ -51,6 +51,7 @@ public:
 
 private:
 	AnimatorNode* current_animation_node = nullptr;
+	uint index = 0;
 	std::vector<AnimatorNode *> nodes;
 	std::map<std::string, ComponentTransform *> bones;
 
