@@ -307,5 +307,5 @@ bool AnimationChannels::GetKeyRotation(double time, Quat& value)
 
 bool AnimationChannels::GetKeyScale(double time, float3& value)
 {
-	return GetKeyFloat3(time, value, scale_keys, num_rotation_keys);
+	return GetKeyFloat3(time, value, scale_keys, num_scale_keys);
 }

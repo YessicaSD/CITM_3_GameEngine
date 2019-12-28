@@ -17,7 +17,9 @@ class ComponentSkinnedMesh : public Component
 	CLASS_DECLARATION(ComponentSkinnedMesh)
 	ResourceMesh* mesh = nullptr;
 	math::float3* vertices = nullptr;
+	float3 *vertex_normals = nullptr;
 	uint id_vertex_buffer = 0;
+	uint id_vertex_normals_buffer = 0;
 	void OpenBuffer();
 	std::map<std::string, ComponentTransform*> bones;
 
