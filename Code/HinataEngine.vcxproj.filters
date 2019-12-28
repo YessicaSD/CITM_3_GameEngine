@@ -683,7 +683,7 @@
     <ClInclude Include="NodeEditor\Include\imgui_node_editor.h">
       <Filter>Sources\NodeEditor</Filter>
     </ClInclude>
-    <ClInclude Include="PanelTimeline.h">
+    <ClInclude Include="PanelAnimator.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1026,7 +1026,7 @@
     <ClCompile Include="NodeEditor\Source\imgui_node_editor_api.cpp">
       <Filter>Sources\NodeEditor</Filter>
     </ClCompile>
-    <ClCompile Include="PanelTimeline.cpp">
+    <ClCompile Include="PanelAnimator.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
   </ItemGroup>

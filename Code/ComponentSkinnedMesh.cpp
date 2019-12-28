@@ -68,10 +68,6 @@ void ComponentSkinnedMesh::OnUpdate(float dt)
 {
 	if (mesh != nullptr)
 	{
-		//for (int i = 0; i < mesh->num_vertices; ++i)
-		//{
-		//	vertices[i] = float3::zero;
-		//}
 		memset(vertices, 0, sizeof(float3)*this->mesh->num_vertices);
 		for (uint i = 0; i < mesh->num_bones; ++i)
 		{

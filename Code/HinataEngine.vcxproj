@@ -150,6 +150,7 @@
     <ClInclude Include="NodeEditor\Source\imgui_canvas.h" />
     <ClInclude Include="NodeEditor\Source\imgui_extra_math.h" />
     <ClInclude Include="NodeEditor\Source\imgui_node_editor_internal.h" />
+    <ClInclude Include="PanelAnimator.h" />
     <ClInclude Include="PanelImport.h" />
     <ClInclude Include="PanelResources.h" />
     <ClInclude Include="PanelTimeline.h" />
@@ -302,6 +303,7 @@
     <ClCompile Include="NodeEditor\Source\imgui_canvas.cpp" />
     <ClCompile Include="NodeEditor\Source\imgui_node_editor.cpp" />
     <ClCompile Include="NodeEditor\Source\imgui_node_editor_api.cpp" />
+    <ClCompile Include="PanelAnimator.cpp" />
     <ClCompile Include="PanelImport.cpp" />
     <ClCompile Include="PanelResources.cpp" />
     <ClCompile Include="PanelTimeline.cpp" />
