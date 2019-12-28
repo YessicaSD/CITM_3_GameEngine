@@ -44,11 +44,12 @@ void ComponentAnimator::PropertiesEditor()
 		{
 			ImGui::Separator();
 		}
-		ImGui::BeginTimeline("animation timeline", 1000);
-		float values[] = {250.f, 750};
-		ImGui::TimelineEvent("event 01", values);
-		ImGui::TimelineMarker(250.f);
-		ImGui::EndTimeline();
+		ImGui::Button("Add Node Clip");
+		//ImGui::BeginTimeline("animation timeline", 1000);
+		//float values[] = {250.f, 750};
+		//ImGui::TimelineEvent("event 01", values);
+		//ImGui::TimelineMarker(250.f);
+		//ImGui::EndTimeline();
 		ImGui::Text("Open the timeline window to see the animation's timline.");
 	}
 	//TODO: Show a list of all the clips and let you select which one has to be played
