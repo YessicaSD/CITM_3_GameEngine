@@ -375,7 +375,7 @@ void ModuleResourceManager::DeleteAssetTree(AssetDir * dir)
 
 uint ModuleResourceManager::GetAssetTypeFromExtension(const std::string & extension)
 {
-	if (extension == "fbx" || extension == "FBX")
+	if (extension == "fbx" || extension == "FBX" || extension == "DAE" || extension == "dae")
 	{
 		return ResourceModel::type;
 	}
