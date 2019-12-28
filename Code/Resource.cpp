@@ -12,8 +12,10 @@ UID Resource::GetUID() const
 
 void Resource::SaveVariable(void * info, char ** data_cursor, size_t bytes)
 {
-	memcpy(*data_cursor, info, bytes);
-	*data_cursor += bytes;
+	
+		memcpy(*data_cursor, info, bytes);
+		*data_cursor += bytes;
+
 }
 
 void Resource::LoadVariable(void* info, char ** data_cursor, size_t bytes)

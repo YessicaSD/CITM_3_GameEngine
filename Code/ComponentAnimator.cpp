@@ -61,31 +61,100 @@ void ComponentAnimator::OnUpdate(float dt)
 		float current_time_ticks = current_animation_node->current_time * resource_animation->GetTicksPerSecond();
 		uint num_channels = resource_animation->GetNumChannels();
 		AnimationChannels* channels = resource_animation->GetChannels();
+		float4x4 trans = float4x4::identity;
+		bool there_is_transform = false;
+		std::string name;
+		float3 pos = float3::zero, scale = {1,1,1};
+		Quat rot = Quat::identity;
 
 		for (uint i = 0; i < num_channels; ++i)
 		{
 			AnimationChannels channel = channels[i];
-			ComponentTransform * bone = GetBoneByName(channel.GetName());
-
-			if (bone != nullptr)
+			std::string str_name = std::string(channel.GetName());
+			size_t found = str_name.find("_$AssimpFbx$_");
+			ComponentTransform * bone = nullptr;
+			
+			if (found != std::string::npos)
 			{
-				float3 position_key;
-				if (!channel.GetKeyPosition(current_time_ticks, position_key))
+				if (str_name.find("Trans"))
 				{
-					position_key = bone->GetPosition();
+					channel.GetKeyPosition(current_time_ticks, pos);
 				}
-				float3 scale_key;
-				if (!channel.GetKeyScale(current_time_ticks, scale_key))
+				if (str_name.find("Rotation"))
 				{
-					scale_key = bone->GetScale();
+					channel.GetKeyRotation(current_time_ticks, rot);
 				}
-				Quat rotation_key;
-				if (!channel.GetKeyRotation(current_time_ticks, rotation_key))
+				if (str_name.find("Scal"))
 				{
-					rotation_key = bone->GetRotation();
+					channel.GetKeyScale(current_time_ticks, scale);
 				}
-				bone->SetTransform(position_key, scale_key, rotation_key);
+				name = str_name.substr(0, found);
+				there_is_transform = true;
 			}
+			else
+			{
+				if (there_is_transform)
+				{
+					bone = GetBoneByName(name);
+					if (bone != nullptr)
+					{
+						trans = float4x4::FromTRS(pos, rot, scale);
+						float3 position_key;
+						if (!channel.GetKeyPosition(0, position_key))
+						{
+							position_key = bone->GetPosition();
+						}
+						position_key = trans.MulPos(position_key);
+
+						float3 scale_key;
+						if (!channel.GetKeyScale(0, scale_key))
+						{
+							scale_key = bone->GetScale();
+						}
+						Quat rotation_key;
+						if (!channel.GetKeyRotation(current_time_ticks, rotation_key))
+						{
+							rotation_key = bone->GetRotation();
+						}
+						
+						trans.Mul(rotation_key);
+						bone->SetTransform(position_key, scale_key, rotation_key);
+					}
+					pos = float3::zero;
+					scale = { 1,1,1 };
+					rot = Quat::identity;
+					trans = float4x4::identity;
+					there_is_transform = false;
+				}
+
+				bone = GetBoneByName(str_name);
+				if (bone != nullptr)
+				{
+	
+					float3 position_key;
+					if (!channel.GetKeyPosition(current_time_ticks, position_key))
+					{
+						position_key = bone->GetPosition();
+					}
+					position_key = trans.MulPos(position_key);
+
+					float3 scale_key;
+					if (!channel.GetKeyScale(current_time_ticks, scale_key))
+					{
+						scale_key = bone->GetScale();
+					}
+					Quat rotation_key;
+					if (!channel.GetKeyRotation(current_time_ticks, rotation_key))
+					{
+						rotation_key = bone->GetRotation();
+					}
+					trans.Mul(rotation_key);
+					bone->SetTransform(position_key, scale_key, rotation_key);
+					
+				}
+			}
+
+				
 		}
 	}
 }

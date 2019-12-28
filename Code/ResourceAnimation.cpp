@@ -192,51 +192,74 @@ void ResourceAnimation::ImportAnimation(const aiAnimation& animation)
 	duration = animation.mDuration/ ticks_per_second;
 
 	num_channels = animation.mNumChannels;
-
 	channels = new AnimationChannels[num_channels];
+	float4x4 trans = float4x4::identity;
 	for (uint i = 0u; i < num_channels; ++i)
 	{
-		channels[i].ImportAnimationNode((*animation.mChannels[i]));
+		channels[i].ImportAnimationNode((*animation.mChannels[i]), trans);
 	}
-
 	SaveFileData();
 }
 
-void AnimationChannels::ImportAnimationNode(const aiNodeAnim & node_animation)
+AnimationChannels* AnimationChannels::ImportAnimationNode(const aiNodeAnim & node_animation, float4x4& transformation)
 {
+	AnimationChannels* ret = nullptr;
 	const char * node_name = node_animation.mNodeName.C_Str();
-	name = new char[NODE_NAME_SIZE];
-	memset(name, NULL, NODE_NAME_SIZE);
-	strcpy(name, node_name);//TODO: Make a function for this
-	
+	//std::string str_name = std::string(node_name);
+	//size_t found = str_name.find("_$AssimpFbx$_");
+
 	num_position_keys = node_animation.mNumPositionKeys;
 	num_rotation_keys = node_animation.mNumRotationKeys;
 	num_scale_keys = node_animation.mNumScalingKeys;
 
-	position_keys = new KeyAnimation<float3>[num_position_keys]();
-	rotation_keys = new KeyAnimation<Quat>[num_rotation_keys]();
-	scale_keys = new KeyAnimation<float3>[num_scale_keys]();
+	//if (found != std::string::npos)
+	//{
+	//	if (num_position_keys > 0 && num_rotation_keys > 0 && num_scale_keys > 0)
+	//	{
+	//		float3 pos = float3(node_animation.mPositionKeys[0].mValue.x, node_animation.mPositionKeys[0].mValue.y, node_animation.mPositionKeys[0].mValue.z);
+	//		aiQuatKey* m_rotation_keys = node_animation.mRotationKeys;
+	//		Quat rot = Quat(m_rotation_keys[0].mValue.x, m_rotation_keys[0].mValue.y, m_rotation_keys[0].mValue.z, m_rotation_keys[0].mValue.w);
+	//		aiVectorKey* m_scale_keys = node_animation.mScalingKeys;
+	//		float3 scale = float3(m_scale_keys[0].mValue.x, m_scale_keys[0].mValue.y, m_scale_keys[0].mValue.z);
+	//		transformation = transformation  * float4x4::FromTRS(pos, rot, scale);
+	//	}
+	//}
+	//else
+	//{
+		name = new char[NODE_NAME_SIZE];
+		memset(name, NULL, NODE_NAME_SIZE);
+		strcpy(name, node_name);//TODO: Make a function for this
 
-	aiVectorKey* m_position_keys = node_animation.mPositionKeys;
-	for (int i = 0; i < num_position_keys; ++i)
-	{
-		position_keys[i].time = m_position_keys[i].mTime;
-		position_keys[i].value.Set(m_position_keys[i].mValue.x, m_position_keys[i].mValue.y, m_position_keys[i].mValue.z) ;
-	}
+		position_keys = new KeyAnimation<float3>[num_position_keys]();
+		rotation_keys = new KeyAnimation<Quat>[num_rotation_keys]();
+		scale_keys = new KeyAnimation<float3>[num_scale_keys]();
 
-	aiQuatKey* m_rotation_keys = node_animation.mRotationKeys;
-	for (int i = 0; i < num_rotation_keys; ++i)
-	{
-		rotation_keys[i].time = m_rotation_keys[i].mTime;
-		rotation_keys[i].value.Set(m_rotation_keys[i].mValue.x, m_rotation_keys[i].mValue.y, m_rotation_keys[i].mValue.z, m_rotation_keys[i].mValue.w);
-	}
+		aiVectorKey* m_position_keys = node_animation.mPositionKeys;
+		for (int i = 0; i < num_position_keys; ++i)
+		{
+			position_keys[i].time = m_position_keys[i].mTime;
+			position_keys[i].value.Set(m_position_keys[i].mValue.x, m_position_keys[i].mValue.y, m_position_keys[i].mValue.z);
+			transformation.MulPos(position_keys[i].value);
+		}
 
-	aiVectorKey* m_scale_keys = node_animation.mScalingKeys;
-	for (int i = 0; i < num_scale_keys; ++i)
-	{
-		scale_keys[i].time = m_scale_keys[i].mTime;
-		scale_keys[i].value.Set(m_scale_keys[i].mValue.x, m_scale_keys[i].mValue.y, m_scale_keys[i].mValue.z);
-	}
+		aiQuatKey* m_rotation_keys = node_animation.mRotationKeys;
+		for (int i = 0; i < num_rotation_keys; ++i)
+		{
+			rotation_keys[i].time = m_rotation_keys[i].mTime;
+			rotation_keys[i].value.Set(m_rotation_keys[i].mValue.x, m_rotation_keys[i].mValue.y, m_rotation_keys[i].mValue.z, m_rotation_keys[i].mValue.w);
+			transformation.Mul(rotation_keys[i].value);
+		}
+
+		aiVectorKey* m_scale_keys = node_animation.mScalingKeys;
+		for (int i = 0; i < num_scale_keys; ++i)
+		{
+			scale_keys[i].time = m_scale_keys[i].mTime;
+			scale_keys[i].value.Set(m_scale_keys[i].mValue.x, m_scale_keys[i].mValue.y, m_scale_keys[i].mValue.z);
+		}
+		transformation = float4x4::identity;
+		
+	//}
+	return ret;
 }
 
 //Returns nullptr if there isn't a key with less time than the specified

@@ -28,7 +28,7 @@ class AnimationChannels
 	uint num_scale_keys;
 	KeyAnimation<float3>* scale_keys = nullptr;
 
-	void ImportAnimationNode(const aiNodeAnim& node_animation);
+	AnimationChannels* ImportAnimationNode(const aiNodeAnim& node_animation, float4x4& transformation);
 	bool GetKeyFloat3(double time, math::float3 & value, KeyAnimation<float3>* keys, uint num_keys);
 public:
 	const char* GetName() {
