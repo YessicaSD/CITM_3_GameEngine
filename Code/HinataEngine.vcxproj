@@ -144,6 +144,12 @@
     <ClInclude Include="ModuleImportMesh.h" />
     <ClInclude Include="ModuleTime.h" />
     <ClInclude Include="ModuleResourceManager.h" />
+    <ClInclude Include="NodeEditor\Include\imgui_node_editor.h" />
+    <ClInclude Include="NodeEditor\Source\crude_json.h" />
+    <ClInclude Include="NodeEditor\Source\imgui_bezier_math.h" />
+    <ClInclude Include="NodeEditor\Source\imgui_canvas.h" />
+    <ClInclude Include="NodeEditor\Source\imgui_extra_math.h" />
+    <ClInclude Include="NodeEditor\Source\imgui_node_editor_internal.h" />
     <ClInclude Include="PanelImport.h" />
     <ClInclude Include="PanelResources.h" />
     <ClInclude Include="PhysFS\include\physfs.h" />
@@ -291,6 +297,10 @@
     <ClCompile Include="imgui\imgui_timeline.cpp" />
     <ClCompile Include="ModuleImportBone.cpp" />
     <ClCompile Include="ModuleImportMesh.cpp" />
+    <ClCompile Include="NodeEditor\Source\crude_json.cpp" />
+    <ClCompile Include="NodeEditor\Source\imgui_canvas.cpp" />
+    <ClCompile Include="NodeEditor\Source\imgui_node_editor.cpp" />
+    <ClCompile Include="NodeEditor\Source\imgui_node_editor_api.cpp" />
     <ClCompile Include="PanelImport.cpp" />
     <ClCompile Include="PanelResources.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
@@ -414,6 +424,9 @@
     <None Include="MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_CPP.inl" />
     <None Include="MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
     <None Include="MathGeoLib\include\Math\Matrix.inl" />
+    <None Include="NodeEditor\Source\imgui_bezier_math.inl" />
+    <None Include="NodeEditor\Source\imgui_extra_math.inl" />
+    <None Include="NodeEditor\Source\imgui_node_editor_internal.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

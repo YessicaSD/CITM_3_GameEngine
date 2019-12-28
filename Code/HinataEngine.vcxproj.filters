@@ -82,6 +82,9 @@
     <Filter Include="Sources\Modules\ModuleImport">
       <UniqueIdentifier>{3343826c-311f-47f1-9ba0-96018dce026a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\NodeEditor">
+      <UniqueIdentifier>{75866317-9894-4904-8d45-88fc2c718e26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModuleInput.h">
@@ -662,6 +665,24 @@
     <ClInclude Include="ComponentSkinnedMesh.h">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClInclude>
+    <ClInclude Include="NodeEditor\Source\crude_json.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Source\imgui_bezier_math.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Source\imgui_canvas.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Source\imgui_extra_math.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Source\imgui_node_editor_internal.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Include\imgui_node_editor.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -990,6 +1011,18 @@
     <ClCompile Include="ComponentSkinnedMesh.cpp">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClCompile>
+    <ClCompile Include="NodeEditor\Source\crude_json.cpp">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeEditor\Source\imgui_canvas.cpp">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeEditor\Source\imgui_node_editor.cpp">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeEditor\Source\imgui_node_editor_api.cpp">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
@@ -1035,5 +1068,14 @@
       <Filter>Sources\Tools\assimp</Filter>
     </None>
     <None Include="..\Engine\config.json" />
+    <None Include="NodeEditor\Source\imgui_bezier_math.inl">
+      <Filter>Sources\NodeEditor</Filter>
+    </None>
+    <None Include="NodeEditor\Source\imgui_extra_math.inl">
+      <Filter>Sources\NodeEditor</Filter>
+    </None>
+    <None Include="NodeEditor\Source\imgui_node_editor_internal.inl">
+      <Filter>Sources\NodeEditor</Filter>
+    </None>
   </ItemGroup>
 </Project>

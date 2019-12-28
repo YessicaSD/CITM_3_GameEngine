@@ -41,6 +41,12 @@
 #define NORMAL_TEXT_COLOR IMGUI_LIGHT_GREY
 #define TITLE_1_TEXT_COLOR IMGUI_GREY
 
+#include "NodeEditor/Include/imgui_node_editor.h"
+
+namespace ed = ax::NodeEditor;
+
+static ed::EditorContext* g_Context = nullptr;
+
 ModuleGui::ModuleGui(const char * name, bool start_enabled):Module(start_enabled, name)
 {
 
@@ -72,6 +78,10 @@ bool ModuleGui::Init(JSONFile * module_file)
 	// Setup Platform/Renderer bindings
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
+
+	ed::Config config;
+	config.SettingsFile = "Simple.json";
+	g_Context = ed::CreateEditor(&config);
 
 	return ret;
 }
@@ -125,6 +135,27 @@ update_status ModuleGui::PostUpdate()
 	CreateDockspace(io);
 
 	MainMenuBar(ret);
+
+	ImGui::Text("FPS: %.2f (%.2gms)", io.Framerate, io.Framerate ? 1000.0f / io.Framerate : 0.0f);
+
+	ImGui::Separator();
+
+	ed::SetCurrentEditor(g_Context);
+	ed::Begin("My Editor", ImVec2(0.0, 0.0f));
+	int uniqueId = 1;
+	// Start drawing nodes.
+	ed::BeginNode(uniqueId++);
+	ImGui::Text("Node A");
+	ed::BeginPin(uniqueId++, ed::PinKind::Input);
+	ImGui::Text("-> In");
+	ed::EndPin();
+	ImGui::SameLine();
+	ed::BeginPin(uniqueId++, ed::PinKind::Output);
+	ImGui::Text("Out ->");
+	ed::EndPin();
+	ed::EndNode();
+	ed::End();
+	ed::SetCurrentEditor(nullptr);
 
 	for (std::vector<Panel*>::iterator iter = panels.begin(); iter != panels.end(); ++iter)
 	{
@@ -196,6 +227,8 @@ void ModuleGui::CreateDockspace(ImGuiIO& io)
 
 bool ModuleGui::CleanUp()
 {
+	ed::DestroyEditor(g_Context);
+
 	if (create_menu)
 	{
 		delete create_menu;
