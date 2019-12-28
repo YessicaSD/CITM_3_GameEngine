@@ -13,6 +13,7 @@ public:
 	PanelProperties(std::string name, bool state, std::vector<SDL_Scancode> shortcuts = {});
 	void Draw() override;
 	const ComponentTransform* GetSelecteTransform();
+
 	friend class PanelHierarchy;
 	friend class ModuleGui;
 };

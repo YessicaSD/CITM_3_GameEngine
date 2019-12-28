@@ -24,6 +24,7 @@
 #include "PanelGame.h"
 #include "PanelImport.h"
 #include "PanelTools.h"
+#include "PanelTimeline.h"
 
 //TODO: Frame Buffer Object remove
 #include "par/par_shapes.h"
@@ -100,6 +101,7 @@ bool ModuleGui::Start(JSONFile * module_file)
 	panel_game			= CreatePanel<PanelGame>("Game", true);
 	panel_import		= CreatePanel<PanelImport>("Import", true);
 	panel_tools			= CreatePanel<PanelTools>("Tools", true);
+	panel_timeline		= CreatePanel<PanelTimeline>("Timeline", true);
 	create_menu = new MenuCreateShape();
 
 	return true;
@@ -355,6 +357,10 @@ void ModuleGui::MainMenuBar(update_status &ret)
 		if (ImGui::MenuItem("Game", NULL, &panel_game->active))
 		{
 			panel_game->SetActive(panel_game->active);
+		}
+		if (ImGui::MenuItem("Timeline", NULL, &panel_timeline->active))
+		{
+			panel_timeline->SetActive(panel_timeline->active);
 		}
 
 		ImGui::EndMenu();

@@ -10,11 +10,11 @@ class AnimatorNode
 {
 private:
 	ResourceAnimation* clip = nullptr;
-	float speed = 1;
+	float speed = 1.f;
 public:
 	void SetClip(ResourceAnimation* clip);
 	ResourceAnimation* GetClip();
-	float current_time = 0;
+	float current_time = 0.f;
 	bool loop = true;
 };
 
@@ -45,9 +45,10 @@ public:
 	void CleanUp() override;
 
 private:
-	AnimatorNode* current_animation_node = nullptr;
-	std::vector<ResourceAnimation*> clips;
+	std::vector<AnimatorNode*> nodes;
 	std::map<std::string, ComponentTransform*> bones;
+
+	friend class PanelTimeline;
 };
 
 
