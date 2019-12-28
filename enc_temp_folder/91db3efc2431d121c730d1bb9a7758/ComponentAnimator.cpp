@@ -83,8 +83,13 @@ void ComponentAnimator::OnUpdate(float dt)
 						position_key = bone->GetPosition();
 					}
 					float3 scale_key = {1,1,1};
+					if (std::string(channel.GetName()).find("Toe0") != std::string::npos)
+					{
+						LOG("%s scale %f,%f,%f,", channel.GetName(), scale_key.x, scale_key.y, scale_key.z);
+					}
 					if (!channel.GetKeyScale(current_time_ticks, scale_key))
 					{
+						
 						scale_key = bone->GetScale();
 					}
 				

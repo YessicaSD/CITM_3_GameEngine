@@ -26,6 +26,12 @@ void ComponentSkinnedMesh::OpenBuffer()
 		glBindBuffer(GL_ARRAY_BUFFER, id_vertex_buffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->num_vertices, vertices, GL_DYNAMIC_DRAW);
 	}
+	if (vertex_normals)
+	{
+		glGenBuffers(1, &id_vertex_normals_buffer);
+		glBindBuffer(GL_ARRAY_BUFFER, id_vertex_normals_buffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->num_vertices, vertex_normals, GL_DYNAMIC_DRAW);
+	}
 }
 
 ComponentSkinnedMesh::ComponentSkinnedMesh(GameObject * parent):Component(parent)
@@ -49,13 +55,21 @@ void ComponentSkinnedMesh::SetMesh(ResourceMesh * mesh)
 		{
 			this->mesh->StopUsingResource();
 			RELEASE_ARRAY(vertices);
+			RELEASE_ARRAY(vertex_normals);
 			id_vertex_buffer = 0;
 			//TODO: Delete buffers
 		}
 		this->mesh = mesh;
 		this->mesh->StartUsingResource();
 		vertices = new math::float3[this->mesh->num_vertices];
+		
 		memcpy(vertices, this->mesh->vertices, sizeof(float3)*this->mesh->num_vertices);
+		
+		if (mesh->vertex_normals != nullptr)
+		{
+			vertex_normals = new math::float3[this->mesh->num_vertices];
+			memcpy(vertex_normals, this->mesh->vertex_normals, sizeof(float3)*this->mesh->num_vertices);
+		}
 		OpenBuffer();
 	}
 	else
@@ -69,6 +83,7 @@ void ComponentSkinnedMesh::OnUpdate(float dt)
 	if (mesh != nullptr)
 	{
 		memset(vertices, 0, sizeof(float3)*this->mesh->num_vertices);
+		memset(vertex_normals, 0, sizeof(float3)*this->mesh->num_vertices);
 		for (uint i = 0; i < mesh->num_bones; ++i)
 		{
 			std::string bone_name  = mesh->bones[i]->GetName();
@@ -98,22 +113,25 @@ void ComponentSkinnedMesh::OnUpdate(float dt)
 					}
 				}
 
-				float4x4 trans = gameobject->transform->GetLocalMatrix().Inverted() * bone->GetGlobalMatrix();
+				float4x4 trans = gameobject->transform->GetGlobalMatrix().Inverted() * bone->GetGlobalMatrix();
 				trans = trans *  resource_bone->offset_matrix;
 
 				if (resource_bone != nullptr)
 				{
 					for (uint i = 0; i < resource_bone->num_weights; ++i)
 					{
-						float3 original = mesh->vertices[resource_bone->weights[i].vertex_id];
-						float3 vertex = trans.TransformPos(original);
+						float3 vertex = trans.TransformPos(mesh->vertices[resource_bone->weights[i].vertex_id]);
+						float3 n_vertex = trans.TransformPos(mesh->vertex_normals[resource_bone->weights[i].vertex_id]);
 						vertices[resource_bone->weights[i].vertex_id] += vertex * resource_bone->weights[i].weigth;
+						vertex_normals[resource_bone->weights[i].vertex_id] += n_vertex * resource_bone->weights[i].weigth;
 					}
 				}
 			}
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, id_vertex_buffer);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * mesh->num_vertices * 3, vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, id_vertex_normals_buffer);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * mesh->num_vertices * 3, vertex_normals);
 	}
 }
 
