@@ -24,6 +24,7 @@
 #include "PanelGame.h"
 #include "PanelImport.h"
 #include "PanelTools.h"
+#include "PanelAnimator.h"
 
 //TODO: Frame Buffer Object remove
 #include "par/par_shapes.h"
@@ -45,7 +46,7 @@
 
 namespace ed = ax::NodeEditor;
 
-static ed::EditorContext* g_Context = nullptr;
+
 
 ModuleGui::ModuleGui(const char * name, bool start_enabled):Module(start_enabled, name)
 {
@@ -100,6 +101,7 @@ bool ModuleGui::Start(JSONFile * module_file)
 	panel_game			= CreatePanel<PanelGame>("Game", true);
 	panel_import		= CreatePanel<PanelImport>("Import", true);
 	panel_tools			= CreatePanel<PanelTools>("Tools", true);
+	panel_animator		= CreatePanel<PanelAnimator>("Animator", true);
 	create_menu = new MenuCreateShape();
 
 	return true;
@@ -126,7 +128,6 @@ update_status ModuleGui::PostUpdate()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
-	
 
 	ImGuiIO& io = ImGui::GetIO();
 
@@ -139,23 +140,6 @@ update_status ModuleGui::PostUpdate()
 	ImGui::Text("FPS: %.2f (%.2gms)", io.Framerate, io.Framerate ? 1000.0f / io.Framerate : 0.0f);
 
 	ImGui::Separator();
-
-	ed::SetCurrentEditor(g_Context);
-	ed::Begin("My Editor", ImVec2(0.0, 0.0f));
-	int uniqueId = 1;
-	// Start drawing nodes.
-	ed::BeginNode(uniqueId++);
-	ImGui::Text("Node A");
-	ed::BeginPin(uniqueId++, ed::PinKind::Input);
-	ImGui::Text("-> In");
-	ed::EndPin();
-	ImGui::SameLine();
-	ed::BeginPin(uniqueId++, ed::PinKind::Output);
-	ImGui::Text("Out ->");
-	ed::EndPin();
-	ed::EndNode();
-	ed::End();
-	ed::SetCurrentEditor(nullptr);
 
 	for (std::vector<Panel*>::iterator iter = panels.begin(); iter != panels.end(); ++iter)
 	{

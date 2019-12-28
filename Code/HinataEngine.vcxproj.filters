@@ -683,6 +683,9 @@
     <ClInclude Include="NodeEditor\Include\imgui_node_editor.h">
       <Filter>Sources\NodeEditor</Filter>
     </ClInclude>
+    <ClInclude Include="PanelAnimator.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -1022,6 +1025,9 @@
     </ClCompile>
     <ClCompile Include="NodeEditor\Source\imgui_node_editor_api.cpp">
       <Filter>Sources\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelAnimator.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
