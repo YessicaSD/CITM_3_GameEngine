@@ -113,7 +113,7 @@ ResourceModel * ModuleImportModel::ImportModel(
 			}
 		}
 		std::unordered_set<std::string> bones;
-		std::vector<uint> mesh_texture_indices;
+		std::vector<UID> mesh_texture_indices;
 		if (scene->HasMeshes())
 		{
 			resource_model->meshes_uid.reserve(scene->mNumMeshes);
@@ -243,7 +243,7 @@ uint ModuleImportModel::GetGeneration(ResourceModel * resource_model, int node_i
 	return gen;
 }
 
-bool ModuleImportModel::ImportModelNodes(ResourceModel * resource_model, aiNode * node, const std::vector<uint> & mesh_texture_idxs, uint parent_index, float4x4 curr_transformation)
+bool ModuleImportModel::ImportModelNodes(ResourceModel * resource_model, aiNode * node, const std::vector<UID> & mesh_texture_idxs, uint parent_index, float4x4 curr_transformation)
 {
 	uint curr_index = INVALID_MODEL_ARRAY_INDEX;
 

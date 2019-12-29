@@ -47,7 +47,7 @@ public:
 private:
 	void SaveModelMeta(ResourceModel * resource_model, const char * asset_path);
 	uint GetGeneration(ResourceModel * resource_model, int node_idx);
-	bool ImportModelNodes(ResourceModel * resource_model, aiNode * node, const std::vector<uint> & mesh_texture_idxs, uint parent_index, float4x4 curr_transformation);
+	bool ImportModelNodes(ResourceModel * resource_model, aiNode * node, const std::vector<UID> & mesh_texture_idxs, uint parent_index, float4x4 curr_transformation);
 	ResourceTexture * ImportModelTexture(const  aiMaterial * material, std::vector<UID> & uids, const char * asset_path);
 	void LoadModelMeta(ResourceModel * model, const char * meta_path);
 
