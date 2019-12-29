@@ -48,10 +48,10 @@ ResourceTexture* ModuleImportTexture::ImportTexture(const char * asset_path, UID
 	{
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
-		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-		{
-			iluFlipImage();
-		}
+		//if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		//{
+		//	iluFlipImage();
+		//}
 		resource_texture->SaveFileData();
 		SaveTextureMeta(resource_texture, asset_path);
 		ilDeleteImages(1, &image_id);

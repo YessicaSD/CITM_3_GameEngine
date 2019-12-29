@@ -103,7 +103,7 @@ bool ModuleGui::Start(JSONFile * module_file)
 	panel_scene			= CreatePanel<PanelScene>("Scene", true);
 	//panel_animator		= CreatePanel<PanelAnimator>("Animator", true);
 	panel_properties	= CreatePanel<PanelProperties>("Properties", true);
-	panel_timeline		= CreatePanel<PanelTimeline>("Timeline", true);
+	//panel_timeline		= CreatePanel<PanelTimeline>("Timeline", true);
 	create_menu = new MenuCreateShape();
 
 	return true;
@@ -342,14 +342,14 @@ void ModuleGui::MainMenuBar(update_status &ret)
 		{
 			panel_game->SetActive(panel_game->active);
 		}
-		if (ImGui::MenuItem("Timeline", NULL, &panel_timeline->active))
-		{
-			panel_timeline->SetActive(panel_timeline->active);
-		}
-		if(ImGui::MenuItem("Animator", NULL, &panel_animator->active))
-		{
-			panel_animator->SetActive(panel_animator->active);
-		}
+		//if (ImGui::MenuItem("Timeline", NULL, &panel_timeline->active))
+		//{
+		//	panel_timeline->SetActive(panel_timeline->active);
+		//}
+		//if(ImGui::MenuItem("Animator", NULL, &panel_animator->active))
+		//{
+		//	panel_animator->SetActive(panel_animator->active);
+		//}
 
 		ImGui::EndMenu();
 	}
