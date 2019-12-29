@@ -3,6 +3,17 @@ A 3D game engine created in the third year of our Videogame Design and Developme
 
 # Instructions:
 
+## Skeletal animation
+- Pressing “1” the character performs an attack.
+- Pressing “2” the character should trigger a walk loop in place until the key is released.
+
+### Seeing the bones
+- You can see the bones if you deactivate the SkinnedMesh component of the character.
+
+### Moving the mesh as you wish
+- If you deactivate the animator component and move the bones, you'll see the mesh adapts to the new bone transformation.
+
+## Adding models
 - Drag an fbx from the "Assets" panel to the "Scene" panel to create the hirearchy of gameobjects that represents it.
 
 ## Mouse picking
@@ -66,6 +77,9 @@ https://github.com/JaumeMontagut
 
 ## Find respository at:
 https://github.com/YessicaSD/CITM_3_GameEngine
+
+## See the web at:
+https://earlybirdsgames.wixsite.com/hinata-engine
 
 ## Libraries used:
 - SDL
