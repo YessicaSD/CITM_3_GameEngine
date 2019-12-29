@@ -41,6 +41,11 @@ AnimatorNode* ComponentAnimator::AddClip(ResourceAnimation *clip)
 	return nullptr;
 }
 
+AnimatorNode * ComponentAnimator::GetCurrentNode()
+{
+	return current_animation_node;
+}
+
 void ComponentAnimator::PropertiesEditor()
 {
 	ImGui::Separator();

@@ -101,7 +101,7 @@ bool ModuleGui::Start(JSONFile * module_file)
 	panel_tools			= CreatePanel<PanelTools>("Tools", true);
 	panel_game			= CreatePanel<PanelGame>("Game", true);
 	panel_scene			= CreatePanel<PanelScene>("Scene", true);
-	panel_animator		= CreatePanel<PanelAnimator>("Animator", true);
+	//panel_animator		= CreatePanel<PanelAnimator>("Animator", true);
 	panel_properties	= CreatePanel<PanelProperties>("Properties", true);
 	panel_timeline		= CreatePanel<PanelTimeline>("Timeline", true);
 	create_menu = new MenuCreateShape();
