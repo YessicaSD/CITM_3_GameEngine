@@ -52,7 +52,6 @@ private:
 	bool TestWithTriangles(LineSegment * ray, std::map<float, ComponentTransform*>& out_objects, RaycastHit& hit_out);
 	void LoadStaticObjects();
 	void LoadStreetScene();
-
 	void DrawObjects(ComponentCamera* camera);
 	void DrawWithFrustrum(ComponentCamera* camera);
 	void SaveScene();

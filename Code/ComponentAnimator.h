@@ -60,7 +60,7 @@ public:
 	ComponentAnimator(GameObject *attached_object);
 	AnimatorNode* AddClip(ResourceAnimation *clip);
 	AnimatorNode* GetCurrentNode();
-	
+	void ChangeCurrentNode(AnimatorNode* new_node);
 	//TODO: RemoveClip
 	void PropertiesEditor() override;
 	void OnUpdate(float dt) override;
