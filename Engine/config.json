@@ -7,10 +7,10 @@
     },
     "Window": {
         "brightness": 0,
-        "width": 1440,
-        "height": 810,
+        "width": 1024,
+        "height": 768,
         "fullscreen mode": 0,
-        "resizable": false,
+        "resizable": true,
         "borderless": false,
         "vsync": false
     },
