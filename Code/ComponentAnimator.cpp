@@ -173,11 +173,10 @@ void ComponentAnimator::OnUpdate(float dt)
 				time_of_transition += App->GetDt();
 				SaveBonesState(next_bones, next_node, next_node->current_time);
 				DoTransition();
-				LOG("%f", time_of_transition);
-				if (time_of_transition > 1)
+				if (time_of_transition > 1.f)
 				{
 					
-					current_animation_node->current_time = 0;
+					current_animation_node->current_time = 0.f;
 					current_animation_node = next_node;
 					next_node = nullptr;
 					start_transition = false;

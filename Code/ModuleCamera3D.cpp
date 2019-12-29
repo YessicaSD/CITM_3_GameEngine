@@ -38,7 +38,7 @@ bool ModuleCamera3D::Start(JSONFile* config)
 	scene_camera = new ComponentCamera(nullptr);
 	current_camera = scene_camera;
 
-	current_camera->SetPos(float3(0,2,10));
+	current_camera->SetPos(float3(0,28,65));
 	current_camera->LookAt(reference);
 
 	navigate_forward = new Shortcut("Move camera forward", {SDL_SCANCODE_W});
