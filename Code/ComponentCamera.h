@@ -12,7 +12,7 @@ class ComponentCamera : public Component
 {
 	CLASS_DECLARATION(ComponentCamera);
 public:
-	bool frustum_culling = true;
+	bool frustum_culling = false;
 
 	ComponentCamera(GameObject* gameobject);
 	~ComponentCamera();
