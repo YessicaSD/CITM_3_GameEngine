@@ -47,11 +47,15 @@ void ComponentAnimator::PropertiesEditor()
 		for (auto node = nodes.begin(); node != nodes.end(); ++node)
 		{
 			ImGui::Text((*node)->name.c_str());
+			std::string str_speed = "## speed";
+			str_speed += (*node)->name;
+			ImGui::InputFloat(str_speed.c_str(), &(*node)->speed);
 			ImGui::Text("Loop:");
 			ImGui::SameLine();
 			std::string str_check = "##";
 			str_check += (*node)->name.c_str();
 			ImGui::Checkbox(str_check.c_str(), &(*node)->loop);
+
 			ImGui::Separator();
 		}
 		if (ImGui::BeginMenu("Add node with clip."))
@@ -90,7 +94,7 @@ void ComponentAnimator::OnUpdate(float dt)
 		ResourceAnimation *resource_animation = current_animation_node->GetClip();
 		if (resource_animation != nullptr)
 		{
-			current_animation_node->current_time += App->GetDt();
+			current_animation_node->current_time += App->GetDt()*current_animation_node->speed;
 			if (current_animation_node->current_time >= resource_animation->GetDuration())
 			{
 				if ((current_animation_node->loop))
