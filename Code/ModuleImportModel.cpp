@@ -311,10 +311,10 @@ ResourceTexture * ModuleImportModel::ImportModelTexture(const aiMaterial * mater
 				{
 					*it = '/';
 				}
-				else
-				{
-					*it = tolower(*it);
-				}
+				//else
+				//{
+				//	*it = tolower(*it);
+				//}
 			}
 			size_t find_result = name_file.find("..");
 			if (find_result != std::string::npos)
