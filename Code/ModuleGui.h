@@ -101,7 +101,7 @@ private:
 	RenderMode render_mode_all;
 
 	void OpenInHierarchy(ComponentTransform *gameobject);
-	ed::EditorContext* g_Context = nullptr;
+	//ed::EditorContext* g_Context = nullptr;
 
 	friend class Shortcut;
 	friend class Panel;

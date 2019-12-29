@@ -43,9 +43,9 @@
 #define NORMAL_TEXT_COLOR IMGUI_LIGHT_GREY
 #define TITLE_1_TEXT_COLOR IMGUI_GREY
 
-#include "NodeEditor/Include/imgui_node_editor.h"
+//#include "NodeEditor/Include/imgui_node_editor.h"
 
-namespace ed = ax::NodeEditor;
+//namespace ed = ax::NodeEditor;
 
 
 
@@ -81,9 +81,9 @@ bool ModuleGui::Init(JSONFile * module_file)
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
 
-	ed::Config config;
-	config.SettingsFile = "Simple.json";
-	g_Context = ed::CreateEditor(&config);
+	//ed::Config config;
+	//config.SettingsFile = "Simple.json";
+	//g_Context = ed::CreateEditor(&config);
 
 	return ret;
 }
@@ -138,10 +138,6 @@ update_status ModuleGui::PostUpdate()
 	CreateDockspace(io);
 
 	MainMenuBar(ret);
-
-	ImGui::Text("FPS: %.2f (%.2gms)", io.Framerate, io.Framerate ? 1000.0f / io.Framerate : 0.0f);
-
-	ImGui::Separator();
 
 	for (std::vector<Panel*>::iterator iter = panels.begin(); iter != panels.end(); ++iter)
 	{
@@ -213,7 +209,7 @@ void ModuleGui::CreateDockspace(ImGuiIO& io)
 
 bool ModuleGui::CleanUp()
 {
-	ed::DestroyEditor(g_Context);
+	//ed::DestroyEditor(g_Context);
 
 	if (create_menu)
 	{

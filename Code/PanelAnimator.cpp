@@ -36,82 +36,82 @@ PanelAnimator::PanelAnimator(std::string name, bool active, std::vector<SDL_Scan
 void PanelAnimator::Draw()
 {
 
-	//ImGui::Begin("Animator");
-	static bool g_FirstFrame = true;
-	ed::SetCurrentEditor(App->gui->g_Context);
+	////ImGui::Begin("Animator");
+	//static bool g_FirstFrame = true;
+	//ed::SetCurrentEditor(App->gui->g_Context);
 
-		ed::Begin("My Editor");
-		{
-			
-			for (auto node = nodes.begin(); node != nodes.end(); ++node)
-			{
-				if ((*node).first_loop)
-				{
-					ed::SetNodePosition((*node).ID, (*node).start_pos);
-					(*node).first_loop = false;
-				}
+	//	ed::Begin("My Editor");
+	//	{
+	//		
+	//		for (auto node = nodes.begin(); node != nodes.end(); ++node)
+	//		{
+	//			if ((*node).first_loop)
+	//			{
+	//				ed::SetNodePosition((*node).ID, (*node).start_pos);
+	//				(*node).first_loop = false;
+	//			}
 
-				ed::BeginNode((*node).ID);
-				ImGui::Text((*node).name.c_str());
-				for (auto pin = (*node).Outputs.begin(); pin != (*node).Outputs.end(); ++pin)
-				{
-					ed::BeginPin((*pin).ID, ed::PinKind::Output);
-					ImGui::Text("-> OutPut");
-					ed::EndPin();
-				}
-				ed::EndNode();
-			}
-		}
+	//			ed::BeginNode((*node).ID);
+	//			ImGui::Text((*node).name.c_str());
+	//			for (auto pin = (*node).Outputs.begin(); pin != (*node).Outputs.end(); ++pin)
+	//			{
+	//				ed::BeginPin((*pin).ID, ed::PinKind::Output);
+	//				ImGui::Text("-> OutPut");
+	//				ed::EndPin();
+	//			}
+	//			ed::EndNode();
+	//		}
+	//	}
 
-		// Submit Links
-		for (std::vector<LinkInfo>::iterator linkInfo = g_Links.begin(); linkInfo != g_Links.end(); ++linkInfo)
-		{
-			ed::Link((*linkInfo).Id, (*linkInfo).InputId, (*linkInfo).OutputId);
-		}
+	//	// Submit Links
+	//	for (std::vector<LinkInfo>::iterator linkInfo = g_Links.begin(); linkInfo != g_Links.end(); ++linkInfo)
+	//	{
+	//		ed::Link((*linkInfo).Id, (*linkInfo).InputId, (*linkInfo).OutputId);
+	//	}
 
-		// Handle creation action, returns true if editor want to create new object (node or link)
-		if (ed::BeginCreate())
-		{
-			ed::PinId inputPinId, outputPinId;
-			if (ed::QueryNewLink(&inputPinId, &outputPinId))
-			{
-				// QueryNewLink returns true if editor want to create new link between pins.
-				//
-				// Link can be created only for two valid pins, it is up to you to
-				// validate if connection make sense. Editor is happy to make any.
-				//
-				// Link always goes from input to output. User may choose to drag
-				// link from output pin or input pin. This determine which pin ids
-				// are valid and which are not:
-				//   * input valid, output invalid - user started to drag new ling from input pin
-				//   * input invalid, output valid - user started to drag new ling from output pin
-				//   * input valid, output valid   - user dragged link over other pin, can be validated
+	//	// Handle creation action, returns true if editor want to create new object (node or link)
+	//	if (ed::BeginCreate())
+	//	{
+	//		ed::PinId inputPinId, outputPinId;
+	//		if (ed::QueryNewLink(&inputPinId, &outputPinId))
+	//		{
+	//			// QueryNewLink returns true if editor want to create new link between pins.
+	//			//
+	//			// Link can be created only for two valid pins, it is up to you to
+	//			// validate if connection make sense. Editor is happy to make any.
+	//			//
+	//			// Link always goes from input to output. User may choose to drag
+	//			// link from output pin or input pin. This determine which pin ids
+	//			// are valid and which are not:
+	//			//   * input valid, output invalid - user started to drag new ling from input pin
+	//			//   * input invalid, output valid - user started to drag new ling from output pin
+	//			//   * input valid, output valid   - user dragged link over other pin, can be validated
 
-				if (inputPinId && outputPinId) // both are valid, let's accept link
-				{
-					// ed::AcceptNewItem() return true when user release mouse button.
-					if (ed::AcceptNewItem())
-					{
-						// Since we accepted new link, lets add one to our list of links.
-						g_Links.push_back({ ed::LinkId(g_NextLinkId++), inputPinId, outputPinId });
+	//			if (inputPinId && outputPinId) // both are valid, let's accept link
+	//			{
+	//				// ed::AcceptNewItem() return true when user release mouse button.
+	//				if (ed::AcceptNewItem())
+	//				{
+	//					// Since we accepted new link, lets add one to our list of links.
+	//					g_Links.push_back({ ed::LinkId(g_NextLinkId++), inputPinId, outputPinId });
 
-						// Draw new link.
-						ed::Link(g_Links.back().Id, g_Links.back().InputId, g_Links.back().OutputId);
-					}
+	//					// Draw new link.
+	//					ed::Link(g_Links.back().Id, g_Links.back().InputId, g_Links.back().OutputId);
+	//				}
 
-					// You may choose to reject connection between these nodes
-					// by calling ed::RejectNewItem(). This will allow editor to give
-					// visual feedback by changing link thickness and color.
-				}
-			}
-		}
-		ed::EndCreate(); // Wraps up object creation action handling.
+	//				// You may choose to reject connection between these nodes
+	//				// by calling ed::RejectNewItem(). This will allow editor to give
+	//				// visual feedback by changing link thickness and color.
+	//			}
+	//		}
+	//	}
+	//	ed::EndCreate(); // Wraps up object creation action handling.
 
-		ed::End();
+	//	ed::End();
 
-		ed::SetCurrentEditor(nullptr);
+	//	ed::SetCurrentEditor(nullptr);
 
-		//ImGui::End();
-		g_FirstFrame = false;
+	//	//ImGui::End();
+	//	g_FirstFrame = false;
 
 }
