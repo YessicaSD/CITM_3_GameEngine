@@ -125,13 +125,13 @@ void ComponentAnimator::OnUpdate(float dt)
 	{
 		if (next_node != nullptr)
 		{
-			next_node->current_time += dt;
+			next_node->current_time += App->time->GetDeltaTime();
 		}
 		ResourceAnimation *resource_animation = current_animation_node->GetClip();
 
 		if (resource_animation != nullptr)
 		{
-			current_animation_node->current_time += dt * current_animation_node->speed;
+			current_animation_node->current_time += App->time->GetDeltaTime() * current_animation_node->speed;
 			double current_time_ticks = current_animation_node->current_time * resource_animation->GetTicksPerSecond();
 			//----
 			// Do transition to next animation
