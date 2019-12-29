@@ -254,7 +254,7 @@ void ComponentAnimator::DrawBoneRecursive(ComponentTransform *bone) const
 	}
 }
 
-void ComponentAnimator::SaveBonesState(std::map<const char *, trs> &map, AnimatorNode *node, double current_time_ticks)
+void ComponentAnimator::SaveBonesState(std::map<std::string, trs> &map, AnimatorNode *node, double current_time_ticks)
 {
 	ResourceAnimation *clip = current_animation_node->GetClip();
 	AnimationChannels *channels = clip->GetChannels();

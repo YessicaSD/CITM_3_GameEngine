@@ -51,7 +51,7 @@ class ComponentAnimator : public Component
 
 private:
 	void DrawBoneRecursive(ComponentTransform *bone) const;
-	void SaveBonesState(std::map<const char*, trs>& map, AnimatorNode* node, double current_time_ticks);
+	void SaveBonesState(std::map<std::string, trs>& map, AnimatorNode* node, double current_time_ticks);
 	void MoveBones(ResourceAnimation * resource_animation, double current_time_ticks);
 	void DoTransition();
 
@@ -69,8 +69,8 @@ public:
 	void CleanUp() override;
 	std::vector<ComponentTransform*> root_nodes;
 private:
-	std::map<const char*, trs> current_bones;
-	std::map<const char*, trs> next_bones;
+	std::map<std::string, trs> current_bones;
+	std::map<std::string, trs> next_bones;
 	AnimatorNode* current_animation_node = nullptr;
 	AnimatorNode* next_node = nullptr;
 	uint curr_node_idx = 0;

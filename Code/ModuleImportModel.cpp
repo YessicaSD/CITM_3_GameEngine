@@ -422,10 +422,10 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 		ComponentAnimator * animator = model_gameobjects[0]->CreateComponent<ComponentAnimator>();
 		for (auto iter = resource_model->root_bones.begin(); iter != resource_model->root_bones.end(); ++iter)
 		{
-			ComponentTransform* root_transform = model_gameobjects[0]->transform->Find(resource_model->nodes[(*iter)]->name);
-			if (root_transform != nullptr)
+			ComponentTransform* root_bone = model_gameobjects[0]->transform->Find(resource_model->nodes[(*iter)]->name);
+			if (root_bone != nullptr)
 			{
-				animator->root_nodes.push_back(root_transform);
+				animator->root_nodes.push_back(root_bone);
 			}
 		}
 		//TODO Delete this part- We are not going to add clips directly to component Animator;
