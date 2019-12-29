@@ -38,7 +38,7 @@ void PanelTimeline::Draw()
 		//			animation->channels[i].position_keys);
 		//		DisplayTransformationChannel4Coord(
 		//			(std::string(animation->channels[i].name) + std::string(" rotation")).c_str(),
-		//			animation->channels[i].num_rotation_keys,
+		//			animation->channels[i].num_rotation_keys, 
 		//			animation->channels[i].rotation_keys);
 		//		DisplayTransformationChannel3Coord(
 		//			(std::string(animation->channels[i].name) + std::string(" scale")).c_str(),

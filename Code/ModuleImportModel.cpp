@@ -63,7 +63,8 @@ bool ModuleImportModel::Start(JSONFile * config)
 
 //INFO: Creates a .hinata_model (our custom format for 3d models) from an fbx
 ResourceModel * ModuleImportModel::ImportModel(
-	const char *asset_path, UID model_uid,
+	const char *asset_path,
+	UID model_uid,
 	std::vector<UID> & prev_meshes_uids,
 	std::vector<UID> & prev_textures_uids,
 	std::vector<UID>& animation_uids,
@@ -111,6 +112,7 @@ ResourceModel * ModuleImportModel::ImportModel(
 				}
 			}
 		}
+		std::unordered_set<std::string> bones;
 		std::vector<uint> mesh_texture_indices;
 		if (scene->HasMeshes())
 		{
@@ -123,9 +125,38 @@ ResourceModel * ModuleImportModel::ImportModel(
 				ResourceMesh * resource_mesh = App->import_mesh->ImportAssimpMesh(assimp_mesh, App->resource_manager->PopFirst(prev_meshes_uids), bones_uids, asset_path);
 				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
 				mesh_texture_indices.push_back(resource_model->textures_uid[assimp_mesh->mMaterialIndex]);
+
+				//Insert the nodes
+				if (resource_mesh->HasBones())
+				{
+					for (int j = 0u; j < resource_mesh->num_bones; ++j)
+					{
+						bones.insert(resource_mesh->bones[j]->GetName());
+					}
+				}
 			}
 		}
 		ImportModelNodes(resource_model, scene->mRootNode, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX, float4x4::identity);
+
+		//Check which one is the root bone
+		int curr_min_gen = INT_MAX;
+		int curr_node_idx = 0;
+		for (int i = 0; i < resource_model->nodes.size(); ++i)
+		{
+			if (bones.find(resource_model->nodes[i]->name) != bones.end())
+			{
+				int curr_gen = GetGeneration(resource_model, i);
+				if (curr_gen < curr_min_gen)
+				{
+					curr_min_gen = curr_gen;
+					curr_node_idx = i;
+				}
+			}
+		}
+		//All children on the bones hierarchy are going to be bones??? You could add a sword in it
+
+		//TODO: Allow for the possibility to be no root_bone
+		//TODO: Allow for the possibility to have 2 root_bones?
 		if (scene->HasAnimations())
 		{
 			resource_model->animations_uid.reserve(scene->mNumAnimations);
@@ -191,6 +222,18 @@ void ModuleImportModel::LoadModelMeta(ResourceModel * model, const char * meta_p
 	//TODO: Create objects forcing their uids
 	//App->resource_manager->CreateResource<ResourceModel>(uid);
 	//meta_file.CloseFile();
+}
+
+//How many steps has it had to go through to find the parent bone
+int ModuleImportModel::GetGeneration(ResourceModel * resource_model, int node_idx)
+{
+	int gen = 0;
+	while (resource_model->nodes[node_idx]->parent_index != INVALID_MODEL_ARRAY_INDEX)
+	{
+		node_idx = resource_model->nodes[node_idx]->parent_index;
+		gen++;
+	}
+	return gen;
 }
 
 bool ModuleImportModel::ImportModelNodes(ResourceModel * resource_model, aiNode * node, const std::vector<uint> & mesh_texture_idxs, uint parent_index, float4x4 curr_transformation)
