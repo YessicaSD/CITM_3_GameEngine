@@ -140,7 +140,7 @@ bool ResourceModel::LoadFileData()
 	for (int i = 0; i < num_root_bones; ++i)
 	{
 		uint root_bone_node_idx = 0u;
-		LoadVariable(&root_bone_node_idx, &cursor, sizeof(UID));
+		LoadVariable(&root_bone_node_idx, &cursor, sizeof(uint));
 		root_bones.push_back(root_bone_node_idx);
 	}
 

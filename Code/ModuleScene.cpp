@@ -17,8 +17,11 @@
 #include "ModuleInput.h"
 #include "ModuleImportModel.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h"
+
 #include "RaycastHit.h"
 #include "ComponentMaterial.h"
+#include "ResourceModel.h"
 
 #include "imGuizmo/ImGuizmo.h"
 #include "Event.h"
@@ -37,11 +40,19 @@ ModuleScene::~ModuleScene()
 // Load assets
 bool ModuleScene::Start(JSONFile * config)
 {
-	//LOG("Loading Intro assets");
+	bool ret = true;
+
 	root_gameobject = new GameObject("Root", nullptr);
 	CreateOctree();
 
-	bool ret = true;
+	JSONFile street_meta;
+	street_meta.LoadFile(std::string("Assets/street/Street environment_V01.FBX") + "." + META_EXTENSION);
+	UID street_uid = street_meta.LoadUID("resourceUID");
+	ResourceModel * street = (ResourceModel*)App->resource_manager->GetResource(street_uid);
+	if (street != nullptr)
+	{
+		App->import_model->CreateGameObjectFromModel(street, root_gameobject->transform);
+	}
 
 	//ResourceModel * resource_model = App->import->ImportModel("Assets/BakerHouse.fbx");
 	//App->import->CreateGameObjectFromModel(resource_model, App->scene->root_gameobject->transform);
@@ -185,7 +196,6 @@ void ModuleScene::DeleteGameObject(GameObject * gameobject)
 					gameobject->transform->parent->children.erase(iter);
 					break;
 				}
-
 			}
 		}
 		delete gameobject;
