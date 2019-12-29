@@ -82,8 +82,8 @@ ResourceModel * ModuleImportModel::ImportModel(
 		aiProcess_SortByPType | \
 		aiProcess_FindDegenerates | \
 		aiProcess_FindInvalidData | \
-		aiProcess_FlipUVs | \
 		0;
+		/*aiProcess_FlipUVs | \*/
 	ResourceModel * resource_model = nullptr;
 	
 	const aiScene *scene = aiImportFile(asset_path, flags);
