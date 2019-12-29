@@ -112,7 +112,7 @@ ResourceModel * ModuleImportModel::ImportModel(
 				}
 			}
 		}
-		std::unordered_set<std::string> bones;
+		std::unordered_set<std::string> mesh_bones;
 		std::vector<uint> mesh_texture_indices;
 		if (scene->HasMeshes())
 		{
@@ -131,28 +131,25 @@ ResourceModel * ModuleImportModel::ImportModel(
 				{
 					for (int j = 0u; j < resource_mesh->num_bones; ++j)
 					{
-						bones.insert(resource_mesh->bones[j]->GetName());
+						mesh_bones.insert(resource_mesh->bones[j]->GetName());
 					}
 				}
 			}
 		}
 		ImportModelNodes(resource_model, scene->mRootNode, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX, float4x4::identity);
 
-		//Check which one is the root bone
-		int curr_min_gen = INT_MAX;
-		int curr_node_idx = 0;
-		for (int i = 0; i < resource_model->nodes.size(); ++i)
+		int root_bone_node_idx = INT_MAX;
+		for (int i  = 0; i < resource_model->nodes.size(); ++i)
 		{
-			if (bones.find(resource_model->nodes[i]->name) != bones.end())
+			if (resource_model->nodes[i]->parent_index != INVALID_MODEL_ARRAY_INDEX)
 			{
-				int curr_gen = GetGeneration(resource_model, i);
-				if (curr_gen < curr_min_gen)
+				if (mesh_bones.find(resource_model->nodes[resource_model->nodes[i]->parent_index]->name) == mesh_bones.end())
 				{
-					curr_min_gen = curr_gen;
-					curr_node_idx = i;
+					root_bone_node_idx = i;
 				}
 			}
 		}
+
 		//All children on the bones hierarchy are going to be bones??? You could add a sword in it
 
 		//TODO: Allow for the possibility to be no root_bone
