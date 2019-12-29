@@ -102,19 +102,21 @@ void ComponentAnimator::OnUpdate(float dt)
 			double current_time_ticks = current_animation_node->current_time * resource_animation->GetTicksPerSecond();
 			//----
 			// Do transition to next animation
-			if (!current_animation_node->loop && nodes.size() > 1 && !start_transition && current_animation_node->current_time >= resource_animation->GetDuration())
+			if (!current_animation_node->loop && nodes.size() > 1u
+				&& !start_transition
+				&& current_animation_node->current_time >= resource_animation->GetDuration())
 			{
-				if ((curr_node_idx + 1) < nodes.size())
+				if ((curr_node_idx + 1u) < nodes.size())
 				{
 					++curr_node_idx;
 				}
 				else
 				{
-					curr_node_idx = 0;
+					curr_node_idx = 0u;
 				}
-				next_node = nodes.at(curr_node_idx);
+				next_node = nodes[curr_node_idx];
 				SaveBonesState(current_bones, current_animation_node, current_time_ticks);
-				SaveBonesState(next_bones, next_node, 0);
+				SaveBonesState(next_bones, next_node, 0.);
 				start_transition = true;
 				return;
 			}
@@ -123,11 +125,12 @@ void ComponentAnimator::OnUpdate(float dt)
 			{
 				if (current_animation_node->loop)
 				{
-					current_animation_node->current_time = 0;
+					current_animation_node->current_time = 0.f;
 				}
 				else
 				{
 					current_animation_node->current_time = resource_animation->GetDuration();
+					//TODO: Don't update buffers, they stay the same
 				}
 			}
 

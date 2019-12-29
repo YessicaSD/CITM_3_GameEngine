@@ -83,8 +83,8 @@ enum update_status
 #define MATERIAL_EXTENSION "hinata_material"
 #define SCENE_EXTENSION "hinata_scene"
 
-#define SCREEN_WIDTH 1920 * 0.75f //TODO: Remove when releasing the game
-#define SCREEN_HEIGHT 1080 * 0.75f //TODO: Remove when releasing the game
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 768
 #define SCREEN_SIZE 1
 #define TITLE "Hinata Engine"
 #define VERSION "0.1"
