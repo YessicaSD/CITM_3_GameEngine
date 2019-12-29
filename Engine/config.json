@@ -7,10 +7,10 @@
     },
     "Window": {
         "brightness": 0,
-        "width": 1440,
-        "height": 810,
+        "width": 1024,
+        "height": 768,
         "fullscreen mode": 0,
-        "resizable": false,
+        "resizable": true,
         "borderless": false,
         "vsync": false
     },
@@ -21,14 +21,14 @@
     "Import Textures": {},
     "Import Mesh": {},
     "Time": {},
-    "Scene": {},
     "Import Model": {},
     "Import Bone": {},
-    "Camera 3D": {
-        "move speed": 25,
-        "rotate speed": 125
-    },
     "Resource Manager": {},
+    "Scene": {},
+    "Camera 3D": {
+        "move speed": 10,
+        "rotate speed": 25
+    },
     "Gui": {},
     "Render": {
         "depth test": true,
