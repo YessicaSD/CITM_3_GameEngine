@@ -55,6 +55,8 @@ public:
 	std::vector<UID> meshes_uid;
 	std::vector<UID> textures_uid;
 	std::vector<UID> animations_uid;
+	//The index of the root of the skeleton in 
+	std::vector<uint> root_bones;
 
 	friend class ModuleImportModel;
 	friend class ModuleResourceManager;

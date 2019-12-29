@@ -153,10 +153,10 @@ ResourceModel * ModuleImportModel::ImportModel(
 				}
 			}
 		}
+		//TODO: Allow for more than one skeleton root (if there are various skeletons in the scene)
+		resource_model->root_bones.push_back(resource_model->nodes[curr_node_idx]->parent_index);
 		//All children on the bones hierarchy are going to be bones??? You could add a sword in it
 
-		//TODO: Allow for the possibility to be no root_bone
-		//TODO: Allow for the possibility to have 2 root_bones?
 		if (scene->HasAnimations())
 		{
 			resource_model->animations_uid.reserve(scene->mNumAnimations);
@@ -433,7 +433,8 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 	//Set the root of the model to the scene
 	model_gameobjects[0]->transform->SetParent(parent);
 
-	resource_model->StopUsingResource();
+	//resource_model->StopUsingResource();
+	//TODO: Remove the resource when the animator is destroyed (it's the only one that makes use of it right now)
 }
 
 bool ModuleImportModel::CleanUp()

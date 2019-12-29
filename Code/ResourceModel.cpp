@@ -20,13 +20,17 @@ const char * ResourceModel::GetTypeString()
 
 bool ResourceModel::SaveFileData()
 {
-	uint header_bytes = sizeof(uint) + sizeof(uint);
+	uint header_bytes =
+		sizeof(uint) +
+		sizeof(uint) +
+		sizeof(uint);
 	uint node_name_bytes = sizeof(char) * NODE_NAME_SIZE;
 	uint node_transform_bytes = sizeof(float) * 16u;
 	uint node_parent_index_bytes = sizeof(uint);
 	uint node_mesh_uid_bytes = sizeof(UID);
 	uint node_material_uid_bytes = sizeof(UID);
 	uint animation_size = sizeof(UID);
+	uint root_bone_size = sizeof(uint);
 
 	uint node_size = node_name_bytes
 		+ node_transform_bytes
@@ -34,16 +38,19 @@ bool ResourceModel::SaveFileData()
 		+ node_mesh_uid_bytes
 		+ node_material_uid_bytes;
 
-	uint total_size = header_bytes
+	uint total_size =
+		header_bytes
 		+ node_size * nodes.size()
-		+ animation_size * animations_uid.size();
+		+ animation_size * animations_uid.size()
+		+ root_bone_size * root_bones.size();
 
 	char * data = new char[total_size];
 	char * cursor = data;
 
 	uint header[] = {
 		nodes.size(),
-		animations_uid.size()
+		animations_uid.size(),
+		root_bones.size()
 	};
 	SaveVariable(header, &cursor, header_bytes);
 
@@ -62,6 +69,11 @@ bool ResourceModel::SaveFileData()
 	for (auto iter = animations_uid.begin(); iter != animations_uid.end(); ++iter)
 	{
 		SaveVariable(&(*iter), &cursor, animation_size);
+	}
+
+	for (auto iter = root_bones.begin(); iter != root_bones.end(); ++iter)
+	{
+		SaveVariable(&(*iter), &cursor, root_bone_size);
 	}
 
 	uint path_size = 250u;
@@ -87,10 +99,11 @@ bool ResourceModel::LoadFileData()
 	//TODO: If it's only one variable that it's on the header, make a single variable instead of an array
 	//Called num_nodes (it's more descriptive)
 	//INFO: The number of elements on the ranges array must be the same as in the ranges array of SaveFileData()
-	uint header[2];
+	uint header[3];
 	LoadVariable(header, &cursor, sizeof(header));
 	uint num_nodes = header[0];
 	uint num_animations = header[1];
+	uint num_root_bones = header[2];
 	nodes.reserve(num_nodes);
 
 	uint name_bytes = NODE_NAME_SIZE * sizeof(char);
@@ -115,11 +128,20 @@ bool ResourceModel::LoadFileData()
 		nodes.push_back(node);
 	}
 
+	animations_uid.reserve(num_animations);
 	for (int i = 0; i < num_animations; ++i)
 	{
 		UID animation_uid = 0;
 		LoadVariable(&animation_uid, &cursor, sizeof(UID));
 		animations_uid.push_back(animation_uid);
+	}
+
+	root_bones.reserve(num_root_bones);
+	for (int i = 0; i < num_root_bones; ++i)
+	{
+		uint root_bone_node_idx = 0u;
+		LoadVariable(&root_bone_node_idx, &cursor, sizeof(UID));
+		root_bones.push_back(root_bone_node_idx);
 	}
 
 	LOG("Success loading model nodes from: %s in: %i ms.", path, load_timer.Read());
@@ -173,6 +195,7 @@ bool ResourceModel::ReleaseData()
 		}
 		textures_uid.clear();
 	}
+	root_bones.clear();
 	return true;
 }
 
