@@ -83,6 +83,10 @@ update_status ModuleScene::Update(float dt)
 				run->loop = true;
 				character_animator->ChangeCurrentNode(run);
 			}
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_STATE::KEY_UP)
+			{
+				character_animator->ChangeCurrentNode(idle);
+			}
 		}
 		
 		if (App->input->GetKey(SDL_SCANCODE_W))
@@ -462,7 +466,7 @@ void ModuleScene::LoadStreetScene()
 	}
 
 	//Character + Idle Animation
-	const char * character_idle_path = "Assets/Skeleton@Idle.FBX";
+	const char * character_idle_path = "Assets/idle.dae";
 	JSONFile character_idle_meta;
 	character_idle_meta.LoadFile(std::string(character_idle_path) + "." + META_EXTENSION);
 	UID character_idle_uid = character_idle_meta.LoadUID("resourceUID");
@@ -480,7 +484,7 @@ void ModuleScene::LoadStreetScene()
 	}
 
 	//Attack
-	const char * character_attack_path = "Assets/Skeleton@Attack.FBX";
+	const char * character_attack_path = "Assets/attack.dae";
 	JSONFile character_attack_meta;
 	character_attack_meta.LoadFile(std::string(character_attack_path) + "." + META_EXTENSION);
 	UID character_attack_uid = character_attack_meta.LoadUID("resourceUID");
@@ -499,7 +503,7 @@ void ModuleScene::LoadStreetScene()
 	}
 
 	//Walk
-	const char * character_walk_path = "Assets/Skeleton@Run.FBX";
+	const char * character_walk_path = "Assets/run.dae";
 	JSONFile charater_walk_meta;
 	charater_walk_meta.LoadFile(std::string(character_walk_path) + "." + META_EXTENSION);
 	UID character_walk_uid = charater_walk_meta.LoadUID("resourceUID");

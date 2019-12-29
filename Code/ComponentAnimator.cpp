@@ -123,10 +123,15 @@ void ComponentAnimator::OnUpdate(float dt)
 {
 	if (current_animation_node != nullptr)
 	{
+		if (next_node != nullptr)
+		{
+			next_node->current_time += dt;
+		}
 		ResourceAnimation *resource_animation = current_animation_node->GetClip();
+
 		if (resource_animation != nullptr)
 		{
-			current_animation_node->current_time += App->GetDt() * current_animation_node->speed;
+			current_animation_node->current_time += dt * current_animation_node->speed;
 			double current_time_ticks = current_animation_node->current_time * resource_animation->GetTicksPerSecond();
 			//----
 			// Do transition to next animation
@@ -144,7 +149,7 @@ void ComponentAnimator::OnUpdate(float dt)
 				}
 				next_node = nodes[curr_node_idx];
 				SaveBonesState(current_bones, current_animation_node, current_time_ticks);
-				SaveBonesState(next_bones, next_node, 0.);
+				SaveBonesState(next_bones, next_node, next_node->current_time);
 				start_transition = true;
 				return;
 			}
@@ -164,13 +169,16 @@ void ComponentAnimator::OnUpdate(float dt)
 
 			if (start_transition)
 			{
-				time_of_transition += 0.01f;
+				time_of_transition += App->GetDt();
+				SaveBonesState(next_bones, next_node, next_node->current_time);
 				DoTransition();
 				LOG("%f", time_of_transition);
 				if (time_of_transition > 1)
 				{
+					
 					current_animation_node->current_time = 0;
 					current_animation_node = next_node;
+					next_node = nullptr;
 					start_transition = false;
 					time_of_transition = 0;
 				}
