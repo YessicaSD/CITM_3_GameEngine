@@ -139,7 +139,7 @@ ResourceModel * ModuleImportModel::ImportModel(
 		ImportModelNodes(resource_model, scene->mRootNode, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX, float4x4::identity);
 
 		//Check which one is the root bone
-		int curr_min_gen = INT_MAX;
+		uint curr_min_gen = UINT_MAX;
 		int curr_node_idx = 0;
 		for (int i = 0; i < resource_model->nodes.size(); ++i)
 		{
@@ -157,7 +157,10 @@ ResourceModel * ModuleImportModel::ImportModel(
 		//Instead of int curr_node_idx make a std::vector
 		//If it's == add it
 		//If it's > clear the vector and add it
-		resource_model->root_bones.push_back(resource_model->nodes[curr_node_idx]->parent_index);
+		if (curr_min_gen != UINT_MAX)
+		{
+			resource_model->root_bones.push_back(resource_model->nodes[curr_node_idx]->parent_index);
+		}
 		//TODO: Check if all children on the bones hierarchy are going to be bones? You could add a sword in it.
 
 		if (scene->HasAnimations())
@@ -228,9 +231,9 @@ void ModuleImportModel::LoadModelMeta(ResourceModel * model, const char * meta_p
 }
 
 //How many steps has it had to go through to find the parent bone
-int ModuleImportModel::GetGeneration(ResourceModel * resource_model, int node_idx)
+uint ModuleImportModel::GetGeneration(ResourceModel * resource_model, int node_idx)
 {
-	int gen = 0;
+	uint gen = 0u;
 	while (resource_model->nodes[node_idx]->parent_index != INVALID_MODEL_ARRAY_INDEX)
 	{
 		node_idx = resource_model->nodes[node_idx]->parent_index;
@@ -428,7 +431,7 @@ GameObject * ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resour
 				animator->root_nodes.push_back(root_bone);
 			}
 		}
-		//TODO Delete this part- We are not going to add clips directly to component Animator;
+
 		for (auto iter = resource_model->animations_uid.begin(); iter != resource_model->animations_uid.end(); ++iter)
 		{
 			ResourceAnimation * resource_animation = (ResourceAnimation*)App->resource_manager->GetResource((*iter));
