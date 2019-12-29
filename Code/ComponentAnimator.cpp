@@ -164,13 +164,14 @@ void ComponentAnimator::OnUpdate(float dt)
 
 			if (start_transition)
 			{
-				time_of_transition += 0.01f;
+				time_of_transition += App->GetDt();
 				DoTransition();
 				LOG("%f", time_of_transition);
 				if (time_of_transition > 1)
 				{
 					current_animation_node->current_time = 0;
 					current_animation_node = next_node;
+					next_node = nullptr;
 					start_transition = false;
 					time_of_transition = 0;
 				}
