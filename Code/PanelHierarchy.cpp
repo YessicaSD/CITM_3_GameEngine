@@ -50,7 +50,9 @@ void PanelHierarchy::DisplayChildren(ComponentTransform * transform)
 			ImGui::SetNextItemOpen(true);
 			(*iter)->open_in_hierarchy = false;
 		}
-		is_open = ImGui::TreeNodeEx((*iter)->gameobject->GetName(), node_flags);
+		char buffer[UID_DIGITS];
+		sprintf_s(buffer, "%020llu", (*iter)->gameobject->uid);
+		is_open = ImGui::TreeNodeEx((std::string((*iter)->gameobject->GetName()) + "##" + buffer).c_str(), node_flags);
 		SetDragAndDrop((*iter));
 		if (is_selected)
 		{
