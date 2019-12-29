@@ -47,13 +47,11 @@ bool ComponentMaterial::SetTexture(ResourceTexture *texture)
 		&& component_mesh->mesh->uv_coord != nullptr
 		&& */texture != nullptr)
 	{
-		
 		if (texture->StartUsingResource())
 		{
 			this->texture = texture;
 			ret = true;
 		}
-		
 	}
 	else
 	{

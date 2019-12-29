@@ -427,8 +427,7 @@ GameObject * ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resour
 			//INFO: component mesh creates a material component inside its constructor
 			ComponentMaterial * component_material = new_gameobject->GetComponent<ComponentMaterial>();
 			ResourceTexture * resource_texture = (ResourceTexture*)App->resource_manager->GetResource(resource_model->nodes[i]->material_uid);
-			resource_texture->StartUsingResource();
-			component_material->SetTexture(resource_texture);//TOOD: We're doing 2 reference_count++ before and after
+			component_material->SetTexture(resource_texture);
 		}
 		model_gameobjects.push_back(new_gameobject);
 	}
