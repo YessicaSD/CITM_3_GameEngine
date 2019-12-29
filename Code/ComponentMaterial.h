@@ -28,6 +28,7 @@ private:
 	ResourceTexture* texture = nullptr;
 	ComponentMesh * component_mesh = nullptr;
 
+	friend class ComponentMesh;
 	friend class GameObject;
 };
 

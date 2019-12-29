@@ -43,7 +43,9 @@ bool ComponentMaterial::SetTexture(ResourceTexture *texture)
 		this->texture->StopUsingResource();
 	}
 
-	if (component_mesh->mesh != nullptr && component_mesh->mesh->uv_coord != nullptr && texture != nullptr)
+	if (component_mesh->mesh != nullptr
+		&& component_mesh->mesh->uv_coord != nullptr
+		&& texture != nullptr)
 	{
 		
 		if (texture->StartUsingResource())
