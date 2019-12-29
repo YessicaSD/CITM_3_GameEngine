@@ -11,9 +11,10 @@ class AnimatorNode
 private:
 	ResourceAnimation *clip = nullptr;
 
-	float speed = 1;
+	
 
 public:
+	float speed = 1;
 	std::string name;
 	AnimatorNode(std::string name) : name(name){};
 	void SetClip(ResourceAnimation *clip);
