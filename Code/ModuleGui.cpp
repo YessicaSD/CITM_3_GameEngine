@@ -93,17 +93,17 @@ bool ModuleGui::Start(JSONFile * module_file)
 	panel_console		= CreatePanel<PanelConsole>("Console", true);
 	panel_shortcuts		= CreatePanel<PanelShortcuts>("Shortcuts", true);
 	panel_hierarchy		= CreatePanel<PanelHierarchy>("Hirearchy", true);
-	panel_properties	= CreatePanel<PanelProperties>("Properties", true);
 	panel_configuration	= CreatePanel<PanelConfiguration>("Configuration", true);
-	panel_assets		= CreatePanel<PanelAssets>("Assets", true);
 	panel_about			= CreatePanel<PanelAbout>("About", true);
-	panel_scene			= CreatePanel<PanelScene>("Scene", true);
 	panel_resources		= CreatePanel<PanelResources>("Resources", true);
-	panel_game			= CreatePanel<PanelGame>("Game", true);
-	panel_import		= CreatePanel<PanelImport>("Import", true);
+	panel_assets		= CreatePanel<PanelAssets>("Assets", true);
+	panel_import		= CreatePanel<PanelImport>("Import", false);
 	panel_tools			= CreatePanel<PanelTools>("Tools", true);
-	panel_timeline		= CreatePanel<PanelTimeline>("Timeline", true);
+	panel_game			= CreatePanel<PanelGame>("Game", true);
+	panel_scene			= CreatePanel<PanelScene>("Scene", true);
 	panel_animator		= CreatePanel<PanelAnimator>("Animator", true);
+	panel_properties	= CreatePanel<PanelProperties>("Properties", true);
+	panel_timeline		= CreatePanel<PanelTimeline>("Timeline", true);
 	create_menu = new MenuCreateShape();
 
 	return true;

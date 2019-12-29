@@ -63,7 +63,8 @@ bool ModuleImportModel::Start(JSONFile * config)
 
 //INFO: Creates a .hinata_model (our custom format for 3d models) from an fbx
 ResourceModel * ModuleImportModel::ImportModel(
-	const char *asset_path, UID model_uid,
+	const char *asset_path,
+	UID model_uid,
 	std::vector<UID> & prev_meshes_uids,
 	std::vector<UID> & prev_textures_uids,
 	std::vector<UID>& animation_uids,
@@ -111,6 +112,7 @@ ResourceModel * ModuleImportModel::ImportModel(
 				}
 			}
 		}
+		std::unordered_set<std::string> bones;
 		std::vector<uint> mesh_texture_indices;
 		if (scene->HasMeshes())
 		{
@@ -123,9 +125,38 @@ ResourceModel * ModuleImportModel::ImportModel(
 				ResourceMesh * resource_mesh = App->import_mesh->ImportAssimpMesh(assimp_mesh, App->resource_manager->PopFirst(prev_meshes_uids), bones_uids, asset_path);
 				resource_model->meshes_uid.push_back(resource_mesh->GetUID());
 				mesh_texture_indices.push_back(resource_model->textures_uid[assimp_mesh->mMaterialIndex]);
+
+				//Insert the nodes
+				if (resource_mesh->HasBones())
+				{
+					for (int j = 0u; j < resource_mesh->num_bones; ++j)
+					{
+						bones.insert(resource_mesh->bones[j]->GetName());
+					}
+				}
 			}
 		}
 		ImportModelNodes(resource_model, scene->mRootNode, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX, float4x4::identity);
+
+		//Check which one is the root bone
+		int curr_min_gen = INT_MAX;
+		int curr_node_idx = 0;
+		for (int i = 0; i < resource_model->nodes.size(); ++i)
+		{
+			if (bones.find(resource_model->nodes[i]->name) != bones.end())
+			{
+				int curr_gen = GetGeneration(resource_model, i);
+				if (curr_gen < curr_min_gen)
+				{
+					curr_min_gen = curr_gen;
+					curr_node_idx = i;
+				}
+			}
+		}
+		//TODO: Allow for more than one skeleton root (if there are various skeletons in the scene)
+		resource_model->root_bones.push_back(resource_model->nodes[curr_node_idx]->parent_index);
+		//All children on the bones hierarchy are going to be bones??? You could add a sword in it
+
 		if (scene->HasAnimations())
 		{
 			resource_model->animations_uid.reserve(scene->mNumAnimations);
@@ -191,6 +222,18 @@ void ModuleImportModel::LoadModelMeta(ResourceModel * model, const char * meta_p
 	//TODO: Create objects forcing their uids
 	//App->resource_manager->CreateResource<ResourceModel>(uid);
 	//meta_file.CloseFile();
+}
+
+//How many steps has it had to go through to find the parent bone
+int ModuleImportModel::GetGeneration(ResourceModel * resource_model, int node_idx)
+{
+	int gen = 0;
+	while (resource_model->nodes[node_idx]->parent_index != INVALID_MODEL_ARRAY_INDEX)
+	{
+		node_idx = resource_model->nodes[node_idx]->parent_index;
+		gen++;
+	}
+	return gen;
 }
 
 bool ModuleImportModel::ImportModelNodes(ResourceModel * resource_model, aiNode * node, const std::vector<uint> & mesh_texture_idxs, uint parent_index, float4x4 curr_transformation)
@@ -357,7 +400,6 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 				ComponentMaterial * component_material = new_gameobject->GetComponent<ComponentMaterial>();
 				component_material->SetTexture((ResourceTexture*)App->resource_manager->GetResource(resource_model->nodes[i]->material_uid));
 			}
-			
 		}
 		model_gameobjects.push_back(new_gameobject);
 	}
@@ -371,10 +413,18 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 		}
 	}
 
+	
 	if (resource_model->animations_uid.size() > 0u)
 	{
 		ComponentAnimator * animator = model_gameobjects[0]->CreateComponent<ComponentAnimator>();
-
+		for (auto iter = resource_model->root_bones.begin(); iter != resource_model->root_bones.end(); ++iter)
+		{
+			ComponentTransform* root_transform = model_gameobjects[0]->transform->Find(resource_model->nodes[(*iter)]->name);
+			if (root_transform != nullptr)
+			{
+				animator->root_nodes.push_back(root_transform);
+			}
+		}
 		//TODO Delete this part- We are not going to add clips directly to component Animator;
 		for (auto iter = resource_model->animations_uid.begin(); iter != resource_model->animations_uid.end(); ++iter)
 		{
@@ -390,7 +440,8 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 	//Set the root of the model to the scene
 	model_gameobjects[0]->transform->SetParent(parent);
 
-	resource_model->StopUsingResource();
+	//resource_model->StopUsingResource();
+	//TODO: Remove the resource when the animator is destroyed (it's the only one that makes use of it right now)
 }
 
 bool ModuleImportModel::CleanUp()

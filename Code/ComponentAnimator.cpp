@@ -3,11 +3,12 @@
 #include "imgui/imgui.h"
 #include "Application.h"
 #include "ModuleTime.h"
+
 #include "GameObject.h"
 #include "ComponentTransform.h"
+
 #include "imgui/imgui_timeline.h"
 #include "ModuleResourceManager.h"
-#include "Resource.h"
 
 #include "glew\include\GL\glew.h"
 #include "Globals.h"
@@ -24,13 +25,14 @@ void ComponentAnimator::AddClip(ResourceAnimation *clip)
 	//TODO: Check is not a duplicate
 	if (clip != nullptr)
 	{
-		AnimatorNode *node = new AnimatorNode("New node");//We need to Load the resource first before getting its name (that's done inside SetClip() > StartUsingResource() > LoadData())
+		AnimatorNode *node = new AnimatorNode("New node"); //We need to Load the resource first before getting its name (that's done inside SetClip() > StartUsingResource() > LoadData())
 		node->SetClip(clip);
 		node->name = clip->GetName() + std::string(" | ") + clip->asset_source;
 		//TODO remove this later
 		if (nodes.size() == 0)
 		{
-			index = 0;
+			
+				curr_node_idx = 0;
 			current_animation_node = node;
 		}
 		nodes.push_back(node);
@@ -62,13 +64,13 @@ void ComponentAnimator::PropertiesEditor()
 		{
 			//TODO: Don't search for clips each time
 			//TODO: Don't use the string to compare the type of the clip
-			std::vector<ResourceAnimation*> all_clips;
+			std::vector<ResourceAnimation *> all_clips;
 			//Collect all the clips
 			for (auto iter = App->resource_manager->resources.begin(); iter != App->resource_manager->resources.end(); ++iter)
 			{
 				if (strcmp((*iter).second->GetTypeString(), "animation") == 0)
 				{
-					all_clips.push_back((ResourceAnimation*)(*iter).second);
+					all_clips.push_back((ResourceAnimation *)(*iter).second);
 				}
 			}
 
@@ -94,25 +96,25 @@ void ComponentAnimator::OnUpdate(float dt)
 		ResourceAnimation *resource_animation = current_animation_node->GetClip();
 		if (resource_animation != nullptr)
 		{
-			current_animation_node->current_time += App->GetDt()*current_animation_node->speed;
+			current_animation_node->current_time += App->GetDt() * current_animation_node->speed;
 			double current_time_ticks = current_animation_node->current_time * resource_animation->GetTicksPerSecond();
 			//----
 			// Do transition to next animation
 			if (!current_animation_node->loop && nodes.size() > 1 && !start_transition && current_animation_node->current_time >= resource_animation->GetDuration())
 			{
-					if ((index + 1) < nodes.size())
-					{
-						++index;
-					}
-					else
-					{
-						index = 0;
-					}
-					next_node = nodes.at(index);
-					SaveBonesState(current_bones, current_animation_node, current_time_ticks);
-					SaveBonesState(next_bones, next_node, 0);
-					start_transition = true;
-					return;
+				if ((curr_node_idx + 1) < nodes.size())
+				{
+					++curr_node_idx;
+				}
+				else
+				{
+					curr_node_idx = 0;
+				}
+				next_node = nodes.at(curr_node_idx);
+				SaveBonesState(current_bones, current_animation_node, current_time_ticks);
+				SaveBonesState(next_bones, next_node, 0);
+				start_transition = true;
+				return;
 			}
 			// Do loop or mantein at the end, the last one only happens if there is only one animation
 			else if (current_animation_node->current_time >= resource_animation->GetDuration())
@@ -129,7 +131,14 @@ void ComponentAnimator::OnUpdate(float dt)
 
 			if (start_transition)
 			{
+
+				time_of_transition += App->GetDt();
 				DoTransition();
+				if (time_of_transition > 1)
+				{
+					start_transition = false;
+					time_of_transition = 0;
+				}
 			}
 			else
 			{
@@ -139,7 +148,7 @@ void ComponentAnimator::OnUpdate(float dt)
 	}
 }
 
-void ComponentAnimator::MoveBones(ResourceAnimation * resource_animation, double current_time_ticks)
+void ComponentAnimator::MoveBones(ResourceAnimation *resource_animation, double current_time_ticks)
 {
 	uint num_channels = resource_animation->GetNumChannels();
 	AnimationChannels *channels = resource_animation->GetChannels();
@@ -155,7 +164,7 @@ void ComponentAnimator::MoveBones(ResourceAnimation * resource_animation, double
 			{
 				position_key = bone->GetPosition();
 			}
-			float3 scale_key = { 1,1,1 };
+			float3 scale_key = {1, 1, 1};
 			if (!channel.GetKeyScale(current_time_ticks, scale_key))
 			{
 				scale_key = bone->GetScale();
@@ -166,11 +175,6 @@ void ComponentAnimator::MoveBones(ResourceAnimation * resource_animation, double
 			{
 				rotation_key = bone->GetRotation();
 			}
-			else
-			{
-				transition_time = false;
-			}
-
 			bone->SetTransform(position_key, scale_key, rotation_key);
 		}
 	}
@@ -178,7 +182,38 @@ void ComponentAnimator::MoveBones(ResourceAnimation * resource_animation, double
 
 void ComponentAnimator::DoTransition()
 {
+	for (auto iter = root_nodes.begin(); iter != root_nodes.end(); ++iter)
+	{
+		IterateBonesTransition((*iter), time_of_transition);
+	}
+}
 
+void ComponentAnimator::IterateBonesTransition(ComponentTransform* iter, float time)
+{
+	const char* bone_name = iter->gameobject->GetName();
+	auto start_key = current_bones.find(bone_name);
+	auto end_key = next_bones.find(bone_name);
+	trs start_trans(iter->GetPosition(),iter->GetScale(), iter->GetRotation());
+	trs end_trans = start_trans;
+	trs result;
+	if (start_key != current_bones.end())
+	{
+		start_trans = (*start_key).second;
+	}
+	if (end_key != next_bones.end())
+	{
+		end_trans = (*end_key).second;
+	}
+	result.pos = start_trans.pos.Lerp(end_trans.pos, time);
+	result.scale = start_trans.scale.Lerp(end_trans.scale, time);
+	result.rot = start_trans.rot.Slerp(end_trans.rot, time);
+	iter->SetTransform(result.pos, result.scale, result.rot);
+
+	std::vector<ComponentTransform*> childs = (*iter).GetChildren();
+	for (auto child = childs.begin(); child != childs.end(); ++child)
+	{
+		IterateBonesTransition((*child), time);
+	}
 }
 
 void ComponentAnimator::OnPostUpdate()
@@ -219,17 +254,17 @@ void ComponentAnimator::DrawBoneRecursive(ComponentTransform *bone) const
 	}
 }
 
-void ComponentAnimator::SaveBonesState(std::map<const char*, trs>& map, AnimatorNode * node, double current_time_ticks)
+void ComponentAnimator::SaveBonesState(std::map<const char *, trs> &map, AnimatorNode *node, double current_time_ticks)
 {
-	ResourceAnimation* clip = current_animation_node->GetClip();
-	AnimationChannels* channels = clip->GetChannels();
+	ResourceAnimation *clip = current_animation_node->GetClip();
+	AnimationChannels *channels = clip->GetChannels();
 	map.clear();
 	for (uint i = 0; i < clip->GetNumChannels(); ++i)
 	{
 		AnimationChannels channel = channels[i];
 		float3 position_key;
 		channel.GetKeyPosition(current_time_ticks, position_key);
-		float3 scale_key = { 1,1,1 };
+		float3 scale_key = {1, 1, 1};
 		channel.GetKeyScale(current_time_ticks, scale_key);
 		Quat rotation_key;
 		channel.GetKeyRotation(current_time_ticks, rotation_key);
@@ -262,6 +297,7 @@ ComponentTransform *ComponentAnimator::GetBoneByName(const std::string &bone_nam
 void ComponentAnimator::CleanUp()
 {
 }
+
 
 void AnimatorNode::SetClip(ResourceAnimation *clip)
 {

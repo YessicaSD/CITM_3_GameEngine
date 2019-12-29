@@ -261,7 +261,7 @@ void ComponentTransform::SetGlobalMatrix(const float4x4& matrix)
 
 std::vector<ComponentTransform*> ComponentTransform::GetChildren()
 {
-	return 	children;;
+	return 	children;
 }
 
 void ComponentTransform::SetLocalMatrix(const float4x4 & matrix)

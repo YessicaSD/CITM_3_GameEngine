@@ -36,7 +36,7 @@ PanelAnimator::PanelAnimator(std::string name, bool active, std::vector<SDL_Scan
 void PanelAnimator::Draw()
 {
 
-	ImGui::Begin("Animator");
+	//ImGui::Begin("Animator");
 	static bool g_FirstFrame = true;
 	ed::SetCurrentEditor(App->gui->g_Context);
 
@@ -111,7 +111,7 @@ void PanelAnimator::Draw()
 
 		ed::SetCurrentEditor(nullptr);
 
-		ImGui::End();
+		//ImGui::End();
 		g_FirstFrame = false;
 
 }
