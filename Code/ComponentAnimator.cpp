@@ -56,6 +56,7 @@ void ComponentAnimator::ChangeCurrentNode(AnimatorNode * new_node)
 			if ((*i) == new_node)
 			{
 				curr_node_idx = index = (i - nodes.begin());
+				break;
 			}
 		}
 		if (index != -1)

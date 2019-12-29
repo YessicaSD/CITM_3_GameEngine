@@ -501,7 +501,10 @@ void ModuleScene::LoadStreetScene()
 	{
 		LOG((std::string(character_attack_path) + " not found, make sure it's on the assets folder.").c_str());
 	}
-
+	if (character_animator && idle)
+	{
+		character_animator->AddClip(idle->GetClip());
+	}
 	//Walk
 	const char * character_walk_path = "Assets/run.dae";
 	JSONFile charater_walk_meta;
