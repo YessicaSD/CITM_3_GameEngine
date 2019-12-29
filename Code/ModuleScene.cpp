@@ -458,7 +458,7 @@ void ModuleScene::LoadStreetScene()
 	if (street != nullptr)
 	{
 		GameObject* go_street = App->import_model->CreateGameObjectFromModel(street, root_gameobject->transform);
-		go_street->transform->SetScale(float3(3.f, 3.f, 3.f));
+		go_street->transform->SetScale(float3(20, 20, 20.f));
 	}
 	else
 	{

@@ -26,7 +26,7 @@
     "Resource Manager": {},
     "Scene": {},
     "Camera 3D": {
-        "move speed": 10,
+        "move speed": 100,
         "rotate speed": 25
     },
     "Gui": {},
