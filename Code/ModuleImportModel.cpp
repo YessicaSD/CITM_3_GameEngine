@@ -154,8 +154,11 @@ ResourceModel * ModuleImportModel::ImportModel(
 			}
 		}
 		//TODO: Allow for more than one skeleton root (if there are various skeletons in the scene)
+		//Instead of int curr_node_idx make a std::vector
+		//If it's == add it
+		//If it's > clear the vector and add it
 		resource_model->root_bones.push_back(resource_model->nodes[curr_node_idx]->parent_index);
-		//All children on the bones hierarchy are going to be bones??? You could add a sword in it
+		//TODO: Check if all children on the bones hierarchy are going to be bones? You could add a sword in it.
 
 		if (scene->HasAnimations())
 		{

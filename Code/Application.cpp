@@ -40,12 +40,12 @@ Application::Application()
 	AddModule(import_texture = new ModuleImportTexture("Import Textures"));
 	AddModule(import_mesh = new ModuleImportMesh("Import Mesh"));
 	AddModule(time = new ModuleTime("Time"));
-	AddModule(scene = new ModuleScene("Scene"));
 	AddModule(import_model = new ModuleImportModel("Import Model"));
 	AddModule(import_bone = new ModuleImportBone("Import Bone"));
-	AddModule(camera = new ModuleCamera3D("Camera 3D"));
 	//AddModule(audio = new ModuleAudio("Audio"));
 	AddModule(resource_manager = new ModuleResourceManager("Resource Manager"));
+	AddModule(scene = new ModuleScene("Scene"));
+	AddModule(camera = new ModuleCamera3D("Camera 3D"));
 	AddModule(gui = new ModuleGui("Gui"));
 	// Renderer last!
 	AddModule(renderer3D = new ModuleRenderer3D("Render"));

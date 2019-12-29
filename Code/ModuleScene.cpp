@@ -19,45 +19,49 @@
 #include "ModuleInput.h"
 #include "ModuleImportModel.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h"
+
 #include "RaycastHit.h"
 #include "ComponentMaterial.h"
+#include "ResourceModel.h"
 
 #include "imGuizmo/ImGuizmo.h"
 #include "Event.h"
 #include <map>
 #include "parson\parson.h"
 
-ModuleScene::ModuleScene(const char * name, bool start_enabled) :
-	Module(start_enabled, name)
+ModuleScene::ModuleScene(const char *name, bool start_enabled) : Module(start_enabled, name)
 {
 	current_scene_name = "new_scene";
 }
 
 ModuleScene::~ModuleScene()
-{}
+{
+}
 
 // Load assets
-bool ModuleScene::Start(JSONFile * config)
+bool ModuleScene::Start(JSONFile *config)
 {
-	//LOG("Loading Intro assets");
+	bool ret = true;
+
 	root_gameobject = new GameObject("Root", nullptr);
 	CreateOctree();
 
-	bool ret = true;
-	//ResourceModel* resource_model = ;
-	//App->import_model->LoadModelMeta(&resource_model, "Assets/BakerHouse.fbx.meta");
-	//ResourceModel * resource_model = App->import_model->ImportModel("Assets/BakerHouse.fbx");
-	//App->import_model->CreateGameObjectFromModel(resource_model, App->scene->root_gameobject->transform);
+	JSONFile street_meta;
+	street_meta.LoadFile(std::string("Assets/street/Street environment_V01.FBX") + "." + META_EXTENSION);
+	UID street_uid = street_meta.LoadUID("resourceUID");
+	ResourceModel *street = (ResourceModel *)App->resource_manager->GetResource(street_uid);
+	if (street != nullptr)
+	{
+		App->import_model->CreateGameObjectFromModel(street, root_gameobject->transform);
+	}
 
-
-	GameObject* object_camera = new GameObject("Main camera", root_gameobject->transform);
+	GameObject *object_camera = new GameObject("Main camera", root_gameobject->transform);
 	game_camera = object_camera->CreateComponent<ComponentCamera>();
 
 	object_camera = new GameObject("Camera", root_gameobject->transform);
 	object_camera->CreateComponent<ComponentCamera>();
 
-	
-	
 	return ret;
 }
 
@@ -67,7 +71,6 @@ bool ModuleScene::CleanUp()
 	DeleteGameObject(root_gameobject);
 	return true;
 }
-
 
 // Update: draw background
 update_status ModuleScene::Update(float dt)
@@ -87,11 +90,11 @@ update_status ModuleScene::Update(float dt)
 			App->gui->panel_scene->guizmo_op = ImGuizmo::SCALE;
 		}
 	}
-	
+
 	//TODO: Turn into a shortcut
 	if (App->input->GetKey(SDL_SCANCODE_DELETE))
 	{
-		ComponentTransform* selected_object = App->gui->GetSelectedTransform();
+		ComponentTransform *selected_object = App->gui->GetSelectedTransform();
 		if (selected_object != nullptr)
 		{
 			Event new_event(Event::DELETE_OBJECT);
@@ -107,37 +110,37 @@ update_status ModuleScene::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::GameObjectUpdateRecursive(float dt, ComponentTransform * transform)
+void ModuleScene::GameObjectUpdateRecursive(float dt, ComponentTransform *transform)
 {
 	transform->gameobject->OnUpdate(dt);
 	for (std::vector<ComponentTransform *>::iterator iter = transform->children.begin();
-		iter != transform->children.end();
-		++iter)
+		 iter != transform->children.end();
+		 ++iter)
 	{
 		GameObjectUpdateRecursive(dt, (*iter));
 	}
 }
 
-void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform * transform)
+void ModuleScene::GameObjectPostUpdateRecursive(ComponentTransform *transform)
 {
 	transform->gameobject->OnPostUpdate();
 	for (std::vector<ComponentTransform *>::iterator iter = transform->children.begin();
-		iter != transform->children.end();
-		++iter)
+		 iter != transform->children.end();
+		 ++iter)
 	{
 		GameObjectPostUpdateRecursive((*iter));
 	}
 }
-bool Compare(RaycastHit & a, RaycastHit & b)
+bool Compare(RaycastHit &a, RaycastHit &b)
 {
 	return a.distance < b.distance;
 }
 
-bool ModuleScene::IntersectRay(LineSegment * ray, RaycastHit& hit)
+bool ModuleScene::IntersectRay(LineSegment *ray, RaycastHit &hit)
 {
 	this->ray = (*ray);
 
-	std::map<float , ComponentTransform*> out_objects;
+	std::map<float, ComponentTransform *> out_objects;
 	octree.CollectIntersections(out_objects, (*ray));
 	GetIntersectBoxNonStatics(root_gameobject->transform, ray, out_objects);
 
@@ -159,12 +162,12 @@ void ModuleScene::CreateOctree()
 	octree.SetLimits(boundary);
 }
 
-void ModuleScene::GetStaticObjects(std::vector<ComponentTransform*>& static_objects)
+void ModuleScene::GetStaticObjects(std::vector<ComponentTransform *> &static_objects)
 {
 	root_gameobject->transform->GetStaticObjects(static_objects);
 }
 
-void ModuleScene::SetMainCamera(ComponentCamera * main_camera)
+void ModuleScene::SetMainCamera(ComponentCamera *main_camera)
 {
 	if (main_camera != nullptr)
 	{
@@ -173,41 +176,37 @@ void ModuleScene::SetMainCamera(ComponentCamera * main_camera)
 	}
 }
 
-
-
-void ModuleScene::DeleteGameObject(GameObject * gameobject)
+void ModuleScene::DeleteGameObject(GameObject *gameobject)
 {
 	if (gameobject)
 	{
 		gameobject->transform->DeleteChildren();
 		if (gameobject->transform->parent)
 		{
-			for (std::vector<ComponentTransform*>::iterator iter = gameobject->transform->parent->children.begin(); iter != gameobject->transform->parent->children.end(); ++iter)
+			for (std::vector<ComponentTransform *>::iterator iter = gameobject->transform->parent->children.begin(); iter != gameobject->transform->parent->children.end(); ++iter)
 			{
 				if ((*iter) == gameobject->transform)
 				{
 					gameobject->transform->parent->children.erase(iter);
 					break;
 				}
-
 			}
 		}
 		delete gameobject;
 	}
 }
 
-void ModuleScene::GetIntersectBoxNonStatics(ComponentTransform * object, LineSegment * ray, std::map<float, ComponentTransform*>& out_objects)
+void ModuleScene::GetIntersectBoxNonStatics(ComponentTransform *object, LineSegment *ray, std::map<float, ComponentTransform *> &out_objects)
 {
 	if (object->enabled && !object->is_static)
 	{
 		if (object->Intersect(*ray))
 		{
-			
-			
+
 			float near_hit, far_hit;
 			if (ray->Intersects(object->bounding_box.GetOBB(), near_hit, far_hit))
 			{
-				
+
 				out_objects[near_hit] = object;
 			}
 		}
@@ -217,12 +216,12 @@ void ModuleScene::GetIntersectBoxNonStatics(ComponentTransform * object, LineSeg
 		}
 	}
 }
-bool ModuleScene::TestWithTriangles(LineSegment * ray, std::map<float, ComponentTransform*>& out_objects, RaycastHit& hit_out)
+bool ModuleScene::TestWithTriangles(LineSegment *ray, std::map<float, ComponentTransform *> &out_objects, RaycastHit &hit_out)
 {
-	
-	for (std::map<float, ComponentTransform*>::iterator iter = out_objects.begin(); iter != out_objects.end(); ++iter)
+
+	for (std::map<float, ComponentTransform *>::iterator iter = out_objects.begin(); iter != out_objects.end(); ++iter)
 	{
-		ComponentMesh* mesh = (*iter).second->gameobject->GetComponent<ComponentMesh>();
+		ComponentMesh *mesh = (*iter).second->gameobject->GetComponent<ComponentMesh>();
 		if (mesh)
 		{
 			RaycastHit hit;
@@ -238,15 +237,15 @@ bool ModuleScene::TestWithTriangles(LineSegment * ray, std::map<float, Component
 
 void ModuleScene::LoadStaticObjects()
 {
-	std::vector<ComponentTransform*> static_objects;
+	std::vector<ComponentTransform *> static_objects;
 	root_gameobject->transform->GetStaticObjects(static_objects);
-	for (std::vector<ComponentTransform*>::iterator iter = static_objects.begin(); iter < static_objects.end(); ++iter)
+	for (std::vector<ComponentTransform *>::iterator iter = static_objects.begin(); iter < static_objects.end(); ++iter)
 	{
 		octree.Insert((*iter));
 	}
 }
 
-void ModuleScene::DrawObjects(ComponentCamera * camera)
+void ModuleScene::DrawObjects(ComponentCamera *camera)
 {
 	if (camera->frustum_culling)
 	{
@@ -258,12 +257,12 @@ void ModuleScene::DrawObjects(ComponentCamera * camera)
 	}
 }
 
-void ModuleScene::DrawWithFrustrum(ComponentCamera * camera)
+void ModuleScene::DrawWithFrustrum(ComponentCamera *camera)
 {
-	std::vector<ComponentTransform*> objects;
+	std::vector<ComponentTransform *> objects;
 	octree.CollectIntersections(objects, camera->GetFrustrum());
 	root_gameobject->transform->GetIntersectNonStatics(objects, camera->GetFrustrum());
-	for (std::vector<ComponentTransform*>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
+	for (std::vector<ComponentTransform *>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
 	{
 		(*iter)->gameobject->OnPostUpdate();
 	}
@@ -273,8 +272,8 @@ void ModuleScene::SaveScene()
 {
 	current_scene.CreateJSONFileArray();
 	for (auto iter = root_gameobject->transform->children.begin();
-		iter != root_gameobject->transform->children.end();
-		++iter)
+		 iter != root_gameobject->transform->children.end();
+		 ++iter)
 	{
 		(*iter)->gameobject->OnSave(&current_scene);
 	}
@@ -283,14 +282,14 @@ void ModuleScene::SaveScene()
 	LOG("Saved scene");
 }
 
-void ModuleScene::LoadScene(const char * scene_path)
+void ModuleScene::LoadScene(const char *scene_path)
 {
 	std::string scene_name_;
 	std::string extension_;
 	App->file_system->SplitFilePath(scene_path, nullptr, &scene_name_, &extension_);
 	size_t pos_extension = scene_name_.find(extension_);
 
-	current_scene_name = scene_name_.substr(0, pos_extension-1);
+	current_scene_name = scene_name_.substr(0, pos_extension - 1);
 	current_scene.LoadFile(scene_path);
 	if (json_value_get_type(current_scene.GetValue()) != JSONArray)
 	{
@@ -298,7 +297,7 @@ void ModuleScene::LoadScene(const char * scene_path)
 		return;
 	}
 	current_scene.LoadArray();
-	std::map<UID, GameObject*> new_gameobjects;
+	std::map<UID, GameObject *> new_gameobjects;
 	std::map<UID, UID> parent_index;
 	int number_of_objects = current_scene.GetNumberOfElement();
 	root_gameobject->transform->DeleteChildren();
@@ -307,7 +306,7 @@ void ModuleScene::LoadScene(const char * scene_path)
 	for (int i = 0; i < number_of_objects; ++i)
 	{
 		JSONFile current_object(current_scene.GetObjectArray(i));
-		GameObject* gameobject_ptr = new GameObject(std::string(current_object.LoadText("name")), nullptr, current_object.LoadUID("UID"));
+		GameObject *gameobject_ptr = new GameObject(std::string(current_object.LoadText("name")), nullptr, current_object.LoadUID("UID"));
 		gameobject_ptr->OnLoad(&current_object.GetSection("Components"));
 		new_gameobjects[gameobject_ptr->uid] = gameobject_ptr;
 		parent_index[gameobject_ptr->uid] = current_object.LoadUID("Parent UID");
@@ -316,11 +315,11 @@ void ModuleScene::LoadScene(const char * scene_path)
 	//INFO: Parent them
 	for (auto iter = new_gameobjects.begin(); iter != new_gameobjects.end(); ++iter)
 	{
-		GameObject * current_gameobject = (*iter).second;
+		GameObject *current_gameobject = (*iter).second;
 		UID parent_uid = parent_index[(*iter).first];
 		if (parent_uid != INVALID_GAMEOBJECT_UID)
 		{
-			GameObject * parent_gameobject = new_gameobjects[parent_uid];
+			GameObject *parent_gameobject = new_gameobjects[parent_uid];
 			current_gameobject->transform->SetParent(parent_gameobject->transform);
 		}
 		else
@@ -350,7 +349,6 @@ update_status ModuleScene::PostUpdate()
 	{
 		DrawObjects(App->camera->scene_camera);
 	}
-	
 
 	glLineWidth(10);
 	glColor4f(255, 0, 0, 1);
@@ -369,7 +367,7 @@ update_status ModuleScene::PostUpdate()
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::EventRequest(const Event & event)
+void ModuleScene::EventRequest(const Event &event)
 {
 	if (event.type == Event::UPDATE_OCTREE)
 	{
@@ -393,7 +391,7 @@ void ModuleScene::EventRequest(const Event & event)
 	}
 }
 
-const char * ModuleScene::GetComponentType(const uint type)
+const char *ModuleScene::GetComponentType(const uint type)
 {
 	if (type == ComponentTransform::type)
 	{
@@ -413,7 +411,7 @@ const char * ModuleScene::GetComponentType(const uint type)
 	}
 }
 
-uint ModuleScene::GetComponentType(const char * type)
+uint ModuleScene::GetComponentType(const char *type)
 {
 	if (strcmp(type, "Transform") == 0)
 	{
