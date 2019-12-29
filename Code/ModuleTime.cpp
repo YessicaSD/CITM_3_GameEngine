@@ -20,6 +20,7 @@ update_status ModuleTime::PreUpdate()
 		delta_time = 0.f;
 		break;
 	default:
+		delta_time = 0;
 		break;
 	}
 
