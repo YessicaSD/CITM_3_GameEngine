@@ -83,6 +83,10 @@ update_status ModuleScene::Update(float dt)
 				run->loop = true;
 				character_animator->ChangeCurrentNode(run);
 			}
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_STATE::KEY_UP)
+			{
+				character_animator->ChangeCurrentNode(idle);
+			}
 		}
 		
 		if (App->input->GetKey(SDL_SCANCODE_W))
