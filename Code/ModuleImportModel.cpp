@@ -157,7 +157,8 @@ ResourceModel * ModuleImportModel::ImportModel(
 		//Instead of int curr_node_idx make a std::vector
 		//If it's == add it
 		//If it's > clear the vector and add it
-		if (curr_min_gen != UINT_MAX)
+		if (curr_min_gen != UINT_MAX
+			&& resource_model->nodes[curr_node_idx]->parent_index != INVALID_MODEL_ARRAY_INDEX)
 		{
 			resource_model->root_bones.push_back(resource_model->nodes[curr_node_idx]->parent_index);
 		}
