@@ -75,11 +75,13 @@ update_status ModuleScene::Update(float dt)
 		{
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_STATE::KEY_DOWN)
 			{
-				
+				attack->loop = false;
+				character_animator->ChangeCurrentNode(attack);
 			}
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_STATE::KEY_DOWN)
 			{
-
+				run->loop = true;
+				character_animator->ChangeCurrentNode(run);
 			}
 		}
 		

@@ -46,6 +46,29 @@ AnimatorNode * ComponentAnimator::GetCurrentNode()
 	return current_animation_node;
 }
 
+void ComponentAnimator::ChangeCurrentNode(AnimatorNode * new_node)
+{
+	if (current_animation_node != new_node)
+	{
+		int index = -1;
+		for (auto i = nodes.begin(); i != nodes.end(); ++i)
+		{
+			if ((*i) == new_node)
+			{
+				curr_node_idx = index = (i - nodes.begin());
+			}
+		}
+		if (index != -1)
+		{
+			next_node = new_node;
+			transition_time = 0;
+			start_transition = true;
+			SaveBonesState(current_bones, current_animation_node, current_animation_node->current_time * current_animation_node->GetClip()->GetTicksPerSecond());
+			SaveBonesState(next_bones, next_node, 0.);
+		}
+	}
+}
+
 void ComponentAnimator::PropertiesEditor()
 {
 	ImGui::Separator();
