@@ -30,7 +30,7 @@ void ComponentAnimator::AddClip(ResourceAnimation *clip)
 		//TODO remove this later
 		if (nodes.size() == 0)
 		{
-			index = 0;
+			curr_node_idx = 0;
 			current_animation_node = node;
 		}
 		nodes.push_back(node);
@@ -100,17 +100,17 @@ void ComponentAnimator::OnUpdate(float dt)
 				else if(nodes.size()>1)
 				{
 					
-					if ((index + 1) < nodes.size())
+					if ((curr_node_idx + 1) < nodes.size())
 					{
-						++index;
+						++curr_node_idx;
 					}
 					else
 					{
-						index = 0;
+						curr_node_idx = 0;
 						resource_animation->GetDuration();
 					}
 					current_animation_node->current_time = 0;
-					current_animation_node = nodes.at(index);
+					current_animation_node = nodes.at(curr_node_idx);
 				}
 				else
 				{

@@ -2,6 +2,7 @@
 #define __IMGUI_TIMELINE_H__
 
 #include "imconfig.h"
+#include <string>
 
 //Timeline implementation for imgui
 //Taken from
@@ -11,7 +12,7 @@
 namespace ImGui
 {
 	bool BeginTimeline(const char* str_id, float max_value);
-	bool TimelineEvent(const char* str_id, float* values);
+	bool TimelineChannel(const char * channel_name, std::string * tooltips, float* values, int num_values);
 	void TimelineMarker(float curr_time);
 	void EndTimeline();
 }

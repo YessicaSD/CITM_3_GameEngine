@@ -38,6 +38,7 @@ public:
 	bool GetKeyRotation(double time, Quat& value);
 	bool GetKeyScale(double time, float3& value);
 
+	friend class PanelTimeline;
 	friend class ResourceAnimation;
 };
 
@@ -70,6 +71,7 @@ private:
 	uint num_channels = 0u;
 	AnimationChannels* channels = nullptr;
 	
+	friend class PanelTimeline;
 	friend class ModuleImportModel;
 };
 #endif // !RESOURCE_ANIMATION_H_
