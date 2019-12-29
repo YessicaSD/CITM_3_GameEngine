@@ -20,7 +20,7 @@ ComponentAnimator::ComponentAnimator(GameObject *attached_object) : Component(at
 	name = "Animator";
 };
 
-void ComponentAnimator::AddClip(ResourceAnimation *clip)
+AnimatorNode* ComponentAnimator::AddClip(ResourceAnimation *clip)
 {
 	//TODO: Check is not a duplicate
 	if (clip != nullptr)
@@ -36,7 +36,9 @@ void ComponentAnimator::AddClip(ResourceAnimation *clip)
 			current_animation_node = node;
 		}
 		nodes.push_back(node);
+		return node;
 	}
+	return nullptr;
 }
 
 void ComponentAnimator::PropertiesEditor()
@@ -302,6 +304,11 @@ ComponentTransform *ComponentAnimator::GetBoneByName(const std::string &bone_nam
 
 void ComponentAnimator::CleanUp()
 {
+	for (auto node = nodes.begin(); node != nodes.end(); ++node)
+	{
+		RELEASE(*node);
+	}
+	nodes.clear();
 }
 
 

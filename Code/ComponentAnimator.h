@@ -59,7 +59,7 @@ private:
 
 public:
 	ComponentAnimator(GameObject *attached_object);
-	void AddClip(ResourceAnimation *clip);
+	AnimatorNode* AddClip(ResourceAnimation *clip);
 	//TODO: RemoveClip
 	void PropertiesEditor() override;
 	void OnUpdate(float dt) override;
