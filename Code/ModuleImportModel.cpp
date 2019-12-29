@@ -139,21 +139,21 @@ ResourceModel * ModuleImportModel::ImportModel(
 		ImportModelNodes(resource_model, scene->mRootNode, mesh_texture_indices, INVALID_MODEL_ARRAY_INDEX, float4x4::identity);
 
 		int root_bone_node_idx = INT_MAX;
+		//If we find a bone that doesn't have a parent as a bone, that's the root node
 		for (int i  = 0; i < resource_model->nodes.size(); ++i)
 		{
-			if (resource_model->nodes[i]->parent_index != INVALID_MODEL_ARRAY_INDEX)
+			if (mesh_bones.find(resource_model->nodes[i]->name) != mesh_bones.end())
 			{
-				if (mesh_bones.find(resource_model->nodes[resource_model->nodes[i]->parent_index]->name) == mesh_bones.end())
+				if (resource_model->nodes[i]->parent_index != INVALID_MODEL_ARRAY_INDEX)
 				{
-					root_bone_node_idx = i;
+					if (mesh_bones.find(resource_model->nodes[resource_model->nodes[i]->parent_index]->name) == mesh_bones.end())
+					{
+						root_bone_node_idx = i;
+					}
 				}
 			}
 		}
 
-		//All children on the bones hierarchy are going to be bones??? You could add a sword in it
-
-		//TODO: Allow for the possibility to be no root_bone
-		//TODO: Allow for the possibility to have 2 root_bones?
 		if (scene->HasAnimations())
 		{
 			resource_model->animations_uid.reserve(scene->mNumAnimations);
