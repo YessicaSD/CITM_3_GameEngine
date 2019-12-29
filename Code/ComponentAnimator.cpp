@@ -137,11 +137,13 @@ void ComponentAnimator::OnUpdate(float dt)
 				time_of_transition += 0.01f;
 				DoTransition();
 				LOG("%f", time_of_transition);
-				//if (time_of_transition > 1)
-				//{
-				//	start_transition = false;
-				//	time_of_transition = 0;
-				//}
+				if (time_of_transition > 1)
+				{
+					current_animation_node = next_node;
+					start_transition = false;
+					time_of_transition = 0;
+
+				}
 			}
 			else
 			{
