@@ -222,7 +222,10 @@ void ComponentAnimator::OnPostUpdate()
 
 	//Go throgh all the childs recursively and draw a line between the parent and the children
 
-	DrawBoneRecursive(gameobject->transform);
+	for (auto root_bone = root_nodes.begin(); root_bone != root_nodes.end(); ++root_bone)
+	{
+		DrawBoneRecursive((*root_bone));
+	}
 
 	//Draw
 	//glEnableClientState(GL_VERTEX_ARRAY);

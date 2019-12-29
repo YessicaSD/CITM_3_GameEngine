@@ -21,14 +21,14 @@
     "Import Textures": {},
     "Import Mesh": {},
     "Time": {},
-    "Scene": {},
     "Import Model": {},
     "Import Bone": {},
-    "Camera 3D": {
-        "move speed": 25,
-        "rotate speed": 125
-    },
     "Resource Manager": {},
+    "Scene": {},
+    "Camera 3D": {
+        "move speed": 10,
+        "rotate speed": 25
+    },
     "Gui": {},
     "Render": {
         "depth test": true,
