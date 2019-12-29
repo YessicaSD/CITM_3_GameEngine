@@ -1,9 +1,10 @@
-# CITM_3_GameEngine
+# Hinata Engine
 A 3D game engine created in the third year of our Videogame Design and Development degree.
 
 # Instructions:
 
 ## Skeletal animation
+- Press the Play button on the top left.
 - Pressing “1” the character performs an attack.
 - Pressing “2” the character should trigger a walk loop in place until the key is released.
 
@@ -78,7 +79,7 @@ https://github.com/JaumeMontagut
 ## Find respository at:
 https://github.com/YessicaSD/CITM_3_GameEngine
 
-## See the web at:
+## See the website at:
 https://earlybirdsgames.wixsite.com/hinata-engine
 
 ## Libraries used:
