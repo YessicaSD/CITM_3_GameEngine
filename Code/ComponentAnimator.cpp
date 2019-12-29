@@ -117,7 +117,7 @@ void ComponentAnimator::OnUpdate(float dt)
 				return;
 			}
 			// Do loop or mantein at the end, the last one only happens if there is only one animation
-			else if (current_animation_node->current_time >= resource_animation->GetDuration())
+			else if (!start_transition && current_animation_node->current_time >= resource_animation->GetDuration())
 			{
 				if (current_animation_node->loop)
 				{
@@ -132,13 +132,14 @@ void ComponentAnimator::OnUpdate(float dt)
 			if (start_transition)
 			{
 
-				time_of_transition += App->GetDt();
+				time_of_transition += 0.01f;
 				DoTransition();
-				if (time_of_transition > 1)
-				{
-					start_transition = false;
-					time_of_transition = 0;
-				}
+				LOG("%f", time_of_transition);
+				//if (time_of_transition > 1)
+				//{
+				//	start_transition = false;
+				//	time_of_transition = 0;
+				//}
 			}
 			else
 			{
@@ -175,6 +176,7 @@ void ComponentAnimator::MoveBones(ResourceAnimation *resource_animation, double 
 			{
 				rotation_key = bone->GetRotation();
 			}
+
 			bone->SetTransform(position_key, scale_key, rotation_key);
 		}
 	}
@@ -190,7 +192,7 @@ void ComponentAnimator::DoTransition()
 
 void ComponentAnimator::IterateBonesTransition(ComponentTransform* iter, float time)
 {
-	const char* bone_name = iter->gameobject->GetName();
+	std::string bone_name = iter->gameobject->GetName();
 	auto start_key = current_bones.find(bone_name);
 	auto end_key = next_bones.find(bone_name);
 	trs start_trans(iter->GetPosition(),iter->GetScale(), iter->GetRotation());
@@ -256,7 +258,7 @@ void ComponentAnimator::DrawBoneRecursive(ComponentTransform *bone) const
 
 void ComponentAnimator::SaveBonesState(std::map<std::string, trs> &map, AnimatorNode *node, double current_time_ticks)
 {
-	ResourceAnimation *clip = current_animation_node->GetClip();
+	ResourceAnimation *clip = node->GetClip();
 	AnimationChannels *channels = clip->GetChannels();
 	map.clear();
 	for (uint i = 0; i < clip->GetNumChannels(); ++i)
