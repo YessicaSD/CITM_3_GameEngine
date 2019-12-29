@@ -16,11 +16,14 @@
 
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "imGuizmo/ImGuizmo.h"
+
+#include "ComponentCamera.h"
+
 class JSONFile;
 struct ImVec4;
 struct Event;
-#include "ComponentCamera.h"
-
+class AnimatorNode;
+class ComponentAnimator;
 class ModuleScene : public Module
 {	
 public:
@@ -64,7 +67,10 @@ public:
 	GameObject* root_gameobject = nullptr;
 	ComponentCamera* game_camera = nullptr;
 	GameObject * character = nullptr;
-
+	ComponentAnimator* character_animator = nullptr;
+	AnimatorNode* idle = nullptr;
+	AnimatorNode* attack = nullptr;
+	AnimatorNode* run = nullptr;
 	friend class ModuleRender3D;
 };
 

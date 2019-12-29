@@ -71,6 +71,18 @@ update_status ModuleScene::Update(float dt)
 {
 	if (!App->gui->panel_scene->is_being_used)
 	{
+		if (character != nullptr)
+		{
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_STATE::KEY_DOWN)
+			{
+				
+			}
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_STATE::KEY_DOWN)
+			{
+
+			}
+		}
+		
 		if (App->input->GetKey(SDL_SCANCODE_W))
 		{
 			App->gui->panel_scene->guizmo_op = ImGuizmo::TRANSLATE;
@@ -185,6 +197,10 @@ void ModuleScene::DeleteGameObject(GameObject *gameobject)
 					break;
 				}
 			}
+		}
+		if (gameobject == character)
+		{
+			character = nullptr;
 		}
 		delete gameobject;
 	}
@@ -435,7 +451,8 @@ void ModuleScene::LoadStreetScene()
 	ResourceModel * street = (ResourceModel*)App->resource_manager->GetResource(street_uid);
 	if (street != nullptr)
 	{
-		App->import_model->CreateGameObjectFromModel(street, root_gameobject->transform);
+		GameObject* go_street = App->import_model->CreateGameObjectFromModel(street, root_gameobject->transform);
+		go_street->transform->SetScale(float3(3.f, 3.f, 3.f));
 	}
 	else
 	{
@@ -451,7 +468,9 @@ void ModuleScene::LoadStreetScene()
 	if (character_idle != nullptr)
 	{
 		character = App->import_model->CreateGameObjectFromModel(character_idle, root_gameobject->transform);
-		character->transform->SetScale(float3(0.1f, 0.1f, 0.1f));
+		character->transform->SetScale(float3(1.f, 1.f, 1.f));
+		character_animator = character->GetComponent<ComponentAnimator>();
+		idle = character_animator->GetCurrentNode();
 	}
 	else
 	{
@@ -469,7 +488,7 @@ void ModuleScene::LoadStreetScene()
 		character_attack->StartUsingResource();
 		for (auto iter = character_attack->animations_uid.begin(); iter != character_attack->animations_uid.end(); ++iter)
 		{
-			character->GetComponent<ComponentAnimator>()->AddClip((ResourceAnimation*)App->resource_manager->GetResource((*iter)));
+			attack = character_animator->AddClip((ResourceAnimation*)App->resource_manager->GetResource((*iter)));
 		}
 	}
 	else
@@ -488,7 +507,7 @@ void ModuleScene::LoadStreetScene()
 		character_walk->StartUsingResource();
 		for (auto iter = character_walk->animations_uid.begin(); iter != character_walk->animations_uid.end(); ++iter)
 		{
-			character->GetComponent<ComponentAnimator>()->AddClip((ResourceAnimation*)App->resource_manager->GetResource((*iter)));
+			run = character->GetComponent<ComponentAnimator>()->AddClip((ResourceAnimation*)App->resource_manager->GetResource((*iter)));
 		}
 	}
 	else

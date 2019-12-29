@@ -64,7 +64,7 @@ ComponentTransform * ComponentTransform::Find(const char * name)
 
 void ComponentTransform::OnPostUpdate()
 {
-	DrawAxis();
+	//DrawAxis();
 	bounding_box.Draw();
 }
 

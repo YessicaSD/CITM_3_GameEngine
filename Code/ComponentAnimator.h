@@ -54,12 +54,13 @@ private:
 	void SaveBonesState(std::map<std::string, trs>& map, AnimatorNode* node, double current_time_ticks);
 	void MoveBones(ResourceAnimation * resource_animation, double current_time_ticks);
 	void DoTransition();
-
 	void IterateBonesTransition(ComponentTransform * iter, float time);
 
 public:
 	ComponentAnimator(GameObject *attached_object);
-	void AddClip(ResourceAnimation *clip);
+	AnimatorNode* AddClip(ResourceAnimation *clip);
+	AnimatorNode* GetCurrentNode();
+	
 	//TODO: RemoveClip
 	void PropertiesEditor() override;
 	void OnUpdate(float dt) override;
@@ -68,13 +69,14 @@ public:
 	ComponentTransform *GetBoneByName(const std::string &bone_name);
 	void CleanUp() override;
 	std::vector<ComponentTransform*> root_nodes;
+
 private:
 	std::map<std::string, trs> current_bones;
 	std::map<std::string, trs> next_bones;
 	AnimatorNode* current_animation_node = nullptr;
 	AnimatorNode* next_node = nullptr;
 	uint curr_node_idx = 0;
-	
+
 	std::vector<AnimatorNode *> nodes;
 	std::map<std::string, ComponentTransform *> bones;
 	float transition_time = 1; //seconds
