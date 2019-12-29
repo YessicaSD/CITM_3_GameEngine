@@ -48,6 +48,7 @@ private:
 	void GetIntersectBoxNonStatics(ComponentTransform * object, LineSegment* ray, std::map<float, ComponentTransform*>& out_objects);
 	bool TestWithTriangles(LineSegment * ray, std::map<float, ComponentTransform*>& out_objects, RaycastHit& hit_out);
 	void LoadStaticObjects();
+	void LoadStreetScene();
 
 	void DrawObjects(ComponentCamera* camera);
 	void DrawWithFrustrum(ComponentCamera* camera);
@@ -62,6 +63,8 @@ public:
 	//All gameobjects are children of the root gameobject
 	GameObject* root_gameobject = nullptr;
 	ComponentCamera* game_camera = nullptr;
+	GameObject * character = nullptr;
+
 	friend class ModuleRender3D;
 };
 

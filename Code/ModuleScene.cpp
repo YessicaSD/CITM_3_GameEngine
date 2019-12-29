@@ -22,6 +22,7 @@
 #include "RaycastHit.h"
 #include "ComponentMaterial.h"
 #include "ResourceModel.h"
+#include "ComponentAnimator.h"
 
 #include "imGuizmo/ImGuizmo.h"
 #include "Event.h"
@@ -45,19 +46,7 @@ bool ModuleScene::Start(JSONFile * config)
 	root_gameobject = new GameObject("Root", nullptr);
 	CreateOctree();
 
-	JSONFile street_meta;
-	street_meta.LoadFile(std::string("Assets/street/Street environment_V01.FBX") + "." + META_EXTENSION);
-	UID street_uid = street_meta.LoadUID("resourceUID");
-	ResourceModel * street = (ResourceModel*)App->resource_manager->GetResource(street_uid);
-	if (street != nullptr)
-	{
-		App->import_model->CreateGameObjectFromModel(street, root_gameobject->transform);
-	}
-
-	//ResourceModel * resource_model = App->import->ImportModel("Assets/BakerHouse.fbx");
-	//App->import->CreateGameObjectFromModel(resource_model, App->scene->root_gameobject->transform);
-
-	//App->import->LoadModelMeta(resource_model, "Assets/BakerHouse.fbx.meta");
+	LoadStreetScene();
 
 	GameObject* object_camera = new GameObject("Main camera", root_gameobject->transform);
 	game_camera = object_camera->CreateComponent<ComponentCamera>();
@@ -436,5 +425,77 @@ uint ModuleScene::GetComponentType(const char * type)
 	else if (strcmp(type, "Camera") == 0)
 	{
 		return ComponentCamera::type;
+	}
+}
+
+void ModuleScene::LoadStreetScene()
+{
+	//Street scene
+	const char * street_path = "Assets/street/Street environment_V01.FBX";
+	JSONFile street_meta;
+	street_meta.LoadFile(std::string(street_path) + "." + META_EXTENSION);
+	UID street_uid = street_meta.LoadUID("resourceUID");
+	ResourceModel * street = (ResourceModel*)App->resource_manager->GetResource(street_uid);
+	if (street != nullptr)
+	{
+		App->import_model->CreateGameObjectFromModel(street, root_gameobject->transform);
+	}
+	else
+	{
+		LOG((std::string(street_path) + " not found, make sure it's on the assets folder.").c_str());
+	}
+
+	//Character + Idle Animation
+	const char * character_idle_path = "Assets/Skeleton@Idle.FBX";
+	JSONFile character_idle_meta;
+	character_idle_meta.LoadFile(std::string(character_idle_path) + "." + META_EXTENSION);
+	UID character_idle_uid = character_idle_meta.LoadUID("resourceUID");
+	ResourceModel * character_idle = (ResourceModel*)App->resource_manager->GetResource(character_idle_uid);
+	if (character_idle != nullptr)
+	{
+		character = App->import_model->CreateGameObjectFromModel(character_idle, root_gameobject->transform);
+		character->transform->SetScale(float3(0.1f, 0.1f, 0.1f));
+	}
+	else
+	{
+		LOG((std::string(character_idle_path) + " not found, make sure it's on the assets folder.").c_str());
+	}
+
+	//Attack
+	const char * character_attack_path = "Assets/Skeleton@Attack.FBX";
+	JSONFile character_attack_meta;
+	character_attack_meta.LoadFile(std::string(character_attack_path) + "." + META_EXTENSION);
+	UID character_attack_uid = character_attack_meta.LoadUID("resourceUID");
+	ResourceModel * character_attack = (ResourceModel*)App->resource_manager->GetResource(character_attack_uid);
+	if (character_attack != nullptr)
+	{
+		character_attack->StartUsingResource();
+		for (auto iter = character_attack->animations_uid.begin(); iter != character_attack->animations_uid.end(); ++iter)
+		{
+			character->GetComponent<ComponentAnimator>()->AddClip((ResourceAnimation*)App->resource_manager->GetResource((*iter)));
+		}
+	}
+	else
+	{
+		LOG((std::string(character_attack_path) + " not found, make sure it's on the assets folder.").c_str());
+	}
+
+	//Walk
+	const char * character_walk_path = "Assets/Skeleton@Run.FBX";
+	JSONFile charater_walk_meta;
+	charater_walk_meta.LoadFile(std::string(character_walk_path) + "." + META_EXTENSION);
+	UID character_walk_uid = charater_walk_meta.LoadUID("resourceUID");
+	ResourceModel * character_walk = (ResourceModel*)App->resource_manager->GetResource(character_walk_uid);
+	if (character_walk != nullptr)
+	{
+		character_walk->StartUsingResource();
+		for (auto iter = character_walk->animations_uid.begin(); iter != character_walk->animations_uid.end(); ++iter)
+		{
+			character->GetComponent<ComponentAnimator>()->AddClip((ResourceAnimation*)App->resource_manager->GetResource((*iter)));
+		}
+	}
+	else
+	{
+		LOG((std::string(character_walk_path) + " not found, make sure it's on the assets folder.").c_str());
 	}
 }

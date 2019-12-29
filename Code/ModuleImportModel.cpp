@@ -371,7 +371,7 @@ ResourceTexture * ModuleImportModel::ImportModelTexture(const aiMaterial * mater
 	return ret;
 }
 
-void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent)
+GameObject * ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent)
 {
 	std::vector<GameObject*> model_gameobjects;
 
@@ -438,6 +438,7 @@ void ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resource_model
 
 	//resource_model->StopUsingResource();
 	//TODO: Remove the resource when the animator is destroyed (it's the only one that makes use of it right now)
+	return model_gameobjects[0];
 }
 
 bool ModuleImportModel::CleanUp()

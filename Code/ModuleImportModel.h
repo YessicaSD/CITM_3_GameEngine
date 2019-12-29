@@ -42,7 +42,7 @@ public:
 	bool CleanUp() override;
 	void EventRequest(const Event& event) override;
 
-	void CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent);
+	GameObject * CreateGameObjectFromModel(ResourceModel * resource_model, ComponentTransform * parent);
 
 private:
 	void SaveModelMeta(ResourceModel * resource_model, const char * asset_path);
