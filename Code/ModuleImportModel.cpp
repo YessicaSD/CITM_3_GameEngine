@@ -305,6 +305,26 @@ ResourceTexture * ModuleImportModel::ImportModelTexture(const aiMaterial * mater
 		{
 			std::string name_file;
 			App->file_system->SplitFilePath(aipath.C_Str(), nullptr, &name_file, nullptr);
+			for (std::string::iterator it = name_file.begin(); it != name_file.end(); ++it)
+			{
+				if (*it == '\\')
+				{
+					*it = '/';
+				}
+				else
+				{
+					*it = tolower(*it);
+				}
+			}
+			size_t find_result = name_file.find("..");
+			if (find_result != std::string::npos)
+			{
+				name_file = name_file.substr(find_result + 2);
+			}
+			if (name_file[0] == '/')
+			{
+				name_file.erase(0, 1);
+			}
 			std::string file_path;
 			App->file_system->SplitFilePath(asset_path, &file_path, nullptr, nullptr);
 			std::string final_path = file_path + name_file;

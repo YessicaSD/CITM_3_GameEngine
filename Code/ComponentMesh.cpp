@@ -77,7 +77,6 @@ void ComponentMesh::OnPostUpdate()
 
 	if (mesh->uv_coord != nullptr)
 	{
-	
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 		glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 	}
@@ -96,11 +95,12 @@ void ComponentMesh::OnPostUpdate()
 		}
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glColor4f(fill_color[0], fill_color[1], fill_color[2], fill_color[3]);
-		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
-		if (material != nullptr)
+		if (material != nullptr
+			&& material->texture != nullptr)
 		{
-			glBindTexture(GL_TEXTURE_2D, 0);
+			glBindTexture(GL_TEXTURE_2D, material->texture->buffer_id);
 		}
+		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 		if (mesh->vertex_normals != nullptr)
 		{
 			glDisableClientState(GL_NORMAL_ARRAY);
@@ -134,6 +134,12 @@ void ComponentMesh::OnPostUpdate()
 		glDisable(GL_TEXTURE_COORD_ARRAY);
 	}
 	glPopMatrix();
+
+	if (material != nullptr
+		&& material->texture != nullptr)
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
