@@ -403,7 +403,6 @@ GameObject * ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resour
 				ComponentMaterial * component_material = new_gameobject->GetComponent<ComponentMaterial>();
 				component_material->SetTexture((ResourceTexture*)App->resource_manager->GetResource(resource_model->nodes[i]->material_uid));
 			}
-			
 		}
 		model_gameobjects.push_back(new_gameobject);
 	}
@@ -417,10 +416,18 @@ GameObject * ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resour
 		}
 	}
 
+	
 	if (resource_model->animations_uid.size() > 0u)
 	{
 		ComponentAnimator * animator = model_gameobjects[0]->CreateComponent<ComponentAnimator>();
-
+		for (auto iter = resource_model->root_bones.begin(); iter != resource_model->root_bones.end(); ++iter)
+		{
+			ComponentTransform* root_bone = model_gameobjects[0]->transform->Find(resource_model->nodes[(*iter)]->name);
+			if (root_bone != nullptr)
+			{
+				animator->root_nodes.push_back(root_bone);
+			}
+		}
 		//TODO Delete this part- We are not going to add clips directly to component Animator;
 		for (auto iter = resource_model->animations_uid.begin(); iter != resource_model->animations_uid.end(); ++iter)
 		{

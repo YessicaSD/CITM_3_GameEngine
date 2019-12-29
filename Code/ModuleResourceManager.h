@@ -83,9 +83,6 @@ private:
 	friend class PanelResources;
 };
 
-
-#endif
-
 template<class ResourceType>
 inline ResourceType * ModuleResourceManager::CreateResource(UID uid)
 {
@@ -101,3 +98,7 @@ inline ResourceType * ModuleResourceManager::CreateResource(UID uid)
 	resources[resource->uid] = resource;
 	return resource;
 }
+
+#endif
+
+

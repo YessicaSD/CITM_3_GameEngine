@@ -37,6 +37,7 @@ public:
 	void SetScale(const float3 & scale);
 	void SetLocalMatrix(const float4x4& matrix);
 	void SetGlobalMatrix(const float4x4& matrix);
+
 	std::vector<ComponentTransform*> GetChildren();
 	
 	void SetSelected(bool state);

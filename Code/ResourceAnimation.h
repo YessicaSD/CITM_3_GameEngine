@@ -53,20 +53,22 @@ public:
 	void CleanUp() override;
 	uint GetNumChannels();
 	AnimationChannels* GetChannels();
+	AnimationChannels* GetChannelByName(const char* name);
 	float GetTicksPerSecond();
 	double GetDuration();
 	char* GetName();
+
 protected:
 	bool SaveFileData() override;
 	bool LoadFileData() override;
 	bool ReleaseData() override;
-
 	void ImportAnimation(const aiAnimation& animation);
 	
 private:
 	char * name = nullptr;
 	double duration = 0.f;
 	float ticks_per_second = 0.f;
+
 
 	uint num_channels = 0u;
 	AnimationChannels* channels = nullptr;
