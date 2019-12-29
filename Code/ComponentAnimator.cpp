@@ -95,15 +95,11 @@ void ComponentAnimator::OnUpdate(float dt)
 		if (resource_animation != nullptr)
 		{
 			current_animation_node->current_time += App->GetDt()*current_animation_node->speed;
-			if (current_animation_node->current_time >= resource_animation->GetDuration())
+			double current_time_ticks = current_animation_node->current_time * resource_animation->GetTicksPerSecond();
+			//----
+			// Do transition to next animation
+			if (!current_animation_node->loop && nodes.size() > 1 && !start_transition && current_animation_node->current_time >= resource_animation->GetDuration())
 			{
-				if ((current_animation_node->loop))
-				{
-					current_animation_node->current_time = 0;
-				}
-				else if(nodes.size()>1)
-				{
-					
 					if ((index + 1) < nodes.size())
 					{
 						++index;
@@ -111,48 +107,78 @@ void ComponentAnimator::OnUpdate(float dt)
 					else
 					{
 						index = 0;
-						resource_animation->GetDuration();
 					}
+					next_node = nodes.at(index);
+					SaveBonesState(current_bones, current_animation_node, current_time_ticks);
+					SaveBonesState(next_bones, next_node, 0);
+					start_transition = true;
+					return;
+			}
+			// Do loop or mantein at the end, the last one only happens if there is only one animation
+			else if (current_animation_node->current_time >= resource_animation->GetDuration())
+			{
+				if (current_animation_node->loop)
+				{
 					current_animation_node->current_time = 0;
-					current_animation_node = nodes.at(index);
 				}
 				else
 				{
 					current_animation_node->current_time = resource_animation->GetDuration();
 				}
 			}
-			float current_time_ticks = current_animation_node->current_time * resource_animation->GetTicksPerSecond();
-			uint num_channels = resource_animation->GetNumChannels();
-			AnimationChannels *channels = resource_animation->GetChannels();
 
-			for (uint i = 0; i < num_channels; ++i)
+			if (start_transition)
 			{
-				AnimationChannels channel = channels[i];
-				ComponentTransform *bone = GetBoneByName(channel.GetName());
-
-				if (bone != nullptr)
-				{
-					float3 position_key;
-					if (!channel.GetKeyPosition(current_time_ticks, position_key))
-					{
-						position_key = bone->GetPosition();
-					}
-					float3 scale_key = {1,1,1};
-					if (!channel.GetKeyScale(current_time_ticks, scale_key))
-					{
-						scale_key = bone->GetScale();
-					}
-				
-					Quat rotation_key;
-					if (!channel.GetKeyRotation(current_time_ticks, rotation_key))
-					{
-						rotation_key = bone->GetRotation();
-					}
-					bone->SetTransform(position_key, scale_key, rotation_key);
-				}
+				DoTransition();
+			}
+			else
+			{
+				MoveBones(resource_animation, current_time_ticks);
 			}
 		}
 	}
+}
+
+void ComponentAnimator::MoveBones(ResourceAnimation * resource_animation, double current_time_ticks)
+{
+	uint num_channels = resource_animation->GetNumChannels();
+	AnimationChannels *channels = resource_animation->GetChannels();
+	for (uint i = 0; i < num_channels; ++i)
+	{
+		AnimationChannels channel = channels[i];
+		ComponentTransform *bone = GetBoneByName(channel.GetName());
+
+		if (bone != nullptr)
+		{
+			float3 position_key;
+			if (!channel.GetKeyPosition(current_time_ticks, position_key))
+			{
+				position_key = bone->GetPosition();
+			}
+			float3 scale_key = { 1,1,1 };
+			if (!channel.GetKeyScale(current_time_ticks, scale_key))
+			{
+				scale_key = bone->GetScale();
+			}
+
+			Quat rotation_key;
+			if (!channel.GetKeyRotation(current_time_ticks, rotation_key))
+			{
+				rotation_key = bone->GetRotation();
+			}
+			else
+			{
+				transition_time = false;
+			}
+
+			bone->SetTransform(position_key, scale_key, rotation_key);
+		}
+	}
+}
+
+void ComponentAnimator::DoTransition()
+{
+
 }
 
 void ComponentAnimator::OnPostUpdate()
@@ -190,6 +216,24 @@ void ComponentAnimator::DrawBoneRecursive(ComponentTransform *bone) const
 		glEnd();
 
 		DrawBoneRecursive(child);
+	}
+}
+
+void ComponentAnimator::SaveBonesState(std::map<const char*, trs>& map, AnimatorNode * node, double current_time_ticks)
+{
+	ResourceAnimation* clip = current_animation_node->GetClip();
+	AnimationChannels* channels = clip->GetChannels();
+	map.clear();
+	for (uint i = 0; i < clip->GetNumChannels(); ++i)
+	{
+		AnimationChannels channel = channels[i];
+		float3 position_key;
+		channel.GetKeyPosition(current_time_ticks, position_key);
+		float3 scale_key = { 1,1,1 };
+		channel.GetKeyScale(current_time_ticks, scale_key);
+		Quat rotation_key;
+		channel.GetKeyRotation(current_time_ticks, rotation_key);
+		map[channel.GetName()] = trs(position_key, scale_key, rotation_key);
 	}
 }
 

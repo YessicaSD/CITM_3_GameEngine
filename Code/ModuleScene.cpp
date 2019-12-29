@@ -5,6 +5,8 @@
 #include "ModuleRandom.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
+#include "ModuleResourceManager.h"
+
 #include "ComponentCamera.h"
 #include "glew\include\GL\glew.h"
 #include "PanelScene.h"
@@ -42,11 +44,11 @@ bool ModuleScene::Start(JSONFile * config)
 	CreateOctree();
 
 	bool ret = true;
+	//ResourceModel* resource_model = ;
+	//App->import_model->LoadModelMeta(&resource_model, "Assets/BakerHouse.fbx.meta");
+	//ResourceModel * resource_model = App->import_model->ImportModel("Assets/BakerHouse.fbx");
+	//App->import_model->CreateGameObjectFromModel(resource_model, App->scene->root_gameobject->transform);
 
-	//ResourceModel * resource_model = App->import->ImportModel("Assets/BakerHouse.fbx");
-	//App->import->CreateGameObjectFromModel(resource_model, App->scene->root_gameobject->transform);
-
-	//App->import->LoadModelMeta(resource_model, "Assets/BakerHouse.fbx.meta");
 
 	GameObject* object_camera = new GameObject("Main camera", root_gameobject->transform);
 	game_camera = object_camera->CreateComponent<ComponentCamera>();
@@ -54,6 +56,8 @@ bool ModuleScene::Start(JSONFile * config)
 	object_camera = new GameObject("Camera", root_gameobject->transform);
 	object_camera->CreateComponent<ComponentCamera>();
 
+	
+	
 	return ret;
 }
 

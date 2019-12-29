@@ -37,6 +37,18 @@ AnimationChannels * ResourceAnimation::GetChannels()
 	return channels;
 }
 
+AnimationChannels * ResourceAnimation::GetChannelByName(const char* name)
+{
+	for (uint i = 0; i < num_channels; ++i)
+	{
+		if(strcmp(channels[i].name, name))
+		{
+			return &channels[i];
+		}
+	}
+	return nullptr;
+}
+
 float ResourceAnimation::GetTicksPerSecond()
 {
 	return ticks_per_second;
