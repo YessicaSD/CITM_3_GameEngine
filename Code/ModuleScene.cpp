@@ -446,7 +446,7 @@ uint ModuleScene::GetComponentType(const char *type)
 void ModuleScene::LoadStreetScene()
 {
 	//Street scene
-	const char * street_path = "Assets/street/Street environment_V01.FBX";
+	const char * street_path = "Assets/Street environment_V01.FBX";
 	JSONFile street_meta;
 	street_meta.LoadFile(std::string(street_path) + "." + META_EXTENSION);
 	UID street_uid = street_meta.LoadUID("resourceUID");

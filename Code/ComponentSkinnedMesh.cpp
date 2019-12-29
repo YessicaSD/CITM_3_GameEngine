@@ -10,6 +10,8 @@
 #include "ResourceMesh.h"
 #include "ResourceBone.h"
 #include "Globals.h"
+#include "ComponentMaterial.h"
+#include "ResourceTexture.h"
 
 CLASS_DEFINITION(Component, ComponentSkinnedMesh)
 
@@ -37,6 +39,9 @@ void ComponentSkinnedMesh::OpenBuffer()
 ComponentSkinnedMesh::ComponentSkinnedMesh(GameObject * parent):Component(parent)
 {
 	name = "Skinned Mesh";
+
+	material = gameobject->CreateComponent<ComponentMaterial>();
+	//material->SetMeshComponent(this);
 };
 
 void ComponentSkinnedMesh::PropertiesEditor()
@@ -172,7 +177,15 @@ void ComponentSkinnedMesh::OnPostUpdate()
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex_normals);
 		glNormalPointer(GL_FLOAT, 0, NULL);
 	}
-
+	if (material != nullptr
+		&& material->texture != nullptr)
+	{
+		glEnable(GL_TEXTURE_2D);
+		//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+		glBindTexture(GL_TEXTURE_2D, material->texture->buffer_id);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
+		glTexCoordPointer(2, GL_FLOAT, 0, (void *)0);
+	}
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	
@@ -189,6 +202,12 @@ void ComponentSkinnedMesh::OnPostUpdate()
 	if (mesh->uv_coord != nullptr)
 	{
 		glDisable(GL_TEXTURE_COORD_ARRAY);
+	}
+	if (material != nullptr
+		&& material->texture != nullptr)
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glDisable(GL_TEXTURE_2D);
 	}
 	glPopMatrix();
 

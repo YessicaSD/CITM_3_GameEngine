@@ -30,7 +30,7 @@ ComponentMesh::ComponentMesh(GameObject *gameobject) : Component(gameobject)
 	line_color[0] = line_color[1] = line_color[2] = line_color[3] = 1.f;
 	point_color[0] = point_color[1] = point_color[2] = point_color[3] = 1.f;
 	material = gameobject->CreateComponent<ComponentMaterial>();
-	material->SetMeshComponent(this);
+	//material->SetMeshComponent(this);
 }
 
 ComponentMesh::~ComponentMesh()
@@ -89,17 +89,17 @@ void ComponentMesh::OnPostUpdate()
 			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex_normals);
 			glNormalPointer(GL_FLOAT, 0, NULL);
 		}
-		if (material != nullptr)
-		{
-			material->RenderTexture();
-		}
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		glColor4f(fill_color[0], fill_color[1], fill_color[2], fill_color[3]);
 		if (material != nullptr
 			&& material->texture != nullptr)
 		{
+			glEnable(GL_TEXTURE_2D);
+			//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 			glBindTexture(GL_TEXTURE_2D, material->texture->buffer_id);
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
+			glTexCoordPointer(2, GL_FLOAT, 0, (void *)0);
 		}
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glColor4f(fill_color[0], fill_color[1], fill_color[2], fill_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 		if (mesh->vertex_normals != nullptr)
 		{
@@ -139,6 +139,7 @@ void ComponentMesh::OnPostUpdate()
 		&& material->texture != nullptr)
 	{
 		glBindTexture(GL_TEXTURE_2D, 0);
+		glDisable(GL_TEXTURE_2D);
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

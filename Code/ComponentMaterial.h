@@ -18,16 +18,17 @@ public:
 	void CleanUp() override;
 	bool SetTexture(ResourceTexture* texture);
 	void DisableGLModes();
-	void RenderTexture();
+	//void RenderTexture();
 	void PropertiesEditor() override;
-	void SetMeshComponent(ComponentMesh * component_mesh);
+	//void SetMeshComponent(ComponentMesh * component_mesh);
 	void OnSave(JSONFile * file) override;
 	void OnLoad(JSONFile * file) override;
 
 private:
 	ResourceTexture* texture = nullptr;
-	ComponentMesh * component_mesh = nullptr;
+	//ComponentMesh * component_mesh = nullptr;
 
+	friend class ComponentSkinnedMesh;
 	friend class ComponentMesh;
 	friend class GameObject;
 };

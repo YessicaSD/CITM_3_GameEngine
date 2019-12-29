@@ -8,6 +8,7 @@
 #include <string>
 
 class ResourceMesh;
+class ComponentMaterial;
 
 //Component that renders a mesh that's being deformed by some bones.
 //The bones are being moved by a ComponentAnimator.
@@ -24,7 +25,8 @@ class ComponentSkinnedMesh : public Component
 	std::map<std::string, ComponentTransform*> bones;
 
 public:
-	ComponentTransform* root_object = nullptr;
+	ComponentTransform * root_object = nullptr;
+	ComponentMaterial * material = nullptr;
 	ComponentSkinnedMesh(GameObject* parent);
 	void PropertiesEditor() override;
 	void SetMesh(ResourceMesh*);

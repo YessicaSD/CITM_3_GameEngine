@@ -423,10 +423,12 @@ GameObject * ModuleImportModel::CreateGameObjectFromModel(ResourceModel * resour
 				component_mesh->SetMesh(resource_mesh);
 				new_gameobject->transform->bounding_box.SetLocalAABB(resource_mesh->aabb);
 				new_gameobject->transform->bounding_box.MultiplyByMatrix(new_gameobject->transform->GetGlobalMatrix());
-				//INFO: component mesh creates a material component inside its constructor
-				ComponentMaterial * component_material = new_gameobject->GetComponent<ComponentMaterial>();
-				component_material->SetTexture((ResourceTexture*)App->resource_manager->GetResource(resource_model->nodes[i]->material_uid));
 			}
+			//INFO: component mesh creates a material component inside its constructor
+			ComponentMaterial * component_material = new_gameobject->GetComponent<ComponentMaterial>();
+			ResourceTexture * resource_texture = (ResourceTexture*)App->resource_manager->GetResource(resource_model->nodes[i]->material_uid);
+			resource_texture->StartUsingResource();
+			component_material->SetTexture(resource_texture);//TOOD: We're doing 2 reference_count++ before and after
 		}
 		model_gameobjects.push_back(new_gameobject);
 	}
