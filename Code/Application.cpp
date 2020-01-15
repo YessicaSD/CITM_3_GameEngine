@@ -6,8 +6,8 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_stdlib.h"
 
-#include "ModuleImport.h"
-#include "ModuleTexture.h"
+#include "ModuleImportModel.h"
+#include "ModuleImportTexture.h"
 #include "ModuleFileSystem.h"
 #include "ModuleAudio.h"
 #include "ModuleHardware.h"
@@ -19,6 +19,8 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleResourceManager.h"
 #include "ModuleTime.h"
+#include "ModuleImportMesh.h"
+#include "ModuleImportBone.h"
 
 #include "JSONFile.h"
 #include "Timer.h"
@@ -35,13 +37,15 @@ Application::Application()
 	AddModule(file_system = new ModuleFileSystem("File System"));
 	AddModule(hardware = new ModuleHardware("Hardware"));
 	AddModule(input = new ModuleInput("Input"));
-	AddModule(texture = new ModuleTexture("Textures"));
+	AddModule(import_texture = new ModuleImportTexture("Import Textures"));
+	AddModule(import_mesh = new ModuleImportMesh("Import Mesh"));
 	AddModule(time = new ModuleTime("Time"));
-	AddModule(scene = new ModuleScene("Scene"));
-	AddModule(import = new ModuleImport("Import"));
-	AddModule(camera = new ModuleCamera3D("Camera 3D"));
+	AddModule(import_model = new ModuleImportModel("Import Model"));
+	AddModule(import_bone = new ModuleImportBone("Import Bone"));
 	//AddModule(audio = new ModuleAudio("Audio"));
 	AddModule(resource_manager = new ModuleResourceManager("Resource Manager"));
+	AddModule(scene = new ModuleScene("Scene"));
+	AddModule(camera = new ModuleCamera3D("Camera 3D"));
 	AddModule(gui = new ModuleGui("Gui"));
 	// Renderer last!
 	AddModule(renderer3D = new ModuleRenderer3D("Render"));

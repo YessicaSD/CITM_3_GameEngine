@@ -16,11 +16,14 @@
 
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "imGuizmo/ImGuizmo.h"
+
+#include "ComponentCamera.h"
+
 class JSONFile;
 struct ImVec4;
 struct Event;
-#include "ComponentCamera.h"
-
+class AnimatorNode;
+class ComponentAnimator;
 class ModuleScene : public Module
 {	
 public:
@@ -32,6 +35,7 @@ public:
 	update_status PostUpdate() override;
 	void EventRequest(const Event& event) override;
 	bool CleanUp();
+	void GameObjectUpdateRecursive(float dt, ComponentTransform * transform);
 	void GameObjectPostUpdateRecursive(ComponentTransform * object);
 	bool IntersectRay(LineSegment* ray, RaycastHit& hit);
 	void RecreateOctree();
@@ -47,7 +51,7 @@ private:
 	void GetIntersectBoxNonStatics(ComponentTransform * object, LineSegment* ray, std::map<float, ComponentTransform*>& out_objects);
 	bool TestWithTriangles(LineSegment * ray, std::map<float, ComponentTransform*>& out_objects, RaycastHit& hit_out);
 	void LoadStaticObjects();
-
+	void LoadStreetScene();
 	void DrawObjects(ComponentCamera* camera);
 	void DrawWithFrustrum(ComponentCamera* camera);
 	void SaveScene();
@@ -61,6 +65,11 @@ public:
 	//All gameobjects are children of the root gameobject
 	GameObject* root_gameobject = nullptr;
 	ComponentCamera* game_camera = nullptr;
+	GameObject * character = nullptr;
+	ComponentAnimator* character_animator = nullptr;
+	AnimatorNode* idle = nullptr;
+	AnimatorNode* attack = nullptr;
+	AnimatorNode* run = nullptr;
 	friend class ModuleRender3D;
 };
 

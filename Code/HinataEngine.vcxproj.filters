@@ -79,6 +79,12 @@
     <Filter Include="Sources\Resources">
       <UniqueIdentifier>{20ac4e08-bde6-46b5-b29b-070a97e2fac1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\ModuleImport">
+      <UniqueIdentifier>{3343826c-311f-47f1-9ba0-96018dce026a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\NodeEditor">
+      <UniqueIdentifier>{75866317-9894-4904-8d45-88fc2c718e26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModuleInput.h">
@@ -519,9 +525,6 @@
     <ClInclude Include="Component.h">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleImport.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="PanelHierarchy.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
@@ -533,9 +536,6 @@
     </ClInclude>
     <ClInclude Include="ComponentTransform.h">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleTexture.h">
-      <Filter>Sources\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Event.h">
       <Filter>Sources\Containers</Filter>
@@ -639,6 +639,52 @@
     </ClInclude>
     <ClInclude Include="ModuleCamera3D.h">
       <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceAnimation.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleImportModel.h">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleImportTexture.h">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleImportMesh.h">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceBone.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_timeline.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentAnimator.h">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleImportBone.h" />
+    <ClInclude Include="ComponentSkinnedMesh.h">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Source\crude_json.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Source\imgui_bezier_math.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Source\imgui_canvas.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Source\imgui_extra_math.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Source\imgui_node_editor_internal.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Include\imgui_node_editor.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelAnimator.h">
+      <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -828,9 +874,6 @@
     <ClCompile Include="PanelAbout.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleImport.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="PanelHierarchy.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
@@ -845,9 +888,6 @@
     </ClCompile>
     <ClCompile Include="ComponentTransform.cpp">
       <Filter>Sources\EntityComponentSystem\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleTexture.cpp">
-      <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="PanelAssets.cpp">
       <Filter>Sources\Editor\Panels</Filter>
@@ -949,6 +989,46 @@
     <ClCompile Include="ModuleFileSystem.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceAnimation.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleImportModel.cpp">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleImportTexture.cpp">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleImportMesh.cpp">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceBone.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_timeline.cpp">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentAnimator.cpp">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleImportBone.cpp" />
+    <ClCompile Include="ComponentSkinnedMesh.cpp">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeEditor\Source\crude_json.cpp">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeEditor\Source\imgui_canvas.cpp">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeEditor\Source\imgui_node_editor.cpp">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeEditor\Source\imgui_node_editor_api.cpp">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelAnimator.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
@@ -994,5 +1074,14 @@
       <Filter>Sources\Tools\assimp</Filter>
     </None>
     <None Include="..\Engine\config.json" />
+    <None Include="NodeEditor\Source\imgui_bezier_math.inl">
+      <Filter>Sources\NodeEditor</Filter>
+    </None>
+    <None Include="NodeEditor\Source\imgui_extra_math.inl">
+      <Filter>Sources\NodeEditor</Filter>
+    </None>
+    <None Include="NodeEditor\Source\imgui_node_editor_internal.inl">
+      <Filter>Sources\NodeEditor</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -63,25 +63,28 @@ enum update_status
 //Configuration
 #define ASSETS_FOLDER "Assets/"
 #define SETTINGS_FOLDER "Settings/"
-#define RESOURCES_FOLDER "Library/"
-#define RESOURCES_AUDIO_FOLDER "Library/Audio/"
-#define RESOURCES_TEXTURES_FOLDER "Library/Textures/"
-#define RESOURCES_MESH_FOLDER "Library/Meshes/"
-#define RESOURCES_ANIMATION_FOLDER "Library/Animations/"
-#define RESOURCES_SCENE_FOLDER "Library/Scenes/"
-#define RESOURCES_MODEL_FOLDER "Library/Models/"
-#define RESOURCES_MATERIAL_FOLDER "Library/Materials/"
-#define RESOURCES_STATE_MACHINE_FOLDER "Library/StateMachines/"
+#define RESOURCES_FOLDER "Resources/"
+#define RESOURCES_AUDIO_FOLDER "Resources/Audio/"
+#define RESOURCES_TEXTURES_FOLDER "Resources/Textures/"
+#define RESOURCES_MESH_FOLDER "Resources/Meshes/"
+#define RESOURCES_ANIMATION_FOLDER "Resources/Animations/"
+#define RESOURCES_BONE_FOLDER "Resources/Bones/"
+#define RESOURCES_SCENE_FOLDER "Resources/Scenes/"
+#define RESOURCES_MODEL_FOLDER "Resources/Models/"
+#define RESOURCES_MATERIAL_FOLDER "Resources/Materials/"
+#define RESOURCES_STATE_MACHINE_FOLDER "Resources/StateMachines/"
 
 #define META_EXTENSION "hinata_meta"
 #define MESH_EXTENSION "hinata_mesh"
+#define ANIMATION_EXTENSION "hinata_animation"
+#define BONE_EXTENSION "hinata_bone"
 #define MODEL_EXTENSION "hinata_model"
 #define TEXTURE_EXTENSION "dds"
 #define MATERIAL_EXTENSION "hinata_material"
 #define SCENE_EXTENSION "hinata_scene"
 
-#define SCREEN_WIDTH 1920 * 0.75f //TODO: Remove when releasing the game
-#define SCREEN_HEIGHT 1080 * 0.75f //TODO: Remove when releasing the game
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 768
 #define SCREEN_SIZE 1
 #define TITLE "Hinata Engine"
 #define VERSION "0.1"

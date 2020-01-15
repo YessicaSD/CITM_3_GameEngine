@@ -13,10 +13,10 @@ CLASS_DEFINITION(Component, ComponentMaterial)
 ComponentMaterial::ComponentMaterial(GameObject *gameobject, ComponentMesh *mesh) : Component(gameobject)
 {
 	name = "Material";
-	if (mesh != nullptr)
-	{
-		this->component_mesh = mesh;
-	}
+	//if (mesh != nullptr)
+	//{
+	//	this->component_mesh = mesh;
+	//}
 }
 
 ComponentMaterial::ComponentMaterial(GameObject *gameobject) : Component(gameobject)
@@ -43,15 +43,15 @@ bool ComponentMaterial::SetTexture(ResourceTexture *texture)
 		this->texture->StopUsingResource();
 	}
 
-	if (component_mesh->mesh != nullptr && component_mesh->mesh->uv_coord != nullptr && texture != nullptr)
+	if (/*component_mesh->mesh != nullptr
+		&& component_mesh->mesh->uv_coord != nullptr
+		&& */texture != nullptr)
 	{
-		
 		if (texture->StartUsingResource())
 		{
 			this->texture = texture;
 			ret = true;
 		}
-		
 	}
 	else
 	{
@@ -71,19 +71,19 @@ void ComponentMaterial::DisableGLModes()
 	}
 }
 
-void ComponentMaterial::RenderTexture()
-{
-	if (texture != nullptr)
-	{
-		glEnable(GL_TEXTURE_2D);
-		//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-
-		ResourceMesh *mesh = component_mesh->mesh;
-		glBindTexture(GL_TEXTURE_2D, texture->buffer_id);
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
-		glTexCoordPointer(2, GL_FLOAT, 0, (void *)0);
-	}
-}
+//void ComponentMaterial::RenderTexture()
+//{
+//	if (texture != nullptr)
+//	{
+//		glEnable(GL_TEXTURE_2D);
+//		//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+//
+//		ResourceMesh *mesh = component_mesh->mesh;
+//		glBindTexture(GL_TEXTURE_2D, texture->buffer_id);
+//		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
+//		glTexCoordPointer(2, GL_FLOAT, 0, (void *)0);
+//	}
+//}
 
 void ComponentMaterial::PropertiesEditor()
 {
@@ -102,10 +102,10 @@ void ComponentMaterial::PropertiesEditor()
 	}
 }
 
-void ComponentMaterial::SetMeshComponent(ComponentMesh *component_mesh)
-{
-	this->component_mesh = component_mesh;
-}
+//void ComponentMaterial::SetMeshComponent(ComponentMesh *component_mesh)
+//{
+//	this->component_mesh = component_mesh;
+//}
 
 void ComponentMaterial::OnSave(JSONFile * file)
 {

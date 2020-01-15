@@ -13,14 +13,24 @@ ResourceModel::~ResourceModel()
 	}
 }
 
+const char * ResourceModel::GetTypeString()
+{
+	return "model";
+}
+
 bool ResourceModel::SaveFileData()
 {
-	uint header_bytes = sizeof(uint);
+	uint header_bytes =
+		sizeof(uint) +
+		sizeof(uint) +
+		sizeof(uint);
 	uint node_name_bytes = sizeof(char) * NODE_NAME_SIZE;
 	uint node_transform_bytes = sizeof(float) * 16u;
 	uint node_parent_index_bytes = sizeof(uint);
 	uint node_mesh_uid_bytes = sizeof(UID);
 	uint node_material_uid_bytes = sizeof(UID);
+	uint animation_size = sizeof(UID);
+	uint root_bone_size = sizeof(uint);
 
 	uint node_size = node_name_bytes
 		+ node_transform_bytes
@@ -28,22 +38,42 @@ bool ResourceModel::SaveFileData()
 		+ node_mesh_uid_bytes
 		+ node_material_uid_bytes;
 
-	uint total_size = header_bytes
-		+ node_size * nodes.size();
+	uint total_size =
+		header_bytes
+		+ node_size * nodes.size()
+		+ animation_size * animations_uid.size()
+		+ root_bone_size * root_bones.size();
 
 	char * data = new char[total_size];
 	char * cursor = data;
 
-	uint header = nodes.size();
-	CopyToFile(&header, &cursor, header_bytes);
+	uint header[] = {
+		nodes.size(),
+		animations_uid.size(),
+		root_bones.size()
+	};
+	SaveVariable(header, &cursor, header_bytes);
 
 	for (auto iter = nodes.begin(); iter != nodes.end(); ++iter)
 	{
-		CopyToFile((*iter)->name, &cursor, node_name_bytes);
-		CopyToFile(&(*iter)->transform, &cursor, node_transform_bytes);
-		CopyToFile(&(*iter)->parent_index, &cursor, node_parent_index_bytes);
-		CopyToFile(&(*iter)->mesh_uid, &cursor, node_mesh_uid_bytes);
-		CopyToFile(&(*iter)->material_uid, &cursor, node_material_uid_bytes);
+		SaveVariable((*iter)->name, &cursor, node_name_bytes);
+		SaveVariable(&(*iter)->transform, &cursor, node_transform_bytes);
+		SaveVariable(&(*iter)->parent_index, &cursor, node_parent_index_bytes);
+		SaveVariable(&(*iter)->mesh_uid, &cursor, node_mesh_uid_bytes);
+		SaveVariable(&(*iter)->material_uid, &cursor, node_material_uid_bytes);
+	}
+
+	//We'll end up with dupliate data (in the custom format and in the .meta) because we need the animation uids for both
+	//- Reconstructing the scene when the resources folder isn't there.
+	//- 
+	for (auto iter = animations_uid.begin(); iter != animations_uid.end(); ++iter)
+	{
+		SaveVariable(&(*iter), &cursor, animation_size);
+	}
+
+	for (auto iter = root_bones.begin(); iter != root_bones.end(); ++iter)
+	{
+		SaveVariable(&(*iter), &cursor, root_bone_size);
 	}
 
 	uint path_size = 250u;
@@ -69,30 +99,49 @@ bool ResourceModel::LoadFileData()
 	//TODO: If it's only one variable that it's on the header, make a single variable instead of an array
 	//Called num_nodes (it's more descriptive)
 	//INFO: The number of elements on the ranges array must be the same as in the ranges array of SaveFileData()
-	uint header[1] = { 0u };
-	CopyToMemory(header, &cursor, sizeof(header));
-	nodes.reserve(header[0u]);
+	uint header[3];
+	LoadVariable(header, &cursor, sizeof(header));
+	uint num_nodes = header[0];
+	uint num_animations = header[1];
+	uint num_root_bones = header[2];
+	nodes.reserve(num_nodes);
 
 	uint name_bytes = NODE_NAME_SIZE * sizeof(char);
 
 	//Load nodes
-	for (uint i = 0u; i < header[0u]; ++i)
+	for (uint i = 0u; i < num_nodes; ++i)
 	{
 		ModelNode * node = new ModelNode();
 		node->name = new char[NODE_NAME_SIZE];
 		//INFO: Clear the name
 		//TODO: See if it's necessary if we're copy info from a file with the same name length and which has \0 character at the end
 		//memset(nodes[i]->name, 0, name_bytes);
-		CopyToMemory(node->name, &cursor, name_bytes);
+		LoadVariable(node->name, &cursor, name_bytes);
 		for (uint rows = 0u; rows < 4u; ++rows)
 		{
-			CopyToMemory(&node->transform[rows], &cursor, sizeof(float) * 4u);
+			LoadVariable(&node->transform[rows], &cursor, sizeof(float) * 4u);
 		}
-		CopyToMemory(&node->parent_index, &cursor, sizeof(uint));
-		CopyToMemory(&node->mesh_uid, &cursor, sizeof(UID));
-		CopyToMemory(&node->material_uid, &cursor, sizeof(UID));
+		LoadVariable(&node->parent_index, &cursor, sizeof(uint));
+		LoadVariable(&node->mesh_uid, &cursor, sizeof(UID));
+		LoadVariable(&node->material_uid, &cursor, sizeof(UID));
 
 		nodes.push_back(node);
+	}
+
+	animations_uid.reserve(num_animations);
+	for (int i = 0; i < num_animations; ++i)
+	{
+		UID animation_uid = 0;
+		LoadVariable(&animation_uid, &cursor, sizeof(UID));
+		animations_uid.push_back(animation_uid);
+	}
+
+	root_bones.reserve(num_root_bones);
+	for (int i = 0; i < num_root_bones; ++i)
+	{
+		uint root_bone_node_idx = 0u;
+		LoadVariable(&root_bone_node_idx, &cursor, sizeof(uint));
+		root_bones.push_back(root_bone_node_idx);
 	}
 
 	LOG("Success loading model nodes from: %s in: %i ms.", path, load_timer.Read());
@@ -115,13 +164,44 @@ bool ResourceModel::ReleaseData()
 		}
 		nodes.clear();
 	}
-	if (meshes_uid.size() > 0)
+	if (animations_uid.size() > 0u)
 	{
+		for (auto iter = animations_uid.begin(); iter != animations_uid.end(); ++iter)
+		{
+			Resource * resource_animation = App->resource_manager->GetResource((*iter));
+			resource_animation->ReleaseData();
+		}
+		animations_uid.clear();
+	}
+	if (meshes_uid.size() > 0u)
+	{
+		for (auto iter = meshes_uid.begin(); iter != meshes_uid.end(); ++iter)
+		{
+			Resource * resource_mesh = App->resource_manager->GetResource((*iter));
+			resource_mesh->ReleaseData();
+		}
 		meshes_uid.clear();
 	}
-	if (textures_uid.size() > 0)
+	if (textures_uid.size() > 0u)
 	{
+		for (auto iter = textures_uid.begin(); iter != textures_uid.end(); ++iter)
+		{
+			//TODO: Remove when we start using resource Material (there shouldn't be any invalid at that point)
+			if ((*iter) != INVALID_RESOURCE_UID)
+			{
+				Resource * resource_texture = App->resource_manager->GetResource((*iter));
+				resource_texture->ReleaseData();
+			}
+		}
 		textures_uid.clear();
 	}
+	root_bones.clear();
 	return true;
 }
+
+
+//Used in resource manager. Tells it that a particular uid exits by creating an instance on the map.
+//void CreateResourcesInMap()
+//{
+//
+//}

@@ -8,7 +8,7 @@
 #include "ComponentTransform.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "ModuleImport.h"
+#include "ModuleImportModel.h"
 #include "ModuleResourceManager.h"
 
 #include "MathGeoLib/include/Math/float4.h"
@@ -30,7 +30,7 @@ ComponentMesh::ComponentMesh(GameObject *gameobject) : Component(gameobject)
 	line_color[0] = line_color[1] = line_color[2] = line_color[3] = 1.f;
 	point_color[0] = point_color[1] = point_color[2] = point_color[3] = 1.f;
 	material = gameobject->CreateComponent<ComponentMaterial>();
-	material->SetMeshComponent(this);
+	//material->SetMeshComponent(this);
 }
 
 ComponentMesh::~ComponentMesh()
@@ -77,7 +77,6 @@ void ComponentMesh::OnPostUpdate()
 
 	if (mesh->uv_coord != nullptr)
 	{
-	
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 		glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 	}
@@ -90,17 +89,18 @@ void ComponentMesh::OnPostUpdate()
 			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex_normals);
 			glNormalPointer(GL_FLOAT, 0, NULL);
 		}
-		if (material != nullptr)
+		if (material != nullptr
+			&& material->texture != nullptr)
 		{
-			material->RenderTexture();
+			glEnable(GL_TEXTURE_2D);
+			//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+			glBindTexture(GL_TEXTURE_2D, material->texture->buffer_id);
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
+			glTexCoordPointer(2, GL_FLOAT, 0, (void *)0);
 		}
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glColor4f(fill_color[0], fill_color[1], fill_color[2], fill_color[3]);
 		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
-		if (material != nullptr)
-		{
-			glBindTexture(GL_TEXTURE_2D, 0);
-		}
 		if (mesh->vertex_normals != nullptr)
 		{
 			glDisableClientState(GL_NORMAL_ARRAY);
@@ -126,8 +126,7 @@ void ComponentMesh::OnPostUpdate()
 	{
 		DrawOutline();
 	}
-
-	//glDisableClienState(GL_VERTEX_ARRAY);//TODO: Activate this
+	glDisableClientState(GL_VERTEX_ARRAY);
 	material->DisableGLModes();
 
 	if (mesh->uv_coord != nullptr)
@@ -136,6 +135,13 @@ void ComponentMesh::OnPostUpdate()
 	}
 	glPopMatrix();
 
+	if (material != nullptr
+		&& material->texture != nullptr)
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glDisable(GL_TEXTURE_2D);
+	}
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
@@ -143,14 +149,14 @@ void ComponentMesh::OnPostUpdate()
 void ComponentMesh::DrawVertexNormal()
 {
 	glColor3f(0.2f, 1.f, 0.25f);
-	float lenght = 2;
+	float length = 2.f;
 	if (mesh->vertex_normals != nullptr)
 	{
 		for (uint i = 0; i < mesh->num_vertices; ++i)
 		{
 			glBegin(GL_LINES);
 			glVertex3f(mesh->vertices[i].x, mesh->vertices[i].y, mesh->vertices[i].z);
-			glVertex3f(mesh->vertices[i].x + mesh->vertex_normals[i].x * lenght, mesh->vertices[i].y + mesh->vertex_normals[i].y * lenght, mesh->vertices[i].z + mesh->vertex_normals[i].z * lenght);
+			glVertex3f(mesh->vertices[i].x + mesh->vertex_normals[i].x * length, mesh->vertices[i].y + mesh->vertex_normals[i].y * length, mesh->vertices[i].z + mesh->vertex_normals[i].z * length);
 			glEnd();
 		}
 	}

@@ -47,9 +47,10 @@ unsigned int childclass::GetType()\
 
 class Resource
 {
+
 public:
 	static const uint type;
-
+	
 public:
 	Resource();
 	bool StartUsingResource();
@@ -66,15 +67,19 @@ public:
 	{
 		return type;
 	}
+	virtual const char * GetTypeString() = 0;
+	
 protected:
 	//INFO: Saves the resource with custom format in the Resources folder
 	virtual bool SaveFileData() = 0;
 	virtual bool LoadFileData() = 0;
 	virtual bool ReleaseData() = 0;
 
+	virtual void CleanUp() {};
+	
 	//Helpers for LoadFileData() and SaveFileData()
-	void CopyToFile(void* info, char ** data_cursor, size_t bytes);
-	void CopyToMemory(void* info, char ** data_cursor, size_t bytes);
+	void SaveVariable(void* info, char ** data_cursor, size_t bytes);
+	void LoadVariable(void* info, char ** data_cursor, size_t bytes);
 
 protected:
 	UID uid = 0u;
@@ -82,6 +87,9 @@ protected:
 
 public:
 	std::string asset_source;//The path to the asset that this resource was generated from
+	
+	friend class ModuleResourceManager;
+	friend class ResourceModel;
 };
 
 #endif

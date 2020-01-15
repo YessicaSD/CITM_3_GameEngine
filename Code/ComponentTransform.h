@@ -21,7 +21,7 @@ public:
 
 	void SetParent(ComponentTransform * parent);
 	ComponentTransform* GetParent();
-	
+	ComponentTransform* Find(const char* name);
 	void OnPostUpdate() override;
 	void PropertiesEditor() override;
 	void OnSave(JSONFile*) override;
@@ -37,6 +37,8 @@ public:
 	void SetScale(const float3 & scale);
 	void SetLocalMatrix(const float4x4& matrix);
 	void SetGlobalMatrix(const float4x4& matrix);
+
+	std::vector<ComponentTransform*> GetChildren();
 	
 	void SetSelected(bool state);
 	
@@ -47,6 +49,7 @@ public:
 	float3   GetZAxis();
 	float3   GetYAxis();
 	float3   GetPosition() const;
+	float3	 GetGlobalPosition() const;
 	Quat     GetRotation() const;
 	float3   GetRotationEuler() const;
 	float3   GetScale() const;
@@ -93,7 +96,7 @@ private:
 	bool is_selected = false;
 
 	friend class MenuCreateShape;
-	friend class ModuleImport;
+	friend class ModuleImportModel;
 	friend class PanelHierarchy;
 	friend class ModuleScene;
 	friend class GameObject;

@@ -1,6 +1,6 @@
 #include "PanelTools.h"
 #include "Application.h"
-#include "ModuleTexture.h"
+#include "ModuleImportTexture.h"
 #include "imgui/imgui.h"
 #include "ResourceTexture.h"
 #include "ModuleResourceManager.h"
@@ -12,61 +12,69 @@ PanelTools::PanelTools(std::string name, bool active, std::vector<SDL_Scancode> 
 	atlas_meta.LoadFile(std::string("Assets/Atlas.png") + "." + META_EXTENSION);
 	UID atlas_uid = atlas_meta.LoadUID("resourceUID");
 	atlas = (ResourceTexture*)App->resource_manager->GetResource(atlas_uid);
-	atlas->StartUsingResource();
+	if (atlas != nullptr)
+	{
+		atlas->StartUsingResource();
 
-	button_width = 72.0f / (float)atlas->width;
-	button_height = 72.0f / (float)atlas->height;
+		button_width = 72.0f / (float)atlas->width;
+		button_height = 72.0f / (float)atlas->height;
+	}
 }
 void PanelTools::Draw()
 {
 	if (ImGui::Begin(name.c_str()))
 	{
-		//PLAT BUTTON
-		ImGui::PushID("moveHovered");
-		
-		if(ImGui::ImageButton((ImTextureID)atlas->buffer_id, ImVec2(15, 15), ImVec2(0, 0), ImVec2(button_width, button_height)))
+		if (atlas != nullptr)
 		{
-			if (App->IsStop())
-			{
-				App->Play();
-			}
-			if (App->IsPlay())
-			{
-				App->Stop();
-			}
-		}
-	
-		ImGui::PopID();
+			//PLAT BUTTON
+			ImGui::PushID("moveHovered");
 
-		ImGui::SameLine();
-		//PAUSE BUTTON
-		ImGui::PushID("PauseButton");
-		if (ImGui::ImageButton((ImTextureID)atlas->buffer_id, ImVec2(15, 15), ImVec2(button_width, 0), ImVec2(button_width*2, button_height)))
-		{
-			if (App->IsPlay())
+			if (ImGui::ImageButton((ImTextureID)atlas->buffer_id, ImVec2(15, 15), ImVec2(0, 0), ImVec2(button_width, button_height)))
 			{
-				App->Pause();
+				if (App->IsStop())
+				{
+					App->Play();
+				}
+				if (App->IsPlay())
+				{
+					App->Stop();
+				}
 			}
-			if (App->IsPause())
-			{
-				App->UnPause();
-			}
-		}
-		ImGui::PopID();
 
-		ImGui::SameLine();
-		//NEXT STEP BUTTON
-		ImGui::PushID("NextStepButton");
-		if (ImGui::ImageButton((ImTextureID)atlas->buffer_id, ImVec2(15, 15), ImVec2(button_width * 2, 0), ImVec2(button_width * 3, button_height)))
-		{
-		
-		
+			ImGui::PopID();
+
+			ImGui::SameLine();
+			//PAUSE BUTTON
+			ImGui::PushID("PauseButton");
+			if (ImGui::ImageButton((ImTextureID)atlas->buffer_id, ImVec2(15, 15), ImVec2(button_width, 0), ImVec2(button_width * 2, button_height)))
+			{
+				if (App->IsPlay())
+				{
+					App->Pause();
+				}
+				if (App->IsPause())
+				{
+					App->UnPause();
+				}
+			}
+			ImGui::PopID();
+
+			ImGui::SameLine();
+			//NEXT STEP BUTTON
+			ImGui::PushID("NextStepButton");
+			if (ImGui::ImageButton((ImTextureID)atlas->buffer_id, ImVec2(15, 15), ImVec2(button_width * 2, 0), ImVec2(button_width * 3, button_height)))
+			{
+
+
+			}
+			ImGui::PopID();
+			ImGui::SameLine();
+			ImGui::Text("%f", App->time->GetTime());
 		}
-		ImGui::PopID();
-		ImGui::SameLine();
-		ImGui::Text("%f", App->time->GetTime());
-		
+		else
+		{
+			ImGui::Text("Error: Atlas.png not loaded. Add 'Atlas.png' to assets folder to play, pause and frame forward.");
+		}
 	}
 	ImGui::End();
-
 }

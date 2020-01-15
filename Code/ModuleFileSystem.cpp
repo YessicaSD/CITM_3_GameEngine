@@ -41,10 +41,18 @@ ModuleFileSystem::ModuleFileSystem(const char * name) : Module (true, name)
 
 	// Make sure standard paths exist
 	const char* dirs[] = {
-		SETTINGS_FOLDER, ASSETS_FOLDER, RESOURCES_FOLDER,
-		RESOURCES_AUDIO_FOLDER, RESOURCES_MESH_FOLDER,
-		RESOURCES_MATERIAL_FOLDER, RESOURCES_SCENE_FOLDER, RESOURCES_MODEL_FOLDER,
-		RESOURCES_TEXTURES_FOLDER, RESOURCES_ANIMATION_FOLDER, RESOURCES_STATE_MACHINE_FOLDER,
+		ASSETS_FOLDER,
+		SETTINGS_FOLDER,
+		RESOURCES_FOLDER,
+		RESOURCES_AUDIO_FOLDER,
+		RESOURCES_TEXTURES_FOLDER,
+		RESOURCES_MESH_FOLDER,
+		RESOURCES_ANIMATION_FOLDER,
+		RESOURCES_BONE_FOLDER,
+		RESOURCES_SCENE_FOLDER,
+		RESOURCES_MODEL_FOLDER,
+		RESOURCES_MATERIAL_FOLDER,
+		RESOURCES_STATE_MACHINE_FOLDER,
 	};
 
 	for (uint i = 0; i < sizeof(dirs) / sizeof(const char*); ++i)
@@ -295,10 +303,12 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char * full_path, const char * de
 	size_t size;
 
 	FILE* source = nullptr;
+	
+	NormalizePath((char*)destination);
 	fopen_s(&source, full_path, "rb");
 	PHYSFS_file* dest = PHYSFS_openWrite(destination);
 
-	if (source && dest)
+	if (source != nullptr && dest != nullptr)
 	{
 		while (size = fread_s(buf, buf_size, 1, buf_size, source))
 		{

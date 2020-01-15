@@ -4,7 +4,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleInput.h"
 #include "imgui\imgui_impl_sdl.h"
-#include "ModuleImport.h"
+#include "ModuleImportModel.h"
 #include "Event.h"
 
 #define MAX_KEYS 300

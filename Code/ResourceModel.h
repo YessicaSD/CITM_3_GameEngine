@@ -31,7 +31,6 @@ struct ModelNode {
 	UID mesh_uid = INVALID_RESOURCE_UID;
 	UID material_uid = INVALID_RESOURCE_UID;
 	uint parent_index = INVALID_MODEL_ARRAY_INDEX;
-
 };
 //TODO: Alert when a Node has more than one mesh or material
 
@@ -41,6 +40,9 @@ class ResourceModel : public Resource
 
 public:
 	~ResourceModel();
+
+public:
+	const char * GetTypeString() override;
 
 private:
 	ResourceModel() {};
@@ -52,8 +54,11 @@ public:
 	std::vector<ModelNode*> nodes;
 	std::vector<UID> meshes_uid;
 	std::vector<UID> textures_uid;
+	std::vector<UID> animations_uid;
+	//The index of the root of the skeleton in 
+	std::vector<uint> root_bones;
 
-	friend class ModuleImport;
+	friend class ModuleImportModel;
 	friend class ModuleResourceManager;
 };
 

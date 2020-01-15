@@ -10,6 +10,9 @@
 #include "ModuleRenderer3D.h" //Delete when we change FrameBufferObject to anther window
 #include "Event.h"
 
+#include "NodeEditor/Include/imgui_node_editor.h"
+namespace ed = ax::NodeEditor;
+
 class Timer;
 class Panel;
 class Shortcut;
@@ -27,16 +30,19 @@ class PanelResources;
 class PanelGame;
 class PanelImport;
 class PanelTools;
+class PanelTimeline;
+class PanelAnimator;
 enum KEY_STATE;
 
 struct ImVec2;
-
+struct EditorContext;
 class ModuleGui : public Module
 {
 public:
 	MenuCreateShape *create_menu = nullptr;
 	PanelScene *panel_scene = nullptr;
 	PanelGame *panel_game = nullptr;
+	PanelProperties* panel_properties = nullptr;
 
 private:
 	bool showMenuImGui = false;
@@ -45,14 +51,15 @@ private:
 	PanelConfiguration* panel_configuration = nullptr;
 	PanelConsole* panel_console = nullptr;
 	PanelShortcuts * panel_shortcuts = nullptr;
-	PanelProperties* panel_properties = nullptr;
 	PanelAbout* panel_about = nullptr;
 	PanelHierarchy * panel_hierarchy = nullptr;
 	PanelAssets* panel_assets = nullptr;
 	PanelResources * panel_resources = nullptr;
 	PanelImport * panel_import = nullptr;
-	PanelTools *panel_tools;
-	
+	PanelTools *panel_tools = nullptr;
+	PanelTimeline * panel_timeline = nullptr;
+	PanelAnimator* panel_animator = nullptr;
+
 	std::vector<Shortcut *> shortcuts;
 	ComponentTransform *selected_transform = nullptr;
 
@@ -94,6 +101,7 @@ private:
 	RenderMode render_mode_all;
 
 	void OpenInHierarchy(ComponentTransform *gameobject);
+	//ed::EditorContext* g_Context = nullptr;
 
 	friend class Shortcut;
 	friend class Panel;
@@ -101,6 +109,7 @@ private:
 	friend class PanelHierarchy;
 	friend class ModuleCamera3D;
 	friend class PanelProperties;
+	friend class PanelAnimator;
 };
 
 #endif // !MODULEGUI_H_

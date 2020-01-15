@@ -7,11 +7,16 @@
 #include "Assimp/include/mesh.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/material.h"
-#include "ModuleImport.h"
-#include "ModuleTexture.h"
+#include "ModuleImportModel.h"
+#include "ModuleImportTexture.h"
 #include "ResourceTexture.h"
 #include "BoundingBox.h"
 #include "ModuleFileSystem.h"
+#include "ResourceBone.h"
+#include "ModuleImportBone.h"
+#include "ModuleResourceManager.h"
+
+
 
 RESOURCE_DEFINITION(Resource, ResourceMesh);
 
@@ -25,6 +30,11 @@ ResourceMesh::~ResourceMesh()
 	CleanUp();
 }
 
+const char * ResourceMesh::GetTypeString()
+{
+	return "mesh";
+}
+
 //Generates and saves data to a file
 bool ResourceMesh::SaveFileData()
 {
@@ -35,34 +45,42 @@ bool ResourceMesh::SaveFileData()
 		num_vertices,
 		num_indices,
 		num_faces,
-		uv_dimensions
+		uv_dimensions,
+		num_bones,
 	};
 
 	uint ranges_bytes = sizeof(ranges);
-	uint vertices_bytes = sizeof(float3) * num_vertices;
-	uint vertex_normals_bytes = sizeof(float3) * num_vertices;
+	uint vertices_bytes = sizeof(math::float3) * num_vertices;
+	uint vertex_normals_bytes = sizeof(math::float3) * num_vertices;
 	uint indices_bytes = sizeof(uint) * num_indices;
-	uint face_normals_bytes = sizeof(float3) * num_faces;
+	uint face_normals_bytes = sizeof(math::float3) * num_faces;
 	uint uv_bytes = sizeof(float) * GetUVCoordSize();
+	uint bones_bytes = sizeof(UID) * num_bones;
 
 	uint size = ranges_bytes
 		+ vertices_bytes
 		+ vertex_normals_bytes
 		+ indices_bytes
 		+ face_normals_bytes
-		+ uv_bytes;
+		+ uv_bytes
+		+ bones_bytes;
 
 	// Allocate
 	char* data = new char[size]; 
 
 	char* cursor = data;
 
-	CopyToFile(ranges, &cursor, ranges_bytes);
-	CopyToFile(vertices, &cursor, vertices_bytes);
-	CopyToFile(vertex_normals, &cursor, vertex_normals_bytes);
-	CopyToFile(indices, &cursor, indices_bytes);
-	CopyToFile(faces_normals, &cursor, face_normals_bytes);
-	CopyToFile(uv_coord, &cursor, uv_bytes);
+	SaveVariable(ranges, &cursor, ranges_bytes);
+	SaveVariable(vertices, &cursor, vertices_bytes);
+	SaveVariable(vertex_normals, &cursor, vertex_normals_bytes);
+	SaveVariable(indices, &cursor, indices_bytes);
+	SaveVariable(faces_normals, &cursor, face_normals_bytes);
+	SaveVariable(uv_coord, &cursor, uv_bytes);
+	for (int i = 0; i < num_bones; ++i)
+	{
+		UID bone_uid = bones[i]->GetUID();
+		SaveVariable(&bone_uid, &cursor, sizeof(UID));
+	}
 
 	//SaveFile
 	uint path_size = 250u;
@@ -70,6 +88,7 @@ bool ResourceMesh::SaveFileData()
 	App->file_system->CreatePath(path, path_size, RESOURCES_MESH_FOLDER, uid, MESH_EXTENSION);
 	ret = App->file_system->SaveFile((const void *)data, size, &path);
 	RELEASE_ARRAY(path);
+
 	return ret;
 }
 
@@ -89,38 +108,47 @@ bool ResourceMesh::LoadFileData()
 		char * cursor = data;
 
 		//INFO: The number of elements on the ranges array must be the same as in the ranges array of ResourceMesh::SaveFileData()
-		uint ranges[4];
-
-		uint ranges_bytes = sizeof(ranges);
-		memcpy(ranges, cursor, ranges_bytes);
-
+		uint ranges[5];
+		LoadVariable(ranges, &cursor, sizeof(ranges));
 		num_vertices = ranges[0];
 		num_indices = ranges[1];
 		num_faces = ranges[2];
 		uv_dimensions = ranges[3];
+		num_bones = ranges[4];
 
-		cursor += ranges_bytes;
-
-		vertices = new float3[num_vertices];
-		CopyToMemory(vertices, &cursor, sizeof(float3) * num_vertices);
+		vertices = new math::float3[num_vertices];
+		LoadVariable(vertices, &cursor, sizeof(math::float3) * num_vertices);
 		GenerateVerticesBuffer();
 
-		vertex_normals = new float3[num_vertices];
-		CopyToMemory(vertex_normals, &cursor, sizeof(float3) * num_vertices);
+		vertex_normals = new math::float3[num_vertices];
+		LoadVariable(vertex_normals, &cursor, sizeof(float3) * num_vertices);
 		GenerateVertexNormalsBuffer();
 
 		indices = new uint[num_indices];
-		CopyToMemory(indices, &cursor, sizeof(uint) * num_indices);
+		LoadVariable(indices, &cursor, sizeof(uint) * num_indices);
 		GenerateFacesBuffer();
 
 		faces_normals = new float3[num_faces];
-		CopyToMemory(faces_normals, &cursor, sizeof(float3) * num_faces);
+		LoadVariable(faces_normals, &cursor, sizeof(float3) * num_faces);
 		GenerateFaceNormalsBuffer();
 
 		uint num_uv = GetUVCoordSize();
 		uv_coord = new float[num_uv];
-		CopyToMemory(uv_coord, &cursor, sizeof(float) * num_uv);
+		LoadVariable(uv_coord, &cursor, sizeof(float) * num_uv);
 		GenerateUVsBuffer();
+
+		if (num_bones > 0)
+		{
+			bones = new ResourceBone*[num_bones];
+			for (int i = 0; i < num_bones; ++i)
+			{
+				UID bone_uid = 0;
+				LoadVariable(&bone_uid, &cursor, sizeof(UID));
+				ResourceBone * bone = (ResourceBone*)App->resource_manager->GetResource(bone_uid);
+				bone->StartUsingResource();
+				bones[i] = bone;
+			}
+		}
 
 		aabb.SetNegativeInfinity();
 		aabb.Enclose(vertices, num_vertices);
@@ -135,13 +163,19 @@ bool ResourceMesh::LoadFileData()
 
 bool ResourceMesh::ReleaseData()
 {
+	for (int i = 0; i < num_bones; ++i)
+	{
+		bones[i]->ReleaseData();
+	}
+	RELEASE_ARRAY(bones);
+	num_bones = 0u;
+
 	RELEASE_ARRAY(uv_coord);
 	if (id_uv != 0u)
 	{
 		glDeleteBuffers(1, &id_uv);
 		id_uv = 0u;
 	}
-
 
 	RELEASE_ARRAY(faces_normals);
 	RELEASE_ARRAY(face_middle_point);
@@ -162,7 +196,6 @@ bool ResourceMesh::ReleaseData()
 		id_vertex_normals = 0u;
 	}
 
-
 	RELEASE_ARRAY(vertices);
 	num_vertices = 0u;
 	if (id_vertex != 0u)
@@ -170,7 +203,6 @@ bool ResourceMesh::ReleaseData()
 		glDeleteBuffers(1, &id_vertex);
 		id_vertex = 0u;
 	}
-
 
 	return true;
 }
@@ -295,6 +327,22 @@ bool ResourceMesh::ImportUVs(float * coords)
 	return true;
 }
 
+bool ResourceMesh::ImportBones(aiMesh * assimp_mesh, const char * asset_path, std::vector<UID> & bones_uid = std::vector<UID>())
+{
+	bool ret = false;
+	if (assimp_mesh->HasBones())
+	{
+		num_bones = assimp_mesh->mNumBones;
+		bones = new ResourceBone*[num_bones];
+		for (uint i = 0u; i < assimp_mesh->mNumBones; ++i)
+		{
+			bones[i] = App->import_bone->ImportBone(assimp_mesh->mBones[i], App->resource_manager->PopFirst(bones_uid), asset_path);
+		}
+		ret = true;
+	}
+	return ret;
+}
+
 void ResourceMesh::CreateBoundingBox()
 {
 	aabb.Enclose(this->vertices, num_vertices);
@@ -305,7 +353,7 @@ bool ResourceMesh::GenerateVertexNormalsBuffer()
 	if (vertex_normals != nullptr)
 	{
 		glGenBuffers(1, &id_vertex_normals);
-		glBindBuffer(GL_ARRAY_BUFFER, this->id_vertex_normals);
+		glBindBuffer(GL_ARRAY_BUFFER, id_vertex_normals);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * this->num_vertices, vertex_normals, GL_STATIC_DRAW);
 	}
 
@@ -353,38 +401,14 @@ bool ResourceMesh::GenerateUVsBuffer()
 	return true;
 }
 
+bool ResourceMesh::HasBones()
+{
+	return bones != nullptr;
+}
+
 void ResourceMesh::CleanUp()
 {
-	if (indices)
-	{
-		delete[] indices;
-		indices = nullptr;
-	}
-	if (vertices)
-	{
-		delete[] vertices;
-		vertices = nullptr;
-	}
-	if (vertex_normals)
-	{
-		delete[] vertex_normals;
-		vertex_normals = nullptr;
-	}
-	if (faces_normals)
-	{
-		delete[] faces_normals;
-		faces_normals = nullptr;
-	}
-	if (face_middle_point)
-	{
-		delete[] face_middle_point;
-		face_middle_point = nullptr;
-	}
-	if (uv_coord)
-	{
-		delete[] uv_coord;
-		uv_coord = nullptr;
-	}
+	ReleaseData();
 }
 
 AABB ResourceMesh::GetAABB()
@@ -396,3 +420,4 @@ uint ResourceMesh::GetUVCoordSize()
 {
 	return num_vertices * uv_dimensions;
 }
+

@@ -1,7 +1,7 @@
 #include "PanelAssets.h"
 #include "imgui/imgui.h"
 #include "Application.h"
-#include "ModuleTexture.h"
+#include "ModuleImportTexture.h"
 #include "ResourceTexture.h"
 #include "ModuleGui.h"
 #include "GameObject.h"

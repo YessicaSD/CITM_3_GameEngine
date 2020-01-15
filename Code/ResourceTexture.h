@@ -13,6 +13,9 @@ class ResourceTexture : public Resource
 public:
 	~ResourceTexture();
 
+public:
+	const char * GetTypeString() override;
+
 private:
 	ResourceTexture();
 
@@ -26,7 +29,7 @@ public:
 	uint width = 0u;
 	uint height = 0u;
 
-	friend class ModuleTexture;
+	friend class ModuleImportTexture;
 	friend class ModuleResourceManager;
 };
 

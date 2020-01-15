@@ -24,10 +24,12 @@
 #include "PanelGame.h"
 #include "PanelImport.h"
 #include "PanelTools.h"
+#include "PanelTimeline.h"
+#include "PanelAnimator.h"
 
 //TODO: Frame Buffer Object remove
 #include "par/par_shapes.h"
-#include "ModuleImport.h"
+#include "ModuleImportModel.h"
 #include "Event.h"
 
 #define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
@@ -40,6 +42,12 @@
 
 #define NORMAL_TEXT_COLOR IMGUI_LIGHT_GREY
 #define TITLE_1_TEXT_COLOR IMGUI_GREY
+
+//#include "NodeEditor/Include/imgui_node_editor.h"
+
+//namespace ed = ax::NodeEditor;
+
+
 
 ModuleGui::ModuleGui(const char * name, bool start_enabled):Module(start_enabled, name)
 {
@@ -73,6 +81,10 @@ bool ModuleGui::Init(JSONFile * module_file)
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->window->gl_context);
 	ImGui_ImplOpenGL3_Init(App->window->glsl_version);
 
+	//ed::Config config;
+	//config.SettingsFile = "Simple.json";
+	//g_Context = ed::CreateEditor(&config);
+
 	return ret;
 }
 
@@ -81,15 +93,17 @@ bool ModuleGui::Start(JSONFile * module_file)
 	panel_console		= CreatePanel<PanelConsole>("Console", true);
 	panel_shortcuts		= CreatePanel<PanelShortcuts>("Shortcuts", true);
 	panel_hierarchy		= CreatePanel<PanelHierarchy>("Hirearchy", true);
-	panel_properties	= CreatePanel<PanelProperties>("Properties", true);
 	panel_configuration	= CreatePanel<PanelConfiguration>("Configuration", true);
-	panel_assets		= CreatePanel<PanelAssets>("Assets", true);
 	panel_about			= CreatePanel<PanelAbout>("About", true);
-	panel_scene			= CreatePanel<PanelScene>("Scene", true);
 	panel_resources		= CreatePanel<PanelResources>("Resources", true);
-	panel_game			= CreatePanel<PanelGame>("Game", true);
-	panel_import		= CreatePanel<PanelImport>("Import", true);
+	panel_assets		= CreatePanel<PanelAssets>("Assets", true);
+	panel_import		= CreatePanel<PanelImport>("Import", false);
 	panel_tools			= CreatePanel<PanelTools>("Tools", true);
+	panel_game			= CreatePanel<PanelGame>("Game", true);
+	panel_scene			= CreatePanel<PanelScene>("Scene", true);
+	//panel_animator		= CreatePanel<PanelAnimator>("Animator", true);
+	panel_properties	= CreatePanel<PanelProperties>("Properties", true);
+	//panel_timeline		= CreatePanel<PanelTimeline>("Timeline", true);
 	create_menu = new MenuCreateShape();
 
 	return true;
@@ -116,7 +130,6 @@ update_status ModuleGui::PostUpdate()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
-	
 
 	ImGuiIO& io = ImGui::GetIO();
 
@@ -196,6 +209,8 @@ void ModuleGui::CreateDockspace(ImGuiIO& io)
 
 bool ModuleGui::CleanUp()
 {
+	//ed::DestroyEditor(g_Context);
+
 	if (create_menu)
 	{
 		delete create_menu;
@@ -286,7 +301,7 @@ void ModuleGui::MainMenuBar(update_status &ret)
 		ImGui::EndMenu();
 	}
 
-	create_menu->MenuBarTab();
+	//create_menu->MenuBarTab();
 
 	if (ImGui::BeginMenu("Windows"))
 	{
@@ -323,6 +338,14 @@ void ModuleGui::MainMenuBar(update_status &ret)
 		{
 			panel_game->SetActive(panel_game->active);
 		}
+		//if (ImGui::MenuItem("Timeline", NULL, &panel_timeline->active))
+		//{
+		//	panel_timeline->SetActive(panel_timeline->active);
+		//}
+		//if(ImGui::MenuItem("Animator", NULL, &panel_animator->active))
+		//{
+		//	panel_animator->SetActive(panel_animator->active);
+		//}
 
 		ImGui::EndMenu();
 	}

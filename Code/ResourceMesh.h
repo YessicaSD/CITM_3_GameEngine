@@ -11,6 +11,8 @@
 typedef unsigned int uint;
 struct aiMesh;
 struct aiScene;
+class ResourceBone;
+
 
 class ResourceMesh : public Resource
 {
@@ -26,6 +28,8 @@ private:
 public:
 	~ResourceMesh();
 
+	const char * GetTypeString() override;
+
 	bool ImportVertices(const int num_vertices, const float *vertices);
 	bool ImportVerticesNormals(aiMesh *info);
 	bool ImportFaces(aiMesh *info);
@@ -33,27 +37,27 @@ public:
 	bool CalculateFaceNormals();
 	bool ImportUVs(aiMesh *info);
 	bool ImportUVs(float *coods);
+	bool ImportBones(aiMesh * assimp_mesh, const char * asset_path, std::vector<UID> & bones_uid);
 
 	bool GenerateVerticesBuffer();
 	bool GenerateVertexNormalsBuffer();
 	bool GenerateFacesBuffer();
 	bool GenerateFaceNormalsBuffer();
 	bool GenerateUVsBuffer();
+	bool HasBones();
 
 	void CreateBoundingBox();
 	void CleanUp();
 	AABB GetAABB();
 	uint GetUVCoordSize();
-
 private:
 	AABB aabb;
-
 public:
+	
 	//Vertices
 	uint id_vertex = 0u; // unique vertex in VRAM
 	uint num_vertices = 0u;
 	float3 *vertices = nullptr;
-
 	//Vertices normals
 	float3 *vertex_normals = nullptr;
 	uint id_vertex_normals = 0u;
@@ -74,7 +78,12 @@ public:
 	uint id_uv = 0u;
 	uint uv_dimensions = 0u; //Whether the UVs are stored as 2D or 3D
 
-	friend class ModuleImport;
+	//Bones 
+	uint num_bones = 0;
+	ResourceBone** bones = nullptr;
+
+	friend class ModuleImportMesh;
+	friend class ModuleImportModel;
 	friend class ModuleResourceManager;
 };
 

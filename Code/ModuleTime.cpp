@@ -20,6 +20,7 @@ update_status ModuleTime::PreUpdate()
 		delta_time = 0.f;
 		break;
 	default:
+		delta_time = 0;
 		break;
 	}
 
@@ -37,4 +38,9 @@ void ModuleTime::EventRequest(const Event & event)
 float ModuleTime::GetTime()
 {
 	return time;
+}
+
+float ModuleTime::GetDeltaTime()
+{
+	return delta_time;
 }

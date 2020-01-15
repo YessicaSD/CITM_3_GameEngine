@@ -2,13 +2,15 @@
 #include "ModuleRandom.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
-#include "ModuleTexture.h"
-#include "ModuleImport.h"
+#include "ModuleImportTexture.h"
+#include "ModuleImportModel.h"
 
 #include "ResourceModel.h"
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
 #include "ResourceMaterial.h"
+#include "ResourceAnimation.h"
+#include "ResourceBone.h"
 
 ModuleResourceManager::ModuleResourceManager(const char * name) : Module(true, name)
 {
@@ -39,7 +41,7 @@ void ModuleResourceManager::StartCheckAssets(AssetDir* dir)
 
 		std::string extension;
 		App->file_system->GetExtension((*iter)->name.c_str(), extension);
-		uint type = GetResourceTypeFromExtension(extension);
+		uint type = GetAssetTypeFromExtension(extension);
 
 		//Check if it has a .meta. That means it has been imported already.
 		if (App->file_system->FileExists(meta_path.c_str()))
@@ -76,7 +78,7 @@ void ModuleResourceManager::UpdateCheckAssets(AssetDir* dir)
 
 		std::string extension;
 		App->file_system->GetExtension((*iter)->name.c_str(), extension);
-		uint type = GetResourceTypeFromExtension(extension);
+		uint type = GetAssetTypeFromExtension(extension);
 
 		//Check if it has a .meta. That means it has been imported already.
 		if (App->file_system->FileExists(meta_path.c_str()))
@@ -104,6 +106,8 @@ void ModuleResourceManager::UpdateCheckAssets(AssetDir* dir)
 //First delete the existing ones and then import them forcing the previous uids.
 void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &type, AssetFile * asset_file)
 {
+	Resource * imported_resource = nullptr;
+
 	const char * uid_string = meta_file.LoadText("resourceUID", "0");
 	UID uid = strtoull(uid_string, nullptr, 10);
 	//Import the file. Resources force the previous uid.
@@ -119,8 +123,14 @@ void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &t
 		std::vector<UID>textures_uids;
 		DeleteDependantResources(textures_uids, "exportedTextures", &meta_file, RESOURCES_TEXTURES_FOLDER, TEXTURE_EXTENSION);
 
+		std::vector<UID>animation_uids;
+		DeleteDependantResources(animation_uids, "exportedAnimations", &meta_file, RESOURCES_ANIMATION_FOLDER, ANIMATION_EXTENSION);
+
+		std::vector<UID>bones_uids;
+		DeleteDependantResources(bones_uids, "exportedBones", &meta_file, RESOURCES_BONE_FOLDER, BONE_EXTENSION);
+
 		//INFO: Generate new resources using the previous uids
-		App->import->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids);
+		imported_resource = App->import_model->ImportModel(asset_file->full_path.c_str(), uid, meshes_uids, textures_uids, animation_uids, bones_uids);
 	}
 	else if (type == ResourceTexture::type)
 	{
@@ -128,11 +138,27 @@ void ModuleResourceManager::ReImportResources(JSONFile &meta_file, const uint &t
 		App->file_system->Remove((std::string(RESOURCES_TEXTURES_FOLDER) + uid_string + "." + TEXTURE_EXTENSION).c_str());
 		resources.erase(uid);
 
-		App->texture->ImportTexture(asset_file->full_path.c_str(), uid);
+		imported_resource = App->import_texture->ImportTexture(asset_file->full_path.c_str(), uid);
 	}
 	else
 	{
 		LOG("This format is unsupported.");
+	}
+
+	ReleaseDataAndReload(imported_resource);
+}
+
+void ModuleResourceManager::ReleaseDataAndReload(Resource * imported_resource)
+{
+	if (imported_resource != nullptr)
+	{
+		//Release the data so we don't allocate memory in pointers that have already allocated memory (ex. mesh's vertex)
+		imported_resource->ReleaseData();
+		if (imported_resource->GetReferenceCount() > 0)
+		{
+			//Reload the new imported data
+			imported_resource->LoadFileData();
+		}
 	}
 }
 
@@ -158,6 +184,22 @@ void ModuleResourceManager::CreateResourcesInMap(const uint &type, JSONFile &met
 			ResourceTexture * resource_texture = CreateResource<ResourceTexture>((*texture_iter));
 			resource_texture->asset_source = asset_file->full_path;
 		}
+
+		std::vector<UID>animations_uid;
+		meta_file.LoadUIDVector("exportedAnimations", animations_uid);
+		for (auto animation_iter = animations_uid.begin(); animation_iter != animations_uid.end(); ++animation_iter)
+		{
+			ResourceAnimation * resource_animation = CreateResource<ResourceAnimation>((*animation_iter));
+			resource_animation->asset_source = asset_file->full_path;
+		}
+
+		std::vector<UID>bones_uid;
+		meta_file.LoadUIDVector("exportedBones", bones_uid);
+		for (auto bone_iter = bones_uid.begin(); bone_iter != bones_uid.end(); ++bone_iter)
+		{
+			ResourceBone * resource_bone = CreateResource<ResourceBone>((*bone_iter));
+			resource_bone->asset_source = asset_file->full_path;
+		}
 	}
 	else if (type == ResourceTexture::type)
 	{
@@ -173,18 +215,21 @@ void ModuleResourceManager::CreateResourcesInMap(const uint &type, JSONFile &met
 //Import resource without forcing the uid
 void ModuleResourceManager::ImportResource(const uint type, const char * path)
 {
+	Resource * imported_resource = nullptr;
 	if (type == ResourceModel::type)
 	{
-		App->import->ImportModel(path);
+		imported_resource = App->import_model->ImportModel(path);
 	}
 	else if (type == ResourceTexture::type)
 	{
-		App->texture->ImportTexture(path);
+		imported_resource = App->import_texture->ImportTexture(path);
 	}
 	//else
 	//{
 	//	LOG("This format is unsupported.");
 	//}
+
+	ReleaseDataAndReload(imported_resource);
 }
 
 //Check that the modified date of the .meta and the file match. That means the file hasn't been modified while the engine was closed.
@@ -215,7 +260,7 @@ bool ModuleResourceManager::MissingResources(JSONFile &meta_file, uint type)
 		{
 			ret = true;
 		}
-		//TODO: Check if it lacks meshes or textures
+		//TODO: Check if it lacks meshes, textures or animations
 	}
 	else if (type == ResourceTexture::type)
 	{
@@ -328,9 +373,9 @@ void ModuleResourceManager::DeleteAssetTree(AssetDir * dir)
 	delete(dir);
 }
 
-uint ModuleResourceManager::GetResourceTypeFromExtension(const std::string & extension)
+uint ModuleResourceManager::GetAssetTypeFromExtension(const std::string & extension)
 {
-	if (extension == "fbx" || extension == "FBX")
+	if (extension == "fbx" || extension == "FBX" || extension == "DAE" || extension == "dae")
 	{
 		return ResourceModel::type;
 	}
@@ -338,27 +383,6 @@ uint ModuleResourceManager::GetResourceTypeFromExtension(const std::string & ext
 	{
 		return ResourceTexture::type;
 	}
-}
-
-const char * ModuleResourceManager::GetResourceTypeString(uint type)
-{
-	if (type == ResourceModel::type)
-	{
-		return "model";
-	}
-	else if (type == ResourceMesh::type)
-	{
-		return "mesh";
-	}
-	else if (type == ResourceTexture::type)
-	{
-		return "texture";
-	}
-	else if (type == ResourceMaterial::type)
-	{
-		return "material";
-	}
-	return "unsupported type";
 }
 
 UID ModuleResourceManager::LoadUID(JSONFile * meta_file) const
@@ -392,7 +416,7 @@ void ModuleResourceManager::SaveUIDArray(const std::vector<UID> & uid_vector, ch
 	delete[]uid_string_vector;
 }
 
-void ModuleResourceManager::DeleteDependantResources(std::vector<UID> uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension)
+void ModuleResourceManager::DeleteDependantResources(std::vector<UID> & uids, const char * name, JSONFile * meta_file, const char * folder, const char * extension)
 {
 	std::vector<const char *>uids_string;
 	meta_file->LoadTextVector(name, uids_string);
@@ -407,4 +431,15 @@ void ModuleResourceManager::DeleteDependantResources(std::vector<UID> uids, cons
 		App->file_system->Remove((std::string(folder) + uids_string[i] + "." + extension).c_str());
 		resources.erase(uids[i]);
 	}
+}
+
+UID ModuleResourceManager::PopFirst(std::vector<UID> & vector)
+{
+	if (vector.size() > 0u)
+	{
+		UID uid = (*vector.begin());
+		vector.erase(vector.begin());
+		return uid;
+	}
+	return INVALID_RESOURCE_UID;
 }
