@@ -686,6 +686,7 @@
     <ClInclude Include="PanelAnimator.h">
       <Filter>Sources\Editor\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="PanelTimeline.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -1029,6 +1030,7 @@
     <ClCompile Include="PanelAnimator.cpp">
       <Filter>Sources\Editor\Panels</Filter>
     </ClCompile>
+    <ClCompile Include="PanelTimeline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
