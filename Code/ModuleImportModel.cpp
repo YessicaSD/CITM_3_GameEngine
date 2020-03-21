@@ -337,6 +337,11 @@ ResourceTexture * ModuleImportModel::ImportModelTexture(const aiMaterial * mater
 				file.LoadFile(meta_path);
 				UID uid = file.LoadUID("resourceUID");
 				ret = (ResourceTexture*)App->resource_manager->GetResource(uid);
+				if (ret == nullptr)
+				{
+					ret = App->import_texture->ImportTexture(final_path.c_str(), uid);
+					ret->asset_source = asset_path;
+				}
 			}
 			else
 			{
