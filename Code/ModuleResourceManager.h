@@ -17,6 +17,8 @@ struct AssetFile
 	//type (used to get the appropiate icon)
 	std::string name;
 	std::string full_path;
+	UID uid = INVALID_RESOURCE_UID;
+	uint type = 0u;
 };
 
 struct AssetDir {

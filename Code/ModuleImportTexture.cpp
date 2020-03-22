@@ -11,7 +11,7 @@
 #include "ResourceTexture.h"
 #include "Application.h"
 #include "ModuleResourceManager.h"
-
+#define IMAGE_WIDTH 100
 //#define checkImageWidth 512
 //#define checkImageHeight 512
 //static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
@@ -44,18 +44,35 @@ ResourceTexture* ModuleImportTexture::ImportTexture(const char * asset_path, UID
 	ilGenImages(1, &image_id);
 	ilBindImage(image_id);
 
+	resource_texture->mini_image_buffer = ilGenImage();
+
 	if (ilLoadImage(asset_path) == IL_TRUE)
 	{
+		ilBindImage(resource_texture->mini_image_buffer);
+		ilCopyImage(image_id);
+
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
-		//if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-		//{
-		//	iluFlipImage();
-		//}
+
 		resource_texture->SaveFileData();
 		SaveTextureMeta(resource_texture, asset_path);
+
+		int div_result =  ImageInfo.Width / IMAGE_WIDTH;
+		iluScale(ImageInfo.Width/ div_result, ImageInfo.Height/ div_result, ImageInfo.Depth/ div_result);
+
+		resource_texture->mini_image_buffer = ilutGLBindTexImage();
+		//Get the data?
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glBindTexture(GL_TEXTURE_2D, resource_texture->mini_image_buffer);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, 0x8072, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
 		ilDeleteImages(1, &image_id);
-		resource_texture->buffer_id = 0u;
+		ilBindImage(0);
 		LOG("Success importing texture from: %s in: %i ms", asset_path, import_timer.Read());
 	}
 	else

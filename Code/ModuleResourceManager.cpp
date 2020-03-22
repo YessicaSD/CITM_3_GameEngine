@@ -343,6 +343,7 @@ void ModuleResourceManager::CreateAssetTree(AssetDir * dir)
 			AssetFile * new_asset = new AssetFile();
 			new_asset->name = (*iter);
 			new_asset->full_path = dir->full_path + (*iter);
+			new_asset->type = App->resource_manager->GetAssetTypeFromExtension(extension);
 			dir->assets.push_back(new_asset);
 		}
 	}

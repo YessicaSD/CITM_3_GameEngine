@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ModuleResourceManager.h"
+#include "PanelProperties.h"
 //#include "mmgr/mmgr.h"
 
 #include "PhysFS/include/physfs.h"
@@ -28,9 +29,21 @@ void PanelAssets::Draw()
 
 	//TODO: Deletes the whole Resources folder and creates all new files
 	//if(ImGui::Button("Reimport"))
+	ImGui::Columns(2, "##ProjectColums", true);
+	static bool setWidth = true;
+	if (setWidth == true)
+	{
+		ImGui::SetColumnWidth(0, 160);
+		setWidth = false;
+	}
 
 	DisplayFolderAssetsRecursive(App->resource_manager->asset_dir);
+	ImGui::NextColumn();
+	if (ImGui::BeginChild("AssetsView", { 0,20 }, false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse))
+	{
 
+	}
+	ImGui::EndChild();
 	ImGui::End();
 }
 
@@ -41,10 +54,15 @@ void PanelAssets::DisplayFolderAssetsRecursive(AssetDir * dir)
 	{
 		bool open = ImGui::TreeNodeEx((*iter)->name.c_str(), asset_tree_flags);
 		//TODO: Check if this asset is a model
+		if (ImGui::IsItemClicked())
+		{
+			App->gui->panel_properties->SetFileSelected(*(*iter));
+
+		}
 		DragAsset((*iter));
+		
 		if (open)
 		{
-			selected_asset = (*iter);
 			ImGui::TreePop();
 		}
 	}
@@ -88,10 +106,6 @@ void PanelAssets::DragAsset(AssetFile * asset)
 //	}
 //}
 
-AssetFile PanelAssets::GetAssetFile()
-{
-	return *selected_asset;
-}
 
 //float num_colum = ImGui::GetWindowWidth() / image_size;
 //uint i = 1;

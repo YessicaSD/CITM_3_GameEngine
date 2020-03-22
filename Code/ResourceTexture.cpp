@@ -71,9 +71,6 @@ bool ResourceTexture::LoadFileData()
 		width = ilGetInteger(IL_IMAGE_WIDTH);
 		size = ilGetInteger(IL_IMAGE_SIZE_OF_DATA);
 
-		height = ilGetInteger(IL_IMAGE_HEIGHT);
-		width = ilGetInteger(IL_IMAGE_WIDTH);
-		size = ilGetInteger(IL_IMAGE_SIZE_OF_DATA);
 		//Get the data?
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glBindTexture(GL_TEXTURE_2D, buffer_id);
@@ -106,4 +103,43 @@ bool ResourceTexture::ReleaseData()
 
 
 	return true;
+}
+
+void ResourceTexture::GenerateMiniature()
+{
+	////create path
+	//uint path_size = 250u;
+	//char* custom_format_path = new char[path_size];
+	//app->file_system->createpath(custom_format_path, path_size, resources_textures_folder, uid, texture_extension);
+
+	////import data from path first
+	//uint image_id = 0u;
+	//ilgenimages(1, &image_id);
+	//ilbindimage(image_id);
+
+	//if (illoadimage(custom_format_path) == il_true)
+	//{
+	//	buffer_id = ilutglbindteximage();
+
+	//	height = ilgetinteger(il_image_height);
+	//	width = ilgetinteger(il_image_width);
+	//	size = ilgetinteger(il_image_size_of_data);
+
+	//	//get the data?
+	//	glpixelstorei(gl_unpack_alignment, 1);
+	//	glbindtexture(gl_texture_2d, buffer_id);
+	//	gltexparameteri(gl_texture_2d, gl_texture_wrap_s, gl_repeat);
+	//	gltexparameteri(gl_texture_2d, gl_texture_wrap_t, gl_repeat);
+	//	gltexparameteri(gl_texture_2d, 0x8072, gl_repeat);
+	//	gltexparameteri(gl_texture_2d, gl_texture_mag_filter, gl_nearest);
+	//	gltexparameteri(gl_texture_2d, gl_texture_min_filter, gl_nearest);
+	//	glbindtexture(gl_texture_2d, 0);
+
+	//	log("success loading texture from: %s in: %i ms.", custom_format_path, load_timer.read());
+	//}
+	//else
+	//{
+	//	auto error = ilgeterror();
+	//	log("error loadig texture with path: %s. error: %s", custom_format_path, ilgetstring(error));
+	//}
 }

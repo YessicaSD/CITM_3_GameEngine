@@ -274,6 +274,7 @@ void ModuleGui::SetSelectedGameObjec(ComponentTransform * gameobject)
 
 	selected_transform = gameobject;
 	panel_properties->selected_transform = gameobject;
+	panel_properties->asset_is_selected = false;
 
 	if (gameobject != nullptr)
 	{

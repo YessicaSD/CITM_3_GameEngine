@@ -21,12 +21,9 @@ public:
 
 	void DropObject(AssetFile * asset);
 
-	AssetFile GetAssetFile();
-
 private:
-	AssetFile * selected_asset = nullptr;
-
 	friend class ModuleGui;
+	friend class PanelProperties;
 };
 
 

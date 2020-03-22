@@ -22,9 +22,11 @@ private:
 	bool SaveFileData() override;
 	bool LoadFileData() override;
 	bool ReleaseData() override;
+	void GenerateMiniature();
 
 public:
 	uint buffer_id = 0u;
+	uint mini_image_buffer = 0u;
 	uint size = 0u;
 	uint width = 0u;
 	uint height = 0u;
