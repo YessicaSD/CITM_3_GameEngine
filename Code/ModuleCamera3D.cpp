@@ -120,12 +120,21 @@ update_status ModuleCamera3D::Update(float dt)
 	{
 		new_pos += current_camera->frustum.front * mouse_wheel * move_speed * 2.f;
 	}
+
 	if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_STATE::KEY_REPEAT)
 	{
 		new_pos -= current_camera->frustum.WorldRight() * App->input->GetMouseMotionX() * move_speed * 0.5f;
 		new_pos += current_camera->frustum.up * App->input->GetMouseMotionY() * move_speed * 0.5f;
 	}
-
+	else if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_STATE::KEY_DOWN)
+	{
+		cursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
+		SDL_SetCursor(cursor);
+	}
+	else if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_UP)
+	{
+		SDL_FreeCursor(cursor);
+	}
 	current_camera->SetPos(current_camera->frustum.pos + new_pos);
 	reference += new_pos;
 

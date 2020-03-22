@@ -54,6 +54,8 @@ private:
 
 	LineSegment picking;
 	int camera_combo;
+
+	SDL_Cursor* cursor = nullptr;
 	
 	friend class ModuleRenderer3D;
 	friend class ModuleScene;
