@@ -1,0 +1,1090 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{8b7ed093-66ce-4096-96d2-fbb9faa4bf52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules">
+      <UniqueIdentifier>{7b418be2-1631-4a31-9ef2-8a8b234a7339}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Containers">
+      <UniqueIdentifier>{afc36133-f401-499a-aa33-0da1e500fb52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools">
+      <UniqueIdentifier>{7e4dfaf7-022c-4f7d-92aa-f3b3fa9d6248}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\imgui">
+      <UniqueIdentifier>{afb44012-5b2a-4969-94e4-409a81704660}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\glew">
+      <UniqueIdentifier>{de8d69a4-34a3-4eb0-b0fc-b308ea6c4026}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\cpc">
+      <UniqueIdentifier>{5916944d-283c-4fd3-9b4e-46359982fe9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\mmgr">
+      <UniqueIdentifier>{184d3cb3-04da-4078-8492-25dcc1a945e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\parson">
+      <UniqueIdentifier>{756e14af-e726-4736-bdc1-04d97a514c97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Core">
+      <UniqueIdentifier>{8ff7c297-1f6b-43fa-8007-72679281ccbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Editor">
+      <UniqueIdentifier>{846560a4-6dc0-4910-ac31-f1f5b965bfca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Editor\Panels">
+      <UniqueIdentifier>{5a18bdca-40d6-4638-aae7-0dd4f12ad5aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\3DPrimitive">
+      <UniqueIdentifier>{271b9217-f31c-400d-b2b0-3f5f10f0972a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\assimp">
+      <UniqueIdentifier>{cf7c342f-d4c5-459c-af73-6d596599e325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\Par">
+      <UniqueIdentifier>{23b6dace-c707-4b61-888e-5da1a94843e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\MathGeoLib">
+      <UniqueIdentifier>{61107db6-61b1-4863-be21-6765975de6f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\MathGeoLib\Math">
+      <UniqueIdentifier>{e65f7788-1a3b-4663-8c43-13e2e8af22cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\MathGeoLib\Geometry">
+      <UniqueIdentifier>{cea49e70-4c4c-436e-a45e-74cad294c644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\MathGeoLib\Algorithm">
+      <UniqueIdentifier>{dc32a367-88cd-4a5f-abee-9dfdfc509a00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\MathGeoLib\Time">
+      <UniqueIdentifier>{6c8f5628-375f-477c-95b0-590a97c5e528}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\gpudetect">
+      <UniqueIdentifier>{3a1c84d6-c8c1-4cc2-aa19-aebbb537a881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\imGuizmo">
+      <UniqueIdentifier>{105bdc44-c4a5-4547-a5d8-3470ff648d94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools\imguiShortFuntions">
+      <UniqueIdentifier>{738d4f33-3987-4525-a2c5-ee9ebf5dbe17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\EntityComponentSystem">
+      <UniqueIdentifier>{7581464b-c13e-4a63-a400-a23cc832aa55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\EntityComponentSystem\Components">
+      <UniqueIdentifier>{87a2bc02-65ef-4e81-980a-345c47e52872}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Resources">
+      <UniqueIdentifier>{20ac4e08-bde6-46b5-b29b-070a97e2fac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\ModuleImport">
+      <UniqueIdentifier>{3343826c-311f-47f1-9ba0-96018dce026a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\NodeEditor">
+      <UniqueIdentifier>{75866317-9894-4904-8d45-88fc2c718e26}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Hinata\Application.h">
+      <Filter>Sources\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\AssimpIO.h" />
+    <ClInclude Include="src\Hinata\BassIO.h" />
+    <ClInclude Include="src\Hinata\BoundingBox.h">
+      <Filter>Sources\3DPrimitive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\Color.h">
+      <Filter>Sources\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\Component.h">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ComponentAnimator.h">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ComponentCamera.h">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ComponentMaterial.h">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ComponentMesh.h">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ComponentSkinnedMesh.h">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ComponentTransform.h">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\Cube.h">
+      <Filter>Sources\3DPrimitive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\CubeLine.h">
+      <Filter>Sources\3DPrimitive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\Event.h">
+      <Filter>Sources\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\GameObject.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\glmath.h">
+      <Filter>Sources\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\Globals.h">
+      <Filter>Sources\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\JSONFile.h" />
+    <ClInclude Include="src\Hinata\Light.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\MenuCreateShape.h" />
+    <ClInclude Include="src\Hinata\Module.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleAudio.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleCamera3D.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleFileSystem.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleGui.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleHardware.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleImportBone.h" />
+    <ClInclude Include="src\Hinata\ModuleImportMesh.h">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleImportModel.h">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleImportTexture.h">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleInput.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleRandom.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleRenderer3D.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleResourceManager.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleScene.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleTime.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleWindow.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\Octree.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\Panel.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\PanelAbout.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\PanelAnimator.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\PanelAssets.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\PanelConfiguration.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\PanelConsole.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\PanelGame.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\PanelHierarchy.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\PanelImport.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\PanelProperties.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\PanelResources.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\PanelScene.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\PanelShortcuts.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\PanelTimeline.h" />
+    <ClInclude Include="src\Hinata\PanelTools.h">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\PerfTimer.h" />
+    <ClInclude Include="src\Hinata\Primitive.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\RaycastHit.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\RenderTexture.h" />
+    <ClInclude Include="src\Hinata\Resource.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ResourceAnimation.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ResourceBone.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ResourceMaterial.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ResourceMesh.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ResourceModel.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ResourceTexture.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\Shortcut.h">
+      <Filter>Sources\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\Timer.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata.h" />
+    <ClInclude Include="src\Assimp\include\Compiler\poppack1.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\Compiler\pstdint.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\Compiler\pushpack1.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\port\AndroidJNI\AndroidJNIIOSystem.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\ai_assert.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\anim.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\camera.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\cexport.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\cfileio.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\cimport.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\color4.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\config.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\DefaultLogger.hpp">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\defs.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\Exporter.hpp">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\Importer.hpp">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\importerdesc.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\IOStream.hpp">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\IOSystem.hpp">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\light.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\Logger.hpp">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\LogStream.hpp">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\material.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\matrix3x3.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\matrix4x4.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\mesh.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\metadata.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\NullLogger.hpp">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\postprocess.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\ProgressHandler.hpp">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\quaternion.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\scene.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\texture.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\types.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\vector2.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\vector3.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assimp\include\version.h">
+      <Filter>Sources\Tools\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glew\include\GL\eglew.h">
+      <Filter>Sources\Tools\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glew\include\GL\glew.h">
+      <Filter>Sources\Tools\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glew\include\GL\glxew.h">
+      <Filter>Sources\Tools\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glew\include\GL\wglew.h">
+      <Filter>Sources\Tools\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gpudetect\DeviceId.h">
+      <Filter>Sources\Tools\gpudetect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imconfig.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imgui.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imgui_impl_opengl3.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imgui_impl_sdl.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imgui_internal.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imgui_stdlib.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imgui_timeline.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imstb_rectpack.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imstb_textedit.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imstb_truetype.h">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imGuizmo\ImCurveEdit.h">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imGuizmo\ImGradient.h">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imGuizmo\ImGuizmo.h">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imGuizmo\ImSequencer.h">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Algorithm\Random\LCG.h">
+      <Filter>Sources\Tools\MathGeoLib\Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\AABB.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\AABB2D.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\Capsule.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\Circle.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\Cone.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\Cylinder.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\Frustum.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\GeometryAll.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\GeomType.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\HitInfo.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\KDTree.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\Line.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\LineSegment.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\OBB.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\PBVolume.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\Plane.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\Polygon.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\Polyhedron.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\QuadTree.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\Ray.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\Sphere.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\Triangle.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Geometry\TriangleMesh.h">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\assume.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\BitOps.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\Complex.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\CoordinateAxisConvention.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\FixedPoint.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\float2.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\float3.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\float3x3.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\float3x4.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\float4.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\float4_neon.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\float4_sse.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\float4x4.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\float4x4_neon.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\float4x4_sse.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\FloatCmp.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\MathAll.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\MathConstants.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\MathFunc.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\MathLog.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\MathNamespace.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\MathTypes.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\MatrixProxy.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\myassert.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\Polynomial.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\Quat.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\quat_simd.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\Rect.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\Reinterpret.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\sse_mathfun.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\SSEMath.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Math\TransformOps.h">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\Time\Clock.h">
+      <Filter>Sources\Tools\MathGeoLib\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\MathBuildConfig.h">
+      <Filter>Sources\Tools\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\MathGeoLib.h">
+      <Filter>Sources\Tools\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathGeoLib\include\MathGeoLibFwd.h">
+      <Filter>Sources\Tools\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mmgr\mmgr.h">
+      <Filter>Sources\Tools\mmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mmgr\nommgr.h">
+      <Filter>Sources\Tools\mmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NodeEditor\Include\imgui_node_editor.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NodeEditor\Source\crude_json.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NodeEditor\Source\imgui_bezier_math.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NodeEditor\Source\imgui_canvas.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NodeEditor\Source\imgui_extra_math.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NodeEditor\Source\imgui_node_editor_internal.h">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\par\par_bluenoise.h">
+      <Filter>Sources\Tools\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="src\par\par_bubbles.h">
+      <Filter>Sources\Tools\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="src\par\par_easings.h">
+      <Filter>Sources\Tools\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="src\par\par_easycurl.h">
+      <Filter>Sources\Tools\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="src\par\par_filecache.h">
+      <Filter>Sources\Tools\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="src\par\par_msquares.h">
+      <Filter>Sources\Tools\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="src\par\par_shaders.h">
+      <Filter>Sources\Tools\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="src\par\par_shapes.h">
+      <Filter>Sources\Tools\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="src\par\par_sprune.h">
+      <Filter>Sources\Tools\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="src\par\par_streamlines.h">
+      <Filter>Sources\Tools\Par</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parson\parson.h">
+      <Filter>Sources\Tools\parson</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pcg-cpp-0.98\include\pcg_extras.hpp">
+      <Filter>Sources\Tools\cpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pcg-cpp-0.98\include\pcg_random.hpp">
+      <Filter>Sources\Tools\cpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pcg-cpp-0.98\include\pcg_uint128.hpp">
+      <Filter>Sources\Tools\cpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysFS\include\physfs.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Hinata\Application.cpp">
+      <Filter>Sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\AssimpIO.cpp" />
+    <ClCompile Include="src\Hinata\BassIO.cpp" />
+    <ClCompile Include="src\Hinata\BoundingBox.cpp">
+      <Filter>Sources\3DPrimitive</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\Color.cpp">
+      <Filter>Sources\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\Component.cpp">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ComponentAnimator.cpp">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ComponentCamera.cpp">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ComponentMaterial.cpp">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ComponentMesh.cpp">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ComponentSkinnedMesh.cpp">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ComponentTransform.cpp">
+      <Filter>Sources\EntityComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\Cube.cpp">
+      <Filter>Sources\3DPrimitive</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\CubeLine.cpp">
+      <Filter>Sources\3DPrimitive</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\GameObject.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\glmath.cpp">
+      <Filter>Sources\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ImguiShortFuntions.cpp">
+      <Filter>Sources\Tools\imguiShortFuntions</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\JSONFile.cpp" />
+    <ClCompile Include="src\Hinata\Light.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\log.cpp">
+      <Filter>Sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\Main.cpp">
+      <Filter>Sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\MenuCreateShape.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleAudio.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleCamera3D.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleFileSystem.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleGui.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleHardware.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleImportBone.cpp" />
+    <ClCompile Include="src\Hinata\ModuleImportMesh.cpp">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleImportModel.cpp">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleImportTexture.cpp">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleInput.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleRandom.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleRenderer3D.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleResourceManager.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleScene.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModulesDrawConfigUI.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleTime.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleWindow.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\Octree.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\Panel.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\PanelAbout.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\PanelAnimator.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\PanelAssets.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\PanelConfiguration.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\PanelConsole.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\PanelGame.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\PanelHierarchy.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\PanelImport.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\PanelProperties.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\PanelResources.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\PanelScene.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\PanelShortcuts.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\PanelTimeline.cpp" />
+    <ClCompile Include="src\Hinata\PanelTools.cpp">
+      <Filter>Sources\Editor\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\PerfTimer.cpp" />
+    <ClCompile Include="src\Hinata\Primitive.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\RenderTexture.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\Resource.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ResourceAnimation.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ResourceBone.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ResourceMaterial.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ResourceMesh.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ResourceModel.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ResourceTexture.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\Shortcut.cpp">
+      <Filter>Sources\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\Timer.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gpudetect\DeviceId.cpp">
+      <Filter>Sources\Tools\gpudetect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui.cpp">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui_demo.cpp">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui_draw.cpp">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui_impl_sdl.cpp">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui_stdlib.cpp">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui_timeline.cpp">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui_widgets.cpp">
+      <Filter>Sources\Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imGuizmo\ImCurveEdit.cpp">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imGuizmo\ImGradient.cpp">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imGuizmo\ImGuizmo.cpp">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imGuizmo\ImSequencer.cpp">
+      <Filter>Sources\Tools\imGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Algorithm\Random\LCG.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\AABB.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\Capsule.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\Circle.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\Cone.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\Cylinder.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\Frustum.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\Line.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\LineSegment.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\OBB.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\Plane.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\Polygon.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\Polyhedron.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\Ray.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\Sphere.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\Triangle.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Geometry\TriangleMesh.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Math\BitOps.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Math\float2.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Math\float3.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Math\float3x3.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Math\float3x4.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Math\float4.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Math\float4x4.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Math\MathFunc.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Math\MathLog.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Math\MathOps.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Math\Polynomial.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Math\Quat.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Math\SSEMath.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Math\TransformOps.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathGeoLib\include\Time\Clock.cpp">
+      <Filter>Sources\Tools\MathGeoLib\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mmgr\mmgr.cpp">
+      <Filter>Sources\Tools\mmgr</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NodeEditor\Source\crude_json.cpp">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NodeEditor\Source\imgui_canvas.cpp">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NodeEditor\Source\imgui_node_editor.cpp">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NodeEditor\Source\imgui_node_editor_api.cpp">
+      <Filter>Sources\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parson\parson.c">
+      <Filter>Sources\Tools\parson</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Engine\config.json">
+      <Filter>Sources\Tools</Filter>
+    </None>
+    <None Include="..\Engine\config.json" />
+    <None Include="src\Assimp\include\color4.inl">
+      <Filter>Sources\Tools\assimp</Filter>
+    </None>
+    <None Include="src\Assimp\include\material.inl">
+      <Filter>Sources\Tools\assimp</Filter>
+    </None>
+    <None Include="src\Assimp\include\matrix3x3.inl">
+      <Filter>Sources\Tools\assimp</Filter>
+    </None>
+    <None Include="src\Assimp\include\matrix4x4.inl">
+      <Filter>Sources\Tools\assimp</Filter>
+    </None>
+    <None Include="src\Assimp\include\quaternion.inl">
+      <Filter>Sources\Tools\assimp</Filter>
+    </None>
+    <None Include="src\Assimp\include\vector2.inl">
+      <Filter>Sources\Tools\assimp</Filter>
+    </None>
+    <None Include="src\Assimp\include\vector3.inl">
+      <Filter>Sources\Tools\assimp</Filter>
+    </None>
+    <None Include="src\MathGeoLib\include\Geometry\KDTree.inl">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="src\MathGeoLib\include\Geometry\QuadTree.inl">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="src\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_AVX.inl">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="src\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_CPP.inl">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="src\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_SSE.inl">
+      <Filter>Sources\Tools\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="src\MathGeoLib\include\Math\Matrix.inl">
+      <Filter>Sources\Tools\MathGeoLib\Math</Filter>
+    </None>
+    <None Include="src\NodeEditor\Source\imgui_bezier_math.inl">
+      <Filter>Sources\NodeEditor</Filter>
+    </None>
+    <None Include="src\NodeEditor\Source\imgui_extra_math.inl">
+      <Filter>Sources\NodeEditor</Filter>
+    </None>
+    <None Include="src\NodeEditor\Source\imgui_node_editor_internal.inl">
+      <Filter>Sources\NodeEditor</Filter>
+    </None>
+  </ItemGroup>
+</Project>
