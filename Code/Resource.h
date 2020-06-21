@@ -22,7 +22,7 @@ typedef unsigned int uint;
 #define RESOURCE_DECLARATION( classname )                                                      \
 public:                                                                                     \
     static const uint type;                                                          \
-    virtual bool IsClassType( const std::size_t classType ) const override;                 \
+    virtual bool IsClassType( const unsigned int classType ) const override;                 \
 	virtual unsigned int GetType() override; \
 
 //****************

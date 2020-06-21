@@ -18,10 +18,10 @@ typedef unsigned int uint;
 // This macro must be included in the declaration of any subclass of Component.
 // It declares variables used in type checking.
 //****************
-#define CLASS_DECLARATION( classname )                                                      \
+#define CLASS_DECLARATION( classType )                                                      \
 public:                                                                                     \
     static const uint type;                                                          \
-    virtual bool IsClassType( const std::size_t classType ) const override;                 \
+    virtual bool IsClassType(const std::size_t classType) const override;                 \
 
 //****************
 // CLASS_DEFINITION
@@ -32,9 +32,10 @@ public:                                                                         
 // incorrect. Only works on single-inheritance RTTI.
 //****************
 #define CLASS_DEFINITION( parentclass, childclass )                                         \
-const uint childclass::type = std::hash< std::string >()( TO_STRING( childclass ) ); \
-bool childclass::IsClassType( const uint classType ) const {                         \
-        if ( classType == childclass::type )                                                \
+const uint childclass::type = std::hash< std::string >()( TO_STRING( childclass ) );		 \
+bool childclass::IsClassType(const std::size_t classType ) const									\
+{																							\
+        if ( classType == childclass::type)                                                \
             return true;                                                                    \
         return parentclass::IsClassType( classType );                                       \
 }                                                                                           
@@ -52,7 +53,7 @@ public:
 	virtual void PropertiesEditor() = 0;
 	void EnableComponent(bool value);
 
-	virtual bool IsClassType(const uint classType) const
+	virtual bool IsClassType(const std::size_t classType) const
 	{
 		return classType == type;
 	}

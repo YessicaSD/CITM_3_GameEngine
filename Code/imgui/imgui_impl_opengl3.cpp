@@ -4,7 +4,7 @@
 // This needs to be used along with a Platform Binding (e.g. GLFW, SDL, Win32, custom..)
 
 // Implemented features:
-//  [X] Renderer: User texture binding. Use 'GLuint' OpenGL texture identifier as void*/ImTextureID. Read the FAQ about ImTextureID!
+//  [X] Renderer: User texture binding. Use 'GLuint' OpenGL texture identifier as void*/ImTextureID. Read the FAQ about ImTextureID in imgui.cpp.
 //  [X] Renderer: Multi-viewport support. Enable with 'io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable'.
 //  [x] Renderer: Desktop GL only: Support for large meshes (64k+ vertices) with 16-bits indices.
 
@@ -110,8 +110,14 @@
 //  Modern desktop OpenGL doesn't have a standard portable header file to load OpenGL function pointers.
 //  Helper libraries are often used for this purpose! Here we are supporting a few common ones (gl3w, glew, glad).
 //  You may use another loader/header of your choice (glext, glLoadGen, etc.), or chose to manually implement your own.
-#if defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
-#include "../glew/include/GL/glew.h"    // Needs to be initialized with glewInit() in user's code
+#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
+#include <GL/gl3w.h>    // Needs to be initialized with gl3wInit() in user's code
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
+#include "../glew/include/GL/glew.h"
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
+#include <glad/glad.h>  // Needs to be initialized with gladLoadGL() in user's code
+#else
+#include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 #endif
 #endif
 
@@ -121,6 +127,8 @@
 #else
 #define IMGUI_IMPL_OPENGL_HAS_DRAW_WITH_BASE_VERTEX     1
 #endif
+
+//#include "../Optick/include/optick.h"
 
 // OpenGL Data
 static char         g_GlslVersionString[32] = "";
@@ -160,9 +168,9 @@ bool    ImGui_ImplOpenGL3_Init(const char* glsl_version)
     strcpy(g_GlslVersionString, glsl_version);
     strcat(g_GlslVersionString, "\n");
 
-    // Dummy construct to make it easily visible in the IDE and debugger which GL loader has been selected.
+    // Dummy construct to make it easily visible in the IDE and debugger which GL loader has been selected. 
     // The code actually never uses the 'gl_loader' variable! It is only here so you can read it!
-    // If auto-detection fails or doesn't select the same GL loader file as used by your application,
+    // If auto-detection fails or doesn't select the same GL loader file as used by your application, 
     // you are likely to get a crash below.
     // You can explicitly select a loader by using '#define IMGUI_IMPL_OPENGL_LOADER_XXX' in imconfig.h or compiler command-line.
     const char* gl_loader = "Unknown";
@@ -256,6 +264,8 @@ static void ImGui_ImplOpenGL3_SetupRenderState(ImDrawData* draw_data, int fb_wid
 // Note that this implementation is little overcomplicated because we are saving/setting up/restoring every OpenGL state explicitly, in order to be able to run within any OpenGL engine that doesn't do so.
 void    ImGui_ImplOpenGL3_RenderDrawData(ImDrawData* draw_data)
 {
+    /*OPTICK_EVENT();*/
+
     // Avoid rendering when minimized, scale coordinates for retina displays (screen coordinates != framebuffer coordinates)
     int fb_width = (int)(draw_data->DisplaySize.x * draw_data->FramebufferScale.x);
     int fb_height = (int)(draw_data->DisplaySize.y * draw_data->FramebufferScale.y);

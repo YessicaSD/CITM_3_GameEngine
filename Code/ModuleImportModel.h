@@ -4,7 +4,7 @@
 #include "Module.h"
 #include <vector>
 #define INVALID_MATERIAL 0xFFFFFFFF
-#include "Assimp/include/assimp/cimport.h"
+#include "Assimp/include/cimport.h"
 #include "ModuleScene.h"
 #include "ResourceTexture.h"
 #include <unordered_set>

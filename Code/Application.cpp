@@ -24,6 +24,8 @@
 
 #include "JSONFile.h"
 #include "Timer.h"
+#include "SDL/include/SDL.h"
+
 
 Application::Application()
 {
