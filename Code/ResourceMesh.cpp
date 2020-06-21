@@ -145,7 +145,10 @@ bool ResourceMesh::LoadFileData()
 				UID bone_uid = 0;
 				LoadVariable(&bone_uid, &cursor, sizeof(UID));
 				ResourceBone * bone = (ResourceBone*)App->resource_manager->GetResource(bone_uid);
-				bone->StartUsingResource();
+				if (bone != nullptr)
+				{
+					bone->StartUsingResource();
+				}
 				bones[i] = bone;
 			}
 		}

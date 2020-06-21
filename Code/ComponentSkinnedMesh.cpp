@@ -91,6 +91,10 @@ void ComponentSkinnedMesh::OnUpdate(float dt)
 		memset(vertex_normals, 0, sizeof(float3)*this->mesh->num_vertices);
 		for (uint i = 0; i < mesh->num_bones; ++i)
 		{
+			if (mesh->bones[i] == nullptr)
+			{
+				continue;
+			}
 			std::string bone_name  = mesh->bones[i]->GetName();
 			std::map<std::string, ComponentTransform*>::iterator iter = bones.find(bone_name);
 			ComponentTransform* bone = nullptr;
