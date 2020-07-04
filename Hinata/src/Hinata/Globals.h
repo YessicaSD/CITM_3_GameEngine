@@ -74,6 +74,7 @@ enum update_status
 #define RESOURCES_MATERIAL_FOLDER "Resources/Materials/"
 #define RESOURCES_STATE_MACHINE_FOLDER "Resources/StateMachines/"
 
+
 #define META_EXTENSION "hinata_meta"
 #define MESH_EXTENSION "hinata_mesh"
 #define ANIMATION_EXTENSION "hinata_animation"
@@ -82,9 +83,12 @@ enum update_status
 #define TEXTURE_EXTENSION "dds"
 #define MATERIAL_EXTENSION "hinata_material"
 #define SCENE_EXTENSION "hinata_scene"
+#define SHADER_EXTENSION "shader"
 
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 768
+
+
+#define SCREEN_WIDTH 1920
+#define SCREEN_HEIGHT 1080
 #define SCREEN_SIZE 1
 #define TITLE "Hinata Engine"
 #define VERSION "0.1"

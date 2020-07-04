@@ -8,10 +8,7 @@
 
 PanelTools::PanelTools(std::string name, bool active, std::vector<SDL_Scancode> shortcuts):Panel(name, active, shortcuts)
 {
-	JSONFile atlas_meta;
-	atlas_meta.LoadFile(std::string("Assets/Atlas.png") + "." + META_EXTENSION);
-	UID atlas_uid = atlas_meta.LoadUID("resourceUID");
-	atlas = (ResourceTexture*)App->resource_manager->GetResource(atlas_uid);
+	atlas = App->resource_manager->atlas_tex;
 	if (atlas != nullptr)
 	{
 		atlas->StartUsingResource();

@@ -5,14 +5,11 @@
 #include "ComponentMesh.h"
 
 class ResourceTexture;
+class ResourceMaterial;
 
 class ComponentMaterial : public Component
 {
 	CLASS_DECLARATION(ComponentMaterial)
-
-private:
-	ComponentMaterial(GameObject * gameobject, ComponentMesh* component_mesh );
-	ComponentMaterial(GameObject * gameobject);
 
 public:
 	void CleanUp() override;
@@ -26,7 +23,13 @@ public:
 
 private:
 	ResourceTexture* texture = nullptr;
+	ResourceMaterial* material = nullptr;
+
 	//ComponentMesh * component_mesh = nullptr;
+
+
+	ComponentMaterial(GameObject* gameobject, ComponentMesh* component_mesh);
+	ComponentMaterial(GameObject* gameobject);
 
 	friend class ComponentSkinnedMesh;
 	friend class ComponentMesh;

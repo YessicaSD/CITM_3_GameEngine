@@ -28,6 +28,9 @@ bool ModuleResourceManager::Start(JSONFile * module_file)
 	StartCheckAssets(asset_dir);
 	check_assets_timer.Start();
 
+	//Loading engine Textures 
+	atlas_tex = App->import_texture->EngineImportTexture("Settings/Images/System/Atlas.png");
+
 	return true;
 }
 

@@ -179,9 +179,6 @@
     <ClInclude Include="src\Hinata\ModuleRenderer3D.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hinata\ModuleResourceManager.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="src\Hinata\ModuleScene.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
@@ -244,7 +241,6 @@
     <ClInclude Include="src\Hinata\RaycastHit.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hinata\RenderTexture.h" />
     <ClInclude Include="src\Hinata\Resource.h">
       <Filter>Sources\Resources</Filter>
     </ClInclude>
@@ -688,6 +684,15 @@
       <Filter>Sources\Tools\cpc</Filter>
     </ClInclude>
     <ClInclude Include="src\PhysFS\include\physfs.h" />
+    <ClInclude Include="src\Hinata\RenderTexture.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ResourceShader.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hinata\ModuleResourceManager.h">
+      <Filter>Sources\Modules\ModuleImport</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Hinata\Application.cpp">
@@ -782,9 +787,6 @@
       <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="src\Hinata\ModuleRenderer3D.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hinata\ModuleResourceManager.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="src\Hinata\ModuleScene.cpp">
@@ -1031,6 +1033,12 @@
     </ClCompile>
     <ClCompile Include="src\parson\parson.c">
       <Filter>Sources\Tools\parson</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ResourceShader.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hinata\ModuleResourceManager.cpp">
+      <Filter>Sources\Modules\ModuleImport</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

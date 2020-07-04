@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Hinata\ResourceShader.h" />
     <ClInclude Include="src\Hinata\Application.h" />
     <ClInclude Include="src\Hinata\AssimpIO.h" />
     <ClInclude Include="src\Assimp\include\ai_assert.h" />
@@ -368,6 +369,7 @@
     <ClInclude Include="src\Hinata\ComponentTransform.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Hinata\ResourceShader.cpp" />
     <ClCompile Include="src\Hinata\Application.cpp" />
     <ClCompile Include="src\Hinata\ComponentAnimator.cpp" />
     <ClCompile Include="src\Hinata\ComponentSkinnedMesh.cpp" />

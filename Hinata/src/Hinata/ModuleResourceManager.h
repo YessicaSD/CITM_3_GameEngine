@@ -48,6 +48,9 @@ public:
 	void SaveUIDArray(const std::vector<UID>& uid_vector, char * name, JSONFile * meta_file) const;
 	UID PopFirst(std::vector<UID>& vector);
 
+	ResourceTexture* atlas_tex = nullptr;
+
+
 private:
 	
 	//Checking assets helper functions
@@ -77,6 +80,8 @@ private:
 	AssetDir * asset_dir = nullptr;
 	Timer check_assets_timer;
 	float check_assets_interval = 0.f;
+
+	
 
 	friend class ComponentAnimator;
 	friend class PanelAssets;

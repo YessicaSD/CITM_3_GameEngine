@@ -68,6 +68,44 @@ ResourceTexture* ModuleImportTexture::ImportTexture(const char * asset_path, UID
 	return resource_texture;
 }
 
+ResourceTexture* ModuleImportTexture::EngineImportTexture(const char* path)
+{
+	Timer import_timer;
+
+	ResourceTexture* resource_texture = new ResourceTexture();
+	resource_texture->asset_source = path;
+
+	//Import data from path first
+	uint image_id = 0u;
+	ilGenImages(1, &image_id);
+	ilBindImage(image_id);
+
+	if (ilLoadImage(path) == IL_TRUE)
+	{
+		ILinfo ImageInfo;
+		iluGetImageInfo(&ImageInfo);
+	/*	if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		{
+			iluFlipImage();
+		}*/
+		resource_texture->SaveFileData();
+		SaveTextureMeta(resource_texture, path);
+		ilDeleteImages(1, &image_id);
+		resource_texture->buffer_id = 0u;
+		engine_textures.push_back(resource_texture);
+	}
+	else
+	{
+		LOG("Could't load Engine Texture, Sorry ^-^'");
+		auto error = ilGetError();
+		delete resource_texture;
+		return nullptr;
+	}
+
+	return resource_texture;
+}
+
+
 void ModuleImportTexture::SaveTextureMeta(ResourceTexture * resource_texture, const char * asset_path)
 {
 	//INFO Create .meta
@@ -79,6 +117,8 @@ void ModuleImportTexture::SaveTextureMeta(ResourceTexture * resource_texture, co
 	meta_file.SaveFile(std::string(asset_path) + std::string(".") + std::string(META_EXTENSION));
 	meta_file.CloseFile();
 }
+
+
 
 //void ModuleTexture::ImportCheckerTexture()
 //{

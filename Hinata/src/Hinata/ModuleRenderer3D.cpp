@@ -31,7 +31,6 @@ bool ModuleRenderer3D::Init(JSONFile * module_file)
 	// Initialize OpenGL loader
 	if (glewInit() != GLEW_OK)
 	{
-		//fprintf(stderr, "Failed to initialize OpenGL loader!\n");
 		LOG("Failed to initialize OpenGL loader!\n");
 		ret = false;
 	}

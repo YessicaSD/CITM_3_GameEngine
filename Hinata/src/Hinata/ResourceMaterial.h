@@ -2,6 +2,10 @@
 #define __RESOURCE_MATERIAL_H__
 
 #include "Resource.h"
+#include <map>
+#include "../MathGeoLib/include/Math/float4.h"
+#include "Color.h"
+class ResourceTexture;
 
 class ResourceMaterial : public Resource
 {
@@ -9,6 +13,7 @@ class ResourceMaterial : public Resource
 
 public:
 	const char * GetTypeString() override;
+	void SetColor(std::string name, Color color);
 private:
 	bool SaveFileData() override;
 	bool LoadFileData() override;
@@ -16,7 +21,11 @@ private:
 
 public:
 	int i = 0;
-	//TODO: Look what information a material holds in assimp
+	std::map<std::string, Color> colors;
+	std::map<std::string, ResourceTexture*> textures;
+	std::map<std::string, float> floats;
+	std::map<std::string, int> ints;
+
 };
 
 #endif
