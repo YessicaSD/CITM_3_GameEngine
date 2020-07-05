@@ -17,7 +17,7 @@ PanelAssets::PanelAssets(std::string name, bool state, std::vector<SDL_Scancode>
 
 void PanelAssets::Draw()
 {
-	ImGui::Begin(name.c_str());
+	ImGui::Begin(name.c_str(), &active, ImGuiWindowFlags_NoCollapse);
 
 	//if (ImGui::Button("Refresh"))
 	//{
@@ -29,8 +29,21 @@ void PanelAssets::Draw()
 	//TODO: Deletes the whole Resources folder and creates all new files
 	//if(ImGui::Button("Reimport"))
 
-	DisplayFolderAssetsRecursive(App->resource_manager->asset_dir);
+	ImGui::Columns(2, "AssetsColumns", true);
+	if (ImGui::BeginChild("##HierarchyAssets"/*, { 0,0 }, false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse*/))
+	{
+		DisplayFolderAssetsRecursive(App->resource_manager->asset_dir);
+	}
+	ImGui::EndChild();
 
+	ImGui::NextColumn();
+
+	if (ImGui::BeginChild("##Files"/*, { 0,0 }, false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse*/)) 
+	{
+		DisplayFiles(App->resource_manager->asset_dir);
+	}
+	
+	ImGui::EndChild();
 	ImGui::End();
 }
 
@@ -60,6 +73,22 @@ void PanelAssets::DisplayFolderAssetsRecursive(AssetDir * dir)
 		if (ImGui::TreeNodeEx((*iter)->name.c_str(), dir_tree_flags))
 		{
 			DisplayFolderAssetsRecursive((*iter));
+			ImGui::TreePop();
+		}
+	}
+}
+
+void PanelAssets::DisplayFiles(AssetDir* dir)
+{
+	ImGuiTreeNodeFlags asset_tree_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_Leaf;
+	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
+	{
+		bool open = ImGui::TreeNodeEx((*iter)->name.c_str(), asset_tree_flags);
+		//TODO: Check if this asset is a model
+		DragAsset((*iter));
+		if (open)
+		{
+			selected_asset = (*iter);
 			ImGui::TreePop();
 		}
 	}

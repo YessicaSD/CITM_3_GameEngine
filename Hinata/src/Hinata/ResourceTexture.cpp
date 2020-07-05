@@ -65,25 +65,7 @@ bool ResourceTexture::LoadFileData()
 
 	if (ilLoadImage(custom_format_path) == IL_TRUE)
 	{
-		buffer_id = ilutGLBindTexImage();
-
-		height = ilGetInteger(IL_IMAGE_HEIGHT);
-		width = ilGetInteger(IL_IMAGE_WIDTH);
-		size = ilGetInteger(IL_IMAGE_SIZE_OF_DATA);
-
-		height = ilGetInteger(IL_IMAGE_HEIGHT);
-		width = ilGetInteger(IL_IMAGE_WIDTH);
-		size = ilGetInteger(IL_IMAGE_SIZE_OF_DATA);
-		//Get the data?
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		glBindTexture(GL_TEXTURE_2D, buffer_id);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, 0x8072, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glBindTexture(GL_TEXTURE_2D, 0);
-
+		LoadBuffer();
 		LOG("Success loading texture from: %s in: %i ms.", custom_format_path, load_timer.Read());
 	}
 	else
@@ -91,7 +73,8 @@ bool ResourceTexture::LoadFileData()
 		auto error = ilGetError();
 		LOG("Error loadig texture with path: %s. Error: %s", custom_format_path, ilGetString(error));
 	}
-	//free(lump);
+
+	ilDeleteImages(1, &image_id);
 
 	return true;
 }
@@ -106,4 +89,24 @@ bool ResourceTexture::ReleaseData()
 
 
 	return true;
+}
+
+void ResourceTexture::LoadBuffer()
+{
+	buffer_id = ilutGLBindTexImage();
+
+	height = ilGetInteger(IL_IMAGE_HEIGHT);
+	width = ilGetInteger(IL_IMAGE_WIDTH);
+	size = ilGetInteger(IL_IMAGE_SIZE_OF_DATA);
+
+	//Get the data?
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glBindTexture(GL_TEXTURE_2D, buffer_id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, 0x8072, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 }

@@ -8,7 +8,7 @@
 
 PanelTools::PanelTools(std::string name, bool active, std::vector<SDL_Scancode> shortcuts):Panel(name, active, shortcuts)
 {
-	atlas = App->resource_manager->atlas_tex;
+	atlas = App->resource_manager->icons.atlas;
 	if (atlas != nullptr)
 	{
 		atlas->StartUsingResource();

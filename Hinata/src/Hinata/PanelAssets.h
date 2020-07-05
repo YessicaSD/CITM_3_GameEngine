@@ -15,7 +15,7 @@ public:
 	PanelAssets(std::string name, bool state, std::vector<SDL_Scancode> shortcuts = {});
 	void Draw();
 
-	void DisplayFolderAssetsRecursive(AssetDir * dir);
+	
 
 	void DragAsset(AssetFile * asset);
 
@@ -25,6 +25,8 @@ public:
 
 private:
 	AssetFile * selected_asset = nullptr;
+	void DisplayFolderAssetsRecursive(AssetDir* dir);
+	void DisplayFiles(AssetDir* dir);
 
 	friend class ModuleGui;
 };

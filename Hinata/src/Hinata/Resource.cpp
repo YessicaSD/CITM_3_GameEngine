@@ -2,6 +2,9 @@
 #include "ModuleFileSystem.h"
 #include "JSONFile.h"
 #include <stdio.h>
+#include "Application.h"
+#include "ModuleResourceManager.h"
+
 
 const uint Resource::type = std::hash<std::string>()(TO_STRING(Resource));
 
@@ -32,6 +35,7 @@ bool Resource::ReleaseData()
 
 Resource::Resource()
 {
+	icon = App->resource_manager->icons.default_file;
 }
 
 //INFO: Called each time a GameObject needs to use this resource

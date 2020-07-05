@@ -27,6 +27,12 @@ struct AssetDir {
 	std::vector<AssetDir*>dirs;
 };
 
+struct  Icons
+{
+	ResourceTexture* atlas = nullptr;
+	ResourceTexture* default_file = nullptr;
+};
+
 class ModuleResourceManager : public Module
 {
 public:
@@ -48,8 +54,7 @@ public:
 	void SaveUIDArray(const std::vector<UID>& uid_vector, char * name, JSONFile * meta_file) const;
 	UID PopFirst(std::vector<UID>& vector);
 
-	ResourceTexture* atlas_tex = nullptr;
-
+	Icons icons;
 
 private:
 	

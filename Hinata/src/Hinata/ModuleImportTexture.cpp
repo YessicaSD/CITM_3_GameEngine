@@ -54,7 +54,6 @@ ResourceTexture* ModuleImportTexture::ImportTexture(const char * asset_path, UID
 		//}
 		resource_texture->SaveFileData();
 		SaveTextureMeta(resource_texture, asset_path);
-		ilDeleteImages(1, &image_id);
 		resource_texture->buffer_id = 0u;
 		LOG("Success importing texture from: %s in: %i ms", asset_path, import_timer.Read());
 	}
@@ -63,7 +62,8 @@ ResourceTexture* ModuleImportTexture::ImportTexture(const char * asset_path, UID
 		auto error = ilGetError();
 		LOG("Failed to load texture with path: %s. Error: %s", asset_path, ilGetString(error));
 	}
-	//free(lump);
+	
+	ilDeleteImages(1, &image_id);
 
 	return resource_texture;
 }
@@ -79,19 +79,17 @@ ResourceTexture* ModuleImportTexture::EngineImportTexture(const char* path)
 	uint image_id = 0u;
 	ilGenImages(1, &image_id);
 	ilBindImage(image_id);
-
+	
 	if (ilLoadImage(path) == IL_TRUE)
 	{
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
-	/*	if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		
+		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
 		{
 			iluFlipImage();
-		}*/
-		resource_texture->SaveFileData();
-		SaveTextureMeta(resource_texture, path);
-		ilDeleteImages(1, &image_id);
-		resource_texture->buffer_id = 0u;
+		}
+		resource_texture->LoadBuffer();
 		engine_textures.push_back(resource_texture);
 	}
 	else
@@ -101,6 +99,8 @@ ResourceTexture* ModuleImportTexture::EngineImportTexture(const char* path)
 		delete resource_texture;
 		return nullptr;
 	}
+
+	ilDeleteImages(1, &image_id);
 
 	return resource_texture;
 }
@@ -116,6 +116,18 @@ void ModuleImportTexture::SaveTextureMeta(ResourceTexture * resource_texture, co
 	//TODO: Add import options
 	meta_file.SaveFile(std::string(asset_path) + std::string(".") + std::string(META_EXTENSION));
 	meta_file.CloseFile();
+}
+
+bool ModuleImportTexture::CleanUp()
+{
+	for (auto iter = engine_textures.begin(); iter != engine_textures.end(); iter++)
+	{
+		if (*iter != nullptr)
+			delete *iter;
+	}
+	engine_textures.clear();
+
+	return true;
 }
 
 

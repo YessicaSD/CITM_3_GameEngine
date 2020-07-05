@@ -22,6 +22,7 @@ private:
 	bool SaveFileData() override;
 	bool LoadFileData() override;
 	bool ReleaseData() override;
+	void LoadBuffer();
 
 public:
 	uint buffer_id = 0u;

@@ -81,7 +81,7 @@ enum update_status
 #define BONE_EXTENSION "hinata_bone"
 #define MODEL_EXTENSION "hinata_model"
 #define TEXTURE_EXTENSION "dds"
-#define MATERIAL_EXTENSION "hinata_material"
+#define MATERIAL_EXTENSION "hinata_material"b
 #define SCENE_EXTENSION "hinata_scene"
 #define SHADER_EXTENSION "shader"
 
