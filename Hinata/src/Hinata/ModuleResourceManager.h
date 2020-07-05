@@ -14,9 +14,9 @@ class ResourceBone;
 //Used to create the hirearchy of assets
 struct AssetFile
 {
-	//type (used to get the appropiate icon)
 	std::string name;
 	std::string full_path;
+	ResourceTexture* icon = nullptr;
 };
 
 struct AssetDir {
@@ -31,6 +31,12 @@ struct  Icons
 {
 	ResourceTexture* atlas = nullptr;
 	ResourceTexture* default_file = nullptr;
+	ResourceTexture* png = nullptr;
+	ResourceTexture* jpg = nullptr;
+	ResourceTexture* dds = nullptr;
+	ResourceTexture* model = nullptr;
+	ResourceTexture* folder = nullptr;
+
 };
 
 class ModuleResourceManager : public Module
@@ -76,6 +82,7 @@ private:
 	bool HasBeenModified(JSONFile &meta_file, const char * file);
 	bool MissingResources(JSONFile & meta_file, uint type);
 
+	void SetIconByExtension(AssetFile* file, std::string extension);
 	UID GenerateNewUID();
 
 private:

@@ -8,7 +8,7 @@
 #include "ComponentTransform.h"
 #include "ModuleResourceManager.h"
 //#include "mmgr/mmgr.h"
-
+#include <minwindef.h>
 #include "../PhysFS/include/physfs.h"
 
 PanelAssets::PanelAssets(std::string name, bool state, std::vector<SDL_Scancode> shortcuts) :Panel(name, state, shortcuts)
@@ -30,6 +30,12 @@ void PanelAssets::Draw()
 	//if(ImGui::Button("Reimport"))
 
 	ImGui::Columns(2, "AssetsColumns", true);
+	if (first_loop)
+	{
+		ImGui::SetColumnWidth(0, 160);
+		first_loop = false;
+	}
+
 	if (ImGui::BeginChild("##HierarchyAssets"/*, { 0,0 }, false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse*/))
 	{
 		DisplayFolderAssetsRecursive(App->resource_manager->asset_dir);
@@ -37,6 +43,7 @@ void PanelAssets::Draw()
 	ImGui::EndChild();
 
 	ImGui::NextColumn();
+	column_width = ImGui::GetColumnWidth();
 
 	if (ImGui::BeginChild("##Files"/*, { 0,0 }, false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse*/)) 
 	{
@@ -45,6 +52,7 @@ void PanelAssets::Draw()
 	
 	ImGui::EndChild();
 	ImGui::End();
+	
 }
 
 void PanelAssets::DisplayFolderAssetsRecursive(AssetDir * dir)
@@ -80,17 +88,36 @@ void PanelAssets::DisplayFolderAssetsRecursive(AssetDir * dir)
 
 void PanelAssets::DisplayFiles(AssetDir* dir)
 {
+	ImGui::Columns(max(1, int(column_width/78)), "##ColumnIcons", false);
+
 	ImGuiTreeNodeFlags asset_tree_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_Leaf;
+
+	for (auto iter = dir->dirs.begin(); iter != dir->dirs.end(); ++iter)
+	{
+		ImVec4 selected_color = { 0, 0, 0, 0 };
+		/*if (current_active_file != nullptr && current_active_file == current_active_folder->children[i])
+			selected_color = { 0.07F,0.64F,0.73F,1 };*/
+
+		ImGui::PushStyleColor(ImGuiCol_::ImGuiCol_Button, selected_color);
+		ImGui::ImageButton((ImTextureID)App->resource_manager->icons.folder->buffer_id, { 53,70 }, { 0,0 }, { 1,1 }, -1, { 0,0,0,0 }, { 1,1,1,1 });
+		ImGui::PopStyleColor();
+		ImGui::Text((*iter)->name.data());
+
+		ImGui::NextColumn();
+	}
+
 	for (auto iter = dir->assets.begin(); iter != dir->assets.end(); ++iter)
 	{
-		bool open = ImGui::TreeNodeEx((*iter)->name.c_str(), asset_tree_flags);
-		//TODO: Check if this asset is a model
-		DragAsset((*iter));
-		if (open)
-		{
-			selected_asset = (*iter);
-			ImGui::TreePop();
-		}
+		ImVec4 selected_color = { 0, 0, 0, 0 };
+		/*if (current_active_file != nullptr && current_active_file == current_active_folder->children[i])
+			selected_color = { 0.07F,0.64F,0.73F,1 };*/
+
+		ImGui::PushStyleColor(ImGuiCol_::ImGuiCol_Button, selected_color);
+		ImGui::ImageButton((ImTextureID)(*iter)->icon->buffer_id, { 53,70 }, { 0,0 }, { 1,1 }, -1, { 0,0,0,0 }, { 1,1,1,1 });
+		ImGui::PopStyleColor();
+		ImGui::Text((*iter)->name.data());
+
+		ImGui::NextColumn();
 	}
 }
 

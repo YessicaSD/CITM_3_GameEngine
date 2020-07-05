@@ -18,6 +18,15 @@ ModuleResourceManager::ModuleResourceManager(const char * name) : Module(true, n
 
 bool ModuleResourceManager::Start(JSONFile * module_file)
 {
+	//Loading engine Textures 
+	icons.atlas = App->import_texture->EngineImportTexture("Settings/Images/System/Atlas.png");
+	icons.default_file = App->import_texture->EngineImportTexture("Settings/Images/System/icon_default.png");
+	icons.dds = App->import_texture->EngineImportTexture("Settings/Images/System/icon_dds.png");
+	icons.jpg = App->import_texture->EngineImportTexture("Settings/Images/System/icon_jpg.png");
+	icons.png = App->import_texture->EngineImportTexture("Settings/Images/System/icon_png.png");
+	icons.model = App->import_texture->EngineImportTexture("Settings/Images/System/icon_model.png");
+	icons.folder = App->import_texture->EngineImportTexture("Settings/Images/System/icon_folder.png");
+	
 	check_assets_interval = 1.f;
 	//TODO: Assets which cannot be opened show "cannot open this file" in preview window
 
@@ -28,10 +37,8 @@ bool ModuleResourceManager::Start(JSONFile * module_file)
 	StartCheckAssets(asset_dir);
 	check_assets_timer.Start();
 
-	//Loading engine Textures 
-	icons.atlas = App->import_texture->EngineImportTexture("Settings/Images/System/Atlas.png");
-	icons.default_file = App->import_texture->EngineImportTexture("Settings/Images/System/icon_default.png");
-
+	
+	
 	return true;
 }
 
@@ -321,6 +328,30 @@ Resource * ModuleResourceManager::GetResource(UID uid)
 	return resource;
 }
 
+void ModuleResourceManager::SetIconByExtension(AssetFile* file, std::string extension)
+{
+	if (extension == "png")
+	{
+		file->icon = icons.png;
+	}
+	else if (extension == "dds")
+	{
+		file->icon = icons.dds;
+	}
+	else if (extension == "jpg")
+	{
+		file->icon = icons.jpg;
+	}
+	else if (extension == "dae" || extension == "fbx" || extension == "FBX")
+	{
+		file->icon = icons.model;
+	}
+	else
+	{
+		file->icon = icons.default_file;
+	}
+}
+
 UID ModuleResourceManager::GenerateNewUID()
 {
 	return App->random->RandomUID();
@@ -347,7 +378,9 @@ void ModuleResourceManager::CreateAssetTree(AssetDir * dir)
 			AssetFile * new_asset = new AssetFile();
 			new_asset->name = (*iter);
 			new_asset->full_path = dir->full_path + (*iter);
+			SetIconByExtension(new_asset, extension);
 			dir->assets.push_back(new_asset);
+			
 		}
 	}
 

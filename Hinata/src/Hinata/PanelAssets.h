@@ -25,8 +25,12 @@ public:
 
 private:
 	AssetFile * selected_asset = nullptr;
+	int column_width = 0;
+	bool first_loop;
+
 	void DisplayFolderAssetsRecursive(AssetDir* dir);
 	void DisplayFiles(AssetDir* dir);
+	
 
 	friend class ModuleGui;
 };
