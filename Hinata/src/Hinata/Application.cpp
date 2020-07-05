@@ -412,6 +412,8 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
+	SaveModulesConfiguration();
+
 	std::vector<Module *>::reverse_iterator item = modules.rbegin();
 	while (item != modules.rend() && ret == true)
 	{

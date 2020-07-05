@@ -42,6 +42,9 @@ bool ModuleWindow::SaveConfiguration(JSONFile * module_file)
 	module_file->SaveNumber("brightness", brightness);
 	module_file->SaveNumber("width", GetWindowWidth());
 	module_file->SaveNumber("height", GetWindowHeight());
+	module_file->SaveNumber("x", GetWindowXPos());
+	module_file->SaveNumber("y", GetWindowYPos());
+
 	module_file->SaveNumber("fullscreen mode", current_window_mode);
 	module_file->SaveBool("resizable", resizable);
 	module_file->SaveBool("borderless", borderless);
@@ -59,6 +62,8 @@ bool ModuleWindow::LoadConfiguration(JSONFile * module_file)
 	SetWindowSize(
 		module_file->LoadNumber("width"),
 		module_file->LoadNumber("height"));
+
+	SetWindowPos(module_file->LoadNumber("x"), module_file->LoadNumber("y"));
 
 	current_window_mode = module_file->LoadNumber("fullscreen mode");
 	SetFullscreenMode();
@@ -166,6 +171,20 @@ int ModuleWindow::GetWindowHeight()
 	return h;
 }
 
+int ModuleWindow::GetWindowXPos()
+{
+	int x, y;
+	SDL_GetWindowPosition(window, &x, &y);
+	return x;
+}
+
+int ModuleWindow::GetWindowYPos()
+{
+	int x, y;
+	SDL_GetWindowPosition(window, &x, &y);
+	return y;
+}
+
 bool ModuleWindow::IsVsync()
 {
 	return vsync;
@@ -203,6 +222,11 @@ void ModuleWindow::SetHeight(float & height)
 void ModuleWindow::SetWindowSize(float width, float height)
 {
 	SDL_SetWindowSize(window, width, height);
+}
+
+void ModuleWindow::SetWindowPos(int x, int y)
+{
+	SDL_SetWindowPosition(window, x, y);
 }
 
 // Called before quitting

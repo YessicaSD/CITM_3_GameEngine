@@ -7,8 +7,10 @@
     },
     "Window": {
         "brightness": 0,
-        "width": 1024,
-        "height": 768,
+        "width": 1920,
+        "height": 1017,
+        "x": 0,
+        "y": 23,
         "fullscreen mode": 0,
         "resizable": true,
         "borderless": false,

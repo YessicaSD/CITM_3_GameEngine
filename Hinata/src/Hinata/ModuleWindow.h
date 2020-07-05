@@ -26,10 +26,13 @@ public:
 
 	int GetWindowWidth();
 	int GetWindowHeight();
+	int GetWindowXPos();
+	int GetWindowYPos();
 	
 	void SetWidth(float& width);
 	void SetHeight(float& height);
 	void SetWindowSize(float width, float height);
+	void SetWindowPos(int x, int y);
 
 	bool IsVsync();
 	

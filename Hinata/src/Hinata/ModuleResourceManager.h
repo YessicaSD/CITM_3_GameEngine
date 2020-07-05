@@ -23,6 +23,7 @@ struct AssetDir {
 	std::string name;
 	std::string full_path;
 
+	AssetDir* father = nullptr;
 	std::vector<AssetFile*>assets;
 	std::vector<AssetDir*>dirs;
 };
